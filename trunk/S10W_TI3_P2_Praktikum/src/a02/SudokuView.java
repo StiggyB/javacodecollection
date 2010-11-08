@@ -1,5 +1,4 @@
 package a02;
-
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
