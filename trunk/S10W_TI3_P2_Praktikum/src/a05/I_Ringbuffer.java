@@ -1,12 +1,12 @@
 package a05;
 
-public interface I_Ringbuffer<Item> {
+public interface I_Ringbuffer<T> {
+    public static int N = 0;
+    public void enqueue(T item);
 
-    public void enqueue(Item item);
+    public T dequeue();
 
-    public Item dequeue();
-
-    public Item peek();
+    public T peek();
 
     public boolean isEmpty();
 

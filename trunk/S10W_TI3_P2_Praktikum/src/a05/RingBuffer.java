@@ -34,13 +34,15 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
     }
 
     public boolean isFull() {
-        return N == last;
+        return N == a.length;
     }
 
-    @Override
     public Item peek() {
-        // TODO Auto-generated method stub
-        return null;
+        if (isEmpty()) {
+            throw new RuntimeException("Ring buffer underflow");
+        }
+        Item item = a[first];
+        return item;
     }
 
     public void enqueue(Item item) {
