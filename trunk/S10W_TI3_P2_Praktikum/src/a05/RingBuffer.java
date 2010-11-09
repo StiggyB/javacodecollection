@@ -1,8 +1,6 @@
 package a05;
 
 /*************************************************************************
- *  Compilation:  javac RingBuffer.java
- *  Execution:    java RingBuffer
  *  
  *  Ring buffer (fixed size queue) implementation using a circular array
  *  (array with wrap-around).
