@@ -98,16 +98,16 @@ public class TestFrameImagePanel extends JLabel {
     }
     
     public void moveLinear(JFrame frame, JLabel iconLabel) {
-    	Rectangle re = frame.getBounds();
-    	for (int x = 0; x <= re.width; x+=126) {
-    		for (int y = 0; y <= re.height; y+=60) {
+    	Rectangle rect = frame.getBounds();
+    	for (int x = 0; x <= rect.width; x+=126) {
+    		for (int y = 0; y <= rect.height; y+=60) {
     			try {
 					Thread.sleep(500);					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println(re.height + ", " + re.width);
+				System.out.println(rect.height + ", " + rect.width);
 				iconLabel.setLocation(new Point(x, y));
     		}
     	}
