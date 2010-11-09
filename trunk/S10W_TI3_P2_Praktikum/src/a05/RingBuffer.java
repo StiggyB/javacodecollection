@@ -4,7 +4,8 @@ package a05;
  *  
  *  Ring buffer (fixed size queue) implementation using a circular array
  *  (array with wrap-around).
- *
+ *  Source: Robert Sedgewick and Kevin Wayne found in the WWW
+ *  
  *************************************************************************/
 
 import java.util.Iterator;
@@ -104,6 +105,24 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
         while (!ring.isEmpty()) {
             System.out.println(ring.dequeue());
         }
+        RingBuffer<Integer> ring2 = new RingBuffer<Integer>(5);
+        ring2.enqueue(1);
+        ring2.enqueue(2);
+        ring2.enqueue(3);
+        ring2.enqueue(4);
+        ring2.enqueue(5);
+
+        
+        for (Integer i : ring2) {
+            System.out.println(i);
+        }
+        
+        System.out.println();
+        
+        while (!ring2.isEmpty()) {
+            System.out.println(ring2.dequeue());
+        }
+        
     }
 
 }
