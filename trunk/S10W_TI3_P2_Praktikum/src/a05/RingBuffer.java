@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 // suppress unchecked warnings in Java 1.5.0_6 and later
 @SuppressWarnings("unchecked")
 
-public class RingBuffer<Item> implements Iterable<Item> {
+public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer {
     private Item[] a;            // queue elements
     private int N = 0;           // number of elements on queue
     private int first = 0;       // index of first element of queue

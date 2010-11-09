@@ -9,5 +9,5 @@ public interface I_Ringbuffer<Item> {
     public void dequeue( Item item);
     public Item peek ();
     public boolean isEmpty();
-    public oolean isFull();
+    public boolean isFull();
 }
