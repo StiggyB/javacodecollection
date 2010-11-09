@@ -1,4 +1,4 @@
-package a03_a;
+package a03;
 
 /**
  * Praktikum: P2P<br>
