@@ -1,4 +1,4 @@
-package a05_a;
+package a05;
 
 /*************************************************************************
  *  Compilation:  javac RingBuffer.java
@@ -29,7 +29,7 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer {
     public boolean isEmpty() { return N == 0; }
     public int size()        { return N;      }
 
-    public void enqueue(Item item) {
+    public void enqueu(Item item) {
         if (N == a.length) { throw new RuntimeException("Ring buffer overflow"); }
         a[last] = item;
         last = (last + 1) % a.length;     // wrap-around
@@ -79,6 +79,33 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer {
         while (!ring.isEmpty())  {
             System.out.println(ring.dequeue());
         }
+    }
+
+    @Override
+    public boolean isFull() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Object peek() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Object dequeue(Object item) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void enqueue(Object item) {
+        if (N == a.length) { throw new RuntimeException("Ring buffer overflow"); }
+        a[last] = item;
+        last = (last + 1) % a.length;     // wrap-around
+        N++;
+        
     }
 
 
