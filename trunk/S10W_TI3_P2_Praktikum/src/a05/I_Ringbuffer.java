@@ -8,7 +8,7 @@ public interface I_Ringbuffer<Item> {
 
     public void enqueue(Item item);
 
-    public Item dequeue(Item item);
+    public Item dequeue();
 
     public Item peek();
 
