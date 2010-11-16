@@ -1,7 +1,6 @@
 package tester.a04;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -12,7 +11,6 @@ import java.awt.Window;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRootPane;
 
 
@@ -130,7 +128,6 @@ public class TestFrameImagePanel extends JFrame {
 		ImageIcon iIcon = new ImageIcon(imgURL);
 		ImageIcon iIcon2 = new ImageIcon("images/img_Rechteck_schwarz.gif");
 		ImageIcon image = createImageIcon("images/img_Rechteck_schwarz.gif");
-		JPanel panel = new JPanel();
 		imageLabel = new JLabel(image, JLabel.CENTER);
 		iconLabel = new JLabel(iIcon, JLabel.CENTER);
 //		this.setIcon(iIcon2);
@@ -141,7 +138,7 @@ public class TestFrameImagePanel extends JFrame {
 		System.out.println(iconLabel.getWidth());
 //		moveIcon(frame);
 		showIconsInFrame(iconLabel, iIcon.getImage());
-//		showIcon(imageLabel, new Point(0, 0));
+		showIcon(imageLabel, new Point(0, 0));
 		
 	}
 	

@@ -16,7 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUI {
 
 	JFrame mainframe = new JFrame();
-	PicLabel pLabel1;
+//	PicLabel pLabel1;
 	List<PicLabel> list = new ArrayList<PicLabel>();
 	File file = new File("./blub.gif");
 

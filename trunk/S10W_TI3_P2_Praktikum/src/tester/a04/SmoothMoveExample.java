@@ -6,7 +6,11 @@ import java.awt.event.*;
 
 public class SmoothMoveExample extends JPanel implements
  MouseMotionListener {
-  private int X, Y;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private int X, Y;
   private Image image;
   private static JFrame frame;
 
@@ -18,8 +22,8 @@ public static void main(String[] args) {
     frame.setVisible(true);
   }
   public SmoothMoveExample() {
-//    addMouseMotionListener(this);
-	moveIcon();
+    addMouseMotionListener(this);
+//	moveIcon();
     setVisible(true);
   }
   
