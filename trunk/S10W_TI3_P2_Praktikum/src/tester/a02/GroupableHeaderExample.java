@@ -1,4 +1,4 @@
-package tester;
+package tester.a02;
 
 /* (swing1.1beta3)
 *

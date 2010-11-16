@@ -1,4 +1,4 @@
-package tester;
+package tester.a02;
 
 import java.awt.BorderLayout;
 

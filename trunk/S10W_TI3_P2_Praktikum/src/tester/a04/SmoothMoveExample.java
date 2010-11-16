@@ -1,4 +1,4 @@
-package tester;
+package tester.a04;
 
 import java.awt.*;
 import javax.swing.*;
@@ -8,20 +8,40 @@ public class SmoothMoveExample extends JPanel implements
  MouseMotionListener {
   private int X, Y;
   private Image image;
+  private static JFrame frame;
 
 public static void main(String[] args) {
-    JFrame frame = new JFrame();
-    frame.getContentPane().add(new SmoothMoveExample());
+    frame = new JFrame();
     frame.setSize(350, 300);
     frame.setLocationRelativeTo(null);
-    frame.show();
+    frame.getContentPane().add(new SmoothMoveExample());
+    frame.setVisible(true);
   }
   public SmoothMoveExample() {
-    addMouseMotionListener(this);
+//    addMouseMotionListener(this);
+	moveIcon();
     setVisible(true);
   }
+  
+  public void moveIcon() {
+	  Rectangle rect = frame.getBounds();
+	  System.out.println(rect.width);
+	  for(int x = 0; x <= rect.getWidth(); x++) {
+		  for(int y = 0; y <= rect.getHeight(); y++) {
+			  System.out.println(x + ", " + y);
+			  this.setLocation(new Point(x, y));
+			  try {
+					Thread.sleep(50);					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		  }
+	  }
+  }
+  
   public void mouseMoved(MouseEvent event) {
-     X = (int) event.getPoint().getX();
+    X = (int) event.getPoint().getX();
     Y = (int) event.getPoint().getY();
     repaint();
   }

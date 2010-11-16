@@ -1,4 +1,4 @@
-package tester;
+package tester.a04;
 
 public class Trial extends javax.swing.JFrame{
 	

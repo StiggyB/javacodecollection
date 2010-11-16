@@ -1,4 +1,4 @@
-package tester;
+package tester.a04;
 
 import javax.swing.JComponent;
 
