@@ -103,38 +103,7 @@ public class TestFrameImagePanel extends JFrame {
     	iconLabel.setLocation(new Point(0, 0));
 //    	moveLinear(frame, iconLabel);
     }
-    
-
-    public void paintComponent(Graphics g) {
-
-    g.drawRect(100, 100, 1, 1);
-
-    g.drawString("100", 100, 100);
-
-    g.drawRect(200, 200, 1, 1);
-
-    g.drawString("200", 200, 200);
-
-    g.drawRect(300, 300, 1, 1);
-
-    g.drawString("300", 300, 300);
-
-    g.drawRect(400, 400, 1, 1);
-
-    g.drawString("400", 400, 400);
-
-    g.drawRect(500, 500, 1, 1);
-
-    g.drawString("500", 500, 500);
-
-    g.drawRect(600, 600, 1, 1);
-
-    g.drawString("600", 600, 600);
-
-
-    }
-
-    
+        
     public void moveLinear(JFrame frame, JLabel iconLabel) {
     	Rectangle rect = frame.getBounds();
     	Rectangle rect2 = iconLabel.getVisibleRect();
