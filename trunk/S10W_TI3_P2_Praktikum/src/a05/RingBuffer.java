@@ -111,7 +111,6 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
         ring2.enqueue(3);
         ring2.enqueue(4);
         ring2.enqueue(5);
-
         
         for (Integer i : ring2) {
             System.out.println(i);

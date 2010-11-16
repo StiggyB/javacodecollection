@@ -42,7 +42,7 @@ public class TextAnalyserTest {
 				TextAnalyser.checkPalinSen(new StringBuilder(
 						"Trug Tim eine so helle Hose nie mit Gurt?")));
 	}
-//	@Test
+	@Test
 	 public void testFindAnagram() {
 	 assertEquals("HAENSEL UND GRETEL EHRT ENGLANDS EULE",
 	 TextAnalyser.findAnagram(/*File file*/));
