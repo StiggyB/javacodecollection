@@ -4,16 +4,16 @@ package a05;
  *  
  *  Ring buffer (fixed size queue) implementation using a circular array
  *  (array with wrap-around).
- *  Source: Robert Sedgewick and Kevin Wayne found in the WWW
+ *  Source: Robert Sedgewick and Kevin Wayne. Found in the WWW
  *  
  *************************************************************************/
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+//import java.util.Iterator;
+//import java.util.NoSuchElementException;
 
 // suppress unchecked warnings in Java 1.5.0_6 and later
 @SuppressWarnings("unchecked")
-public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
+public class RingBuffer<Item> implements /*Iterable<Item>,*/ I_Ringbuffer<Item> {
     private Item[] a; // queue elements
     private int N = 0; // number of elements on queue
     private int first = 0; // index of first element of queue
@@ -21,7 +21,9 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
 
     // cast needed since no generic array creation in Java
     public RingBuffer(int capacity) {
+        if(capacity >=0)
         a = (Item[]) new Object[capacity];
+        else System.err.printf("False Queue length!\n");
     }
 
     public boolean isEmpty() {
@@ -46,6 +48,7 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
 
     public void enqueue(Item item) {
         if (N == a.length) {
+            System.err.printf("Ring buffer full!\n");
             throw new RuntimeException("Ring buffer overflow");
         }
         a[last] = item;
@@ -56,6 +59,7 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
     // remove the least recently added item - doesn't check for underflow
     public Item dequeue() {
         if (isEmpty()) {
+            System.err.printf("Ring buffer empty!\n");
             throw new RuntimeException("Ring buffer underflow");
         }
         Item item = a[first];
@@ -65,63 +69,35 @@ public class RingBuffer<Item> implements Iterable<Item>, I_Ringbuffer<Item> {
         return item;
     }
 
-    public Iterator<Item> iterator() {
-        return new RingBufferIterator();
+//    public Iterator<Item> iterator() {
+//        return new RingBufferIterator();
+//    }
+//
+//    // an iterator, doesn't implement remove() since it's optional
+//    private class RingBufferIterator implements Iterator<Item> {
+//        private int i = 0;
+//
+//        public boolean hasNext() {
+//            return i < N;
+//        }
+//
+//        public void remove() {
+//            throw new UnsupportedOperationException();
+//        }
+//
+//        public Item next() {
+//            if (!hasNext())
+//                throw new NoSuchElementException();
+//            return a[i++];
+//        }
+//    }
+    
+    public String toString(){
+        return "Ring Buffer initialized";
     }
 
-    // an iterator, doesn't implement remove() since it's optional
-    private class RingBufferIterator implements Iterator<Item> {
-        private int i = 0;
-
-        public boolean hasNext() {
-            return i < N;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        public Item next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            return a[i++];
-        }
-    }
-
-    // a test client
     public static void main(String[] args) {
-        RingBuffer<String> ring = new RingBuffer<String>(20);
-        ring.enqueue("This");
-        ring.enqueue("is");
-        ring.enqueue("a");
-        ring.enqueue("test.");
 
-        for (String s : ring) {
-            System.out.println(s);
-        }
-
-        System.out.println();
-
-        while (!ring.isEmpty()) {
-            System.out.println(ring.dequeue());
-        }
-        RingBuffer<Integer> ring2 = new RingBuffer<Integer>(5);
-        ring2.enqueue(1);
-        ring2.enqueue(2);
-        ring2.enqueue(3);
-        ring2.enqueue(4);
-        ring2.enqueue(5);
-        
-        for (Integer i : ring2) {
-            System.out.println(i);
-        }
-        
-        System.out.println();
-        
-        while (!ring2.isEmpty()) {
-            System.out.println(ring2.dequeue());
-        }
-        
     }
 
 }
