@@ -1,19 +1,20 @@
 package a05;
 
-/*************************************************************************
- *  
- *  Ring buffer (fixed size queue) implementation using a circular array
- *  (array with wrap-around).
- *  Source: Robert Sedgewick and Kevin Wayne. Found in the WWW
- *  
- *************************************************************************/
+/**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 05<br>
+ * 
+ * Version: V0<br>
+ * Aenderungen:
+ * 
+ * Quellen: API, Robert Sedgewick and Kevin Wayne via WWW , Buch: Java als erste Programmiersprache
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ */
 
-//import java.util.Iterator;
-//import java.util.NoSuchElementException;
-
-// suppress unchecked warnings in Java 1.5.0_6 and later
 @SuppressWarnings("unchecked")
-public class RingBuffer<Item> implements /*Iterable<Item>,*/ I_Ringbuffer<Item> {
+public class RingBuffer<Item> implements I_Ringbuffer<Item> {
     private Item[] a; // queue elements
     private int N = 0; // number of elements on queue
     private int first = 0; // index of first element of queue
@@ -21,8 +22,8 @@ public class RingBuffer<Item> implements /*Iterable<Item>,*/ I_Ringbuffer<Item> 
 
     // cast needed since no generic array creation in Java
     public RingBuffer(int capacity) {
-        if(capacity >=0)
-        a = (Item[]) new Object[capacity];
+        if (capacity >= 0)
+            a = (Item[]) new Object[capacity];
         else System.err.printf("False Queue length!\n");
     }
 
@@ -47,7 +48,7 @@ public class RingBuffer<Item> implements /*Iterable<Item>,*/ I_Ringbuffer<Item> 
     }
 
     public void enqueue(Item item) {
-        if (N == a.length) {
+        if (isFull()) {
             System.err.printf("Ring buffer full!\n");
             throw new RuntimeException("Ring buffer overflow");
         }
@@ -56,43 +57,19 @@ public class RingBuffer<Item> implements /*Iterable<Item>,*/ I_Ringbuffer<Item> 
         N++;
     }
 
-    // remove the least recently added item - doesn't check for underflow
     public Item dequeue() {
         if (isEmpty()) {
             System.err.printf("Ring buffer empty!\n");
             throw new RuntimeException("Ring buffer underflow");
         }
         Item item = a[first];
-        a[first] = null; // to help with garbage collection
+        a[first] = null;
         N--;
         first = (first + 1) % a.length; // wrap-around
         return item;
     }
 
-//    public Iterator<Item> iterator() {
-//        return new RingBufferIterator();
-//    }
-//
-//    // an iterator, doesn't implement remove() since it's optional
-//    private class RingBufferIterator implements Iterator<Item> {
-//        private int i = 0;
-//
-//        public boolean hasNext() {
-//            return i < N;
-//        }
-//
-//        public void remove() {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        public Item next() {
-//            if (!hasNext())
-//                throw new NoSuchElementException();
-//            return a[i++];
-//        }
-//    }
-    
-    public String toString(){
+    public String toString() {
         return "Ring Buffer initialized";
     }
 
