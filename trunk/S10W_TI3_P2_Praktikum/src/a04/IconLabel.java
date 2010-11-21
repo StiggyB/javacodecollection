@@ -39,15 +39,16 @@ public class IconLabel extends JLabel {
 		ImageIcon iIcon = new ImageIcon(file.getAbsolutePath());
 		this.boundX = iIcon.getIconWidth();
 		this.boundY = iIcon.getIconHeight();
-		this.setBounds(new Rectangle(this.boundX, this.boundY));
+		this.setBounds(new Rectangle(this.x, this.y, this.boundX, this.boundY));
 		this.setIcon(iIcon);
 	}
 	
 	public void move() {
-		if(ShowInFrame.getFrame().getWidth() - boundX > x || x < 1) {
-			swapVektorX();
-		} else if(ShowInFrame.getFrame().getHeight() - boundY > y || y < 1) {
-			swapVektorY();
+		if(((ShowInFrame.getFrame().getWidth() - boundX) > x) || (x < 1)) {
+			System.out.println(ShowInFrame.getFrame().getWidth());
+			this.swapVektorX();
+		} else if(((ShowInFrame.getFrame().getHeight() - boundY - 25) > y) || (y < 1)) {
+			this.swapVektorY();
 		}
 		this.x += vektorX;
 		this.y += vektorY;

@@ -20,6 +20,9 @@ public class MainApp {
 	public static void main(String[] args) throws IOException {
 		IconModel.init();
 		ShowInFrame.showIcons();
-//		IconModel.run();
+		IconModel.run();
+		/*
+		 * Fehlerursache: Eventuell zu viel static, das dynamisch sein sollte
+		 */
 	}
 }

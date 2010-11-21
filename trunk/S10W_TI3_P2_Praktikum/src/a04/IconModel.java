@@ -21,6 +21,8 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import tester.a04.Aufgabe04.src.a04.PicLabel;
+
 public class IconModel {
 	
 	private static List<IconLabel> labelList = new ArrayList<IconLabel>();
@@ -43,22 +45,61 @@ public class IconModel {
 		int rc = jfc.showOpenDialog(null);
 		if (rc == JFileChooser.APPROVE_OPTION) {
 			file = jfc.getSelectedFile();
-			System.out.println(file.getCanonicalPath());
 		}
 		
-		labelList.add(new IconLabel(10, 20, 1, 1, file));
+		labelList.add(new IconLabel(250, 150, 2, 1, file));
 		labelList.add(new IconLabel(50, 150, -1, 2, file));
-//		labelList.add(new IconLabel(100, 10, 3, 2, file));
+		labelList.add(new IconLabel(100, 10, 3, 2, file));
 	}
 	
 	public static void run() {
+		while (true) {
+			for (IconLabel label : labelList) {
+				label.move();
+				label.repaint();
+				for (IconLabel lab : labelList) {
+					if ((label != lab)
+							&& (label.getBounds().intersects(lab.getBounds()))) {
+						Rectangle rec = label.getBounds().intersection(
+								lab.getBounds());
+						if (rec.height < rec.width) {
+							lab.swapVektorY();
+							label.swapVektorY();
+						} else if (rec.height > rec.width) {
+							lab.swapVektorX();
+							label.swapVektorX();
+						} else {
+							lab.swapVektorX();
+							label.swapVektorX();
+							lab.swapVektorY();
+							label.swapVektorY();
+						}
+						label.move();
+						 System.out.println(label.getBounds().intersects(rec.getBounds()));
+
+					}
+
+				}
+			}
+
+			ShowInFrame.getFrame().repaint();
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void run2() {
 		for(;;) {
 			for(IconLabel labelX : labelList) {
 				labelX.move();
 				labelX.repaint();
 				for(IconLabel labelY : labelList) {
 					navigateIcons(labelX, labelY);
-					labelX.move();
+					
 				}
 			}
 			ShowInFrame.getFrame().repaint();
@@ -85,7 +126,9 @@ public class IconModel {
 				labelY.swapVektorX();
 				labelY.swapVektorY();
 			}
-		}	
+			labelX.move();
+			System.out.println(labelX.getBounds().intersects(rect.getBounds()));
+		}
 	}
 	
 }

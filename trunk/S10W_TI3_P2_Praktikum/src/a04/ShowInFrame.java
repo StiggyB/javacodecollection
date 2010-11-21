@@ -51,16 +51,21 @@ public class ShowInFrame {
 		}
     	
     	frame = new JFrame();
+
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setLayout(null);
+    	frame.setBounds(0, 0, 800, 600);
+    	frame.setUndecorated(true);
+
+
+//    	Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+//    	frame.setPreferredSize(new Dimension(rect.width, rect.height));
+    	frame.setResizable(false);
     	for(IconLabel label : IconModel.getList()) {
     		frame.add(label);
     	}
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setUndecorated(true);
-    	frame.setVisible(true);
     	frame.setLocation(new Point(0,0));
-    	Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    	frame.setPreferredSize(new Dimension(rect.width, rect.height));
-    	frame.setResizable(false);
-    	frame.pack();
+    	frame.setVisible(true);
+//    	frame.pack();
     }
 }
