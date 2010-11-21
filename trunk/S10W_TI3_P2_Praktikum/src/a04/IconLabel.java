@@ -1,4 +1,16 @@
 package a04;
+/**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 04<br>
+ * 
+ * Version: V1<br>
+ * Aenderungen:
+ * 
+ * Quellen: API, Swing
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ */
 
 import java.awt.Rectangle;
 import java.io.File;
@@ -32,14 +44,13 @@ public class IconLabel extends JLabel {
 	}
 	
 	public void move() {
-		if(600/*Frame.width*/ - boundX > x) {
+		if(ShowInFrame.getFrame().getWidth() - boundX > x || x < 1) {
 			swapVektorX();
-		}
-		if(400 - boundY > y) {
+		} else if(ShowInFrame.getFrame().getHeight() - boundY > y || y < 1) {
 			swapVektorY();
 		}
-		this.x = vektorX;
-		this.y = vektorY;
+		this.x += vektorX;
+		this.y += vektorY;
 		this.setBounds(new Rectangle(boundX, boundY));
 	}
 	
@@ -50,6 +61,4 @@ public class IconLabel extends JLabel {
 	public void swapVektorY() {
 		vektorY *= -1;
 	}
-	
-
 }
