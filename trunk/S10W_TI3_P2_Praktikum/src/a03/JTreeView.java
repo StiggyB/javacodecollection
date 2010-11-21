@@ -118,7 +118,6 @@ public class JTreeView extends JPanel {
                 }// if
             }// for
         }catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }// catch
         return node;
@@ -153,7 +152,7 @@ public class JTreeView extends JPanel {
     }// createTreeArea
 
     class TreeListener implements TreeWillExpandListener, TreeSelectionListener {
-        // zuletzt geöffneter Pfad
+        // zuletzt geï¿½ffneter Pfad
         private TreePath path;
 
         // wird aufgerufen, bevor der Knoten geoeffnet wird
@@ -167,9 +166,9 @@ public class JTreeView extends JPanel {
 
             if (!e.getPath().equals(wurzelPfad))// Wurzel ignorieren
             {
-                if (path != null) // Wenn ein Pfad geöffnet
-                    baum.collapsePath(path); // ist, dann schließen
-                path = e.getPath(); // geöffneten Pfad sichern
+                if (path != null) // Wenn ein Pfad geï¿½ffnet
+                    baum.collapsePath(path); // ist, dann schlieï¿½en
+                path = e.getPath(); // geï¿½ffneten Pfad sichern
             }// if
         }// treeWillExpand
 

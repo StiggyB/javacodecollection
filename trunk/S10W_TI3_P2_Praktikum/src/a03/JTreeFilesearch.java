@@ -29,7 +29,6 @@ public class JTreeFilesearch {
                 }//if
             }// for
         }catch (Exception e) {
-            // TODO Auto-generated catch block
             // e.printStackTrace();
             e.getMessage();
         }        

@@ -21,8 +21,7 @@ public class MainApp {
 		IconModel.init();
 		ShowInFrame.showIcons();
 		IconModel.run();
-		/*
-		 * Fehlerursache: Eventuell zu viel static, das dynamisch sein sollte
-		 */
+
+		// TODO Fehlerursache: Eventuell zu viel static, das dynamisch sein sollte
 	}
 }
