@@ -32,7 +32,7 @@ public class TestFrameImagePanel extends JFrame {
 	 * 
 	 * @param path
 	 * @param description
-	 * @return
+	 * @return ImageIcon
 	 */
     protected ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = getClass().getResource(path);

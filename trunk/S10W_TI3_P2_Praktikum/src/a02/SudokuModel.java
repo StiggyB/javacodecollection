@@ -44,8 +44,8 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
 	 * Set the count of rows and columns.
 	 * Calculate the size of the quadrants in the table.
 	 * 
-	 * @see initModel
-	 * @see fillTable 
+	 * @see a02.SudokuModel.initModel
+	 * @see a02.SudokuModel.fillTable 
 	 * @param rows
 	 * @param columns
 	 */
@@ -82,8 +82,8 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
 	/**
 	 * Fill the table with random values between 1 and 9
 	 * 
-	 * @see generateValue
-	 * @see generateDistance
+	 * @see SudokuModel.generateValue
+	 * @see a02.SudokuModel.generateDistance
 	 */
 	private void fillTable() {
 		int testVal = 0;
@@ -113,8 +113,8 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
 	 * @param row
 	 * @param column
 	 * @param value
-	 * @see checkLinear
-	 * @see checkQuad
+	 * @see a02.SudokuModel.checkLinear
+	 * @see a02.SudokuModel.checkQuad
 	 * @return true if the value not contain
 	 */
 	private boolean isValidValue(int row, int column, int value) {
@@ -171,7 +171,7 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
 	 * @param startRow
 	 * @param startColumn
 	 * @param value
-	 * @see getPosition
+	 * @see a02.SudokuModel.getPosition
 	 * @return false if the quadrant contains the value
 	 */
 	private boolean checkQuad(int startRow, int startColumn, int value) {
@@ -261,8 +261,8 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
      *  Returns true if the specific boolean value 
      *  in EditArr is true, too. Otherwise false.
      *	
-     *  @param  rowIndex  the row being queried
-     *  @param  columnIndex the column being queried
+     *  @param  row the row being queried
+     *  @param  column the column being queried
      *  @return false or rather true
      */
 	@Override

@@ -7,12 +7,11 @@ package a04;
  * Version: V1<br>
  * Aenderungen:
  * 
- * Quellen: API, Swing
+ * Quellen: API, Swing, PR2 Praktikum
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 
-//import java.awt.GraphicsEnvironment;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;

@@ -79,7 +79,7 @@ public class GUI {
 							label.swapDirectionY();
 						}
 						label.move();
-						 System.out.println(label.getBounds().intersects(rec.getBounds()));
+						System.out.println(label.getBounds().intersects(rec.getBounds()));
 
 					}
 

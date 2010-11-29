@@ -10,7 +10,7 @@ import java.io.IOException;
  * Version: V1<br>
  * Aenderungen:
  * 
- * Quellen: API, Swing
+ * Quellen: API, Swing, PR2 Praktikum
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
@@ -24,6 +24,6 @@ public class MainApp {
 		view.showIcons(model);
 		model.run(view); 		//"Weak typed" durch Objekt
 
-		// TODO write JavaDoc
+		// TODO write JavaDoc, generate UML
 	}
 }
