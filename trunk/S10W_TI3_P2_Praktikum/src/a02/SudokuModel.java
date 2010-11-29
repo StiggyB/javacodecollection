@@ -82,7 +82,7 @@ public class SudokuModel extends DefaultTableModel implements Serializable {
 	/**
 	 * Fill the table with random values between 1 and 9
 	 * 
-	 * @see SudokuModel.generateValue
+	 * @see a02.SudokuModel.generateValue
 	 * @see a02.SudokuModel.generateDistance
 	 */
 	private void fillTable() {
