@@ -12,6 +12,7 @@ package a04;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 
+//import java.awt.GraphicsEnvironment;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -21,19 +22,20 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class ShowInFrame {
-	
-	private static JFrame frame;
 
-    public static JFrame getFrame() {
+public class IconView {
+	
+	private JFrame frame;
+	
+	public JFrame getFrame() {
 		return frame;
 	}
 
-	public static void setFrame(JFrame frame) {
-		ShowInFrame.frame = frame;
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
 	}
 
-	public static void showIcons() {
+	public void showIcons(IconModel model) {
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -51,21 +53,17 @@ public class ShowInFrame {
 		}
     	
     	frame = new JFrame();
-
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setLayout(null);
-    	frame.setBounds(0, 0, 800, 600);
     	frame.setUndecorated(true);
-
-
-//    	Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-//    	frame.setPreferredSize(new Dimension(rect.width, rect.height));
+    	Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    	frame.setPreferredSize(new Dimension(rect.width, rect.height));
     	frame.setResizable(false);
-    	for(IconLabel label : IconModel.getList()) {
+    	for(IconLabel label : model.getLabelList()) {
     		frame.add(label);
     	}
     	frame.setLocation(new Point(0,0));
     	frame.setVisible(true);
-//    	frame.pack();
+    	frame.pack();
     }
 }

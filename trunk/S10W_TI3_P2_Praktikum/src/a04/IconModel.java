@@ -21,21 +21,23 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import tester.a04.Aufgabe04.src.a04.PicLabel;
 
 public class IconModel {
 	
-	private static List<IconLabel> labelList = new ArrayList<IconLabel>();
-	
-	public static List<IconLabel> getList() {
+	private List<IconLabel> labelList = new ArrayList<IconLabel>();
+
+	public List<IconLabel> getLabelList() {
 		return labelList;
 	}
 
-	public static void setList(List<IconLabel> list) {
-		IconModel.labelList = list;
+	public void setLabelList(List<IconLabel> labelList) {
+		this.labelList = labelList;
 	}
 
-	public static void init() throws IOException {
+	/**
+	 * @throws IOException
+	 */
+	public void init() throws IOException {
 		String defaultPath = "./a04/icons/fish.gif";
 		File file = new File(defaultPath);
 		
@@ -49,74 +51,36 @@ public class IconModel {
 		
 		labelList.add(new IconLabel(250, 150, 2, 1, file));
 		labelList.add(new IconLabel(50, 150, -1, 2, file));
-		labelList.add(new IconLabel(100, 10, 3, 2, file));
+		labelList.add(new IconLabel(300, 10, 3, 2, file));
+		labelList.add(new IconLabel(100, 200, -2, 1, file));
+		labelList.add(new IconLabel(150, 50, 10, 10, file));
+
 	}
 	
-	public static void run() {
-		while (true) {
-			for (IconLabel label : labelList) {
-				label.move();
-				label.repaint();
-				for (IconLabel lab : labelList) {
-					if ((label != lab)
-							&& (label.getBounds().intersects(lab.getBounds()))) {
-						Rectangle rec = label.getBounds().intersection(
-								lab.getBounds());
-						if (rec.height < rec.width) {
-							lab.swapVektorY();
-							label.swapVektorY();
-						} else if (rec.height > rec.width) {
-							lab.swapVektorX();
-							label.swapVektorX();
-						} else {
-							lab.swapVektorX();
-							label.swapVektorX();
-							lab.swapVektorY();
-							label.swapVektorY();
-						}
-						label.move();
-						 System.out.println(label.getBounds().intersects(rec.getBounds()));
-
-					}
-
-				}
-			}
-
-			ShowInFrame.getFrame().repaint();
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void run2() {
+	public void run(IconView view) {
 		for(;;) {
 			for(IconLabel labelX : labelList) {
-				labelX.move();
+				labelX.move(view);
 				labelX.repaint();
 				for(IconLabel labelY : labelList) {
-					navigateIcons(labelX, labelY);
-					
+					navigateIcons(labelX, labelY, view);
 				}
 			}
-			ShowInFrame.getFrame().repaint();
 			try {
-				Thread.sleep(20);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	private static void navigateIcons(IconLabel labelX, IconLabel labelY) {
+	private void navigateIcons(IconLabel labelX, IconLabel labelY, IconView view) {
 		if ((labelX != labelY) && (labelX.getBounds().intersects(labelY.getBounds()))) {
 			Rectangle rect = labelX.getBounds().intersection(labelY.getBounds());
-			if (rect.height > rect.width) {
+			if (rect.height < rect.width) {
 				labelX.swapVektorX();
 				labelY.swapVektorX();
-			} else if (rect.height < rect.width) {
+			} else if (rect.height > rect.width) {
 				labelX.swapVektorY();
 				labelY.swapVektorY();
 			} else {
@@ -125,8 +89,7 @@ public class IconModel {
 				labelY.swapVektorX();
 				labelY.swapVektorY();
 			}
-			labelX.move();
-			System.out.println(labelX.getBounds().intersects(rect.getBounds()));
+			labelX.move(view);
 		}
 	}
 	

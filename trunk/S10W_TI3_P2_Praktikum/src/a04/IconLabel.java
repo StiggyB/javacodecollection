@@ -12,11 +12,11 @@ package a04;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 
-import java.awt.Rectangle;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 
 public class IconLabel extends JLabel {
 
@@ -39,20 +39,19 @@ public class IconLabel extends JLabel {
 		ImageIcon iIcon = new ImageIcon(file.getAbsolutePath());
 		this.boundX = iIcon.getIconWidth();
 		this.boundY = iIcon.getIconHeight();
-		this.setBounds(new Rectangle(this.x, this.y, this.boundX, this.boundY));
+		this.setBounds(this.x, this.y, this.boundX, this.boundY);
 		this.setIcon(iIcon);
 	}
 	
-	public void move() {
-		if(((ShowInFrame.getFrame().getWidth() - boundX) > x) || (x < 1)) {
-			System.out.println(ShowInFrame.getFrame().getWidth());
+	public void move(IconView view) {
+		if(((x > view.getFrame().getWidth() - boundX) || (x < 1))) {
 			this.swapVektorX();
-		} else if(((ShowInFrame.getFrame().getHeight() - boundY - 25) > y) || (y < 1)) {
+		} else if(((y > view.getFrame().getHeight() - boundY) || (y < 1))) {
 			this.swapVektorY();
 		}
-		this.x += vektorX;
-		this.y += vektorY;
-		this.setBounds(new Rectangle(boundX, boundY));
+		this.x += this.vektorX;
+		this.y += this.vektorY;
+		this.setBounds(this.x, this.y, this.boundX, this.boundY);
 	}
 	
 	public void swapVektorX() {

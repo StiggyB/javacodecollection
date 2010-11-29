@@ -18,10 +18,12 @@ import java.io.IOException;
 public class MainApp {
 
 	public static void main(String[] args) throws IOException {
-		IconModel.init();
-		ShowInFrame.showIcons();
-		IconModel.run();
+		IconModel model = new IconModel();
+		model.init();
+		IconView view = new IconView();
+		view.showIcons(model);
+		model.run(view); 		//"Weak typed" durch Objekt
 
-		// TODO Fehlerursache: Eventuell zu viel static, das dynamisch sein sollte
+		// TODO write JavaDoc
 	}
 }
