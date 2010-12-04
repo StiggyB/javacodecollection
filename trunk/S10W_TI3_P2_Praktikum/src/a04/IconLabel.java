@@ -13,11 +13,14 @@ package a04;
  */
 
 import java.io.File;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-
+/**
+ * Diese Klasse erbt die Eigenschaften von JLabel, welche
+ * zur Orientierung und Bewegung angepasst ist.
+ *
+ */
 public class IconLabel extends JLabel {
 
 	/**
@@ -41,24 +44,32 @@ public class IconLabel extends JLabel {
 		this.boundY = iIcon.getIconHeight();
 		this.setBounds(this.x, this.y, this.boundX, this.boundY);
 		this.setIcon(iIcon);
-	}
+	} //Konsturktor
 	
+	
+	/**
+	 * Diese Methode sorgt fuer die Bewegung 
+	 * des IconLabels anhand der der Framegroesse
+	 * und Eigentschaften des IconLabels.
+	 * 
+	 * @param view zur Ermittlung der Framegroesse
+	 */
 	public void move(IconView view) {
 		if(((x > view.getFrame().getWidth() - boundX) || (x < 1))) {
 			this.swapVektorX();
 		} else if(((y > view.getFrame().getHeight() - boundY) || (y < 1))) {
 			this.swapVektorY();
-		}
+		} //if
 		this.x += this.vektorX;
 		this.y += this.vektorY;
 		this.setBounds(this.x, this.y, this.boundX, this.boundY);
-	}
+	} //move
 	
 	public void swapVektorX() {
 		vektorX *= -1;
-	}
+	} //swapVektorX
 	
 	public void swapVektorY() {
 		vektorY *= -1;
-	}
-}
+	} //swapVektorY
+} //IconLabel

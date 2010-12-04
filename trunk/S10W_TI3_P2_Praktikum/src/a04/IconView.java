@@ -20,7 +20,11 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
+/**
+ * Diese Klasse bildet die View, welche 
+ * Veraenderungen des IconModels anzeigt.
+ *
+ */
 
 public class IconView {
 	
@@ -28,12 +32,19 @@ public class IconView {
 	
 	public JFrame getFrame() {
 		return frame;
-	}
+	} //getFrame
 
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
-	}
+	} //setFrame
 
+	/**
+	 * Diese Methode erstellt das Frame,
+	 * welche die Umgebung der Labels vorgibt.
+	 * 
+	 * @param model	zum hinzufuegen der Labels
+	 * @exception UnsopportedLookAndFeelException
+	 */
 	public void showIcons(IconModel model) {
     	try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -49,7 +60,7 @@ public class IconView {
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} //catch
     	
     	frame = new JFrame();
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,9 +71,9 @@ public class IconView {
     	frame.setResizable(false);
     	for(IconLabel label : model.getLabelList()) {
     		frame.add(label);
-    	}
+    	} //for
     	frame.setLocation(new Point(0,0));
     	frame.setVisible(true);
     	frame.pack();
-    }
-}
+    } //showIcons
+} //IconView

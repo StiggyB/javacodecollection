@@ -21,21 +21,32 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
+/**
+ * Diese Klasse bildet das Model, welche Icons wandern 
+ * lassen kann. Es wird das Verhalten der Labels auf 
+ * der View organsisiert.
+ * 
+ */
 public class IconModel {
 	
 	private List<IconLabel> labelList = new ArrayList<IconLabel>();
 
 	public List<IconLabel> getLabelList() {
 		return labelList;
-	}
+	} //getLabelList
 
 	public void setLabelList(List<IconLabel> labelList) {
 		this.labelList = labelList;
-	}
+	} // getLabelList
 
 	/**
-	 * @throws IOException
+	 * Diese Methode initialisiert den Inhalt des Models
+	 * indem IconLabels zur labelList hinzugefuegt werden.
+	 * 
+	 * Anhand des JFileChoosers kann ein bestimmtes Icon
+	 * ausgewaeht werden - default path: ./a04/icons/fish.gif. 
+	 * 
+	 * @throws IOException	wenn der I/O nicht richtig Ablaeuft
 	 */
 	public void init() throws IOException {
 		String defaultPath = "./a04/icons/fish.gif";
@@ -47,7 +58,7 @@ public class IconModel {
 		int rc = jfc.showOpenDialog(null);
 		if (rc == JFileChooser.APPROVE_OPTION) {
 			file = jfc.getSelectedFile();
-		}
+		} //if
 		
 		labelList.add(new IconLabel(250, 150, 2, 1, file));
 		labelList.add(new IconLabel(50, 150, -1, 2, file));
@@ -55,8 +66,15 @@ public class IconModel {
 		labelList.add(new IconLabel(100, 200, -2, 1, file));
 		labelList.add(new IconLabel(150, 50, 10, 10, file));
 
-	}
+	} //init
 	
+	/**
+	 * Diese Methode startet die Bewegung der Labels
+	 * 
+	 * @param view 	zur Ermittlung der Framegroesse
+	 * @see a04.Iconlabel.move
+	 * @see a04.IconModel.navigateIcons
+	 */
 	public void run(IconView view) {
 		for(;;) {
 			for(IconLabel labelX : labelList) {
@@ -64,16 +82,28 @@ public class IconModel {
 				labelX.repaint();
 				for(IconLabel labelY : labelList) {
 					navigateIcons(labelX, labelY, view);
-				}
-			}
+				} //for
+			} //for
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
-		}
-	}
+			} //catch
+		} //for
+	} //run
 	
+
+	/**
+	 * Diese Methode preuft auf Intersects zwischen labelX 
+	 * und labelY sowie die weitere Bewegung der Labels.
+	 * 
+	 * @param labelX	zur Pruefung der Position
+	 * @param labelY	zur Pruefung der Position
+	 * @param view	zur Ermittlung der Framegroesse
+	 * @see a04.IconLabel.swapVektorX
+	 * @see a04.IconLabel.swapVektorY
+	 * @see a04.Iconlabel.move
+	 */
 	private void navigateIcons(IconLabel labelX, IconLabel labelY, IconView view) {
 		if ((labelX != labelY) && (labelX.getBounds().intersects(labelY.getBounds()))) {
 			Rectangle rect = labelX.getBounds().intersection(labelY.getBounds());
@@ -88,8 +118,8 @@ public class IconModel {
 				labelX.swapVektorY();
 				labelY.swapVektorX();
 				labelY.swapVektorY();
-			}
+			} //else
 			labelX.move(view);
-		}
-	}
-}
+		} //if
+	} //navigateIcons
+} //IconModel
