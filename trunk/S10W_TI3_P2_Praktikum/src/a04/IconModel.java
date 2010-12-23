@@ -72,8 +72,6 @@ public class IconModel {
 	 * Diese Methode startet die Bewegung der Labels
 	 * 
 	 * @param view 	zur Ermittlung der Framegroesse
-	 * @see a04.Iconlabel.move
-	 * @see a04.IconModel.navigateIcons
 	 */
 	public void run(IconView view) {
 		for(;;) {

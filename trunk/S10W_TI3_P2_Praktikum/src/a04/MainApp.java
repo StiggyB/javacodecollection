@@ -27,6 +27,5 @@ public class MainApp {
 		view.showIcons(model);
 		model.run(view); 		//"Weak typed" durch Objekt
 
-		// TODO write Doku, generate UML
 	} //main
 } //MainApp

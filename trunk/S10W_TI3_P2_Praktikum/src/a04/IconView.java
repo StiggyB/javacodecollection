@@ -61,11 +61,11 @@ public class IconView {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //catch
-    	
+//    	
     	frame = new JFrame();
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setLayout(null);
-    	frame.setUndecorated(true);
+//    	frame.setUndecorated(true);
     	Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     	frame.setPreferredSize(new Dimension(rect.width, rect.height));
     	frame.setResizable(false);
