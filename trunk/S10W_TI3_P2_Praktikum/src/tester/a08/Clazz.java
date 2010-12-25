@@ -2,29 +2,29 @@ package tester.a08;
 
 public class Clazz {
 
-	private class Memeber{
-		
-	}
-	
-	interface I1 {
-		
-	}
+//	private class Memeber{
+//		
+//	}
+//	
+//	interface I1 {
+//		
+//	}
 	
 	int value;
 	double dvalue;
 	
 	//default Constructor
-	public Clazz(int value){
-		this.value = value;
-	}
-	
-	public int getValue() {
-		return this.value;
-	}
-	
-	public void setValue(int value) {
-		this.value = value;
-	}
+//	public Clazz(int value){
+//		this.value = value;
+//	}
+//	
+//	public int getValue() {
+//		return this.value;
+//	}
+//	
+//	public void setValue(int value) {
+//		this.value = value;
+//	}
 
 	@Override
 	public String toString() {

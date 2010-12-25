@@ -21,10 +21,13 @@ public class MainApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO searchAnnotations() result null
+		// TODO How to filter getX methods without getDeclaredX ?
+		// TODO How to iterate sync with the data structure of Arrays ?
 		
 		ObjectBrowser ob = new ObjectBrowser();
-		ob.searchContent(ob.setObject(new Clazz(1)));
+//		ob.searchContent(ob.setObject(new Clazz(1)));
+		ob.searchThroughClass();
+		ob.reflectObject(new Clazz());
 		
 
 	}
