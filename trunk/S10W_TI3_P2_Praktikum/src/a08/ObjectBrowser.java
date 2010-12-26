@@ -20,20 +20,18 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class ObjectBrowser {
 
-	List<ObjectContent> content = new ArrayList<ObjectContent>();
 	List<Method> decMeth = new ArrayList<Method>();
 	
-	Field[] fields;
-	Constructor<?>[] constructors;
-	Method[] methods;
-	Annotation[] annotaions;
-	Class<?>[] classes;
+	private Field[] fields;
+	private Constructor<?>[] constructors;
+	private Method[] methods;
+	private Annotation[] annotations;
+	private Class<?>[] classes;
 	
 	
 	public Object setObject(Object obj) {
@@ -44,8 +42,10 @@ public class ObjectBrowser {
 		for(Method met : Class.class.getDeclaredMethods()) {
 			if(met.getReturnType().isArray()) {
 				if(met.getParameterTypes().length == 0) {
-					if(met.getModifiers() == Modifier.PUBLIC) {
-						decMeth.add(met);
+					if(Modifier.isPublic(met.getModifiers())) {
+						if(met.getName().contains("Declared")) {
+							decMeth.add(met);
+						}
 					}
 				}
 			}
@@ -53,29 +53,124 @@ public class ObjectBrowser {
 //		printList(decMeth);	
 	}
 	
+	private static <TTargetType> TTargetType as(Object o, Class<TTargetType> clazz) {
+	    //...
+	    if(null == o || null == clazz){
+	      return null;
+	    }else if(clazz.isAssignableFrom(o.getClass())){
+	      return clazz.cast(o);  
+	    }else{
+	      return null;
+	    }
+	}
+
+	private void chooseType(Object obj, Method met, Object testObj)
+		throws IllegalAccessException, InvocationTargetException {
+		if(testObj.getClass().getName().equals(Annotation[].class.getName())) {
+			// TODO No Annotations as return value - why ?
+//			System.out.println(met);
+//			System.out.println("TEST");
+			this.annotations = as(met.invoke(obj.getClass()), Annotation[].class);
+			printContent((Object[])this.annotations);
+			fillIt(this.annotations);
+		} else if(testObj.getClass().getName().equals(Class[].class.getName())) {
+			this.classes = as(met.invoke(obj.getClass()), Class[].class);
+			fillIt(this.classes);
+		} else if(testObj.getClass().getName().equals(Constructor[].class.getName())) {
+			this.constructors = as(met.invoke(obj.getClass()), Constructor[].class);
+			fillIt(this.constructors);
+		} else if(testObj.getClass().getName().equals(Field[].class.getName())) {
+			this.fields = as(met.invoke(obj.getClass()), Field[].class);
+			fillIt(this.fields);
+		} else if(testObj.getClass().getName().equals(Method[].class.getName())) {
+			this.methods = as(met.invoke(obj.getClass()), Method[].class);
+			fillIt(this.methods);
+		}
+	}
+	
+	private StringBuilder fillIt(Object[] objArr) {
+		StringBuilder sb = new StringBuilder();
+		for(Object obj : objArr) {
+			sb.append("-> ");
+			sb.append(obj);	
+		}
+		System.out.println(sb);
+		return sb;
+	}
 	
 	/*
-	 // TODO How to filter getX methods without getDeclaredX ?
-	 * 
-public java.lang.annotation.Annotation[] java.lang.Class.getAnnotations()
-public java.lang.Class[] java.lang.Class.getClasses()
-public java.lang.reflect.Constructor[] java.lang.Class.getConstructors() throws java.lang.SecurityException
-public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
-public java.lang.Class[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
-public java.lang.reflect.Constructor[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
-public java.lang.reflect.Field[] java.lang.Class.getDeclaredFields() throws java.lang.SecurityException
-public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
-public java.lang.Object[] java.lang.Class.getEnumConstants()
-public java.lang.reflect.Field[] java.lang.Class.getFields() throws java.lang.SecurityException
-public java.lang.reflect.Type[] java.lang.Class.getGenericInterfaces()
-public java.lang.reflect.Method[] java.lang.Class.getMethods() throws java.lang.SecurityException
-public java.lang.reflect.TypeVariable[] java.lang.Class.getTypeParameters()
+	 *  public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
+	 *	public java.lang.Class[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
+	 *	public java.lang.reflect.Constructor[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
+	 *	public java.lang.reflect.Field[] java.lang.Class.getDeclaredFields() throws java.lang.SecurityException
+	 *	public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
 	 *
 	 */
-	public void reflectObject(Object obj) {
+	public void reflectObject(Object obj) throws InstantiationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
+//		Annotation[] ann = obj.getClass().getAnnotations();
+//		printContent(ann);
 		
 		for(Method met : decMeth) {
-			try {
+			Object testObj = met.invoke(obj.getClass());
+			chooseType(obj, met, testObj);
+			
+			// TODO How to zoom and in which method ?
+		}
+	}
+	
+	private void printList(List<Method> decMeth) {
+		for(Method met : decMeth) {
+			System.out.println(met);
+//			for(Annotation ann : met.annotations)
+//			System.out.println(ann);
+		}
+	}
+	
+	private void printContent(Object... obj) {
+		System.out.println(obj.length);
+		for(Object ob : obj) {
+			System.out.println(ob.toString() + "\n");
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "ObjectBrowser [annotaions=" + Arrays.toString(annotations)
+				+ ", classes=" + Arrays.toString(classes) + ", constructors="
+				+ Arrays.toString(constructors) + ", decMeth=" + decMeth
+				+ ", fields=" + Arrays.toString(fields) + ", methods="
+				+ Arrays.toString(methods) + "]";
+	}
+}
+		
+		
+//		Method mt = Class.class.getDeclaredMethod("getDeclaredFields");
+//		Field[] ob = (Field[]) mt.invoke(obj.getClass());
+//		
+//		//switch case mit enums
+//		System.out.println(ob.getClass().getName());
+//		System.out.println(Field[].class);
+
+//		Object testObj = mt.invoke(obj.getClass());
+//		chooseType(obj, mt, testObj);
+		
+//		chooseType(obj, mt, ob);
+//		
+//		printContent(this.fields);
+//		Field[] b = as(mt.invoke(obj.getClass()), Field[].class);
+//		
+//		System.out.println(ob.getClass().isArray());
+//		System.out.println(mt.getReturnType());
+//		Method[] m = ob.getClass().getDeclaredMethods();
+//		printContent(ob);
+//		printContent(b);
+//		printContent(fields);
+//		printContent(methods);
+			
+//				Object annotaions = met.invoke(obj.getClass());
+//				printContent(annotaions);
+				
 //				switch (met.getReturnType()) {
 //					case Annotation[] : 
 //						annotaions = met.invoke(obj.getClass();
@@ -89,123 +184,76 @@ public java.lang.reflect.TypeVariable[] java.lang.Class.getTypeParameters()
 //				System.out.println(met);
 //				System.out.println(met.invoke(obj.getClass()));
 				// TODO How to iterate sync with the data structure of Arrays ?
-				for(Iterator<ObjectContent> oc = content.iterator(); oc.hasNext();) { // not functional
-					System.out.println(met.invoke(obj.getClass()));
-					oc.next().annotaions = 
-					annotaions = (Annotation[]) met.invoke(obj.getClass());
+//				ObjectContent oc = new ObjectContent();
+//				Field[] fld = new Field[1];
+//				fld = oc.getClass().getDeclaredFields();
+//				fld[0] = this.getClass().getField("methods");
+//				fld[1] = this.getClass().getDeclaredField("annotaions");
+//				Field fld1 = this.getClass().getField("methods");
+//				System.out.println(fld1.getType());
+//				for(int i = 0; i < fld.length; i++) {
+//					System.out.println(fld[i].getType());
+//				}
+				
+//				fld[0].setAccessible(true);
+//				System.out.println(oc.annotations.getClass().isArray());
+//				System.out.println(oc.annotations.getClass());
+//				System.out.println(fld[0].getClass().isArray());
+//				System.out.println(fld[0].getClass());
+//				System.out.println(oc.annotations.getClass().);
+//				System.out.println(fld[0].getType().isArray());
+				
+				
+//				Annotation[] tmp = (Annotation[]) fld[0].get(oc.annotations);
+//				tmp = (Annotation[]) met.invoke(obj);
+				
+//				System.out.println(fld.length);
+//				System.out.println(fld[0].getName());
+//				System.out.println(fld[0].get(oc));
+//				System.out.println("TEST");
+//				fld[0].set(oc.fields, Class.class.getFields());
+				
+//				System.out.println("--" + oc.fields);
+				
+//				if (fld[0].get(oc) instanceof Annotation[] ? true : false) {
+//					System.out.println("TEst");
+//				}
+//				(Annotation[]) fld[0] = (Annotation[]) met.invoke(obj.getClass();
+//				oc.annotaions = (Annotation[]) met.invoke(obj.getClass());
+//				oc.iterator().next();
+						
+//				for(Field fld : oc.getClass().getDeclaredFields()) {
+//					Class<?> cl = fld.getType();
+//					if(fld.getType().isArray()) {
+//						fld = fld.getClass().newInstance(); 
+//						fld.set(fld, met.invoke(obj.getClass()));
+//						break;
+//					}
+//					System.out.println(oc.annotaions);
+//					
+//					ob = met.invoke(obj.getClass());
+//				}
+					
+//				for(Iterator<ObjectContent> oc = content.iterator(); oc.hasNext();) { // not functional
+//					System.out.println(met.invoke(obj.getClass()));
+//					oc.next().annotaions = 
+//					annotaions = (Annotation[]) met.invoke(obj.getClass());
 //					System.out.println(oc.annotaions[0]);
-				}
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//				}
 //			Annotation[] ann = obj instanceof Annotation[] ? (Annotation[]) obj : null;
 //			if (ann != null) {
 //				oc.annotaions = ann;
 //			}
-		}
-		printList(content);
-	}
-	
-	public void searchContent(Object obj) {
-		//only print on console for debug
-//		printContent(this.fields = searchFields(obj));
-//		printContent(this.constructors = searchConstructors(obj));
-//		printContent(this.methods = searchMethods(obj));
-//		printContent(this.annotaions = searchAnnotations(obj));
-//		printContent(this.classes = searchClasses(obj));
-		printContent();
-		
-	}
-	
-	private Field[] searchFields(Object obj) {
-		Field[] fields = new Field[1];
-		for(Field fld : obj.getClass().getDeclaredFields()) {
-			if(fld.getModifiers() == Modifier.PRIVATE) {
-				fld.setAccessible(true);
-				//if(more content -> zoom) ...
-			}
-			fields = obj.getClass().getDeclaredFields();
-		}
-		return fields;
-	}
-	
-	private Constructor<?>[] searchConstructors(Object obj) {
-		Constructor<?>[] constr = new Constructor[1];
-		for(Constructor<?> con : obj.getClass().getDeclaredConstructors()) {
-			if(con.getParameterTypes().length != 0) {
-				Class<?>[] arr = con.getParameterTypes();
-				//if(more content -> zoom) ...
-			}
-			if(con.getModifiers() == Modifier.PRIVATE) {
-				con.setAccessible(true);
-			}
-			constr = obj.getClass().getDeclaredConstructors();
-		}
-		return constr;
-	}
-	
-	private Method[] searchMethods(Object obj) {
-		Method[] methods = new Method[1];
-		for(Method meth : obj.getClass().getDeclaredMethods()) {
-			if(meth.getParameterTypes().length != 0) {
-				Class<?>[] arr = meth.getParameterTypes();
-				//if(more content -> zoom) ...
-			}
-			if(meth.getModifiers() == Modifier.PRIVATE) {
-				meth.setAccessible(true);
-			}
-			methods = obj.getClass().getDeclaredMethods();
-		}
-		return methods;
-	}
-	
-	private Annotation[] searchAnnotations(Object obj) {
-		Annotation[] anno = new Annotation[1];
-		System.out.println(obj.getClass().getDeclaredAnnotations());
-		for(Annotation ann: obj.getClass().getDeclaredAnnotations()) {
-			anno = obj.getClass().getDeclaredAnnotations();
-		}
-		return anno;
-	}
-	
-	private Class<?>[] searchClasses(Object obj) {
-		Class<?>[] clss = new Class[1];
-		for(Class cls : obj.getClass().getDeclaredClasses()) {
-			//if(cls more content -> zoom) ...
-			clss = obj.getClass().getDeclaredClasses();
-		}
-		return clss;
-	}
-	
-	private void printList(List<? extends ObjectContent> decMeth) {
-		for(ObjectContent met : decMeth) {
-			for(Annotation ann : met.annotaions)
-			System.out.println(ann);
-		}
-	}
-	
-	private void printContent(Object... obj) {
-		System.out.println(obj.length);
-		for(Object ob : obj) {
-			System.out.println(ob + "\n");
-		}
-	}
+//		printList(content);
+//	}
 
-	@Override
-	public String toString() {
-		return "ObjectBrowser [annotaions=" + Arrays.toString(annotaions)
-				+ ", classes=" + Arrays.toString(classes) + ", constructors="
-				+ Arrays.toString(constructors) + ", content=" + content
-				+ ", decMeth=" + decMeth + ", fields="
-				+ Arrays.toString(fields) + ", methods="
-				+ Arrays.toString(methods) + "]";
-	}
 	
-}
+//	private void printList(List<? extends Class<?>> decMeth) {
+//		for(Class<?> met : decMeth) {
+//			System.out.println(met);
+////			for(Annotation ann : met.annotations)
+////			System.out.println(ann);
+//		}
+//	}
+	
+

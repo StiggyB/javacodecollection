@@ -1,53 +1,37 @@
 package tester.a08;
-
+@SuppressWarnings("all")
 public class Clazz {
 
-//	private class Memeber{
-//		
-//	}
-//	
-//	interface I1 {
-//		
-//	}
+	private class Memeber{
+		
+	}
 	
-	int value;
-	double dvalue;
+	interface I1 {
+		
+	}
+	
+	public int value;
+	public double dvalue;
+	private int integer;
+	String str;
 	
 	//default Constructor
-//	public Clazz(int value){
-//		this.value = value;
-//	}
-//	
-//	public int getValue() {
-//		return this.value;
-//	}
-//	
-//	public void setValue(int value) {
-//		this.value = value;
-//	}
+	public Clazz(int value){
+		this.value = value;
+		this.integer = value;
+	}
+	
+	public int getValue() {
+		return this.value;
+	}
+	
+	public void setValue(int value) {
+		this.value = value;
+	}
 
 	@Override
 	public String toString() {
 		return "Clazz [dvalue=" + dvalue + ", value=" + value + "]";
 	}
-	
-//	public static void main(String[] args) {
-//		Clazz<T> clazz = new Clazz<T>();
-//		clazz = Void.TYPE;
-//		clazz = Integer.TYPE;
-//		
-//		clazz = int.class;
-//		
-//		Class<double[]> dClazz = double[].class;
-//		Class<? extends String> sClazz = new String().getClass();+
-//		
-//		try {
-//			clazz = Class.forName("java.lang.String");
-//			Class.cast();
-//			Class.asSubclass();
-//		}
-//		
-//		System.out.println(Integer.class.getPackage());
-//	}
 	
 }

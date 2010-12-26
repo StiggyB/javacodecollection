@@ -4,21 +4,23 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Iterator;
+import java.util.Arrays;
 
-public class ObjectContent implements Iterable<ObjectContent> {
+public class ObjectContent { //implements Iterable<ObjectContent> {
 	//not used - just a idea
-	Field[] fields;
-	Constructor<?>[] constructors;
-	Method[] methods;
-	Annotation[] annotaions;
-	Class<?>[] classes;
-	
+	public Annotation[] annotations = new Annotation[1];
+	public Field[] fields = new Field[1];
+	public Constructor<?>[] constructors;
+	public Method[] methods;
+	public Class<?>[] classes;
 	
 	@Override
-	public Iterator<ObjectContent> iterator() {
-		// TODO Auto-generated method stub
-		return list.;
+	public String toString() {
+		return "ObjectContent [annotations=" + Arrays.toString(annotations)
+				+ ", classes=" + Arrays.toString(classes) + ", constructors="
+				+ Arrays.toString(constructors) + ", fields="
+				+ Arrays.toString(fields) + ", methods="
+				+ Arrays.toString(methods) + "]";
 	}	
 	
 }
