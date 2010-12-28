@@ -138,8 +138,8 @@ public class ElevatorLabel extends JLabel implements Runnable{
     }
     
     public static void main (String[] args){
-//        ElevatorLabel el = new ElevatorLabel(2);
-//        ShowInFrame.show(el);
+        ElevatorLabel el = new ElevatorLabel(2);
+        ShowInFrame.show(el);
     }
 
     
