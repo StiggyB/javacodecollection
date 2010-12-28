@@ -1,6 +1,6 @@
-package a06BasicTextThreads;
+package a06;
 
-public class ElevatorView {
+public class ElevatorControl {
 
     /**
      * @param args
