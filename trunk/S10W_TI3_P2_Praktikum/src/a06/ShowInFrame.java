@@ -44,8 +44,8 @@ public class ShowInFrame {
 		frame.add(c);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setSize(new Dimension(500, 250));
 		frame.setLocationRelativeTo(null);
 		frame.pack();
+		frame.setSize(new Dimension(1024, 768));
 	}
 }
