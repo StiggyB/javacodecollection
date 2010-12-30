@@ -1,10 +1,10 @@
 package a06;
 
-public class ElevatorModel extends Thread{
+public class ElevatorModel extends Thread {
 
     private boolean[] floorList = new boolean[5]; // FloorList for 5 Floors
-    private int actualFloor; 
-    private boolean doorOpen; 
+    private int actualFloor;
+    private boolean doorOpen;
     private boolean priorityDrive;
     private String elevatorInfo;
 
@@ -28,48 +28,54 @@ public class ElevatorModel extends Thread{
     }// callElevator
 
     public void move() throws InterruptedException {
-        boolean[] fL = this.getFloorList();
-        for (int i = 0; i < this.floorList.length; i++) { // iterate over floorList
-            if (fL[i]) { // if floor is true (selected)
-                if (i == this.getActualFloor()) { // if selected floor equals actualFloor
-                    // do nothing
-                }else { // check if selected floor is smaller than actualFloor
-                    if (i < this.getActualFloor()) {
-                        this.setDoorOpen(false);
-                        System.out.println(this.getElevatorInfo() + " Door closed.");
-                        System.out.println(this.getElevatorInfo() + " Moving from Floor " + this.getActualFloor() + "to Floor " + i);
-                        for (; i != this.getActualFloor();) {
-                            decrementFloor();
-                            Thread.sleep(2000);
-                            System.out.println(this.getElevatorInfo() + " now on Floor " + this.getActualFloor());
-                        }
-                        fL[i] = false; // if elevator has reached selected floor
-                        this.setFloorList(fL); // set selection to false and update fL
-                        System.out.println(this.getElevatorInfo() + " has reached destination Floor " + this.getActualFloor());
-                        this.setDoorOpen(true);
-                        System.out.println(this.getElevatorInfo() + " Door opened.");
-                    }else {
-                        this.setDoorOpen(false);
-                        System.out.println(this.getElevatorInfo() + " Door closed.");
-                        System.out.println(this.getElevatorInfo() + " Moving from Floor " + this.getActualFloor() + "to Floor " + i);
-                        for (; i != this.getActualFloor();) {
-                            incrementFloor();
-                            Thread.sleep(2000);
-                            System.out.println(this.getElevatorInfo() + " now on Floor " + this.getActualFloor());
-                        }
-                        fL[i] = false; // if elevator has reached selected floor
-                        this.setFloorList(fL); // set selection to false and update fL
-                        System.out.println(this.getElevatorInfo() + " has reached destination Floor " + this.getActualFloor());
-                        this.setDoorOpen(true);
-                        System.out.println(this.getElevatorInfo() + " Door opened.");
+        while (doorOpen) {
+            boolean[] fL = this.getFloorList();
+            for (int i = 0; i < this.floorList.length; i++) { // iterate over floorList
+                if (fL[i]) { // if floor is true (selected)
+                    if (i == this.getActualFloor()) { // if selected floor equals actualFloor
+                        fL[i] = false; // disable selection
+                    }else { // check if selected floor is smaller than actualFloor
+                        if (i < this.getActualFloor()) {
+                            this.setDoorOpen(false);
+                            System.out.println(this.getElevatorInfo() + " Door closed.");
+                            System.out.println(this.getElevatorInfo() + " Moving from Floor " + this.getActualFloor()
+                                    + "to Floor " + i);
+                            for (; i != this.getActualFloor();) {
+                                decrementFloor();
+                                Thread.sleep(2000);
+                                System.out.println(this.getElevatorInfo() + " now on Floor " + this.getActualFloor());
+                            }
+                            fL[i] = false; // if elevator has reached selected floor
+                            this.setFloorList(fL); // set selection to false and update fL
+                            System.out.println(this.getElevatorInfo() + " has reached destination Floor "
+                                    + this.getActualFloor());
+                            this.setDoorOpen(true);
+                            System.out.println(this.getElevatorInfo() + " Door opened.");
+                        }else {
+                            this.setDoorOpen(false);
+                            System.out.println(this.getElevatorInfo() + " Door closed.");
+                            System.out.println(this.getElevatorInfo() + " Moving from Floor " + this.getActualFloor()
+                                    + "to Floor " + i);
+                            for (; i != this.getActualFloor();) {
+                                incrementFloor();
+                                Thread.sleep(2000);
+                                System.out.println(this.getElevatorInfo() + " now on Floor " + this.getActualFloor());
+                            }
+                            fL[i] = false; // if elevator has reached selected floor
+                            this.setFloorList(fL); // set selection to false and update fL
+                            System.out.println(this.getElevatorInfo() + " has reached destination Floor "
+                                    + this.getActualFloor());
+                            this.setDoorOpen(true);
+                            System.out.println(this.getElevatorInfo() + " Door opened.");
+                        }// else
                     }// else
-                }// else
-            }// if
-        }// for
+                }// if
+            }// for
+        }// while
     }// move
-    
-    public void run(){
-        while(true){
+
+    public void run() {
+        while (true) {
             try {
                 move();
             }catch (InterruptedException e) {
