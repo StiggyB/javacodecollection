@@ -1,0 +1,104 @@
+public class TestMain {
+
+    public static void main(String[] args) {
+        ElevatorControl eC = new ElevatorControl();
+        ...
+}//TestMain
+
+#####################################################################
+
+public class ElevatorControl {
+    
+    private ElevatorModel model;
+    private ElevatorView view;
+    
+    
+    //Constructor
+    public ElevatorControl(){
+        ...
+        this.view = new ElevatorView();
+        addListener();
+        
+    }
+    
+    public ElevatorView getView() {
+        return view;
+    }
+    
+    public ActionListener getCallButtonActionListener(){
+        ActionListener aL = new CallButtonActionListener();
+        return aL;
+    }
+
+    private void addListener(){
+        this.view.setCallButtonActionListener(new CallButtonActionListener());
+        this.view.setKeepDoorsOpenActionListener(new KeepDoorsOpenActionListener());
+        this.view.setUpButtons();
+    }
+    ...
+    //Folgend innere Klassen für ActionListener etc...
+    ...
+}//ElevatorControl
+
+#####################################################################
+
+public class ElevatorView extends JPanel {
+    ...
+    ...
+    private JButton floor0, floor1, floor2, floor3, floor4;
+    ...
+    
+    // Constructor
+    ElevatorView() {
+        ...
+        createCallArea();
+        createControlArea();
+        createViewArea();
+        createMainArea();
+        this.add(mainArea);
+        ...
+    }// ElevatorView
+    
+    private void createCallArea() { // Grid Layout ver
+        callArea = new JPanel();
+        ...
+        addCallButtonsToPanel(callArea);
+    }// createCallArea
+    
+    private void addCallButtonsToPanel(JPanel pane) {
+        addOneButton("Ground floor", pane, floor0, 1);
+        addOneButton("First  floor", pane, floor1, 1);
+        addOneButton("Second floor", pane, floor2, 1);
+        addOneButton("Thrid  floor", pane, floor3, 1);
+        addOneButton("Fourth floor", pane, floor4, 1);
+    }// addCallButtonsToPanel
+    
+    private void addOneButton(String text, JPanel pane, JButton button, int i) {
+        button = new JButton(text);
+        button.setName(text + " Elevator " + i);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pane.add(button);
+        System.out.println("Button " + button.getName() + " added with " + text);
+    }// addOneButton
+    
+    public void setUpButtons(){
+        registerButtonActionListeners(floor1);
+        registerButtonActionListeners(floor1);
+        registerButtonActionListeners(floor2);
+        registerButtonActionListeners(floor3);
+        registerButtonActionListeners(floor4);
+    }
+    
+    private void registerButtonActionListeners(JButton button){
+        System.out.println(button.getName() + button.getText()); //<--- ##NULL-Pointer Exception -.-##
+        if(button.getText().contains("floor")){
+            button.addActionListener(cBaL);
+            System.out.println("ActionListener added for button: " + button.getText());
+        }
+        if(button.getText().contains("< >")){
+            button.addActionListener(kDOaL);
+        }
+    }//registerButtonActionListeners
+    
+}//ElevatorView
+

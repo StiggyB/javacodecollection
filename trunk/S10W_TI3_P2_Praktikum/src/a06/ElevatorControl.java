@@ -32,33 +32,35 @@ public class ElevatorControl {
     }
 
     private void addListener(){
-        this.view.setCallButtonActionListener(new CallButtonActionListener());
-        this.view.setKeepDoorsOpenActionListener(new KeepDoorsOpenActionListener());
-        this.view.setUpButtons();
+        view.setCallButtonActionListener(new CallButtonActionListener());
+        view.setKeepDoorsOpenActionListener(new KeepDoorsOpenActionListener());
+        view.registerButtonActionListeners();
+        
         
     }
     private class CallButtonActionListener implements ActionListener { // Innere/Element
         // Klasse
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
-            if (source.getText() == "Ground floor") {
+            if (source.getText().contains("Ground floor")) {
                     JOptionPane.showMessageDialog(null, "Called Ground floor",
                             "Caller Message", JOptionPane.WARNING_MESSAGE);
+                    
             }
-            if(source.getText() == "First  floor"){
+            if(source.getText().contains("First  floor")){
                 JOptionPane.showMessageDialog(null, "Called First floor",
                         "Caller Message", JOptionPane.WARNING_MESSAGE);
                 
             }
-            if(source.getText() == "Second floor"){
+            if(source.getText().contains("Second floor")){
                 JOptionPane.showMessageDialog(null, "Called Second floor",
                         "Caller Message", JOptionPane.WARNING_MESSAGE);
             }
-            if(source.getText() == "Thrid  floor"){
+            if(source.getText().contains("Thrid  floor")){
                 JOptionPane.showMessageDialog(null, "Called Third floor",
                         "Caller Message", JOptionPane.WARNING_MESSAGE);
             }
-            if(source.getText() == "Fourth floor"){
+            if(source.getText().contains("Fourth floor")){
                 JOptionPane.showMessageDialog(null, "Called Fourth floor",
                         "Caller Message", JOptionPane.WARNING_MESSAGE);
             }
@@ -69,11 +71,15 @@ public class ElevatorControl {
         // Klasse
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
-            System.out.println("KeepDoorsOpenActionListener reagiert!");
-            if (source.getName() == "kDO1"){
+            
+            if (source.getName().contains("< >") && source.getName().contains(" Elevator 1")){
             JOptionPane.showMessageDialog(null, "Keeping Door Open on Elevator 1",
                     "Caller Message", JOptionPane.WARNING_MESSAGE);
             }
+            if (source.getName().contains("< >") && source.getName().contains(" Elevator 2")){
+                JOptionPane.showMessageDialog(null, "Keeping Door Open on Elevator 2",
+                        "Caller Message", JOptionPane.WARNING_MESSAGE);
+                }
         }// actionPerformed
     }// KeepDoorsOpenActionListener
 
