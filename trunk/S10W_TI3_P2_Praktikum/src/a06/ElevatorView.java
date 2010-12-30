@@ -1,12 +1,12 @@
 package a06;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -16,10 +16,12 @@ public class ElevatorView extends JPanel {
      * 
      */
     private static final long serialVersionUID = 1L;
-//    private ElevatorModel eM1, eM2;
-    private JLabel eJL1, eJL2;
+    // private ElevatorModel eM1, eM2;
+    // private JLabel eJL1, eJL2;
     private JPanel callArea, controlArea, viewArea, mainArea;
+    private List<ElevatorLabel> labelList = new ArrayList<ElevatorLabel>();
     private JButton[] jButtonArraY = new JButton[7];
+
     private ActionListener cBaL, kDOaL;
 
     // Constructor
@@ -52,25 +54,13 @@ public class ElevatorView extends JPanel {
         viewArea.setPreferredSize(new Dimension(800, 600));
         viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
                 .createEmptyBorder(10, 10, 10, 10)));
-        eJL1 = new JLabel();
-        eJL2 = new JLabel();
 
-        // Color settings for elevator labels
-        eJL1.setOpaque(true);
-        eJL2.setOpaque(true);
-        eJL1.setBackground(Color.GREEN);
-        eJL2.setBackground(Color.GREEN);
+        labelList.add(new ElevatorLabel(1));
+        labelList.add(new ElevatorLabel(2));
 
-        // Dimension settings for elevator labels
-        eJL1.setBounds(25, 475, eJL1.getWidth(), eJL1.getHeight());
-        eJL2.setBounds(150, 475, eJL2.getWidth(), eJL2.getHeight());
-        eJL1.setPreferredSize(new Dimension(100, 100));
-        eJL2.setPreferredSize(new Dimension(100, 100));
-        eJL1.setSize(new Dimension(100, 100));
-        eJL2.setSize(new Dimension(100, 100));
-
-        viewArea.add(eJL1);
-        viewArea.add(eJL2);
+        for (ElevatorLabel eL : labelList) {
+            viewArea.add(eL);
+        }// for
     }
 
     private void createControlArea() {// Box Layout hor
@@ -124,16 +114,16 @@ public class ElevatorView extends JPanel {
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
             System.out.println("ActionListener cBaL added for button: " + button.getText());
-        }//if
+        }// if
         if (button.getText().contains("< >")) {
             button.addActionListener(kDOaL);
-        }//if
+        }// if
     }// registerButtonActionListeners
 
     public void registerButtonActionListener() {
         for (int i = 0; i < 7; i++) {
             registerButtonActionListeners(jButtonArraY[i]);
-        }//for
+        }// for
     }// registerButtonActionListener
 
     public void setCallButtonActionListener(ActionListener aL) {
@@ -146,27 +136,44 @@ public class ElevatorView extends JPanel {
         System.out.println("KeepDoorsOpenActionListener set up complete!");
     }// setKeepDoorsOpenActionListener
 
-    public void increaseElevatorFloor(int elevator) throws InterruptedException{
-        if(elevator == 1){
-            Rectangle b = eJL1.getBounds();
-//            System.out.println("Bound Y vorher: " + b.y);
-            b.y -= 125;
-//            System.out.println("Bound Y nachher: " + b.y);
-            Thread.sleep(2000);
-            eJL1.setBounds(b);
-            System.out.println(eJL1.getBounds());
-        }
-    }//increaseElevatorFloor
     
-    public void decreaseElevatorFloor(){
-        
-    }//decreaseElevatorFloor
+    
+    public void move(int elevator, int destination){
+        for (ElevatorLabel eL : labelList) {
+            System.out.println(eL.getName() + " == Elevator " + elevator + " ?");
+            if(eL.getName().equals("Elevator "+elevator)){
+                System.out.println("Moving Elevator " + elevator + " to Floor " + destination);
+                try {
+                    eL.move(destination);
+                }catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }//catch
+            }//if
+                
+        }//for
+    }
+
+
+
+    public JButton[] getjButtonArraY() {
+        return jButtonArraY;
+    }
+
+    public void setLabelList(List<ElevatorLabel> labelList) {
+        this.labelList = labelList;
+    }
+
+    public List<ElevatorLabel> getLabelList() {
+        return labelList;
+    }
+
     /**
      * @param args
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        ShowInFrame.show("Elevator GUI", new ElevatorView());
+        // ShowInFrame.show("Elevator GUI", new ElevatorView());
     }
 
 }

@@ -28,7 +28,8 @@ public class ElevatorModel extends Thread {
     }// callElevator
 
     public void move() throws InterruptedException {
-        while (doorOpen) {
+        boolean work = true;
+        while (work) {//bedingung für wiederholung
             boolean[] fL = this.getFloorList();
             for (int i = 0; i < this.floorList.length; i++) { // iterate over floorList
                 if (fL[i]) { // if floor is true (selected)
@@ -71,6 +72,12 @@ public class ElevatorModel extends Thread {
                     }// else
                 }// if
             }// for
+            for (boolean cFL : this.getFloorList()){
+                work = false;
+                if (cFL){
+                    work = true;
+                }//if
+            }//for
         }// while
     }// move
 

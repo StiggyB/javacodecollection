@@ -1,5 +1,7 @@
 package a06;
 
+import javax.swing.JButton;
+
 public class TestMain {
 
     /**
@@ -8,6 +10,12 @@ public class TestMain {
     public static void main(String[] args) {
         ElevatorControl eC = new ElevatorControl();
         ShowInFrame.show("Elevator GUI", eC.getView());
+        for (JButton jB : eC.getView().getjButtonArraY()){
+            System.out.println(jB.getName() + " Y Koordinate: " + jB.getBounds().y);
+            System.out.println(jB.getName() + " Height: " + jB.getBounds().height);
+            
+        }
+        
 //        ElevatorView.main(args);
         
 //        ElevatorModel el = new ElevatorModel("Elevator 1");

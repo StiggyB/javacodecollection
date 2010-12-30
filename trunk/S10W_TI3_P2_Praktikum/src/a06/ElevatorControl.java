@@ -52,13 +52,9 @@ public class ElevatorControl {
                 }else {
                     model.start();
                 }//else
-                try {
-                    view.increaseElevatorFloor(1);
-                }catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+                view.move(1, 0);
+            }//if
+            
             if (source.getText().contains("First  floor")) {
                 JOptionPane
                         .showMessageDialog(null, "Called First floor", "Caller Message", JOptionPane.WARNING_MESSAGE);
@@ -67,6 +63,7 @@ public class ElevatorControl {
                 }else {
                     model.start();
                 }//else
+                view.move(1, 1);
             }//if
             if (source.getText().contains("Second floor")) {
                 JOptionPane.showMessageDialog(null, "Called Second floor", "Caller Message",
