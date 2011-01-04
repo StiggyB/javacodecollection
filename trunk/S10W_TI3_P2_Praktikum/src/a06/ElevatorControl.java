@@ -5,22 +5,33 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 /**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 06<br>
  * 
- * http://blog.bigbasti.com/tutorial-model-view-controller-mvc-struktur-in-java-
+ * Version: V1<br>
+ * Aenderungen:
+ * 
+ * Quellen: API, http://blog.bigbasti.com/tutorial-model-view-controller-mvc-struktur-in-java-
  * projekten-nutzen/
  * 
+ * <br><br><b>Description:</b> <br>This class represents the controller in MVC-Pattern<br>
+ * The Controller holds each model and each view which are used. It initializes the GUI (view) and the elevators (models),
+ * adds the ActionListeners and starts the elevator threads.
+ *  
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br><br>
+ * 
  */
+
 public class ElevatorControl extends Thread {
 
     private ElevatorModel elevator1;
     private ElevatorModel elevator2;
     private ElevatorView view;
 
-    public ElevatorView getView() {
-        return view;
-    }
-
-    // Constructor
+    /**
+     * @see ElevatorControl Class discription
+     */
     public ElevatorControl() {
         this.view = new ElevatorView();
         this.elevator1 = new ElevatorModel("Elevator 1", view);
@@ -30,19 +41,31 @@ public class ElevatorControl extends Thread {
         elevator2.start();
     }// ElevatorControl
 
+    /**
+     * Initializes a new CallButtonActionListener
+     * @return ActionListener: CallButtonActionListener
+     */
     public ActionListener getCallButtonActionListener() {
         ActionListener aL = new CallButtonActionListener();
         return aL;
     }// getCallButtonActionListener
 
+    /**
+     * Sets the CallButtonActionListener of the view and registers them in the view.
+     */
     private void addListener() {
         view.setCallButtonActionListener(new CallButtonActionListener());
         view.registerButtonActionListener();
 
     }// addListener
 
-    private class CallButtonActionListener implements ActionListener { // Innere/Element
-        // Klasse
+    /**
+     * Inner class for CallButtonActionListener.<br>
+     * Handles the events when a button is pressed.
+     * 
+     *
+     */
+    private class CallButtonActionListener implements ActionListener { 
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
             if (source.getText().contains("Ground floor")) {
@@ -66,21 +89,25 @@ public class ElevatorControl extends Thread {
                 } else if (source.getName().contains("Elevator 2")) {
                     elevator2.callElevator(2);
                 }// else
-            }
+            }//if
             if (source.getText().contains("Thrid  floor")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.callElevator(3);
                 } else if (source.getName().contains("Elevator 2")) {
                     elevator2.callElevator(3);
                 }// else
-            }
+            }//if
             if (source.getText().contains("Fourth floor")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.callElevator(4);
                 } else if (source.getName().contains("Elevator 2")) {
                     elevator2.callElevator(4);
                 }// else
-            }
+            }//if
         }// actionPerformed
     }// CallButtonActionListener
+ 
+    public ElevatorView getView() {
+        return view;
+    }//getView
 }// ElevatorControl

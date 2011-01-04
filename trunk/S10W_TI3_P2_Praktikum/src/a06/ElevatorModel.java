@@ -4,6 +4,23 @@ import java.awt.Color;
 
 import a05.RingBuffer;
 
+/**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 06<br>
+ * 
+ * Version: V1<br>
+ * Aenderungen:
+ * 
+ * Quellen: API 
+ * 
+ * <br><br><b>Description:</b> <br>This class represents the ElevatorModel or the (data-)model in MVC-Pattern.<br>
+ * 
+ *  
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br><br>
+ * 
+ */
+
 public class ElevatorModel extends Thread {
 
     private int actualFloor;
@@ -102,7 +119,7 @@ public class ElevatorModel extends Thread {
     }// move
 
     /**
-     * moves the elevators label to specified direction
+     * Moves the elevators label to specified direction
      * @param direction int: up = 1, down = 0;
      * @throws InterruptedException
      */
@@ -181,5 +198,4 @@ public class ElevatorModel extends Thread {
     public boolean isDoorOpen() {
         return doorOpen;
     }//isDoorOpen
-    
 }//ElevatorModel

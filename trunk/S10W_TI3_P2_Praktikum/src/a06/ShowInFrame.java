@@ -2,7 +2,7 @@ package a06;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 01<br>
+ * Aufgaben-Nr.: 06<br>
  * 
  * Version: V1<br>
  * Aenderungen:
@@ -40,13 +40,12 @@ public class ShowInFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		JFrame frame = new JFrame(title);
 		frame.add(c);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
+		frame.setSize(new Dimension(800, 600));
 		frame.pack();
-		frame.setSize(new Dimension(1024, 768));
 	}
 }
