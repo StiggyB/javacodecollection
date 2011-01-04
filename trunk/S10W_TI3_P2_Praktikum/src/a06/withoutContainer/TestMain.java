@@ -1,4 +1,4 @@
-package a06;
+package a06.withoutContainer;
 
 public class TestMain {
 
