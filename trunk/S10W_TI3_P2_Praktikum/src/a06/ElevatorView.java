@@ -16,13 +16,11 @@ public class ElevatorView extends JPanel {
      * 
      */
     private static final long serialVersionUID = 1L;
-    // private ElevatorModel eM1, eM2;
-    // private JLabel eJL1, eJL2;
-    private JPanel callArea/*, controlArea*/, callArea2, viewArea, mainArea;
+    private JPanel callArea, callArea2, viewArea, mainArea;
     private List<ElevatorLabel> labelList = new ArrayList<ElevatorLabel>();
     private JButton[] jButtonArraY = new JButton[10];
 
-    private ActionListener cBaL/*, kDOaL*/;
+    private ActionListener cBaL;
 
     // Constructor
     ElevatorView() {
@@ -32,7 +30,6 @@ public class ElevatorView extends JPanel {
         this.setPreferredSize(new Dimension(1024, 768));
 
         createCallArea();
-//        createControlArea();
         createViewArea();
         createMainArea();
         this.add(mainArea);
@@ -41,11 +38,9 @@ public class ElevatorView extends JPanel {
 
     private void createMainArea() {// Border Layout
         mainArea = new JPanel(new BorderLayout());
-//        mainArea.add(controlArea, BorderLayout.NORTH);
         mainArea.add(viewArea, BorderLayout.CENTER);
         mainArea.add(callArea, BorderLayout.WEST);
         mainArea.add(callArea2, BorderLayout.EAST);
-        
 
     }
 
@@ -63,16 +58,7 @@ public class ElevatorView extends JPanel {
         }// for
     }
 
-    // private void createControlArea() {// Box Layout hor
-    // controlArea = new JPanel();
-    // controlArea.setLayout(new BoxLayout(controlArea, BoxLayout.X_AXIS));
-    // controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""),
-    // BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-    //
-    // addArrayControlButtonsToPanel(controlArea);
-    // }// createControlArea
-
-    private void createCallArea() { // Grid Layout ver
+    private void createCallArea() { // Grid Layout vert
         callArea = new JPanel();
         callArea2 = new JPanel();
         callArea.setLayout(new GridLayout(5, 1, 5, 5));
@@ -82,7 +68,7 @@ public class ElevatorView extends JPanel {
 
         addArrayCallButtonsToPanel(callArea);
         addArrayCallButtonsToPanel(callArea2);
-        
+
     }// createCallArea
 
     private void addOneButtonToButtonArray(String text, JPanel pane, int index, int i) {
@@ -91,7 +77,6 @@ public class ElevatorView extends JPanel {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         jButtonArraY[index] = button;
         if (jButtonArraY[index] != null) {
-            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArraY[index].getText() + " successfull!");
             pane.add(jButtonArraY[index]);
         } else {
             System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArraY[index].getText() + " failed!");
@@ -99,35 +84,25 @@ public class ElevatorView extends JPanel {
     }// addOneButtonToButtonArray
 
     private void addArrayCallButtonsToPanel(JPanel pane) {
-        if(pane == callArea){
+        if (pane == callArea) {
             addOneButtonToButtonArray("Fourth floor", pane, 4, 1);
             addOneButtonToButtonArray("Thrid  floor", pane, 3, 1);
             addOneButtonToButtonArray("Second floor", pane, 2, 1);
             addOneButtonToButtonArray("First  floor", pane, 1, 1);
             addOneButtonToButtonArray("Ground floor", pane, 0, 1);
-        }else if (pane == callArea2){            
+        } else if (pane == callArea2) {
             addOneButtonToButtonArray("Fourth floor", pane, 9, 2);
             addOneButtonToButtonArray("Thrid  floor", pane, 8, 2);
             addOneButtonToButtonArray("Second floor", pane, 7, 2);
             addOneButtonToButtonArray("First  floor", pane, 6, 2);
             addOneButtonToButtonArray("Ground floor", pane, 5, 2);
-        }//else
+        }// else
     }// addArrayCallButtonsToPanel
 
-    // private void addArrayControlButtonsToPanel(JPanel pane) {
-    // addOneButtonToButtonArray("< >", pane, 5, 1);
-    // addOneButtonToButtonArray("< >", pane, 6, 2);
-    // }// addArrayCallButtonsToPanel
-
     private void registerButtonActionListeners(JButton button) {
-        System.out.println(button.getName() + button.getText());
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
-            System.out.println("ActionListener cBaL added for button: " + button.getText());
         }// if
-        // if (button.getText().contains("< >")) {
-        // button.addActionListener(kDOaL);
-        // }// if
     }// registerButtonActionListeners
 
     public void registerButtonActionListener() {
@@ -138,13 +113,7 @@ public class ElevatorView extends JPanel {
 
     public void setCallButtonActionListener(ActionListener aL) {
         this.cBaL = aL;
-        System.out.println("CallButtonActionListener set up complete!");
     }// setCallButtonActionListener
-
-    // public void setKeepDoorsOpenActionListener(ActionListener aL) {
-    // this.kDOaL = aL;
-    // System.out.println("KeepDoorsOpenActionListener set up complete!");
-    // }// setKeepDoorsOpenActionListener
 
     public void updateElevatorLabel(ElevatorLabel eL) {
         for (ElevatorLabel eL2 : labelList) {
