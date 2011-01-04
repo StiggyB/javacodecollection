@@ -2,8 +2,6 @@ package a06;
 
 import java.awt.Color;
 
-import a05.RingBuffer;
-
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
