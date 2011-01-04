@@ -138,17 +138,11 @@ public class ElevatorView extends JPanel {
 
     
     
-    public void move(int elevator, int destination){
-        for (ElevatorLabel eL : labelList) {
-            System.out.println(eL.getName() + " == Elevator " + elevator + " ?");
-            if(eL.getName().equals("Elevator "+elevator)){
-                System.out.println("Moving Elevator " + elevator + " to Floor " + destination);
-                try {
-                    eL.move(destination);
-                }catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }//catch
+    public void updateElevatorLabel(ElevatorLabel eL){
+        for (ElevatorLabel eL2 : labelList) {
+            if(eL.equals(eL2)){
+                eL2.setBounds(eL.getBounds());
+                eL2.repaint();
             }//if
                 
         }//for

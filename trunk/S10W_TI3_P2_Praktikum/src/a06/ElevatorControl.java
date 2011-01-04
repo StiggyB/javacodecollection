@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
  * http://blog.bigbasti.com/tutorial-model-view-controller-mvc-struktur-in-java-projekten-nutzen/
  * 
  */
-public class ElevatorControl {
+public class ElevatorControl extends Thread {
 
-    private ElevatorModel model;
+    private ElevatorModel elevator1;
     private ElevatorView view;
 
     public ElevatorView getView() {
@@ -22,9 +22,14 @@ public class ElevatorControl {
 
     //Constructor
     public ElevatorControl() {
-        this.model = new ElevatorModel("Elevator 1");
+        
         this.view = new ElevatorView();
+     
+        this.elevator1 = new ElevatorModel("Elevator 1", view);
         addListener();
+//        elevator1.start();
+        elevator1.start();
+        System.out.println("Elevator Thread is alive: " + elevator1.isAlive());
 
     }//ElevatorControl
 
@@ -47,23 +52,25 @@ public class ElevatorControl {
             if (source.getText().contains("Ground floor")) {
                 JOptionPane.showMessageDialog(null, "Called Ground floor", "Caller Message",
                         JOptionPane.WARNING_MESSAGE);
-                model.callElevator(0);
-                if (model.isAlive()) {
-                }else {
-                    model.start();
-                }//else
-                view.move(1, 0);
+                elevator1.callElevator(0);
+//                if (elevator1.isAlive()) {
+//                }else {
+//                    elevator1.start();
+//                }//else
+//                view.move(1, 0);
+//                System.out.println("Elevator 1 is alive "+elevator1.isInterrupted());
             }//if
             
             if (source.getText().contains("First  floor")) {
                 JOptionPane
                         .showMessageDialog(null, "Called First floor", "Caller Message", JOptionPane.WARNING_MESSAGE);
-                model.callElevator(1);
-                if (model.isAlive()) {
-                }else {
-                    model.start();
-                }//else
-                view.move(1, 1);
+                elevator1.callElevator(1);
+//                if (elevator1.isAlive()) {
+//                }else {
+//                    elevator1.start();
+//                }//else
+//                view.move(1, 1);
+//                System.out.println("Elevator 1 is alive "+elevator1.isInterrupted());
             }//if
             if (source.getText().contains("Second floor")) {
                 JOptionPane.showMessageDialog(null, "Called Second floor", "Caller Message",

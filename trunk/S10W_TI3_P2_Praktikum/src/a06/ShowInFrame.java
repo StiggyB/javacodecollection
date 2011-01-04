@@ -40,6 +40,7 @@ public class ShowInFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		JFrame frame = new JFrame(title);
 		frame.add(c);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
