@@ -9,7 +9,6 @@ package a06;
  * Aenderungen:
  * 
  * Quellen:
- * projekten-nutzen/
  * 
  * <br><br><b>Description:</b> <br>This class defines some constants.
  *  
