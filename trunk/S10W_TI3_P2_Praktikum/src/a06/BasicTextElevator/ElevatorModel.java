@@ -1,4 +1,4 @@
-package a06BasicTextElevator;
+package a06.BasicTextElevator;
 
 public class ElevatorModel {
 

@@ -1,4 +1,4 @@
-package a06BasicTextThreads;
+package a06.BasicTextThreads;
 
 public class ElevatorModel extends Thread{
 
