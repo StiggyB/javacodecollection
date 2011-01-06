@@ -35,11 +35,9 @@ public class ElevatorLabel extends JLabel {
         switch (elevator) {
             case 1:
                 this.x = 0;
-                this.setName("Elevator 1");
                 break;
             case 2:
                 this.x = 700;
-                this.setName("Elevator 2");
                 break;
             default:
                 System.out.println("Elevator Number not supported! Only Values from 1-2!");

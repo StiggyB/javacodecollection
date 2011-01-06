@@ -1,10 +1,13 @@
 package a07;
 
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +42,13 @@ public class ElevatorView extends JPanel {
     private JCheckBox[] jCheckBoxArray = new JCheckBox[Constants.ELEVATORNO];
     private ActionListener cBaL, cBBaL;
     private MouseListener kDOmL;
+    private KeyListener eGkL;
 
     /**
      * Constructor to create the other JPanel Areas
      */
-    ElevatorView(ElevatorGuy eG) {
-        createCallArea();
-        createControlArea();
-        createViewArea(eG);
-        createMainArea();
-        this.add(mainArea);
+    ElevatorView() {
+//        initElevatorView();
     }// ElevatorView
 
     /**
@@ -70,7 +70,7 @@ public class ElevatorView extends JPanel {
      * Creates the viewArea panel with nullLayout and sets its size and border.<br>
      * Also creates and adds the ElevatorLabels to the panel.
      */
-    private void createViewArea(ElevatorGuy eG) {
+    private void createViewArea() {
         viewArea = new JPanel();
         viewArea.setLayout(null);
         viewArea.setPreferredSize(new Dimension(800, 600));
@@ -79,15 +79,16 @@ public class ElevatorView extends JPanel {
         elevatorLabelList.add(new ElevatorLabel(1));
         elevatorLabelList.add(new ElevatorLabel(2));
         
-        guyLabelList.add(eG);
-        
         for (ElevatorLabel eL : elevatorLabelList) {
             viewArea.add(eL);
         }// for
-        
+        System.out.println("guyLabelList is Empty: "+guyLabelList.isEmpty());
         for (ElevatorGuy eGuy : guyLabelList) {
+            System.out.println("Adding eG "+ eGuy.getName() + eGuy);
             viewArea.add(eGuy);
+            eGuy.repaint();
         }// for
+        
     }//createViewArea
     
     private void createControlArea() {
@@ -116,6 +117,14 @@ public class ElevatorView extends JPanel {
         addCallButtonsToPanel(callArea2);
     }// createCallArea
 
+    public void initElevatorView(){
+        createCallArea();
+        createControlArea();
+        createViewArea();
+        createMainArea();
+        this.add(mainArea);
+    }
+    
     /**
      * Adds one button to the JButtonArray and adds them to the specified panel.
      * 
@@ -205,6 +214,12 @@ public class ElevatorView extends JPanel {
         }// for
     }// registerButtonActionListener
     
+    public void registerElevatorGuyKeyListener() {
+        this.mainArea.setFocusable(true);
+        this.mainArea.addKeyListener(eGkL);
+//        System.out.println("viewAreaKL init: "+viewArea.getKeyListeners());
+    }// registerButtonActionListener
+    
     /**
      * Sets the callButtons actionListener
      * @param aL ActionListener for the callButtons
@@ -220,6 +235,15 @@ public class ElevatorView extends JPanel {
     public void setKeepDoorsOpenMouseListener(MouseListener mL) {
         this.kDOmL = mL;
     }// setCallButtonActionListener
+    
+    public void setElevatorGuyListener(KeyListener kL) {
+        this.eGkL = kL;
+    }// setCallButtonActionListener
+    
+//    public void initElevatorGuy(){
+//        
+//    }
+    
 
     /**
      * Updates the ElevatorLabels
@@ -233,6 +257,19 @@ public class ElevatorView extends JPanel {
             }// if
         }// for
     }//updateElevatorLabel
+    
+    public void updateElevatorGuy(ElevatorGuy eG) {
+        System.out.println("Called updateElevatorGuy");
+        for (ElevatorGuy eG2 : guyLabelList) {
+            if (eG.equals(eG2)) {
+                eG2.setBounds(eG.getBounds());
+                eG2.repaint();
+                eG2.paint(eG2.getGraphics());
+                System.out.println("Repaint " + eG2.getName());
+                System.out.println("to " + eG2.getBounds());
+            }// if
+        }// for
+    }//updateElevatorLabel
 
     public void setLabelList(List<ElevatorLabel> labelList) {
         this.elevatorLabelList = labelList;
@@ -241,4 +278,13 @@ public class ElevatorView extends JPanel {
     public List<ElevatorLabel> getLabelList() {
         return elevatorLabelList;
     }//getLabelList
+    
+    public void setElevatorGuy(ElevatorGuy eG) {
+        if (eG != null){
+            System.out.println("Adding eG to LabelList in setElevatorGuy");
+            System.out.println("eG: " + eG);
+            System.out.println("Added "+eG.getName()+" to LabelList");
+        }
+        this.guyLabelList.add(eG);
+    }// setCallButtonActionListener
 }//ElevatorView

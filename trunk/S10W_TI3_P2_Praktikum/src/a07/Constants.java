@@ -25,4 +25,5 @@ public class Constants {
     static final int SECONDFLOORYPOS = 247;
     static final int THIRDFLOORYPOS = 133;
     static final int FOURTHFLOORYPOS = 18;  
+    static final int GUYMOVESPEED = 100;  
 }//Constants

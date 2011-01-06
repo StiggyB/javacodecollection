@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox.KeySelectionManager;
 
 /**
  * Praktikum: P2P<br>
@@ -54,11 +53,18 @@ public class ElevatorControl extends Thread {
     public ElevatorControl() {
         this.threadPool = new ThreadPoolExecutor(poolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, queue);
         this.guy1 = new ElevatorGuy(Constants.GROUNDFLOORYPOS);
-        this.view = new ElevatorView(guy1);
+        this.view = new ElevatorView();
+        this.view.setElevatorGuy(this.guy1);
+        this.view.initElevatorView();
+//        this.view.initElevatorGuy();
+        this.guy1.setView(view);
+        System.out.println("guys view: " + guy1.getView());
+        System.out.println("this view: " + view);
+        
         this.elevator1 = new ElevatorModel("Elevator 1", view);
         this.elevator2 = new ElevatorModel("Elevator 2", view);
-
         addListener();
+
         // elevator1.start();
         // elevator2.start();
         threadPool.submit(elevator1);
@@ -83,8 +89,10 @@ public class ElevatorControl extends Thread {
         view.setCallButtonActionListener(new CallButtonActionListener());
         view.setCheckBoxButtonActionListener(new CheckBoxButtonActionListener());
         view.setKeepDoorsOpenMouseListener(new KeepDoorsOpenButtonActionListener());
+        view.setElevatorGuyListener(new ElevatorGuyKeyListener());
         view.registerButtonActionListener();
         view.registerCheckBoxButtonActionListener();
+        view.registerElevatorGuyKeyListener();
 
     }// addListener
 
@@ -212,19 +220,32 @@ public class ElevatorControl extends Thread {
         //mainPanel bekommt keylistener
         @Override
         public void keyPressed(KeyEvent kE) {
-            // TODO Auto-generated method stub
-            ElevatorGuy source = (ElevatorGuy) kE.getSource();
-            if (kE.getKeyCode() == KeyEvent.VK_KP_LEFT) {
-                source.move = true;
-            }
+            if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
+                guy1.move = true;
+//                guy1.setIcon(guy1.getLeftGuy());
+                guy1.direction = 0;
+            }//if
+            if (kE.getKeyCode() == KeyEvent.VK_RIGHT) {
+                guy1.move = true;
+//                guy1.setIcon(guy1.getRightGuy());
+                guy1.direction = 1;
+            }//if
 
-        }
+        }//keyPressed
 
         @Override
         public void keyReleased(KeyEvent kE) {
-            // TODO Auto-generated method stub
-
-        }
+            if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
+                guy1.move = false;
+                guy1.setIcon(guy1.getNormalGuy());
+                guy1.direction = -1;
+            }//if
+            if (kE.getKeyCode() == KeyEvent.VK_RIGHT) {
+                guy1.move = false;
+                guy1.setIcon(guy1.getNormalGuy());
+                guy1.direction = -1;
+            }//if
+        }//keyReleased
 
         @Override
         public void keyTyped(KeyEvent kE) {

@@ -34,7 +34,7 @@ public class ElevatorModel extends Thread {
     private boolean work = true;
     private ElevatorLabel eL;
     private RingBuffer<Integer> targets;
-    private int passengers = 0;  //increase decrease bedingung mit ElevatorGuy Control?
+//    private int passengers = 0;  //increase decrease bedingung mit ElevatorGuy Control?
 
     /**
      * 
