@@ -18,9 +18,10 @@ import javax.swing.JLabel;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br><br>
  * 
  */
+@SuppressWarnings("serial")
 public class ElevatorLabel extends JLabel {
     
-    private static final long serialVersionUID = 1L;
+
     private int x;
     private int y;
     private int boundX;
@@ -37,14 +38,14 @@ public class ElevatorLabel extends JLabel {
                 this.setName("Elevator 1");
                 break;
             case 2:
-                this.x = 125;
+                this.x = 700;
                 this.setName("Elevator 2");
                 break;
             default:
                 System.out.println("Elevator Number not supported! Only Values from 1-2!");
                 break;
         }// switch
-        this.y = Constants.GROUNDFLOORXPOS;
+        this.y = Constants.GROUNDFLOORYPOS;
         this.boundX = 100;
         this.boundY = 100;
         this.setBounds(this.x, this.y, this.boundX, this.boundY);

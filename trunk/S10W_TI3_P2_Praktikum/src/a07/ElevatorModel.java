@@ -10,12 +10,16 @@ import java.awt.Color;
  * Version: V1<br>
  * Aenderungen:
  * 
- * Quellen: API 
+ * Quellen: API
  * 
- * <br><br><b>Description:</b> <br>This class represents the ElevatorModel or the (data-)model in MVC-Pattern.<br>
+ * <br>
+ * <br>
+ * <b>Description:</b> <br>
+ * This class represents the ElevatorModel or the (data-)model in MVC-Pattern.<br>
  * 
- *  
- * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br><br>
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ * <br>
  * 
  */
 
@@ -23,17 +27,21 @@ public class ElevatorModel extends Thread {
 
     private int actualFloor;
     private boolean doorOpen;
+    private boolean keepDoorsOpen;
     private String elevatorInfo;
     private ElevatorView view;
-    private boolean priorityDrive = false; 
+    private boolean priorityDrive = false;
     private boolean work = true;
     private ElevatorLabel eL;
     private RingBuffer<Integer> targets;
-    
+    private int passengers = 0;  //increase decrease bedingung mit ElevatorGuy Control?
+
     /**
      * 
-     * @param info String: Elevator Name
-     * @param view ElevatorView: GUI
+     * @param info
+     *            String: Elevator Name
+     * @param view
+     *            ElevatorView: GUI
      */
     // Constructor
     public ElevatorModel(String info, ElevatorView view) {
@@ -41,99 +49,147 @@ public class ElevatorModel extends Thread {
         // list
         this.view = view;
         this.actualFloor = 0; // GroundFloor
-        this.doorOpen =true;
+        this.doorOpen = true;
+        this.keepDoorsOpen = false;
         this.elevatorInfo = info;
     }// ElevatorModel
 
     /**
      * call Elevator to a specific floor
-     * @param floor int: number of floor 
+     * 
+     * @param floor
+     *            int: number of floor
      */
     public void callElevator(int floor) {
         System.out.println("Elevator called!");
-        if (floor < 5) {
-            if(priorityDrive){
-                for(;targets.isEmpty();){ //Delete Queue
-                    this.targets.dequeue();
-                }//for
+        if (floor < Constants.FLOORNO) {
+            if (this.priorityDrive) {
+                if (!this.targets.isEmpty()) {
+                    for (; !this.targets.isEmpty();) { // Delete queue
+                        System.out.println("Deleting queue target: " + this.targets.peek());
+                        this.targets.dequeue();
+                    }// for
+                }// if
                 this.targets.enqueue(floor);
-            }else{
+                System.out.println("Enqeued target: " + this.targets.peek());
+            } else if(!this.targets.isFull()){
                 this.targets.enqueue(floor);                
-            }//else
+            }// else
         } else {
             System.out.println(this.elevatorInfo + "'s floor does not exist!");
-        }//else
+        }// else
     }// callElevator
 
     /**
      * Elevators move() to move the elevator to the target from targetList
+     * 
      * @throws InterruptedException
      */
     public void move() throws InterruptedException {
-        // System.out.println("In Move!");
-        // System.out.println("Work: " + work);
+        boolean priorityFired = false;
         while (work) {
-            if (!targets.isEmpty()){
+            if (!targets.isEmpty()) {
                 int target = targets.peek();
-                if (target == this.actualFloor) { // if selected floor
-                    // equals actualFloor
-                    targets.dequeue(); //remove target from targetList
-                } else { // check if selected floor is smaller than
-                    // actualFloor
+                if (target == this.actualFloor) { // if selected floor equals actualFloor
+                    targets.dequeue(); // remove target from targetList
+                } else {
+                    // check if selected floor is smaller than actualFloor
                     if (target < this.actualFloor) {
-                        this.setDoorOpen(false);
-                        eL.setBackground(Color.RED);
-                        System.out.println(this.elevatorInfo + " Door closed.");
-                        Thread.sleep(500);
-                        System.out.println(this.elevatorInfo + " Moving from Floor " + this.actualFloor + " to Floor " + target);
+                        if (this.doorOpen) {
+                            this.doorOpen = false;
+                            eL.setBackground(Color.RED);
+                            System.out.println(this.elevatorInfo + " Door closed.");
+                            Thread.sleep(500);
+                            System.out.println(this.elevatorInfo + " Moving from Floor " + this.actualFloor + " to Floor " + target);
+                        }// if
+                        if (priorityFired) {
+                            System.out.println(this.elevatorInfo + " moving on to Floor " + target);
+                        }// if
                         for (; target != this.actualFloor;) {
-                            this.actualFloor --;
+                            this.actualFloor--;
                             moveLabel(0);
                             System.out.println(this.elevatorInfo + " now on Floor " + this.actualFloor);
-                        }//for
-                        targets.dequeue(); // if elevator has reached selected
-                        // floor remove target from targetList
-                        System.out.println(this.elevatorInfo + " has reached destination Floor " + this.actualFloor);
-                        this.setDoorOpen(true);
-                        eL.setBackground(Color.GREEN);
-                        System.out.println(this.elevatorInfo + " Door opened.");
-                        Thread.sleep(1000);
+                        }// for
+                        // if elevator has reached selected floor and target is still the actual target
+                        if (targets.peek() == target) {
+                            targets.dequeue();// remove target from targetList
+                            System.out.println(this.elevatorInfo + " has reached destination Floor " + this.actualFloor);
+                            this.doorOpen = true;
+                            eL.setBackground(Color.GREEN);
+                            System.out.println(this.elevatorInfo + " Door opened.");
+                            if (this.keepDoorsOpen) {
+                                keepDoorsOpen();
+                            } else {
+                                Thread.sleep(1000);
+                            }// else
+                            priorityFired = false;
+                        } else {
+                            priorityFired = true;
+                        }// else
                     } else {
-                        this.setDoorOpen(false);
-                        eL.setBackground(Color.RED);
-                        System.out.println(this.elevatorInfo + " Door closed.");
-                        Thread.sleep(500);
-                        System.out.println(this.elevatorInfo + " Moving from Floor " + this.actualFloor + " to Floor " + target);
+                        if (doorOpen) {
+                            this.doorOpen = false;
+                            eL.setBackground(Color.RED);
+                            System.out.println(this.elevatorInfo + " Door closed.");
+                            Thread.sleep(500);
+                            System.out.println(this.elevatorInfo + " Moving from Floor " + this.actualFloor + " to Floor " + target);
+                        }// if
+                        if (priorityFired) {
+                            System.out.println(this.elevatorInfo + " moving on to Floor " + target);
+                        }// if
                         for (; target != this.actualFloor;) {
                             actualFloor++;
                             moveLabel(1);
                             System.out.println(this.elevatorInfo + " now on Floor " + this.actualFloor);
-                        }//for
-                        targets.dequeue(); // if elevator has reached selected floor
-                        System.out.println(this.elevatorInfo + " has reached destination Floor " + this.actualFloor);
-                        this.setDoorOpen(true);
-                        eL.setBackground(Color.GREEN);
-                        System.out.println(this.elevatorInfo + " Door opened.");
-                        Thread.sleep(1000);
+                        }// for
+                        // if elevator has reached selected floor and target is still the actual target
+                        if (targets.peek() == target) {
+                            targets.dequeue(); // remove target from targetList
+                            System.out.println(this.elevatorInfo + " has reached destination Floor " + this.actualFloor);
+                            this.doorOpen = true;
+                            eL.setBackground(Color.GREEN);
+                            System.out.println(this.elevatorInfo + " Door opened.");
+                            if (this.keepDoorsOpen) {
+                                keepDoorsOpen();
+                            } else {
+                                Thread.sleep(1000);
+                            }// else
+                            priorityFired = false;
+                        } else {
+                            priorityFired = true;
+                        }
                     }// else
                 }// else
-            }else {
+            } else {
                 work = false;
-            }//else
-//            System.out.println("Boolean work = " + work);
+            }// else
         }// while
     }// move
 
     /**
+     * @throws InterruptedException
+     */
+    private void keepDoorsOpen() throws InterruptedException {
+        System.out.printf("Keeping Doors Open");
+        int counter = 0;
+        while (this.keepDoorsOpen && counter < Constants.MAXKEEPDOORSOPENTIME) {
+            counter += 500;
+            System.out.printf(".");
+            Thread.sleep(500);
+        }// while
+        System.out.printf("\n");
+    }// keepDoorsOpen
+
+    /**
      * Moves the elevators label to specified direction
-     * @param direction int: up = 1, down = 0;
+     * 
+     * @param direction
+     *            int: up = 1, down = 0;
      * @throws InterruptedException
      */
     private void moveLabel(int direction) throws InterruptedException {
         // Down
-        // System.out.println("In MoveLabel!");
         if (direction == 0) {
-//            System.out.println("Down Schleife!");
             for (int i = 0; i < 115; i++) {
                 eL.setY(eL.getY() + 1);
                 eL.setBounds(eL.getX(), eL.getY(), eL.getBoundX(), eL.getBoundY());
@@ -143,7 +199,6 @@ public class ElevatorModel extends Thread {
         }// if
         // Up
         if (direction == 1) {
-//            System.out.println("Up Schleife!");
             for (int i = 0; i < 115; i++) {
                 eL.setY(eL.getY() - 1);
                 eL.setBounds(eL.getX(), eL.getY(), eL.getBoundX(), eL.getBoundY());
@@ -154,27 +209,25 @@ public class ElevatorModel extends Thread {
     }// moveLabel
 
     /**
-     * Threads run() looks if there are targets in targetList and resolves the belonging ElevatorLabel.<br> 
+     * Threads run() looks if there are targets in targetList and resolves the belonging ElevatorLabel.<br>
      * while (true) {<br>
      * If there are targets in the targetList the thread calls move()<br>
-     * Otherwise it makes a Sleep(200) and checks for targets in targetList.
-     * If there are targets it sets the boolean work to true.<br>
+     * Otherwise it makes a Sleep(200) and checks for targets in targetList. If there are targets it sets the boolean
+     * work to true.<br>
      * }
      */
     public void run() {
         System.out.println(Thread.currentThread().getName() + " Started!");
-        if(!targets.isEmpty()){
-            work = true;            
-        }//if
+        if (!targets.isEmpty()) {
+            work = true;
+        }// if
         for (ElevatorLabel eL : view.getLabelList()) {
             if (eL.getName().equals(this.elevatorInfo)) {
-//                System.out.println("In run(): Found Elevator. Setting this.eL = eL");
                 this.eL = eL;
                 break;
             }// if
         }// for
         while (true) {
-            // System.out.println("In run(): boolean work = " + work);
             if (work) {
                 try {
                     move();
@@ -189,19 +242,35 @@ public class ElevatorModel extends Thread {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }// catch
-                //check if there's something to do
-                if(!targets.isEmpty()){
-                    work = true;            
-                }//if
+                // check if there's something to do
+                if (!targets.isEmpty()) {
+                    work = true;
+                }// if
             }// else
         }// while
-    }//run
+    }// run
 
     public void setDoorOpen(boolean doorOpen) {
         this.doorOpen = doorOpen;
-    }//setDoorOpen
+    }// setDoorOpen
 
     public boolean isDoorOpen() {
         return doorOpen;
-    }//isDoorOpen
-}//ElevatorModel
+    }// isDoorOpen
+
+    public boolean isPriorityDrive() {
+        return priorityDrive;
+    }//isPriorityDrive
+
+    public void setPriorityDrive(boolean priorityDrive) {
+        this.priorityDrive = priorityDrive;
+    }//setPriorityDrive
+
+    public boolean isKeepDoorsOpen() {
+        return keepDoorsOpen;
+    }//isKeepDoorsOpen
+
+    public void setKeepDoorsOpen(boolean keepDoorsOpen) {
+        this.keepDoorsOpen = keepDoorsOpen;
+    }//setKeepDoorsOpen
+}// ElevatorModel

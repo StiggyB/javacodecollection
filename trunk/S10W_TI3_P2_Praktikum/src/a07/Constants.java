@@ -19,9 +19,10 @@ package a07;
 public class Constants {
     static final int FLOORNO = 5;
     static final int ELEVATORNO = 2;
-    static final int GROUNDFLOORXPOS = 475;
-    static final int FIRSTFLOORXPOS = 360;
-    static final int SECONDFLOORXPOS = 247;
-    static final int THIRDFLOORXPOS = 133;
-    static final int FOURTHFLOOR = 18;  
+    static final int MAXKEEPDOORSOPENTIME = 5000;    
+    static final int GROUNDFLOORYPOS = 475;
+    static final int FIRSTFLOORYPOS = 360;
+    static final int SECONDFLOORYPOS = 247;
+    static final int THIRDFLOORYPOS = 133;
+    static final int FOURTHFLOORYPOS = 18;  
 }//Constants
