@@ -43,7 +43,7 @@ public class ElevatorView extends JPanel {
     private JButton[] jButtonArray = new JButton[((Constants.FLOORNO * 2) + Constants.ELEVATORNO)];
     private JCheckBox[] jCheckBoxArray = new JCheckBox[Constants.ELEVATORNO];
     private ActionListener cBaL, cBBaL;
-    private MouseListener kDOmL, eGmL;
+    private MouseListener kDOmL;
     private KeyListener eGkL;
 
     /**
@@ -255,12 +255,6 @@ public class ElevatorView extends JPanel {
     public void setElevatorGuyListener(KeyListener kL) {
         this.eGkL = kL;
     }// setCallButtonActionListener
-
-    public void setElevatorGuyMouseListener(MouseListener mL) {
-        // TODO Auto-generated method stub
-        this.eGmL = mL;
-
-    }
 
     // public void initElevatorGuy(){
     //        
