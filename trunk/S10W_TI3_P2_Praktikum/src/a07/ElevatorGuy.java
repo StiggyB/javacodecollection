@@ -42,7 +42,7 @@ public class ElevatorGuy extends JLabel implements Runnable {
         this.setIcon(icon);
 //        this.setVisible(true);
         this.setText("Hallo1111");
-        
+        this.setFocusable(true);
     }
 
     protected ImageIcon createImageIcon(String path, String description) {

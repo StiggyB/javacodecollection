@@ -73,14 +73,14 @@ public class ElevatorControl extends Thread {
 
     }// ElevatorControl
 
-    // /**
-    // * Initializes a new CallButtonActionListener
-    // * @return ActionListener: CallButtonActionListener
-    // */
-    // public ActionListener getCallButtonActionListener() {
-    // ActionListener aL = new CallButtonActionListener();
-    // return aL;
-    // }// getCallButtonActionListener
+     /**
+     * Initializes a new CallButtonActionListener
+     * @return ActionListener: CallButtonActionListener
+     */
+     public KeyListener getElevatorGuyKeyListener() {
+     KeyListener kL = new ElevatorGuyKeyListener();
+     return kL;
+     }// getCallButtonActionListener
 
     /**
      * Sets the CallButtonActionListener of the view and registers them in the view.
@@ -220,6 +220,7 @@ public class ElevatorControl extends Thread {
         //mainPanel bekommt keylistener
         @Override
         public void keyPressed(KeyEvent kE) {
+            System.out.println("Key Pressed: "+kE.getKeyChar());
             if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
                 guy1.move = true;
 //                guy1.setIcon(guy1.getLeftGuy());
@@ -252,7 +253,6 @@ public class ElevatorControl extends Thread {
             // TODO Auto-generated method stub
 
         }
-
     }
 
     public ElevatorView getView() {

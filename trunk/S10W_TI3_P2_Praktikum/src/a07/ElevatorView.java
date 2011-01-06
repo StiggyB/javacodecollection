@@ -1,6 +1,5 @@
 package a07;
 
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -23,11 +22,15 @@ import javax.swing.*;
  * 
  * Quellen: API, Swing
  * 
- * <br><br><b>Description:</b> <br>This class represents the GUI or the view in MVC-Pattern.<br>
- * Including the JPanels for the different Areas, the LabelList for the ElevatorLabels,
- * the JButton[] for the CallButtons and the ActionListener for the Buttons 
- *  
- * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br><br>
+ * <br>
+ * <br>
+ * <b>Description:</b> <br>
+ * This class represents the GUI or the view in MVC-Pattern.<br>
+ * Including the JPanels for the different Areas, the LabelList for the ElevatorLabels, the JButton[] for the
+ * CallButtons and the ActionListener for the Buttons
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ * <br>
  * 
  */
 
@@ -37,17 +40,17 @@ public class ElevatorView extends JPanel {
     private JPanel callArea, callArea2, controlArea, viewArea, mainArea;
     private List<ElevatorLabel> elevatorLabelList = new ArrayList<ElevatorLabel>();
     private List<ElevatorGuy> guyLabelList = new ArrayList<ElevatorGuy>();
-    private JButton[] jButtonArray = new JButton[((Constants.FLOORNO*2)+Constants.ELEVATORNO)];
+    private JButton[] jButtonArray = new JButton[((Constants.FLOORNO * 2) + Constants.ELEVATORNO)];
     private JCheckBox[] jCheckBoxArray = new JCheckBox[Constants.ELEVATORNO];
     private ActionListener cBaL, cBBaL;
-    private MouseListener kDOmL;
+    private MouseListener kDOmL, eGmL;
     private KeyListener eGkL;
 
     /**
      * Constructor to create the other JPanel Areas
      */
     ElevatorView() {
-//        initElevatorView();
+        // initElevatorView();
     }// ElevatorView
 
     /**
@@ -62,8 +65,8 @@ public class ElevatorView extends JPanel {
         mainArea.add(viewArea, BorderLayout.CENTER);
         mainArea.add(callArea, BorderLayout.WEST);
         mainArea.add(callArea2, BorderLayout.EAST);
-        
-    }//createMainArea
+
+    }// createMainArea
 
     /**
      * Creates the viewArea panel with nullLayout and sets its size and border.<br>
@@ -73,32 +76,34 @@ public class ElevatorView extends JPanel {
         viewArea = new JPanel();
         viewArea.setLayout(null);
         viewArea.setPreferredSize(new Dimension(800, 600));
-        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        
+        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
+
         elevatorLabelList.add(new ElevatorLabel(1));
         elevatorLabelList.add(new ElevatorLabel(2));
-        
+
         for (ElevatorLabel eL : elevatorLabelList) {
             viewArea.add(eL);
         }// for
-        System.out.println("guyLabelList is Empty: "+guyLabelList.isEmpty());
+        System.out.println("guyLabelList is Empty: " + guyLabelList.isEmpty());
         for (ElevatorGuy eGuy : guyLabelList) {
-            System.out.println("Adding eG "+ eGuy.getName() + eGuy);
+            System.out.println("Adding eG " + eGuy.getName() + eGuy);
             viewArea.add(eGuy);
             eGuy.repaint();
         }// for
-        
-    }//createViewArea
-    
+
+    }// createViewArea
+
     private void createControlArea() {
         controlArea = new JPanel();
         controlArea.setLayout(new BoxLayout(controlArea, BoxLayout.X_AXIS));
-        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
         addOneCheckBoxToCheckBoxArray("Priority Drive 1", controlArea, 0, 1);
         addOneCheckBoxToCheckBoxArray("Priority Drive 2", controlArea, 1, 2);
         addOneButtonToButtonArray("< 1 >", controlArea, 10, 1);
         addOneButtonToButtonArray("< 2 >", controlArea, 11, 2);
-    }//createControlArea
+    }// createControlArea
 
     /**
      * Creates the callAreas panels with GridLayouts (vert) and borders.<br>
@@ -108,29 +113,35 @@ public class ElevatorView extends JPanel {
         callArea = new JPanel();
         callArea2 = new JPanel();
         callArea.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
         callArea2.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
 
         addCallButtonsToPanel(callArea);
         addCallButtonsToPanel(callArea2);
     }// createCallArea
 
-    public void initElevatorView(){
+    public void initElevatorView() {
         createCallArea();
         createControlArea();
         createViewArea();
         createMainArea();
         this.add(mainArea);
     }
-    
+
     /**
      * Adds one button to the JButtonArray and adds them to the specified panel.
      * 
-     * @param text String: JButtons text
-     * @param pane JPanel: Panel to add button to
-     * @param index int: JButtonArray index number
-     * @param i int: Elevator number
+     * @param text
+     *            String: JButtons text
+     * @param pane
+     *            JPanel: Panel to add button to
+     * @param index
+     *            int: JButtonArray index number
+     * @param i
+     *            int: Elevator number
      */
     private void addOneButtonToButtonArray(String text, JPanel pane, int index, int i) {
         JButton button = new JButton(text);
@@ -139,11 +150,12 @@ public class ElevatorView extends JPanel {
         jButtonArray[index] = button;
         if (jButtonArray[index] != null) {
             pane.add(jButtonArray[index]);
-        } else {
-            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText() + " failed!");
+        }else {
+            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText()
+                    + " failed!");
         }// else
     }// addOneButtonToButtonArray
-    
+
     private void addOneCheckBoxToCheckBoxArray(String text, JPanel pane, int index, int i) {
         JCheckBox checkBox = new JCheckBox(text);
         checkBox.setName(text + " Elevator " + i);
@@ -151,15 +163,17 @@ public class ElevatorView extends JPanel {
         jCheckBoxArray[index] = checkBox;
         if (jCheckBoxArray[index] != null) {
             pane.add(jCheckBoxArray[index]);
-        } else {
-            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText() + " failed!");
+        }else {
+            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText()
+                    + " failed!");
         }// else
     }// addOneButtonToButtonArray
 
     /**
-     * Calls the addOneButtonToButtonArray for the specified buttons  
+     * Calls the addOneButtonToButtonArray for the specified buttons
      * 
-     * @param pane Panel: Panel to add callButtons to
+     * @param pane
+     *            Panel: Panel to add callButtons to
      * @see ElevatorView#addOneButtonToButtonArray addOneButtonToButtonArray
      */
     private void addCallButtonsToPanel(JPanel pane) {
@@ -169,7 +183,7 @@ public class ElevatorView extends JPanel {
             addOneButtonToButtonArray("Second floor", pane, 2, 1);
             addOneButtonToButtonArray("First  floor", pane, 1, 1);
             addOneButtonToButtonArray("Ground floor", pane, 0, 1);
-        } else if (pane == callArea2) {
+        }else if (pane == callArea2) {
             addOneButtonToButtonArray("Fourth floor", pane, 9, 2);
             addOneButtonToButtonArray("Third  floor", pane, 8, 2);
             addOneButtonToButtonArray("Second floor", pane, 7, 2);
@@ -181,24 +195,26 @@ public class ElevatorView extends JPanel {
     /**
      * Adds the listeners to the button
      * 
-     * @param button JButton: Button to addListener to
+     * @param button
+     *            JButton: Button to addListener to
      */
     private void registerButtonListener(JButton button) {
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
-        }else if (button.getText().contains("< ")&& button.getText().contains(" >")){
+        }else if (button.getText().contains("< ") && button.getText().contains(" >")) {
             button.addMouseListener(kDOmL);
         }// else
     }// registerButtonActionListeners
-    
+
     private void registerCheckBoxButtonActionListener(JCheckBox checkBox) {
         if (checkBox.getText().contains("Priority")) {
             checkBox.addActionListener(cBBaL);
-        }//if
+        }// if
     }// registerButtonActionListeners
 
     /**
      * Calls the registerButtonListener(JButton) for each button from jButtonArray[]
+     * 
      * @see ElevatorView#registerButtonListener(JButton) registerButtonActionListener
      */
     public void registerButtonActionListener() {
@@ -212,41 +228,49 @@ public class ElevatorView extends JPanel {
             registerCheckBoxButtonActionListener(jCheckBoxArray[i]);
         }// for
     }// registerButtonActionListener
-    
+
     public void registerElevatorGuyKeyListener() {
         this.mainArea.setFocusable(true);
         this.mainArea.addKeyListener(eGkL);
-//        System.out.println("viewAreaKL init: "+viewArea.getKeyListeners());
     }// registerButtonActionListener
-    
+
     /**
      * Sets the callButtons actionListener
-     * @param aL ActionListener for the callButtons
+     * 
+     * @param aL
+     *            ActionListener for the callButtons
      */
     public void setCallButtonActionListener(ActionListener aL) {
         this.cBaL = aL;
     }// setCallButtonActionListener
-    
+
     public void setCheckBoxButtonActionListener(ActionListener aL) {
         this.cBBaL = aL;
     }// setCallButtonActionListener
-    
+
     public void setKeepDoorsOpenMouseListener(MouseListener mL) {
         this.kDOmL = mL;
     }// setCallButtonActionListener
-    
+
     public void setElevatorGuyListener(KeyListener kL) {
         this.eGkL = kL;
     }// setCallButtonActionListener
-    
-//    public void initElevatorGuy(){
-//        
-//    }
-    
+
+    public void setElevatorGuyMouseListener(MouseListener mL) {
+        // TODO Auto-generated method stub
+        this.eGmL = mL;
+
+    }
+
+    // public void initElevatorGuy(){
+    //        
+    // }
 
     /**
      * Updates the ElevatorLabels
-     * @param eL ElevatorLabel to be updated
+     * 
+     * @param eL
+     *            ElevatorLabel to be updated
      */
     public void updateElevatorLabel(ElevatorLabel eL) {
         for (ElevatorLabel eL2 : elevatorLabelList) {
@@ -255,8 +279,8 @@ public class ElevatorView extends JPanel {
                 eL2.repaint();
             }// if
         }// for
-    }//updateElevatorLabel
-    
+    }// updateElevatorLabel
+
     public void updateElevatorGuy(ElevatorGuy eG) {
         System.out.println("Called updateElevatorGuy");
         for (ElevatorGuy eG2 : guyLabelList) {
@@ -268,22 +292,27 @@ public class ElevatorView extends JPanel {
                 System.out.println("to " + eG2.getBounds());
             }// if
         }// for
-    }//updateElevatorLabel
+    }// updateElevatorLabel
 
     public void setLabelList(List<ElevatorLabel> labelList) {
         this.elevatorLabelList = labelList;
-    }//setLabelList
+    }// setLabelList
 
     public List<ElevatorLabel> getLabelList() {
         return elevatorLabelList;
-    }//getLabelList
-    
+    }// getLabelList
+
     public void setElevatorGuy(ElevatorGuy eG) {
-        if (eG != null){
+        if (eG != null) {
             System.out.println("Adding eG to LabelList in setElevatorGuy");
             System.out.println("eG: " + eG);
-            System.out.println("Added "+eG.getName()+" to LabelList");
+            System.out.println("Added " + eG.getName() + " to LabelList");
         }
         this.guyLabelList.add(eG);
     }// setCallButtonActionListener
-}//ElevatorView
+
+    public KeyListener geteGkL() {
+        return eGkL;
+    }
+
+}// ElevatorView

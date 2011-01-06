@@ -12,6 +12,9 @@ package a07;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -40,7 +43,7 @@ public class ShowInFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JFrame frame = new JFrame(title);
+		final JFrame frame = new JFrame(title);
 		frame.add(c);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
