@@ -132,7 +132,7 @@ public class ElevatorView extends JPanel {
         createMainArea();
         this.add(mainArea);
         this.repaint();
-    }
+    }//initElevatorView
 
     /**
      * Adds one button to the JButtonArray and adds them to the specified panel.
