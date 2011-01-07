@@ -28,10 +28,27 @@ public class ObjectBrowser {
 	List<Method> decMeth = new ArrayList<Method>();
 	
 	private Field[] fields;
+	public Field[] getFields() {
+		return fields;
+	}
+
+	public void setFields(Field[] fields) {
+		this.fields = fields;
+	}
+
 	private Constructor<?>[] constructors;
 	private Method[] methods;
 	private Annotation[] annotations;
+	public Annotation[] getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(Annotation[] annotations) {
+		this.annotations = annotations;
+	}
+
 	private Class<?>[] classes;
+	//add Oberklassen, Name of Class, evt. Modifier 
 	
 	
 	public Object setObject(Object obj) {
@@ -67,11 +84,7 @@ public class ObjectBrowser {
 	private void chooseType(Object obj, Method met, Object testObj)
 		throws IllegalAccessException, InvocationTargetException {
 		if(testObj.getClass().getName().equals(Annotation[].class.getName())) {
-			// TODO No Annotations as return value - why ?
-//			System.out.println(met);
-//			System.out.println("TEST");
 			this.annotations = as(met.invoke(obj.getClass()), Annotation[].class);
-			printContent((Object[])this.annotations);
 			fillIt(this.annotations);
 		} else if(testObj.getClass().getName().equals(Class[].class.getName())) {
 			this.classes = as(met.invoke(obj.getClass()), Class[].class);
@@ -98,6 +111,7 @@ public class ObjectBrowser {
 		return sb;
 	}
 	
+	
 	/*
 	 *  public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
 	 *	public java.lang.Class[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
@@ -107,32 +121,67 @@ public class ObjectBrowser {
 	 *
 	 */
 	public void reflectObject(Object obj) throws InstantiationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-
-//		Annotation[] ann = obj.getClass().getAnnotations();
-//		printContent(ann);
-		
+				
 		for(Method met : decMeth) {
 			Object testObj = met.invoke(obj.getClass());
 			chooseType(obj, met, testObj);
+//			zoomInMethod(met);
 			
 			// TODO How to zoom and in which method ?
 		}
-	}
-	
-	private void printList(List<Method> decMeth) {
-		for(Method met : decMeth) {
-			System.out.println(met);
-//			for(Annotation ann : met.annotations)
-//			System.out.println(ann);
+		for(Method met : this.methods) {
+			zoomInMethod(met);
+		}
+		
+		for(Field fld : this.fields) {
+			zoomInField(fld);
 		}
 	}
 	
-	private void printContent(Object... obj) {
-		System.out.println(obj.length);
-		for(Object ob : obj) {
-			System.out.println(ob.toString() + "\n");
+	public StringBuilder zoomInMethod(Method met) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" Name: " + met.getName());
+		sb.append("\n Modifier: " + Modifier.toString(met.getModifiers()));
+		sb.append("\n Returntype: " + met.getReturnType().getSimpleName());
+		Class<?>[] paraTypes = met.getParameterTypes();
+		sb.append("\n Parametertypes: \n");
+		for(int i = 0; i < paraTypes.length; i++) {
+			sb.append("\t" + paraTypes[i].getSimpleName() + "\n");
 		}
+		Annotation[] ann = met.getDeclaredAnnotations();
+		sb.append("\n Annotations: \n");
+		for(Annotation an : ann) {
+			sb.append("\t" + an + "\n");
+		}
+		sb.append("\n");
+		System.out.println(sb);
+		return sb;
 	}
+	
+	public StringBuilder zoomInField(Field fld) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" Name: " + fld.getName());
+		sb.append("\n Type: " + fld.getType().getSimpleName());
+		sb.append("\n Modifier: " + Modifier.toString(fld.getModifiers()));
+		sb.append("\n");
+		System.out.println(sb);	
+		return sb;
+	}
+	
+//	private void printList(List<Method> decMeth) {
+//		for(Method met : decMeth) {
+//			System.out.println(met);
+////			for(Annotation ann : met.annotations)
+////			System.out.println(ann);
+//		}
+//	}
+//	
+//	private void printContent(Object... obj) {
+//		System.out.println(obj.length);
+//		for(Object ob : obj) {
+//			System.out.println(ob.toString() + "\n");
+//		}
+//	}
 
 	@Override
 	public String toString() {

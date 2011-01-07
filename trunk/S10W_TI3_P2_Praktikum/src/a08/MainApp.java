@@ -12,11 +12,7 @@ package a08;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 
-import java.lang.reflect.InvocationTargetException;
-
-import a05.RingBufferTest;
-
-//import tester.a08.Clazz;
+import tester.a08.Clazz;
 
 public class MainApp {
 
@@ -25,34 +21,8 @@ public class MainApp {
 	 */
 	public static void main(String[] args) {
 		// TODO How to iterate sync with the data structure of Arrays ?
-		
-		ObjectBrowser ob = new ObjectBrowser();
-		ob.searchThroughClass();
-		try {
-			ob.reflectObject(new RingBufferTest());
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 
+			ObjectView ov = new ObjectView(new Clazz(1));
+			
 	}
 }

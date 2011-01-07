@@ -1,5 +1,11 @@
 package tester.a08;
+
+import org.junit.Test;
+
+import a08.TestAnno;
+
 @SuppressWarnings("all")
+@TestAnno(exception = RuntimeException.class)
 public class Clazz {
 
 	private class Memeber{
@@ -25,11 +31,13 @@ public class Clazz {
 		return this.value;
 	}
 	
-	public void setValue(int value) {
+	public void setValue(int value, String s) {
 		this.value = value;
 	}
 
 	@Override
+	@Deprecated
+	@Test
 	public String toString() {
 		return "Clazz [dvalue=" + dvalue + ", value=" + value + "]";
 	}
