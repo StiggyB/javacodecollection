@@ -201,14 +201,17 @@ public class ElevatorView extends JPanel {
     private void registerButtonListener(JButton button) {
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
+            button.addKeyListener(eGkL);
         }else if (button.getText().contains("< ") && button.getText().contains(" >")) {
             button.addMouseListener(kDOmL);
+            button.addKeyListener(eGkL);
         }// else
     }// registerButtonActionListeners
 
     private void registerCheckBoxButtonActionListener(JCheckBox checkBox) {
         if (checkBox.getText().contains("Priority")) {
             checkBox.addActionListener(cBBaL);
+            checkBox.addKeyListener(eGkL);
         }// if
     }// registerButtonActionListeners
 

@@ -12,13 +12,16 @@ public class ElevatorGuy extends JLabel implements Runnable {
     private int boundX;
     private int boundY;
     private ImageIcon normalGuy = new ImageIcon((ElevatorGuy.class.getResource("icons/guy.jpeg")));
-     private ImageIcon leftGuy = new ImageIcon((ElevatorGuy.class.getResource("icons/guy_mL.jpeg")));
-     private ImageIcon rightGuy = new ImageIcon((ElevatorGuy.class.getResource("icons/guy_mR.jpeg")));
+    private ImageIcon leftGuy = new ImageIcon((ElevatorGuy.class.getResource("icons/guy_mL.jpeg")));
+    private ImageIcon rightGuy = new ImageIcon((ElevatorGuy.class.getResource("icons/guy_mR.jpeg")));
     private ImageIcon icon;
     // private boolean work = false;
     public boolean move = false;
+    public boolean elevatorMove = true;
     public int direction = -1;
     private ElevatorView view;
+    
+    //TODO Elevator & Guy bewegen synchronisiert!
 
     public ElevatorView getView() {
         return view;
@@ -26,21 +29,21 @@ public class ElevatorGuy extends JLabel implements Runnable {
 
     public ElevatorGuy(int floorConstant) {
         this.x = 375;
-        this.y = floorConstant+20;
+        this.y = floorConstant + 20;
         System.out.println("ImageLoadStatus normalGuy" + normalGuy.getImageLoadStatus());
         System.out.println("ImageLoadStatus leftGuy" + leftGuy.getImageLoadStatus());
         System.out.println("ImageLoadStatus rightGuy" + rightGuy.getImageLoadStatus());
         this.icon = new ImageIcon(ElevatorGuy.class.getResource("icons/guy.jpeg"));
-//        icon = normalGuy;
+        // icon = normalGuy;
         this.boundX = icon.getIconWidth();
         this.boundY = icon.getIconHeight();
         this.setBounds(this.x, this.y, this.boundX, this.boundY);
         this.setName("ElevatorGuy");
-//        this.setOpaque(true);
-//        this.setBackground(Color.GREEN);
-//        this.setSize(boundX, boundY);
+        // this.setOpaque(true);
+        // this.setBackground(Color.GREEN);
+        // this.setSize(boundX, boundY);
         this.setIcon(icon);
-//        this.setVisible(true);
+        // this.setVisible(true);
         this.setText("Hallo1111");
         this.setFocusable(true);
     }
@@ -49,7 +52,7 @@ public class ElevatorGuy extends JLabel implements Runnable {
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);
-        } else {
+        }else {
             System.err.println("Couldn't find file: " + path);
             return null;
         }
@@ -66,22 +69,22 @@ public class ElevatorGuy extends JLabel implements Runnable {
             if (move) {
                 try {
                     move();
-                } catch (InterruptedException e) {
+                }catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }// catch
-            } else {
-//                this.icon = normalGuy;
-//                this.setIcon(icon);
+            }else {
+                // this.icon = normalGuy;
+                // this.setIcon(icon);
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException e) {
+                }catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }// catch
             }// else
         }// while
-        
+
     }// run
 
     /**
@@ -90,22 +93,30 @@ public class ElevatorGuy extends JLabel implements Runnable {
      * @throws InterruptedException
      */
     public void move() throws InterruptedException {
-        // left
-        if (direction == 0) {
-            this.x -= 5;
-            this.setBounds(this.x, this.y, this.boundX, this.boundY);
-            this.view.updateElevatorGuy(this);
-            Thread.sleep(Constants.GUYMOVESPEED);
+      
+            if (this.x >= 50) {
+                this.setVisible(true);
+                // left
+                if (direction == 0) {
+                    this.x -= 5;
+                    this.setBounds(this.x, this.y, this.boundX, this.boundY);
+                    this.view.updateElevatorGuy(this);
+                    Thread.sleep(Constants.GUYMOVESPEED);
+                }// if
+            }//if
+            if (this.x <= 700) {
+                this.setVisible(true);
+                // right
+                if (direction == 1) {
+                    this.x += 5;
+                    this.setBounds(this.x, this.y, this.boundX, this.boundY);
+                    this.view.updateElevatorGuy(this);
+                    Thread.sleep(Constants.GUYMOVESPEED);
+                }// if
+            }// if
+        if (this.x <= 50 || this.x >= 700) {
+            this.setVisible(false);
         }// if
-
-        // right
-        if (direction == 1) {
-            this.x += 5;
-            this.setBounds(this.x, this.y, this.boundX, this.boundY);
-            this.view.updateElevatorGuy(this);
-            Thread.sleep(Constants.GUYMOVESPEED);
-        }// if
-
     }// move
 
     public int getX() {
@@ -144,13 +155,13 @@ public class ElevatorGuy extends JLabel implements Runnable {
         return normalGuy;
     }
 
-     public ImageIcon getLeftGuy() {
-     return leftGuy;
-     }
-    
-     public ImageIcon getRightGuy() {
-     return rightGuy;
-     }
+    public ImageIcon getLeftGuy() {
+        return leftGuy;
+    }
+
+    public ImageIcon getRightGuy() {
+        return rightGuy;
+    }
 
     public void setView(ElevatorView view) {
         this.view = view;
