@@ -180,7 +180,6 @@ public class ElevatorModel extends Thread {
 
         if (this.elevatorInfo == "Elevator 1") {
             if (eG.getY() - 20 == eL.getY()) {
-                System.out.println(eG.getName() + "is on same floor as " + this.elevatorInfo);
                 while (eG.getX() < Constants.ELEVATORLEFTENTRY && eG.getX() > eL.getX() + eL.getBoundX() - eG.getBoundX()) {
                     System.out.println(this.elevatorInfo + ": Person in light barrier.");
                     Thread.sleep(500);
