@@ -34,7 +34,9 @@ public class ElevatorModel extends Thread {
     private boolean work = true;
     private ElevatorLabel eL;
     private RingBuffer<Integer> targets;
-//    private int passengers = 0;  //increase decrease bedingung mit ElevatorGuy Control?
+    private ElevatorGuy eG;
+
+    // private int passengers = 0; //increase decrease bedingung mit ElevatorGuy Control?
 
     /**
      * 
@@ -72,8 +74,8 @@ public class ElevatorModel extends Thread {
                 }// if
                 this.targets.enqueue(floor);
                 System.out.println("Enqeued target: " + this.targets.peek());
-            } else if(!this.targets.isFull()){
-                this.targets.enqueue(floor);                
+            } else if (!this.targets.isFull()) {
+                this.targets.enqueue(floor);
             }// else
         } else {
             System.out.println(this.elevatorInfo + "'s floor does not exist!");
@@ -85,7 +87,7 @@ public class ElevatorModel extends Thread {
      * 
      * @throws InterruptedException
      */
-    public void move() throws InterruptedException {
+    private void move() throws InterruptedException {
         boolean priorityFired = false;
         while (work) {
             if (!targets.isEmpty()) {
@@ -96,6 +98,7 @@ public class ElevatorModel extends Thread {
                     // check if selected floor is smaller than actualFloor
                     if (target < this.actualFloor) {
                         if (this.doorOpen) {
+                            lightBarrierCheck();
                             this.doorOpen = false;
                             eL.setBackground(Color.RED);
                             System.out.println(this.elevatorInfo + " Door closed.");
@@ -107,6 +110,7 @@ public class ElevatorModel extends Thread {
                         }// if
                         for (; target != this.actualFloor;) {
                             this.actualFloor--;
+                            moveGuy(0);
                             moveLabel(0);
                             System.out.println(this.elevatorInfo + " now on Floor " + this.actualFloor);
                         }// for
@@ -128,6 +132,7 @@ public class ElevatorModel extends Thread {
                         }// else
                     } else {
                         if (doorOpen) {
+                            lightBarrierCheck();
                             this.doorOpen = false;
                             eL.setBackground(Color.RED);
                             System.out.println(this.elevatorInfo + " Door closed.");
@@ -139,7 +144,9 @@ public class ElevatorModel extends Thread {
                         }// if
                         for (; target != this.actualFloor;) {
                             actualFloor++;
+                            moveGuy(1);
                             moveLabel(1);
+                            // TODO Update Guy to new Y
                             System.out.println(this.elevatorInfo + " now on Floor " + this.actualFloor);
                         }// for
                         // if elevator has reached selected floor and target is still the actual target
@@ -165,6 +172,37 @@ public class ElevatorModel extends Thread {
             }// else
         }// while
     }// move
+
+    /**
+     * @throws InterruptedException
+     */
+    private void lightBarrierCheck() throws InterruptedException {
+
+        if (this.elevatorInfo == "Elevator 1") {
+            if (eG.getY() - 20 == eL.getY()) {
+                System.out.println(eG.getName() + "is on same floor as " + this.elevatorInfo);
+                while (eG.getX() < Constants.ELEVATORLEFTENTRY && eG.getX() > eL.getX() + eL.getBoundX() - eG.getBoundX()) {
+                    System.out.println(this.elevatorInfo + ": Person in light barrier.");
+                    Thread.sleep(500);
+                }
+            }
+
+        }
+
+        if (this.elevatorInfo == "Elevator 2") {
+            System.out.println((this.eG.getY() - 20) + " == " + this.eL.getY());
+            System.out.println("Checking " + this.elevatorInfo + "s light barrier");
+            // if(eG.getX() > Constants.ELEVATORRIGHTENTRY-eG.getBoundX()){
+            if (eG.getY() - 20 == eL.getY()) {
+                System.out.println(eG.getName() + "is on same floor as " + this.elevatorInfo);
+                // while(eG.getX() < eL.getX() && ){
+                while (eG.getX() > 650 && eG.getX() < 700) {
+                    System.out.println(this.elevatorInfo + ": Person in light barrier.");
+                    Thread.sleep(500);
+                }
+            }
+        }
+    }
 
     /**
      * @throws InterruptedException
@@ -196,6 +234,7 @@ public class ElevatorModel extends Thread {
                 view.updateElevatorLabel(eL);
                 Thread.sleep(10);
             }// for
+
         }// if
         // Up
         if (direction == 1) {
@@ -208,6 +247,43 @@ public class ElevatorModel extends Thread {
         }// if
     }// moveLabel
 
+    private void moveGuy(int direction) {
+        // Down
+        if (direction == 0) {
+            if (eG.getY() - 20 == eL.getY()) {
+                if (this.elevatorInfo == "Elevator 1") {
+                    if(eG.getX() <= Constants.ELEVATORLEFTENTRY && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
+                        this.eG.setY(eG.getY() + 115);
+                        view.updateElevatorGuy(eG);
+                    }
+                        
+                }else if (this.elevatorInfo == "Elevator 2") {
+                    if(eG.getX() >= Constants.ELEVATORRIGHTENTRY-eG.getBoundX() && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
+                        this.eG.setY(eG.getY() + 115);     
+                        view.updateElevatorGuy(eG);
+                    }
+                }
+            }
+        }// if
+        // Up
+        if (direction == 1) {
+            if (eG.getY() - 20 == eL.getY()) {
+                if (this.elevatorInfo == "Elevator 1") {
+                    if(eG.getX() <= Constants.ELEVATORLEFTENTRY && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
+                        this.eG.setY(eG.getY() - 115);
+                        view.updateElevatorGuy(eG);
+                    }
+                        
+                }else if (this.elevatorInfo == "Elevator 2") {
+                    if(eG.getX() >= Constants.ELEVATORRIGHTENTRY-eG.getBoundX() && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
+                        this.eG.setY(eG.getY() - 115);
+                        view.updateElevatorGuy(eG);
+                    }
+                }
+            }
+        }// if
+    }
+
     /**
      * Threads run() looks if there are targets in targetList and resolves the belonging ElevatorLabel.<br>
      * while (true) {<br>
@@ -217,13 +293,19 @@ public class ElevatorModel extends Thread {
      * }
      */
     public void run() {
-        System.out.println(Thread.currentThread().getName() + " Started!");
+//        System.out.println(Thread.currentThread().getName() + " Started!");
         if (!targets.isEmpty()) {
             work = true;
         }// if
         for (ElevatorLabel eL : view.getLabelList()) {
             if (eL.getName().equals(this.elevatorInfo)) {
                 this.eL = eL;
+                break;
+            }// if
+        }// for
+        for (ElevatorGuy eG : view.getGuyLabelList()) {
+            if (eG.getName().equals("Elevator Guy 1")) {
+                this.eG = eG;
                 break;
             }// if
         }// for
@@ -260,17 +342,17 @@ public class ElevatorModel extends Thread {
 
     public boolean isPriorityDrive() {
         return priorityDrive;
-    }//isPriorityDrive
+    }// isPriorityDrive
 
     public void setPriorityDrive(boolean priorityDrive) {
         this.priorityDrive = priorityDrive;
-    }//setPriorityDrive
+    }// setPriorityDrive
 
     public boolean isKeepDoorsOpen() {
         return keepDoorsOpen;
-    }//isKeepDoorsOpen
+    }// isKeepDoorsOpen
 
     public void setKeepDoorsOpen(boolean keepDoorsOpen) {
         this.keepDoorsOpen = keepDoorsOpen;
-    }//setKeepDoorsOpen
+    }// setKeepDoorsOpen
 }// ElevatorModel

@@ -12,10 +12,9 @@ package a07;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 import java.awt.Dimension;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -47,8 +46,14 @@ public class ShowInFrame {
 		frame.add(c);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
-		frame.setSize(new Dimension(800, 600));
+//		frame.setLocationRelativeTo(null);
+//		frame.setSize(new Dimension(800, 600));
 		frame.pack();
+		Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		Dimension d = frame.getSize();
+		Point p = new Point((int) ((r.getWidth()/2)-(d.getWidth()/2)),(int) ((r.getHeight()/2)-(d.getHeight()/2)));
+		frame.setLocation(p);
+		frame.repaint();
+		frame.setResizable(false);
 	}
 }

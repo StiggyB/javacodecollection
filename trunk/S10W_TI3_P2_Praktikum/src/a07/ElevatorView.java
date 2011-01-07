@@ -3,7 +3,9 @@ package a07;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -42,6 +44,7 @@ public class ElevatorView extends JPanel {
     private List<ElevatorGuy> guyLabelList = new ArrayList<ElevatorGuy>();
     private JButton[] jButtonArray = new JButton[((Constants.FLOORNO * 2) + Constants.ELEVATORNO)];
     private JCheckBox[] jCheckBoxArray = new JCheckBox[Constants.ELEVATORNO];
+    private Image img;
     private ActionListener cBaL, cBBaL;
     private MouseListener kDOmL;
     private KeyListener eGkL;
@@ -65,7 +68,6 @@ public class ElevatorView extends JPanel {
         mainArea.add(viewArea, BorderLayout.CENTER);
         mainArea.add(callArea, BorderLayout.WEST);
         mainArea.add(callArea2, BorderLayout.EAST);
-
     }// createMainArea
 
     /**
@@ -73,11 +75,11 @@ public class ElevatorView extends JPanel {
      * Also creates and adds the ElevatorLabels to the panel.
      */
     private void createViewArea() {
+        this.img = new ImageIcon("/icons/background.jpeg").getImage();
         viewArea = new JPanel();
         viewArea.setLayout(null);
         viewArea.setPreferredSize(new Dimension(800, 600));
-        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
-                .createEmptyBorder(10, 10, 10, 10)));
+        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         elevatorLabelList.add(new ElevatorLabel(1));
         elevatorLabelList.add(new ElevatorLabel(2));
@@ -85,20 +87,22 @@ public class ElevatorView extends JPanel {
         for (ElevatorLabel eL : elevatorLabelList) {
             viewArea.add(eL);
         }// for
-        System.out.println("guyLabelList is Empty: " + guyLabelList.isEmpty());
         for (ElevatorGuy eGuy : guyLabelList) {
-            System.out.println("Adding eG " + eGuy.getName() + eGuy);
             viewArea.add(eGuy);
             eGuy.repaint();
         }// for
 
+        // viewArea.setOpaque(true);
     }// createViewArea
+
+    public void paintComponent(Graphics g) {
+        g.drawImage(img, 0, 0, null);
+    }
 
     private void createControlArea() {
         controlArea = new JPanel();
         controlArea.setLayout(new BoxLayout(controlArea, BoxLayout.X_AXIS));
-        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
-                .createEmptyBorder(10, 10, 10, 10)));
+        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         addOneCheckBoxToCheckBoxArray("Priority Drive 1", controlArea, 0, 1);
         addOneCheckBoxToCheckBoxArray("Priority Drive 2", controlArea, 1, 2);
         addOneButtonToButtonArray("< 1 >", controlArea, 10, 1);
@@ -113,11 +117,9 @@ public class ElevatorView extends JPanel {
         callArea = new JPanel();
         callArea2 = new JPanel();
         callArea.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
-                .createEmptyBorder(10, 10, 10, 10)));
+        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         callArea2.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
-                .createEmptyBorder(10, 10, 10, 10)));
+        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         addCallButtonsToPanel(callArea);
         addCallButtonsToPanel(callArea2);
@@ -129,6 +131,7 @@ public class ElevatorView extends JPanel {
         createViewArea();
         createMainArea();
         this.add(mainArea);
+        this.repaint();
     }
 
     /**
@@ -150,9 +153,8 @@ public class ElevatorView extends JPanel {
         jButtonArray[index] = button;
         if (jButtonArray[index] != null) {
             pane.add(jButtonArray[index]);
-        }else {
-            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText()
-                    + " failed!");
+        } else {
+            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText() + " failed!");
         }// else
     }// addOneButtonToButtonArray
 
@@ -163,9 +165,8 @@ public class ElevatorView extends JPanel {
         jCheckBoxArray[index] = checkBox;
         if (jCheckBoxArray[index] != null) {
             pane.add(jCheckBoxArray[index]);
-        }else {
-            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText()
-                    + " failed!");
+        } else {
+            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText() + " failed!");
         }// else
     }// addOneButtonToButtonArray
 
@@ -183,7 +184,7 @@ public class ElevatorView extends JPanel {
             addOneButtonToButtonArray("Second floor", pane, 2, 1);
             addOneButtonToButtonArray("First  floor", pane, 1, 1);
             addOneButtonToButtonArray("Ground floor", pane, 0, 1);
-        }else if (pane == callArea2) {
+        } else if (pane == callArea2) {
             addOneButtonToButtonArray("Fourth floor", pane, 9, 2);
             addOneButtonToButtonArray("Third  floor", pane, 8, 2);
             addOneButtonToButtonArray("Second floor", pane, 7, 2);
@@ -202,7 +203,7 @@ public class ElevatorView extends JPanel {
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
             button.addKeyListener(eGkL);
-        }else if (button.getText().contains("< ") && button.getText().contains(" >")) {
+        } else if (button.getText().contains("< ") && button.getText().contains(" >")) {
             button.addMouseListener(kDOmL);
             button.addKeyListener(eGkL);
         }// else
@@ -279,16 +280,8 @@ public class ElevatorView extends JPanel {
     }// updateElevatorLabel
 
     public void updateElevatorGuy(ElevatorGuy eG) {
-        System.out.println("Called updateElevatorGuy");
-        for (ElevatorGuy eG2 : guyLabelList) {
-            if (eG.equals(eG2)) {
-                eG2.setBounds(eG.getBounds());
-                eG2.repaint();
-                eG2.paint(eG2.getGraphics());
-                System.out.println("Repaint " + eG2.getName());
-                System.out.println("to " + eG2.getBounds());
-            }// if
-        }// for
+//        System.out.println(eG.getBounds());
+        eG.repaint();
     }// updateElevatorLabel
 
     public void setLabelList(List<ElevatorLabel> labelList) {
@@ -301,15 +294,12 @@ public class ElevatorView extends JPanel {
 
     public void setElevatorGuy(ElevatorGuy eG) {
         if (eG != null) {
-            System.out.println("Adding eG to LabelList in setElevatorGuy");
-            System.out.println("eG: " + eG);
-            System.out.println("Added " + eG.getName() + " to LabelList");
         }
         this.guyLabelList.add(eG);
     }// setCallButtonActionListener
 
-    public KeyListener geteGkL() {
-        return eGkL;
+    public List<ElevatorGuy> getGuyLabelList() {
+        return guyLabelList;
     }
-
+    
 }// ElevatorView

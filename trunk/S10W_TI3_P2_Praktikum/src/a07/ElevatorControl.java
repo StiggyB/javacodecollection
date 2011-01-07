@@ -52,25 +52,18 @@ public class ElevatorControl extends Thread {
      */
     public ElevatorControl() {
         this.threadPool = new ThreadPoolExecutor(poolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, queue);
-        this.guy1 = new ElevatorGuy(Constants.GROUNDFLOORYPOS);
+        this.guy1 = new ElevatorGuy(Constants.GROUNDFLOORYPOS, "Guy 1");
         this.view = new ElevatorView();
         this.view.setElevatorGuy(this.guy1);
         this.view.initElevatorView();
-//        this.view.initElevatorGuy();
         this.guy1.setView(view);
-        System.out.println("guys view: " + guy1.getView());
-        System.out.println("this view: " + view);
         
         this.elevator1 = new ElevatorModel("Elevator 1", view);
         this.elevator2 = new ElevatorModel("Elevator 2", view);
         addListener();
-
-        // elevator1.start();
-        // elevator2.start();
         threadPool.submit(elevator1);
         threadPool.submit(elevator2);
         threadPool.submit(guy1);
-
     }// ElevatorControl
 
      /**
@@ -186,7 +179,7 @@ public class ElevatorControl extends Thread {
         @Override
         public void mousePressed(MouseEvent me) {
             JButton source = (JButton) me.getSource();
-            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> pressed!");
+//            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> pressed!");
             if (source.getText().contains("< 1 >")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.setKeepDoorsOpen(true);
@@ -202,7 +195,7 @@ public class ElevatorControl extends Thread {
         @Override
         public void mouseReleased(MouseEvent me) {
             JButton source = (JButton) me.getSource();
-            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> released!");
+//            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> released!");
             if (source.getText().contains("< 1 >")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.setKeepDoorsOpen(false);
@@ -217,33 +210,34 @@ public class ElevatorControl extends Thread {
     }// KeepDoorsOpenButtonActionListener
 
     private class ElevatorGuyKeyListener implements KeyListener {
-        //mainPanel bekommt keylistener
         @Override
         public void keyPressed(KeyEvent kE) {
-            System.out.println("Key Pressed: "+kE.getKeyChar());
             if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
+                guy1.direction = 0;
                 guy1.move = true;
 //                guy1.setIcon(guy1.getLeftGuy());
-                guy1.direction = 0;
+//                guy1.repaint();
             }//if
             if (kE.getKeyCode() == KeyEvent.VK_RIGHT) {
+                guy1.direction = 1;
                 guy1.move = true;
 //                guy1.setIcon(guy1.getRightGuy());
-                guy1.direction = 1;
+//                guy1.repaint();
             }//if
-
         }//keyPressed
 
         @Override
         public void keyReleased(KeyEvent kE) {
             if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
                 guy1.move = false;
-                guy1.setIcon(guy1.getNormalGuy());
+//                guy1.setIcon(guy1.getNormalGuy());
+//                guy1.repaint();
                 guy1.direction = -1;
             }//if
             if (kE.getKeyCode() == KeyEvent.VK_RIGHT) {
                 guy1.move = false;
-                guy1.setIcon(guy1.getNormalGuy());
+//                guy1.setIcon(guy1.getNormalGuy());
+//                guy1.repaint();
                 guy1.direction = -1;
             }//if
         }//keyReleased

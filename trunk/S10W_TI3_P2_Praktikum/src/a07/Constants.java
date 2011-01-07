@@ -25,5 +25,8 @@ public class Constants {
     static final int SECONDFLOORYPOS = 247;
     static final int THIRDFLOORYPOS = 133;
     static final int FOURTHFLOORYPOS = 18;  
-    static final int GUYMOVESPEED = 100;  
+    static final int GUYSLEEP = 15;  
+    static final int GUYSTEPS = 2;  
+    static final int ELEVATORLEFTENTRY = 100;  
+    static final int ELEVATORRIGHTENTRY = 700;    
 }//Constants
