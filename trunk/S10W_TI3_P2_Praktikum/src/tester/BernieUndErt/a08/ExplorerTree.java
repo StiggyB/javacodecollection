@@ -38,6 +38,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import tester.a08.Clazz;
+
 public class ExplorerTree {
 
 	private class FieldAndValue {
@@ -65,7 +67,8 @@ public class ExplorerTree {
 	public ExplorerTree() throws IllegalArgumentException, IOException, IllegalAccessException{
 		 this.oih= new ObjectInspectHelper();
 //		this.scrollPane = new JScrollPane(buildExplorerTree(Integer.valueOf(10)));
-		this.scrollPane = new JScrollPane(buildExplorerTree(new DummyClass(5, 10)));
+//		this.scrollPane = new JScrollPane(buildExplorerTree(new DummyClass(5, 10)));
+		this.scrollPane = new JScrollPane(buildExplorerTree(new Clazz(5)));
 //		this.scrollPane = new JScrollPane(buildExplorerTree(new ArrayList<String>()));
 	}
 

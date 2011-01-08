@@ -28,32 +28,14 @@ public class ObjectBrowser {
 	List<Method> decMeth = new ArrayList<Method>();
 	
 	private Field[] fields;
-	public Field[] getFields() {
-		return fields;
-	}
-
-	public void setFields(Field[] fields) {
-		this.fields = fields;
-	}
-
 	private Constructor<?>[] constructors;
 	private Method[] methods;
 	private Annotation[] annotations;
-	public Annotation[] getAnnotations() {
-		return annotations;
-	}
-
-	public void setAnnotations(Annotation[] annotations) {
-		this.annotations = annotations;
-	}
-
-	private Class<?>[] classes;
-	//add Oberklassen, Name of Class, evt. Modifier 
+	private Class<?>[] classes;	
 	
-	
-	public Object setObject(Object obj) {
-		return obj;
-	}
+//	public Object setObject(Object obj) {
+//		return obj;
+//	}
 	
 	public void searchThroughClass() {
 		for(Method met : Class.class.getDeclaredMethods()) {
@@ -67,7 +49,7 @@ public class ObjectBrowser {
 				}
 			}
 		}
-//		printList(decMeth);	
+		printList(decMeth);	
 	}
 	
 	private static <TTargetType> TTargetType as(Object o, Class<TTargetType> clazz) {
@@ -111,6 +93,29 @@ public class ObjectBrowser {
 		return sb;
 	}
 	
+	public StringBuilder getClassInfo(Object obj) {
+		StringBuilder sb = new StringBuilder();
+		Class<?> c = obj.getClass();
+		System.out.println(c);
+		sb.append("\n Name: \n\t" + c.getName());
+		sb.append("\n Modifier: \n\t" + Modifier.toString(c.getModifiers()));
+		sb.append("\n Annotations: ");
+		for(Annotation ann : annotations) {
+		sb.append("\n\t " + ann);
+		}
+		sb.append("\n Superclasses: ");
+		Class<?>  sClss = c.getSuperclass();
+		while(sClss != null) {
+			sb.append("\n\t " + sClss);
+			sClss = sClss.getSuperclass();
+		}	
+		sb.append("\n Constructors: ");
+		for(Constructor<?> constr : constructors) {
+			sb.append("\n\t " + constr);
+		}
+		
+		return sb;
+	}
 	
 	/*
 	 *  public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
@@ -168,13 +173,13 @@ public class ObjectBrowser {
 		return sb;
 	}
 	
-//	private void printList(List<Method> decMeth) {
-//		for(Method met : decMeth) {
-//			System.out.println(met);
-////			for(Annotation ann : met.annotations)
-////			System.out.println(ann);
-//		}
-//	}
+	private void printList(List<Method> decMeth) {
+		for(Method met : decMeth) {
+			System.out.println(met);
+//			for(Annotation ann : met.annotations)
+//			System.out.println(ann);
+		}
+	}
 //	
 //	private void printContent(Object... obj) {
 //		System.out.println(obj.length);

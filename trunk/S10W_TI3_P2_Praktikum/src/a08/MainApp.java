@@ -12,17 +12,16 @@ package a08;
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
 
-import tester.a08.Clazz;
-
 public class MainApp {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO How to iterate sync with the data structure of Arrays ?
+		//TODO
 
 			ObjectView ov = new ObjectView(new Clazz(1));
+			
 			
 	}
 }

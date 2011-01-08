@@ -1,4 +1,4 @@
-package tester.a08;
+package a08;
 
 import javax.swing.JTree;
 
@@ -6,7 +6,7 @@ import a08.TestAnno;
 
 @SuppressWarnings("all")
 @TestAnno(exception = RuntimeException.class)
-public class Clazz extends JTree {
+public class Clazz {
 
 	private class Memeber{
 		
