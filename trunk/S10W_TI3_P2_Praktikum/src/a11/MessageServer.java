@@ -19,9 +19,10 @@ public class MessageServer {
     public void run() throws IOException{
         
         do {
-            
+            //Wait for incoming messages from client
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket
                     .getInputStream()));
+            //Open Servers outputstream
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             clientSentence = inFromClient.readLine();
             if(clientSentence == null){
@@ -34,8 +35,8 @@ public class MessageServer {
                 outToClient.writeBytes(modifiedSentence);   
                 outToClient.writeBytes("Goodbye.");   
                 run = true;
-            }
+            }//else
         }while(run);
-    }
+    }//run
 
-}
+}//MessageServer

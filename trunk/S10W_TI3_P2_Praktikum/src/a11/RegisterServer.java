@@ -12,8 +12,13 @@ public class RegisterServer extends Thread{
     List<Socket> clientList = new ArrayList<Socket>();
     int port;
     
+    
     public RegisterServer(int port) {
         this.port = port;
+    }
+   
+    public void messageAll(){
+        System.out.println("Unimplemented!");
     }
     
     public void run(){
@@ -32,6 +37,12 @@ public class RegisterServer extends Thread{
                 clientList.add(connectionSocket);
             //Start new thread to receive clients messages
                 MessageServer mS = new MessageServer(connectionSocket);
+                try {
+                    mS.run();
+                }catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }//if
         }//while
     }//run
