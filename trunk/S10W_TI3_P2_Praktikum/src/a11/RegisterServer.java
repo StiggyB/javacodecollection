@@ -3,47 +3,46 @@ package a11;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
-public class RegisterServer extends Thread{
+public class RegisterServer extends Thread {
 
     Socket connectionSocket;
-    List<Socket> clientList = new ArrayList<Socket>();
+//    List<Socket> clientList = new ArrayList<Socket>();
     int port;
-    
-    
-    public RegisterServer(int port) {
+    ThreadPoolExecutor tPE;
+    ServerSocket welcomeSocket;
+
+    public RegisterServer(int port, ThreadPoolExecutor tPE) {
         this.port = port;
+        this.tPE = tPE;
+        try {
+            welcomeSocket = new ServerSocket(port);
+            System.out.println("Server initialized on Port: " + port);
+        } catch (IOException e) {
+            System.err.println("Server initialisation on Port: " + port + " failed!");
+            e.printStackTrace();
+            System.exit(0);
+        }
+        
     }
-   
-    public void messageAll(){
-        System.out.println("Unimplemented!");
-    }
-    
-    public void run(){
-        while(true){
-            try {
-                ServerSocket welcomeSocket = new ServerSocket(port);
-                connectionSocket = welcomeSocket.accept();
-            }catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.err.println("Error initializing Server on Port "+port);
-                System.exit(0);
-            }//catch
-            System.out.println("Connection Accepted");        
-            if (connectionSocket != null) {
-                clientList.add(connectionSocket);
-            //Start new thread to receive clients messages
-                MessageServer mS = new MessageServer(connectionSocket);
+
+    public void run() {
+        while (true) {
+            
                 try {
-                    mS.run();
-                }catch (IOException e) {
+                    connectionSocket = welcomeSocket.accept();
+                } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }//if
-        }//while
-    }//run
-}//OwnServer
+            System.out.println("Connection Accepted");
+            if (connectionSocket != null) {
+//                clientList.add(connectionSocket);
+                // Start new thread to receive clients messages
+                MessageServer mS = new MessageServer(connectionSocket);
+                tPE.submit(mS);
+            }// if
+        }// while
+    }// run
+}// OwnServer
