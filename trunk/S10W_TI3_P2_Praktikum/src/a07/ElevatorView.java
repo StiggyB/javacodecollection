@@ -29,7 +29,7 @@ import javax.swing.*;
  * <b>Description:</b> <br>
  * This class represents the GUI or the view in MVC-Pattern.<br>
  * Including the JPanels for the different Areas, the LabelList for the ElevatorLabels, the JButton[] for the
- * CallButtons and the ActionListener for the Buttons
+ * CallButtons and the ActionListener for the Buttons.
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  * <br>
@@ -44,20 +44,20 @@ public class ElevatorView extends JPanel {
     private List<ElevatorGuy> guyLabelList = new ArrayList<ElevatorGuy>();
     private JButton[] jButtonArray = new JButton[((Constants.FLOORNO * 2) + Constants.ELEVATORNO)];
     private JCheckBox[] jCheckBoxArray = new JCheckBox[Constants.ELEVATORNO];
-    private Image img;
     private ActionListener cBaL, cBBaL;
     private MouseListener kDOmL;
     private KeyListener eGkL;
 
     /**
-     * Constructor to create the other JPanel Areas
+     * Empty Constructor.<br> To create the other JPanel Areas call initElevatorView().
      */
     ElevatorView() {
-        // initElevatorView();
+        
     }// ElevatorView
 
     /**
      * Creates the mainArea and adds sub panels to its BorderLayout.<br>
+     * controlArea = NORTH<br>
      * viewArea = CENTER<br>
      * callArea = WEST<br>
      * callArea2 = EAST<br>
@@ -75,7 +75,6 @@ public class ElevatorView extends JPanel {
      * Also creates and adds the ElevatorLabels to the panel.
      */
     private void createViewArea() {
-        this.img = new ImageIcon("/icons/background.jpeg").getImage();
         viewArea = new JPanel();
         viewArea.setLayout(null);
         viewArea.setPreferredSize(new Dimension(800, 600));
@@ -94,10 +93,6 @@ public class ElevatorView extends JPanel {
 
         // viewArea.setOpaque(true);
     }// createViewArea
-
-    public void paintComponent(Graphics g) {
-        g.drawImage(img, 0, 0, null);
-    }
 
     private void createControlArea() {
         controlArea = new JPanel();

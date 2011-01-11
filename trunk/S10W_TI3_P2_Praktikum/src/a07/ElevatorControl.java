@@ -16,7 +16,7 @@ import javax.swing.JCheckBox;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 06<br>
+ * Aufgaben-Nr.: 07<br>
  * 
  * Version: V1<br>
  * Aenderungen:
@@ -27,8 +27,9 @@ import javax.swing.JCheckBox;
  * <br>
  * <b>Description:</b> <br>
  * This class represents the controller in MVC-Pattern<br>
- * The Controller holds each model and each view which are used. It initializes the GUI (view) and the elevators
- * (models), adds the ActionListeners and starts the elevator threads.
+ * The Controller holds each model and each view which are used. It initializes the GUI (view), the elevators
+ * (models), the ThreadPoolExecutor, adds the ActionListeners and submits the elevators and moving guy threads 
+ * to the ThreadPoolExecutor.
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  * <br>
@@ -66,17 +67,8 @@ public class ElevatorControl extends Thread {
         threadPool.submit(guy1);
     }// ElevatorControl
 
-     /**
-     * Initializes a new CallButtonActionListener
-     * @return ActionListener: CallButtonActionListener
-     */
-     public KeyListener getElevatorGuyKeyListener() {
-     KeyListener kL = new ElevatorGuyKeyListener();
-     return kL;
-     }// getCallButtonActionListener
-
     /**
-     * Sets the CallButtonActionListener of the view and registers them in the view.
+     * Sets the ActionListeners of the view and registers them to the components in the view.
      */
     private void addListener() {
         view.setCallButtonActionListener(new CallButtonActionListener());
@@ -86,14 +78,11 @@ public class ElevatorControl extends Thread {
         view.registerButtonActionListener();
         view.registerCheckBoxButtonActionListener();
         view.registerElevatorGuyKeyListener();
-
     }// addListener
 
     /**
      * Inner class for CallButtonActionListener.<br>
-     * Handles the events when a button is pressed.
-     * 
-     * 
+     * Handles the events when a button is pressed. 
      */
     private class CallButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
@@ -138,6 +127,11 @@ public class ElevatorControl extends Thread {
         }// actionPerformed
     }// CallButtonActionListener
 
+    /**
+     * Inner Class for CheckBoxButtonActionActionListener.<br>
+     * Handles the events for the priority drive.
+     *
+     */
     private class CheckBoxButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
             JCheckBox source = (JCheckBox) ev.getSource();
@@ -162,6 +156,11 @@ public class ElevatorControl extends Thread {
         }// actionPerformed
     }// CheckBoxButtonActionListener
 
+    /**
+     * Inner Class for KeepDoorsOpenButtonActionListener.<br>
+     * Handles the mouse events to keep the elevator doors open.
+     *
+     */
     private class KeepDoorsOpenButtonActionListener implements MouseListener {
 
         @Override
@@ -179,7 +178,6 @@ public class ElevatorControl extends Thread {
         @Override
         public void mousePressed(MouseEvent me) {
             JButton source = (JButton) me.getSource();
-//            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> pressed!");
             if (source.getText().contains("< 1 >")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.setKeepDoorsOpen(true);
@@ -195,7 +193,6 @@ public class ElevatorControl extends Thread {
         @Override
         public void mouseReleased(MouseEvent me) {
             JButton source = (JButton) me.getSource();
-//            System.out.println("Button <" + (source.getText().contains("1") ? 1 : 2) + "> released!");
             if (source.getText().contains("< 1 >")) {
                 if (source.getName().contains("Elevator 1")) {
                     elevator1.setKeepDoorsOpen(false);
@@ -209,20 +206,21 @@ public class ElevatorControl extends Thread {
         }// mouseReleased
     }// KeepDoorsOpenButtonActionListener
 
+    /**
+     * Inner Class for ElevatorGuyKeyListener.<br>
+     * Handles the key events to move the ElevatorGuy.
+     *
+     */
     private class ElevatorGuyKeyListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent kE) {
             if (kE.getKeyCode() == KeyEvent.VK_LEFT) {
                 guy1.direction = 0;
                 guy1.move = true;
-//                guy1.setIcon(guy1.getLeftGuy());
-//                guy1.repaint();
             }//if
             if (kE.getKeyCode() == KeyEvent.VK_RIGHT) {
                 guy1.direction = 1;
                 guy1.move = true;
-//                guy1.setIcon(guy1.getRightGuy());
-//                guy1.repaint();
             }//if
         }//keyPressed
 
@@ -246,14 +244,11 @@ public class ElevatorControl extends Thread {
         public void keyTyped(KeyEvent kE) {
             // TODO Auto-generated method stub
 
-        }
-    }
+        }//keyTyped
+    }//ElevatorGuyKeyListener
 
     public ElevatorView getView() {
         return view;
     }// getView
 
-    public ThreadPoolExecutor getThreadPool() {
-        return threadPool;
-    }
 }// ElevatorControl

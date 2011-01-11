@@ -23,7 +23,7 @@ import java.awt.Color;
  * 
  */
 
-public class ElevatorModel extends Thread {
+public class ElevatorModel implements Runnable {
 
     private int actualFloor;
     private boolean doorOpen;
@@ -36,8 +36,6 @@ public class ElevatorModel extends Thread {
     private RingBuffer<Integer> targets;
     private ElevatorGuy eG;
 
-    // private int passengers = 0; //increase decrease bedingung mit ElevatorGuy Control?
-
     /**
      * 
      * @param info
@@ -47,8 +45,7 @@ public class ElevatorModel extends Thread {
      */
     // Constructor
     public ElevatorModel(String info, ElevatorView view) {
-        this.targets = new RingBuffer<Integer>(Constants.FLOORNO); // target
-        // list
+        this.targets = new RingBuffer<Integer>(Constants.FLOORNO); 
         this.view = view;
         this.actualFloor = 0; // GroundFloor
         this.doorOpen = true;
@@ -57,7 +54,7 @@ public class ElevatorModel extends Thread {
     }// ElevatorModel
 
     /**
-     * call Elevator to a specific floor
+     * Calls the Elevator to a specific floor with priority drive function
      * 
      * @param floor
      *            int: number of floor
@@ -68,12 +65,10 @@ public class ElevatorModel extends Thread {
             if (this.priorityDrive) {
                 if (!this.targets.isEmpty()) {
                     for (; !this.targets.isEmpty();) { // Delete queue
-                        System.out.println("Deleting queue target: " + this.targets.peek());
                         this.targets.dequeue();
                     }// for
                 }// if
                 this.targets.enqueue(floor);
-                System.out.println("Enqeued target: " + this.targets.peek());
             } else if (!this.targets.isFull()) {
                 this.targets.enqueue(floor);
             }// else
@@ -84,6 +79,7 @@ public class ElevatorModel extends Thread {
 
     /**
      * Elevators move() to move the elevator to the target from targetList
+     * and to move the elevatorGuy if hes in the elevator.<br>
      * 
      * @throws InterruptedException
      */
@@ -146,7 +142,6 @@ public class ElevatorModel extends Thread {
                             actualFloor++;
                             moveGuy(1);
                             moveLabel(1);
-                            // TODO Update Guy to new Y
                             System.out.println(this.elevatorInfo + " now on Floor " + this.actualFloor);
                         }// for
                         // if elevator has reached selected floor and target is still the actual target
@@ -174,6 +169,7 @@ public class ElevatorModel extends Thread {
     }// move
 
     /**
+     * Implements a light barrier of the elevator to be sure that the elevator only moves when no one is between the doors.<br>
      * @throws InterruptedException
      */
     private void lightBarrierCheck() throws InterruptedException {
@@ -183,10 +179,9 @@ public class ElevatorModel extends Thread {
                 while (eG.getX() < Constants.ELEVATORLEFTENTRY && eG.getX() > eL.getX() + eL.getBoundX() - eG.getBoundX()) {
                     System.out.println(this.elevatorInfo + ": Person in light barrier.");
                     Thread.sleep(500);
-                }
-            }
-
-        }
+                }//while
+            }//if
+        }//if
 
         if (this.elevatorInfo == "Elevator 2") {
             System.out.println((this.eG.getY() - 20) + " == " + this.eL.getY());
@@ -198,12 +193,13 @@ public class ElevatorModel extends Thread {
                 while (eG.getX() > 650 && eG.getX() < 700) {
                     System.out.println(this.elevatorInfo + ": Person in light barrier.");
                     Thread.sleep(500);
-                }
-            }
-        }
-    }
+                }//while
+            }//if
+        }//if
+    }//lightBarrierCheck
 
     /**
+     * Keeps the elevators doors for max 5 seconds open.
      * @throws InterruptedException
      */
     private void keepDoorsOpen() throws InterruptedException {
@@ -233,8 +229,8 @@ public class ElevatorModel extends Thread {
                 view.updateElevatorLabel(eL);
                 Thread.sleep(10);
             }// for
-
         }// if
+        
         // Up
         if (direction == 1) {
             for (int i = 0; i < 115; i++) {
@@ -246,6 +242,10 @@ public class ElevatorModel extends Thread {
         }// if
     }// moveLabel
 
+    /**
+     * When the elevatorGuy is in the elevator he is moved to the specified direction.
+     * @param direction : 0 = down, 1 = up
+     */
     private void moveGuy(int direction) {
         // Down
         if (direction == 0) {
@@ -254,15 +254,14 @@ public class ElevatorModel extends Thread {
                     if(eG.getX() <= Constants.ELEVATORLEFTENTRY && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
                         this.eG.setY(eG.getY() + 115);
                         view.updateElevatorGuy(eG);
-                    }
-                        
+                    }//if
                 }else if (this.elevatorInfo == "Elevator 2") {
                     if(eG.getX() >= Constants.ELEVATORRIGHTENTRY-eG.getBoundX() && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
                         this.eG.setY(eG.getY() + 115);     
                         view.updateElevatorGuy(eG);
-                    }
-                }
-            }
+                    }//if
+                }//if
+            }//if
         }// if
         // Up
         if (direction == 1) {
@@ -271,17 +270,16 @@ public class ElevatorModel extends Thread {
                     if(eG.getX() <= Constants.ELEVATORLEFTENTRY && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
                         this.eG.setY(eG.getY() - 115);
                         view.updateElevatorGuy(eG);
-                    }
-                        
+                    }//if
                 }else if (this.elevatorInfo == "Elevator 2") {
                     if(eG.getX() >= Constants.ELEVATORRIGHTENTRY-eG.getBoundX() && eL.getY() == (eG.getY() - (eL.getBoundY() - eG.getBoundY()))){
                         this.eG.setY(eG.getY() - 115);
                         view.updateElevatorGuy(eG);
-                    }
-                }
-            }
+                    }//if
+                }//if
+            }//if
         }// if
-    }
+    }//moveGuy
 
     /**
      * Threads run() looks if there are targets in targetList and resolves the belonging ElevatorLabel.<br>
@@ -292,7 +290,6 @@ public class ElevatorModel extends Thread {
      * }
      */
     public void run() {
-//        System.out.println(Thread.currentThread().getName() + " Started!");
         if (!targets.isEmpty()) {
             work = true;
         }// if
@@ -318,7 +315,7 @@ public class ElevatorModel extends Thread {
                 }// catch
             } else {
                 try {
-                    sleep(200);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -331,25 +328,9 @@ public class ElevatorModel extends Thread {
         }// while
     }// run
 
-    public void setDoorOpen(boolean doorOpen) {
-        this.doorOpen = doorOpen;
-    }// setDoorOpen
-
-    public boolean isDoorOpen() {
-        return doorOpen;
-    }// isDoorOpen
-
-    public boolean isPriorityDrive() {
-        return priorityDrive;
-    }// isPriorityDrive
-
     public void setPriorityDrive(boolean priorityDrive) {
         this.priorityDrive = priorityDrive;
     }// setPriorityDrive
-
-    public boolean isKeepDoorsOpen() {
-        return keepDoorsOpen;
-    }// isKeepDoorsOpen
 
     public void setKeepDoorsOpen(boolean keepDoorsOpen) {
         this.keepDoorsOpen = keepDoorsOpen;
