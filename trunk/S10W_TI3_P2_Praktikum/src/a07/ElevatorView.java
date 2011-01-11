@@ -3,9 +3,7 @@ package a07;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -17,7 +15,7 @@ import javax.swing.*;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 06<br>
+ * Aufgaben-Nr.: 07<br>
  * 
  * Version: V1<br>
  * Aenderungen:
@@ -49,11 +47,24 @@ public class ElevatorView extends JPanel {
     private KeyListener eGkL;
 
     /**
-     * Empty Constructor.<br> To create the other JPanel Areas call initElevatorView().
+     * Empty Constructor.<br>
+     * To create the other JPanel Areas call initElevatorView().
      */
     ElevatorView() {
-        
+        //Empty
     }// ElevatorView
+
+    /**
+     * Creates the JPanel Areas, adds the mainArea to this panel and repaints it.
+     */
+    public void initElevatorView() {
+        createCallArea();
+        createControlArea();
+        createViewArea();
+        createMainArea();
+        this.add(mainArea);
+        this.repaint();
+    }// initElevatorView
 
     /**
      * Creates the mainArea and adds sub panels to its BorderLayout.<br>
@@ -72,13 +83,14 @@ public class ElevatorView extends JPanel {
 
     /**
      * Creates the viewArea panel with nullLayout and sets its size and border.<br>
-     * Also creates and adds the ElevatorLabels to the panel.
+     * Also creates and adds the ElevatorLabels and ElevatorGuy to the panel.
      */
     private void createViewArea() {
         viewArea = new JPanel();
         viewArea.setLayout(null);
         viewArea.setPreferredSize(new Dimension(800, 600));
-        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        viewArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
 
         elevatorLabelList.add(new ElevatorLabel(1));
         elevatorLabelList.add(new ElevatorLabel(2));
@@ -90,14 +102,17 @@ public class ElevatorView extends JPanel {
             viewArea.add(eGuy);
             eGuy.repaint();
         }// for
-
-        // viewArea.setOpaque(true);
     }// createViewArea
 
+    /**
+     * Creates the controlArea panel with BoxLayout (X_AXIS) and sets its border.<br>
+     * Also creates and adds the priorityDrive and keepDoorsOpen buttons to the panel.
+     */
     private void createControlArea() {
         controlArea = new JPanel();
         controlArea.setLayout(new BoxLayout(controlArea, BoxLayout.X_AXIS));
-        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        controlArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
         addOneCheckBoxToCheckBoxArray("Priority Drive 1", controlArea, 0, 1);
         addOneCheckBoxToCheckBoxArray("Priority Drive 2", controlArea, 1, 2);
         addOneButtonToButtonArray("< 1 >", controlArea, 10, 1);
@@ -112,25 +127,18 @@ public class ElevatorView extends JPanel {
         callArea = new JPanel();
         callArea2 = new JPanel();
         callArea.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        callArea.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
         callArea2.setLayout(new GridLayout(5, 1, 5, 5));
-        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        callArea2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(""), BorderFactory
+                .createEmptyBorder(10, 10, 10, 10)));
 
         addCallButtonsToPanel(callArea);
         addCallButtonsToPanel(callArea2);
     }// createCallArea
 
-    public void initElevatorView() {
-        createCallArea();
-        createControlArea();
-        createViewArea();
-        createMainArea();
-        this.add(mainArea);
-        this.repaint();
-    }//initElevatorView
-
     /**
-     * Adds one button to the JButtonArray and adds them to the specified panel.
+     * Adds one button to the JButtonArray and adds it to the specified panel.
      * 
      * @param text
      *            String: JButtons text
@@ -148,11 +156,24 @@ public class ElevatorView extends JPanel {
         jButtonArray[index] = button;
         if (jButtonArray[index] != null) {
             pane.add(jButtonArray[index]);
-        } else {
-            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText() + " failed!");
+        }else {
+            System.out.println("Init of jButtonArraY[" + index + "] with name: " + jButtonArray[index].getText()
+                    + " failed!");
         }// else
     }// addOneButtonToButtonArray
 
+    /**
+     * Adds one button to the CheckBoxArray and adds it to the specified panel.
+     * 
+     * @param text
+     *            String: JButtons text
+     * @param pane
+     *            JPanel: Panel to add button to
+     * @param index
+     *            int: JButtonArray index number
+     * @param i
+     *            int: Elevator number
+     */
     private void addOneCheckBoxToCheckBoxArray(String text, JPanel pane, int index, int i) {
         JCheckBox checkBox = new JCheckBox(text);
         checkBox.setName(text + " Elevator " + i);
@@ -160,8 +181,9 @@ public class ElevatorView extends JPanel {
         jCheckBoxArray[index] = checkBox;
         if (jCheckBoxArray[index] != null) {
             pane.add(jCheckBoxArray[index]);
-        } else {
-            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText() + " failed!");
+        }else {
+            System.out.println("Init of jCheckBoxArray[" + index + "] with name: " + jCheckBoxArray[index].getText()
+                    + " failed!");
         }// else
     }// addOneButtonToButtonArray
 
@@ -179,7 +201,7 @@ public class ElevatorView extends JPanel {
             addOneButtonToButtonArray("Second floor", pane, 2, 1);
             addOneButtonToButtonArray("First  floor", pane, 1, 1);
             addOneButtonToButtonArray("Ground floor", pane, 0, 1);
-        } else if (pane == callArea2) {
+        }else if (pane == callArea2) {
             addOneButtonToButtonArray("Fourth floor", pane, 9, 2);
             addOneButtonToButtonArray("Third  floor", pane, 8, 2);
             addOneButtonToButtonArray("Second floor", pane, 7, 2);
@@ -198,12 +220,18 @@ public class ElevatorView extends JPanel {
         if (button.getText().contains("floor")) {
             button.addActionListener(cBaL);
             button.addKeyListener(eGkL);
-        } else if (button.getText().contains("< ") && button.getText().contains(" >")) {
+        }else if (button.getText().contains("< ") && button.getText().contains(" >")) {
             button.addMouseListener(kDOmL);
             button.addKeyListener(eGkL);
         }// else
     }// registerButtonActionListeners
 
+    /**
+     * Adds the listener to the checkBox
+     * 
+     * @param checkBox
+     *            JCheckBox: CheckBox to addListener to
+     */
     private void registerCheckBoxButtonActionListener(JCheckBox checkBox) {
         if (checkBox.getText().contains("Priority")) {
             checkBox.addActionListener(cBBaL);
@@ -222,12 +250,20 @@ public class ElevatorView extends JPanel {
         }// for
     }// registerButtonActionListener
 
+    /**
+     * Calls the registerCheckBoxButtonActionListener(JCheckBox) for each CheckBox from jCheckBoxArray[]
+     * 
+     * @see ElevatorView#registerCheckBoxButtonActionListener(JCheckBox) registerCheckBoxButtonActionListerner
+     */
     public void registerCheckBoxButtonActionListener() {
         for (int i = 0; i < jCheckBoxArray.length; i++) {
             registerCheckBoxButtonActionListener(jCheckBoxArray[i]);
         }// for
     }// registerButtonActionListener
 
+    /**
+     * Registers the ElevatorGuyKeyListener to the mainArea and sets the mainArea Focusable.
+     */
     public void registerElevatorGuyKeyListener() {
         this.mainArea.setFocusable(true);
         this.mainArea.addKeyListener(eGkL);
@@ -243,21 +279,32 @@ public class ElevatorView extends JPanel {
         this.cBaL = aL;
     }// setCallButtonActionListener
 
+    /**
+     * Sets the checkBoxButtons actionListener
+     * 
+     * @param aL
+     */
     public void setCheckBoxButtonActionListener(ActionListener aL) {
         this.cBBaL = aL;
     }// setCallButtonActionListener
 
+    /**
+     * Sets the keepDoorsOpen mouseListener
+     * 
+     * @param mL
+     */
     public void setKeepDoorsOpenMouseListener(MouseListener mL) {
         this.kDOmL = mL;
     }// setCallButtonActionListener
 
+    /**
+     * Sets the elevatorGuys keyListener
+     * 
+     * @param kL
+     */
     public void setElevatorGuyListener(KeyListener kL) {
         this.eGkL = kL;
     }// setCallButtonActionListener
-
-    // public void initElevatorGuy(){
-    //        
-    // }
 
     /**
      * Updates the ElevatorLabels
@@ -274,8 +321,13 @@ public class ElevatorView extends JPanel {
         }// for
     }// updateElevatorLabel
 
+    /**
+     * Updates the ElevatorGuy
+     * 
+     * @param eG
+     *            ElevatorGuy to be updated
+     */
     public void updateElevatorGuy(ElevatorGuy eG) {
-//        System.out.println(eG.getBounds());
         eG.repaint();
     }// updateElevatorLabel
 
@@ -295,6 +347,6 @@ public class ElevatorView extends JPanel {
 
     public List<ElevatorGuy> getGuyLabelList() {
         return guyLabelList;
-    }
-    
+    }// getGuyLabelList
+
 }// ElevatorView

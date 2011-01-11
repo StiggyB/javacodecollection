@@ -2,7 +2,7 @@ package a07;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 06<br>
+ * Aufgaben-Nr.: 07<br>
  * 
  * Version: V1<br>
  * Aenderungen:

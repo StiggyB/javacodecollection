@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 06<br>
+ * Aufgaben-Nr.: 07<br>
  * 
  * Version: V1<br>
  * Aenderungen:
@@ -37,13 +37,12 @@ public class ElevatorModel implements Runnable {
     private ElevatorGuy eG;
 
     /**
-     * 
+     * Constructor
      * @param info
      *            String: Elevator Name
      * @param view
      *            ElevatorView: GUI
      */
-    // Constructor
     public ElevatorModel(String info, ElevatorView view) {
         this.targets = new RingBuffer<Integer>(Constants.FLOORNO); 
         this.view = view;

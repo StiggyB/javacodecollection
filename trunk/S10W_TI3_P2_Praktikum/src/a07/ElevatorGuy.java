@@ -59,16 +59,6 @@ public class ElevatorGuy extends JLabel implements Runnable {
         this.setIcon(normalGuy);
     }
 
-    // protected ImageIcon createImageIcon(String path, String description) {
-    // java.net.URL imgURL = getClass().getResource(path);
-    // if (imgURL != null) {
-    // return new ImageIcon(imgURL, description);
-    // } else {
-    // System.err.println("Couldn't find file: " + path);
-    // return null;
-    // }
-    // }
-
     /**
      * Runnables run() searches the 2 elevator labels and sets them to the private variables. while (true) {<br>
      * if the guy is being moved, it calls the move(). Otherwise the thread sleeps for 200ms.<br>
