@@ -1,4 +1,16 @@
 package a08;
+/**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 08<br>
+ * 
+ * Version: V0<br>
+ * Aenderungen:
+ * 
+ * Quellen: API, Swing, PR2 Praktikum
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ */
 
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -7,6 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -42,7 +55,11 @@ public class ObjectView {
 		createObejctTree();
 		createObjectFrame();
 		} else {
-			System.err.println("Object is null.");
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Error: Object is null. Please change the Object to inspect.",
+					"Null Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -161,6 +178,7 @@ public class ObjectView {
 						e1.printStackTrace();
 					}
 				} else {
+					ob.reflectObject(nodeObj);
 					sb = ob.getClassInfo((Object)nodeObj);
 				}
 				objectInfo.setText(sb.toString());

@@ -235,7 +235,6 @@ public class ObjectBrowser {
 		return sb;
 	}
 	
-	//TODO Zoom in reference types
 	public StringBuilder zoomInField(Field fld, Object obj) throws IllegalArgumentException, IllegalAccessException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Field \n");

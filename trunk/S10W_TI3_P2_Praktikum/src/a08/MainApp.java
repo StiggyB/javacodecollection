@@ -1,8 +1,4 @@
 package a08;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
@@ -15,6 +11,10 @@ import javax.swing.UnsupportedLookAndFeelException;
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
+
+import javax.swing.JTree;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainApp {
 
@@ -37,6 +37,9 @@ public class MainApp {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			new ObjectView(new Clazz());	
+			
+//			new ObjectView(new Clazz());
+			new ObjectView(new JTree());
+			
 	}
 }

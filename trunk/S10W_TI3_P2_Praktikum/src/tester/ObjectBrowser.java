@@ -1,8 +1,8 @@
-package a08;
+package tester;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 08<br>
+ * Aufgaben-Nr.: 09<br>
  * 
  * Version: V0<br>
  * Aenderungen:
@@ -19,9 +19,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+
+/**
+ * 
+ * 
+ * @author Administrator
+ *
+ */
 public class ObjectBrowser {
 
 	List<Method> decMeth = new ArrayList<Method>();
@@ -97,7 +103,7 @@ public class ObjectBrowser {
 				}
 			}
 		}
-//		printList(decMeth);	
+		printList(decMeth);	
 	}
 	
 	public static <TTargetType> TTargetType as(Object o, Class<TTargetType> clazz) {
@@ -115,36 +121,21 @@ public class ObjectBrowser {
 		throws IllegalAccessException, InvocationTargetException {
 		if(testObj.getClass().getName().equals(Annotation[].class.getName())) {
 			this.annotations = as(met.invoke(obj.getClass()), Annotation[].class);
-			fillIt(this.annotations);
 		} else if(testObj.getClass().getName().equals(Class[].class.getName())) {
 			this.classes = as(met.invoke(obj.getClass()), Class[].class);
-			fillIt(this.classes);
 		} else if(testObj.getClass().getName().equals(Constructor[].class.getName())) {
 			this.constructors = as(met.invoke(obj.getClass()), Constructor[].class);
-			fillIt(this.constructors);
 		} else if(testObj.getClass().getName().equals(Field[].class.getName())) {
 			this.fields = as(met.invoke(obj.getClass()), Field[].class);
-			fillIt(this.fields);
 		} else if(testObj.getClass().getName().equals(Method[].class.getName())) {
 			this.methods = as(met.invoke(obj.getClass()), Method[].class);
-			fillIt(this.methods);
 		}
 	}
 	
-	private StringBuilder fillIt(Object[] objArr) {
-		StringBuilder sb = new StringBuilder();
-		for(Object obj : objArr) {
-			sb.append("-> ");
-			sb.append(obj);	
-		}
-//		System.out.println(sb);
-		return sb;
-	}
 	
 	public StringBuilder getClassInfo(Object obj) {
 		StringBuilder sb = new StringBuilder();
 		Class<?> c = obj.getClass();
-		System.out.println(c);
 		sb.append("Class \n");
 		sb.append("\n Name: \n\t" + c.getSimpleName());
 		sb.append("\n Modifier: \n\t" + Modifier.toString(c.getModifiers()));
@@ -181,33 +172,43 @@ public class ObjectBrowser {
 	 *	public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
 	 *
 	 */
-	public void reflectObject(Object obj) {
-		for(Method met : decMeth) {
-			Object testObj = null;
-			if(obj != null) {
-				try {
-					testObj = met.invoke(obj.getClass());
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+	public void reflectObject(Object obj, int flag) {
+		Object testObj = null;
+		if(obj != null) {
+			if(flag == 0) {
+				for(Method met : decMeth) {	
+					try {
+						testObj = met.invoke(obj.getClass());
+						chooseType(obj, met, testObj);
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				try {
-					chooseType(obj, met, testObj);
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				
-			} 
+			} else {
+				System.out.println(decMeth.size());
+				for(int i = decMeth.lastIndexOf(Class.class.getDeclaredMethods()); i >= (decMeth.size()-2); i--) {
+					try {
+						testObj = decMeth.get(i).invoke(obj.getClass());
+						chooseType(obj, decMeth.get(i), testObj);
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 	
@@ -235,7 +236,6 @@ public class ObjectBrowser {
 		}
 		sb.append("\t " + reVal + "\n");
 		sb.append("\n");
-		System.out.println(sb);
 		return sb;
 	}
 	
@@ -254,18 +254,21 @@ public class ObjectBrowser {
 		} else {
 			sb.append("unknown");
 		}
-		sb.append("\n");
-		System.out.println(sb);	
+		sb.append("\n");	
 		return sb;
 	}
 	
-//	private void printList(List<Method> decMeth) {
-//		for(Method met : decMeth) {
-//			System.out.println(met);
+	/*
+	 * These 2 Methods only use for Debugging.
+	 */
+	
+	private void printList(List<Method> decMeth) {
+		for(Method met : decMeth) {
+			System.out.println(met);
 //			for(Annotation ann : met.annotations)
 //			System.out.println(ann);
-//		}
-//	}
+		}
+	}
 //	
 //	private void printContent(Object... obj) {
 //		System.out.println(obj.length);
@@ -273,15 +276,6 @@ public class ObjectBrowser {
 //			System.out.println(ob.toString() + "\n");
 //		}
 //	}
-
-	@Override
-	public String toString() {
-		return "ObjectBrowser [annotaions=" + Arrays.toString(annotations)
-				+ ", classes=" + Arrays.toString(classes) + ", constructors="
-				+ Arrays.toString(constructors) + ", decMeth=" + decMeth
-				+ ", fields=" + Arrays.toString(fields) + ", methods="
-				+ Arrays.toString(methods) + "]";
-	}
 }
 		
 		
