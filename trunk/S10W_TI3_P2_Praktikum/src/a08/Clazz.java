@@ -20,6 +20,10 @@ import org.junit.Test;
 
 import a08.TestAnno;
 
+/**
+ * This class is a test class to search through it.
+ *
+ */
 @SuppressWarnings("all")
 @TestAnno(exception = RuntimeException.class)
 public class Clazz extends JTree implements Serializable{

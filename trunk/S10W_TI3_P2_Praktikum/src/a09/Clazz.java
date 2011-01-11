@@ -28,7 +28,7 @@ import a08.TestAnno;
  */
 @SuppressWarnings("all")
 @TestAnno(exception = RuntimeException.class)
-public class Clazz extends JTree implements Serializable, TestAnno{
+public class Clazz extends JTree implements Serializable, TestAnno {
 
 	private class Memeber{
 		

@@ -30,6 +30,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/**
+ * This class build the View of the a09.ObjectBrowser.
+ * It holds a TextArea with the specific properties
+ * and a Pane with the Tree to navigate.
+ * Additional two listener implemented, which
+ * coordinate the expansions and selections in the Tree
+ *
+ */
 public class ObjectView {
 	
 	private JTree tree;
@@ -38,6 +46,16 @@ public class ObjectView {
 	private ObjectBrowser ob;
 	private Object obj;
 	
+	/**
+	 * The constructor sets a08.ObjectView.obj
+	 * with obj.
+	 * The model ObjectBrowser starts and the
+	 * initial methods call here.
+	 * 
+	 * @param obj
+	 * @see a08.ObjectBrowser#searchThroughClass
+	 * @see a08.ObjectBrowser#reflectObject
+	 */
 	public ObjectView(Object obj) {	
 		if(obj != null) {
 		this.obj = obj;
@@ -64,8 +82,17 @@ public class ObjectView {
 	}
 
 	/**
-	 * Source: http://www.java2s.com/Tutorial/Java/0240__Swing/TreeWillExpandListener.htm
-	 * 		   http://www.dil.univ-mrs.fr/~garreta/docJava/tutorial/uiswing/events/treeselectionlistener.html
+	 * This method creates the Tree to navigate through
+	 * the Object properties.
+	 * Two Listener added: TreeExpandListener and TreeSelectionListener.
+	 * The necessary methods implemented in two inner classes.
+	 * 
+	 * @see java.util.EventListener.TreeExpansionListener
+	 * @see java.util.EventListener.TreeSelectionListener
+	 * source:
+	 * http://www.java2s.com/Tutorial/Java/0240__Swing/TreeWillExpandListener
+	 * .htm http://www.dil.univ-mrs.fr/~garreta/docJava/tutorial/uiswing/events/
+	 * treeselectionlistener.html
 	 */
 	private void createObejctTree() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(this.obj);
@@ -74,10 +101,27 @@ public class ObjectView {
 		tree = new JTree(root);
 		tree.addTreeExpansionListener(new TreeExpansionListener() {
 
+			/*
+			 * (non-Javadoc) 
+			 * This method normally must close created nodes by the expansion
+			 * 
+			 * @see
+			 * javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing
+			 * .event.TreeExpansionEvent)
+			 */
 			@Override
 			public void treeCollapsed(TreeExpansionEvent e) {
 			}
 
+			/*
+			 * (non-Javadoc) 
+			 * This method has not implemented the expansion for
+			 * methods (same as fields)
+			 * 
+			 * @see
+			 * javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing
+			 * .event.TreeExpansionEvent)
+			 */
 			@Override
 			public void treeExpanded(TreeExpansionEvent e) {			
 				DefaultMutableTreeNode accNode = (DefaultMutableTreeNode)
@@ -123,6 +167,14 @@ public class ObjectView {
 			
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 
+			/*
+			 * (non-Javadoc) 
+			 * This Method reacts by any selection and update it
+			 * 
+			 * @see
+			 * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing
+			 * .event.TreeSelectionEvent)
+			 */
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)
@@ -186,6 +238,12 @@ public class ObjectView {
 		});
 	}
 	
+	/**
+	 * This method creates the field and method nodes
+	 * to expand the Tree.
+	 * 
+	 * @param root
+	 */
 	private void createObjectProperties(DefaultMutableTreeNode root) {
 		DefaultMutableTreeNode fldNode = new DefaultMutableTreeNode("Field");
 		for(Field fld : ob.getFields()) {
@@ -201,6 +259,12 @@ public class ObjectView {
 		root.add(metNode);
 	}
 	
+	/**
+	 * This method creates the frame of the ObjectBrowser.
+	 * It holds a TextArea with the specific properties
+	 * and a Pane with the Tree to navigate.
+	 * 
+	 */
 	private void createObjectFrame() {
 		objectInfo = new JTextArea("ObjectInfo: ");	
 		JSplitPane sp = new JSplitPane();

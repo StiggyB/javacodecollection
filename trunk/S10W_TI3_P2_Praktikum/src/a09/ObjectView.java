@@ -53,9 +53,10 @@ public class ObjectView {
 	 * initial methods call here.
 	 * 
 	 * @param obj
+	 * @see a09.ObjectBrowser#searchThroughClass
+	 * @see a09.ObjectBrowser#reflectObject
 	 */
 	public ObjectView(Object obj) {
-		System.out.println(Thread.currentThread());
 		if (obj != null) {
 			this.obj = obj;
 			this.ob = new ObjectBrowser(this.obj);
@@ -88,7 +89,7 @@ public class ObjectView {
 	 * 
 	 * @see java.util.EventListener.TreeExpansionListener
 	 * @see java.util.EventListener.TreeSelectionListener
-	 * @source:
+	 * source:
 	 * http://www.java2s.com/Tutorial/Java/0240__Swing/TreeWillExpandListener
 	 * .htm http://www.dil.univ-mrs.fr/~garreta/docJava/tutorial/uiswing/events/
 	 * treeselectionlistener.html
@@ -114,7 +115,8 @@ public class ObjectView {
 			}
 
 			/*
-			 * (non-Javadoc) This method has not implemented the expansion for
+			 * (non-Javadoc) 
+			 * This method has not implemented the expansion for
 			 * methods (same as fields)
 			 * 
 			 * @see
@@ -150,8 +152,6 @@ public class ObjectView {
 									ob.reflectObject(null);
 								} else {
 									try {
-										System.out.println(fld);
-										System.out.println(treeObj);
 										ob.reflectObject(fld.get(treeObj));
 									} catch (IllegalArgumentException e1) {
 										// TODO Auto-generated catch block

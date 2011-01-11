@@ -16,9 +16,16 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+/**
+ * This class holds the main method and 
+ * exists as point of entry.
+ *
+ */
 public class MainApp {
 
 	/**
+	 * Main method to start the ObjectBrowser application.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

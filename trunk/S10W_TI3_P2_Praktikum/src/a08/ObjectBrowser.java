@@ -19,9 +19,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class build the Model of the a08.ObjectBrowser .
+ * It provides almost all properties of a specific Object.
+ * 
+ */
 public class ObjectBrowser {
 
 	List<Method> decMeth = new ArrayList<Method>();
@@ -84,7 +88,13 @@ public class ObjectBrowser {
 	public void setClasses(Class<?>[] classes) {
 		this.classes = classes;
 	}
-
+	
+	/**
+	 * This method search through the class Class and fill 
+	 * the relevant reflection methods in a08.ObjectBrowser.decMeth
+	 * 
+	 * @see ObjectBrowser#decMeth
+	 */
 	public void searchThroughClass() {
 		for(Method met : Class.class.getDeclaredMethods()) {
 			if(met.getReturnType().isArray()) {
@@ -100,6 +110,17 @@ public class ObjectBrowser {
 //		printList(decMeth);	
 	}
 	
+	/**
+	 * This method realize a dynamic cast if the generic type
+	 * Class<TTargetType> clazz is right.
+	 * 
+	 * @param <TTargetType>
+	 * @param o
+	 * @param clazz
+	 * @return <TTargetType> TTargetType is o casted to the right Class or null 
+	 * source: 
+	 * http://www.tutorials.de/java/271567-variabler-cast-und-klassendefinition-java-wie-php.html
+	 */
 	public static <TTargetType> TTargetType as(Object o, Class<TTargetType> clazz) {
 	    if(null == o || null == clazz){
 	    	return null;
@@ -111,75 +132,41 @@ public class ObjectBrowser {
 	    }
 	}
 
+	/**
+	 * This method choose the right type for the reflection methods
+	 * and fill the right arrays with the return value.
+	 * 
+	 * @param obj
+	 * @param met
+	 * @param testObj
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @see a08.ObjectBrowser#as(Object, Class)
+	 * @see a08.ObjectBrowser#annotations
+	 * ...
+	 */
 	private void chooseType(Object obj, Method met, Object testObj)
 		throws IllegalAccessException, InvocationTargetException {
 		if(testObj.getClass().getName().equals(Annotation[].class.getName())) {
 			this.annotations = as(met.invoke(obj.getClass()), Annotation[].class);
-			fillIt(this.annotations);
 		} else if(testObj.getClass().getName().equals(Class[].class.getName())) {
 			this.classes = as(met.invoke(obj.getClass()), Class[].class);
-			fillIt(this.classes);
 		} else if(testObj.getClass().getName().equals(Constructor[].class.getName())) {
 			this.constructors = as(met.invoke(obj.getClass()), Constructor[].class);
-			fillIt(this.constructors);
 		} else if(testObj.getClass().getName().equals(Field[].class.getName())) {
 			this.fields = as(met.invoke(obj.getClass()), Field[].class);
-			fillIt(this.fields);
 		} else if(testObj.getClass().getName().equals(Method[].class.getName())) {
 			this.methods = as(met.invoke(obj.getClass()), Method[].class);
-			fillIt(this.methods);
 		}
 	}
 	
-	private StringBuilder fillIt(Object[] objArr) {
-		StringBuilder sb = new StringBuilder();
-		for(Object obj : objArr) {
-			sb.append("-> ");
-			sb.append(obj);	
-		}
-//		System.out.println(sb);
-		return sb;
-	}
-	
-	public StringBuilder getClassInfo(Object obj) {
-		StringBuilder sb = new StringBuilder();
-		Class<?> c = obj.getClass();
-		System.out.println(c);
-		sb.append("Class \n");
-		sb.append("\n Name: \n\t" + c.getSimpleName());
-		sb.append("\n Modifier: \n\t" + Modifier.toString(c.getModifiers()));
-		sb.append("\n Annotations: \n");
-		for(Annotation ann : annotations) {
-			sb.append("\t " + ann + "\n");
-		}
-		sb.append("\n Superclasses: \n");
-		Class<?>  sClss = c.getSuperclass();
-		while(sClss != null) {
-			sb.append("\t " + sClss + "\n");
-			sClss = sClss.getSuperclass();
-		}
-		sb.append("\n Interfaces (implemented): \n");
-		for(Class<?> intFace : c.getInterfaces()) {
-			sb.append("\t " + intFace + "\n");
-		}
-		sb.append("\n Constructors: \n");
-		for(Constructor<?> constr : constructors) {
-			sb.append("\t " + constr + "\n");
-		}
-		sb.append("\n Inner Classes/ Interfaces: ");
-		for(Class<?> clss : classes) {
-			sb.append("\n\t " + clss);
-		}
-		return sb;
-	}
-	
-	/*
-	 *  public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
-	 *	public java.lang.Class[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
-	 *	public java.lang.reflect.Constructor[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
-	 *	public java.lang.reflect.Field[] java.lang.Class.getDeclaredFields() throws java.lang.SecurityException
-	 *	public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
-	 *
+	/**
+	 * A method to iterate over the reflection
+	 * methods in a08.ObjectBrowser.decMeth
+	 * 
+	 * @param obj
+	 * @see ObjectBrowser#chooseType
+	 * @see ObjectBrowser#searchThroughClass
 	 */
 	public void reflectObject(Object obj) {
 		for(Method met : decMeth) {
@@ -211,6 +198,53 @@ public class ObjectBrowser {
 		}
 	}
 	
+	/**
+	 * This method build a summary of almost all class properties
+	 * 
+	 * @param obj
+	 * @return class properties as StringBuilder
+	 */
+	public StringBuilder getClassInfo(Object obj) {
+		StringBuilder sb = new StringBuilder();
+		Class<?> c = obj.getClass();
+		sb.append("Class \n");
+		sb.append("\n Name: \n\t" + c.getSimpleName());
+		sb.append("\n Modifier: \n\t" + Modifier.toString(c.getModifiers()));
+		sb.append("\n Annotations: \n");
+		for(Annotation ann : annotations) {
+			sb.append("\t " + ann + "\n");
+		}
+		sb.append("\n Superclasses: \n");
+		Class<?>  sClss = c.getSuperclass();
+		while(sClss != null) {
+			sb.append("\t " + sClss + "\n");
+			sClss = sClss.getSuperclass();
+		}
+		sb.append("\n Interfaces (implemented): \n");
+		for(Class<?> intFace : c.getInterfaces()) {
+			sb.append("\t " + intFace + "\n");
+		}
+		sb.append("\n Constructors: \n");
+		for(Constructor<?> constr : constructors) {
+			sb.append("\t " + constr + "\n");
+		}
+		sb.append("\n Inner Classes/ Interfaces: ");
+		for(Class<?> clss : classes) {
+			sb.append("\n\t " + clss);
+		}
+		return sb;
+	}
+	
+	/**
+	 * This method build a summary of almost all method properties 
+	 * 
+	 * @param met
+	 * @param obj
+	 * @return method properties as StringBuilder
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	public StringBuilder zoomInMethod(Method met, Object obj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Method \n");
@@ -235,10 +269,18 @@ public class ObjectBrowser {
 		}
 		sb.append("\t " + reVal + "\n");
 		sb.append("\n");
-		System.out.println(sb);
 		return sb;
 	}
 	
+	/**
+	 * This method build a summary of almost all field properties
+	 * 
+	 * @param fld
+	 * @param obj
+	 * @return field properties as StringBuilder
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public StringBuilder zoomInField(Field fld, Object obj) throws IllegalArgumentException, IllegalAccessException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Field \n");
@@ -255,10 +297,12 @@ public class ObjectBrowser {
 			sb.append("unknown");
 		}
 		sb.append("\n");
-		System.out.println(sb);	
 		return sb;
 	}
 	
+	/*
+	 * These 2 Methods only used for Debugging.
+	 */
 //	private void printList(List<Method> decMeth) {
 //		for(Method met : decMeth) {
 //			System.out.println(met);
@@ -273,15 +317,6 @@ public class ObjectBrowser {
 //			System.out.println(ob.toString() + "\n");
 //		}
 //	}
-
-	@Override
-	public String toString() {
-		return "ObjectBrowser [annotaions=" + Arrays.toString(annotations)
-				+ ", classes=" + Arrays.toString(classes) + ", constructors="
-				+ Arrays.toString(constructors) + ", decMeth=" + decMeth
-				+ ", fields=" + Arrays.toString(fields) + ", methods="
-				+ Arrays.toString(methods) + "]";
-	}
 }
 		
 		

@@ -21,7 +21,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This class build the Model of the a09.ObjectBrowser .
  * It provides almost all properties of a specific Object.
@@ -94,7 +93,7 @@ public class ObjectBrowser {
 	 * This method search through the class Class and fill 
 	 * the relevant reflection methods in a09.ObjectBrowser.decMeth
 	 * 
-	 * @see a09.ObjectBrowser.decMeth
+	 * @see ObjectBrowser#decMeth
 	 */
 	public void searchThroughClass() {
 		for(Method met : Class.class.getDeclaredMethods()) {
@@ -119,7 +118,8 @@ public class ObjectBrowser {
 	 * @param o
 	 * @param clazz
 	 * @return <TTargetType> TTargetType is o casted to the right Class or null 
-	 * @source http://www.tutorials.de/java/271567-variabler-cast-und-klassendefinition-java-wie-php.html
+	 * source: 
+	 * http://www.tutorials.de/java/271567-variabler-cast-und-klassendefinition-java-wie-php.html
 	 */
 	public static <TTargetType> TTargetType as(Object o, Class<TTargetType> clazz) {
 	    if(null == o || null == clazz){
@@ -166,8 +166,8 @@ public class ObjectBrowser {
 	 * methods in a09.ObjectBrowser.decMeth
 	 * 
 	 * @param obj
-	 * @see a09.ObjectBrowser.chooseType
-	 * @see a09.ObjectBrowser.searchThroughClass
+	 * @see ObjectBrowser#chooseType
+	 * @see ObjectBrowser#searchThroughClass
 	 */
 	public void reflectObject(Object obj) {
 

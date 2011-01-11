@@ -44,8 +44,9 @@ public class MainApp {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			Thread objThread = new Thread(new ObjectApp(), "ObjectAppThread");
 			objThread.start();
-//			System.out.println(Thread.currentThread());
+			
 	}
 }
