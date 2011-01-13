@@ -11,6 +11,7 @@ public class MessageServer implements Runnable {
     String clientSentence;
     String modifiedSentence;
     States s;
+    Reaction r;
     boolean run = true;
     boolean sysrun = true;
     BufferedReader inFromClient = null;
@@ -40,7 +41,8 @@ public class MessageServer implements Runnable {
         }
     }
     private void hacked() {
-        String s = clientSentence.toLowerCase() + '\n';
+//        String s = clientSentence.toLowerCase() + '\n';
+        String s = clientSentence.CASE_INSENSITIVE_ORDER.toString();
         try {
             outToClient.writeBytes(s);
         } catch (IOException e) {
@@ -50,15 +52,49 @@ public class MessageServer implements Runnable {
     }
     
     private void echo() {
-        
+        String s = clientSentence;
+        try {
+            outToClient.writeBytes(s);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        this.r = Reaction.REVERSE;
     }
 
     private void reverse() {
-
+        String s = new StringBuffer(clientSentence).reverse().toString();
+        try {
+            outToClient.writeBytes(s);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        this.r = Reaction.LOL;
     }
 
     private void lol() {
-
+        char [] vocale = new char[]{'a','e','i','o','u','ä','ö','ü'};
+        String s = clientSentence.toLowerCase();
+        char work;
+        for(int i = 0; i < s.length(); i++){
+            work = s.charAt(i);
+            
+            boolean match = false;
+            for(int j = 0; j < vocale.length; j++){
+                if(work != vocale[j]){
+                    match = true;
+                }
+            }
+            if(match){
+                String sub1 = s.substring(0, i);
+                String sub2 = s.charAt(i) + "o" + s.charAt(i);
+                String sub3 = s.substring(i+2, s.length());
+                s = sub1 + sub2 + sub3;
+                i+=2;
+            }
+            
+        }
     }
 
     public void run() {
