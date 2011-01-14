@@ -7,8 +7,8 @@ public class StringTest {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        char [] vocale = new char[]{'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'};
-        String clientSentence = "Hallo Du da. Wie geht es dir?";
+        char [] consonants = new char[]{'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'};
+        String clientSentence = "Hallo Du da. Wie geht es dir";
         String s = clientSentence.toLowerCase();
         System.out.println("Substring: " + s.substring(0,3));
         char work;
@@ -16,8 +16,8 @@ public class StringTest {
             work = s.charAt(i);
             
             boolean match = false;
-            for(int j = 0; j < vocale.length; j++){
-                if(work == vocale[j]){
+            for(int j = 0; j < consonants.length; j++){
+                if(work == consonants[j]){
                     match = true;
                 }
             }
