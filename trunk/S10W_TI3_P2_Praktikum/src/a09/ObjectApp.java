@@ -21,6 +21,9 @@ public class ObjectApp implements Runnable{
 
 	private Object obj;
 	
+	public ObjectApp() {
+	}
+	
 	public ObjectApp(Object obj) {
 		this.obj = obj;
 	}

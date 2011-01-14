@@ -250,7 +250,7 @@ public class ObjectView {
 	
 	private String fillThreadInfo() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ThreadInfo: Count of Threads " + Thread.activeCount());
+		sb.append("ThreadInfo: ");//Count of Threads " + Thread.activeCount());
 		sb.append("\nList of Threads: ");
 		for(Thread thr : ThreadController.getAllThreads()) {
 			sb.append("\n" + thr.toString());
