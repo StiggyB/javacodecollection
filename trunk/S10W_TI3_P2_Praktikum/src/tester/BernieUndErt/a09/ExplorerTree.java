@@ -6,6 +6,8 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -92,7 +94,7 @@ public class ExplorerTree {
 		objectHolderThread.start();
 		
 		this.scrollPane = new JScrollPane(buildExplorerTree(objectHolder));
-		
+		printAllThreads(getAllThreads());
 	}
 
 	/**
@@ -357,6 +359,50 @@ public class ExplorerTree {
 		fileInfoTextArea.setText(sb.toString());
 	}
 
+	/**
+	 * source: http://nadeausoftware.com/articles/2008/04/java_tip_how_list_and_find_threads_and_thread_groups
+	 * 
+	 * @return
+	 */
+	static Thread[] getAllThreads( ) {
+	    final ThreadGroup root = getRootThreadGroup( );
+	    final ThreadMXBean thbean = ManagementFactory.getThreadMXBean( );
+	    int nAlloc = thbean.getThreadCount( );
+	    int n = 0;
+	    Thread[] threads;
+	    do {
+	        nAlloc *= 2;
+	        threads = new Thread[ nAlloc ];
+	        n = root.enumerate( threads, true );
+	    } while ( n == nAlloc );
+	    return java.util.Arrays.copyOf( threads, n );
+	}
+	
 
+	 
+	/**
+	 * source: http://nadeausoftware.com/articles/2008/04/java_tip_how_list_and_find_threads_and_thread_groups
+	 * 
+	 * @return
+	 */
+	static ThreadGroup getRootThreadGroup( ) {
+		ThreadGroup rootThreadGroup = null;
+	    if ( rootThreadGroup != null )
+	        return rootThreadGroup;
+	    ThreadGroup tg = Thread.currentThread( ).getThreadGroup( );
+	    ThreadGroup ptg;
+	    while ( (ptg = tg.getParent( )) != null )
+	        tg = ptg;
+	    return tg;
+	}
+	
+	/**
+	 * @param threads
+	 */
+	static void printAllThreads(Thread[] threads) {
+		for(Thread thr : threads) {
+			System.out.println(thr);
+		}
+	}
 
 }

@@ -4,7 +4,7 @@ package a09;
  * Semester: WS10<br>
  * Aufgaben-Nr.: 09<br>
  * 
- * Version: V0<br>
+ * Version: V0.1<br>
  * Aenderungen:
  * 
  * Quellen: API, Swing, PR2 Praktikum
@@ -18,6 +18,7 @@ import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -42,6 +43,7 @@ public class ObjectView {
 
 	private JTree tree;
 	private JTextArea objectInfo;
+	private JTextArea threadInfo;
 	private JFrame frame;
 	private ObjectBrowser ob;
 	private Object obj;
@@ -60,6 +62,7 @@ public class ObjectView {
 		if (obj != null) {
 			this.obj = obj;
 			this.ob = new ObjectBrowser(this.obj);
+
 			this.ob.searchThroughClass();
 			try {
 				this.ob.reflectObject(obj);
@@ -71,7 +74,8 @@ public class ObjectView {
 				e.printStackTrace();
 			}
 			createObejctTree();
-			createObjectFrame();
+			createObjectFrame();			
+			this.threadInfo.setText(fillThreadInfo());
 		} else {
 			JOptionPane
 					.showMessageDialog(
@@ -239,8 +243,19 @@ public class ObjectView {
 					sb = ob.getClassInfo(obj);
 				}
 				objectInfo.setText(sb.toString());
+				threadInfo.setText(fillThreadInfo());
 			}
 		});
+	}
+	
+	private String fillThreadInfo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ThreadInfo: Count of Threads " + Thread.activeCount());
+		sb.append("\nList of Threads: ");
+		for(Thread thr : ThreadController.getAllThreads()) {
+			sb.append("\n" + thr.toString());
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -272,19 +287,26 @@ public class ObjectView {
 	 */
 	private void createObjectFrame() {
 		objectInfo = new JTextArea("ObjectInfo: ");
+		objectInfo.setPreferredSize(new Dimension(1250, 850));
+		threadInfo = new JTextArea("ThreadInfo: ");
+
 		JSplitPane sp = new JSplitPane();
+		JSplitPane threadSp = new JSplitPane();
 		JScrollPane jsp = new JScrollPane(tree);
 
 		sp.add(objectInfo, JSplitPane.RIGHT);
 		sp.add(jsp, JSplitPane.LEFT);
 		sp.setDividerLocation(300);
-
+		
+		threadSp.add(threadInfo, JSplitPane.RIGHT);
+		threadSp.add(sp, JSplitPane.LEFT);
+		
 		frame = new JFrame("ObjectBrowser");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds();
-		frame.setPreferredSize(new Dimension(rect.width, rect.height));
-		frame.add(sp);
+		frame.setPreferredSize(new Dimension(rect.width, rect.height));;
+		frame.add(threadSp);
 		frame.setVisible(true);
 		frame.pack();
 	}

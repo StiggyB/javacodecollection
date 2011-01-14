@@ -4,7 +4,7 @@ package a09;
  * Semester: WS10<br>
  * Aufgaben-Nr.: 09<br>
  * 
- * Version: V0<br>
+ * Version: V0.1<br>
  * Aenderungen:
  * 
  * Quellen: API, Swing, PR2 Praktikum
@@ -21,12 +21,24 @@ public class ObjectApp implements Runnable{
 
 	private Object obj;
 	
+	public ObjectApp(Object obj) {
+		this.obj = obj;
+	}
+	
 	public Object getObj() {
-		return obj;
+		return this.obj;
 	}
 
 	public void setObj(Object obj) {
 		this.obj = obj;
+	}
+	
+	/**
+	 * This method resets the
+	 * object to inspect.
+	 */
+	public void clearObj() {
+		this.obj = null;
 	}
 
 	/**
@@ -37,15 +49,22 @@ public class ObjectApp implements Runnable{
 	 */
 	@Override
 	public void run() {
-//		Some Objects for testing the ObjectBrowser
-		this.obj = new Clazz();
+		while (true) {
+			if (this.obj == null) {
+				// Some Objects for testing the ObjectBrowser
+				this.obj = new Clazz();
 
-//		this.obj = new JTree();
-//		this.obj = new Object();
-//		this.obj = null;
-		
-		new ObjectView(this.obj);
-		
+				// this.obj = new JTree();
+				// this.obj = new Object();
+				// this.obj = null;
+			}
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

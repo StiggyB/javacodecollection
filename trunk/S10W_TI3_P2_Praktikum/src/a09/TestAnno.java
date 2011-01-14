@@ -4,18 +4,12 @@ package a09;
  * Semester: WS10<br>
  * Aufgaben-Nr.: 09<br>
  * 
- * Version: V0<br>
+ * Version: V0.1<br>
  * Aenderungen:
  * 
  * Quellen: API, Swing, PR2 Praktikum
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
- */
-
-/**
- * This class implements Runnable and
- * could transfer to a thread.
- *
  */
 
 import java.lang.annotation.ElementType;

@@ -1,32 +1,59 @@
-package tester;
+package a10;
+/**
+ * Praktikum: P2P<br>
+ * Semester: WS10<br>
+ * Aufgaben-Nr.: 10<br>
+ * 
+ * Version: V0<br>
+ * Aenderungen:
+ * 
+ * Quellen: API, Swing, HTML Elements by Martin Slowikowski
+ * 
+ * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
+ */
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class creates a Christmas Tree
+ * with a recursion algorithm.
+ * 
+ *
+ */
 public class ChristmasTreePattern {	
 	
 	/**
 	 * Creates a Christmas Tree structure in a recursion way.
+	 * The method builds a StringBuilder with HTML-Tags to align it.
 	 * 
-	 * @param n
-	 * @return
+	 * @param n count of bits
+	 * @return sb complete Christmas Tree
 	 */
-	public List<List<String>> createChrisTree(int n) {
+	public StringBuilder createChrisTree(int n) {
 		List<List<String>> lines = new ArrayList<List<String>>();
 		List<String> line = new ArrayList<String>();
 		if(n >= 1) {
+			//n == 1
 			line.add("0");
 			line.add("1");
 			lines.add(line);
 		}
 		getChrisTreeLines(lines, n);
-		//TODO Change the return value for the View
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><body><p align=\"center\">");
+		for(List<String> accLine : lines) {
+			for(String str : accLine) {
+				sb.append(str + " ");
+			}
+			sb.append("<br>");
+		}
+		sb.append("</p></body></html>");
 		
-		return lines;
+		return sb;
 	}
 	
 	/**
-	 * 
 	 * Add a specific count of Strings together
 	 * in order of this pattern.
 	 * 
@@ -35,12 +62,12 @@ public class ChristmasTreePattern {
 	 * 
 	 * If t = 1 drop the first line of the pattern.
 	 * 
-	 * @param lines
-	 * @param n
+	 * @param lines is the list to collect the pattern
+	 * @param n is the number of iterations
 	 */
 	public void getChrisTreeLines(List<List<String>> lines, int n) {
 		if(n > 1) {
-			//TODO New line necessary - the tree have to grow up!
+			
 			List<List<String>> nextLines = new ArrayList<List<String>>();
 			int t = 0;
 			for(List<String> currLine : lines) {
@@ -49,19 +76,16 @@ public class ChristmasTreePattern {
 				if(t == 1) {
 					
 					//true -> start with the second line of the pattern
-					System.out.println("true");
 					List<String> nextLine = new ArrayList<String>();
 					nextLine.add(currLine.get(0).concat("0"));
 					for(int i = 0; i < currLine.size(); i++) {
 						nextLine.add(currLine.get(i).concat("1"));  //no function - why?
 					}
 					nextLines.add(nextLine);
-					
-					
+								
 				} else {
 					
 					//false -> start normal with the first line...
-					System.out.println("false");
 					List<String> nextLine = new ArrayList<String>();
 					for(int i = 1; i < currLine.size(); i++) {
 						nextLine.add(currLine.get(i).concat("0"));  //no function - why?
@@ -77,39 +101,23 @@ public class ChristmasTreePattern {
 					nextLines.add(nextLine);
 				}
 			}
-			printList(nextLines);
-		
+			lines.clear();
+			lines.addAll(nextLines);
 			n--;
-			getChrisTreeLines(nextLines, n);
-		}
+			getChrisTreeLines(lines, n);
+		}	
 	}
 	
-
-	/**
-	 * @param list
-	 * @return
-	 */
-	int getCountOfElements(List<String> list) {
-		int t = 0;
-		for(; list.get(t) != "\n"; t++) {
-		}
-		return t;
-	}
 	
 	/**
-	 * @param list
+	 * Method for Debugging
+	 * 
+	 * @param list to print
 	 */
-	private void printList(List<List<String>> list) {
-		for(List<String> line : list) {
-			System.out.println(line);
-		}
-	}
+//	private void printList(List<List<String>> list) {
+//		for(List<String> line : list) {
+//			System.out.println(line);
+//		}
+//	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ChristmasTreePattern cTree = new ChristmasTreePattern();
-		cTree.createChrisTree(9);
-	}
 }

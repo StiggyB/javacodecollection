@@ -1,13 +1,13 @@
-package a09;
+package a10;
 /**
  * Praktikum: P2P<br>
  * Semester: WS10<br>
- * Aufgaben-Nr.: 09<br>
+ * Aufgaben-Nr.: 10<br>
  * 
- * Version: V0.1<br>
+ * Version: V0<br>
  * Aenderungen:
  * 
- * Quellen: API, Swing, PR2 Praktikum
+ * Quellen: API, Swing, HTML Elements by Martin Slowikowski
  * 
  * @author Mueller-Pettenpohl, Tell #1989982, Rumpf, Soeren #1971654<br>
  */
@@ -16,17 +16,20 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- * This class holds the main method and exists as point of entry.
- * 
+ * This class includes the main-method
+ * and starts the Application.
+ *
  */
 public class MainApp {
 
 	/**
-	 * Main method to start the ObjectBrowser application in a specific Thread.
+	 * This Main-method starts the Application
+	 * and sets the count of  bits.
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -42,13 +45,9 @@ public class MainApp {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		ObjectApp oApp = new ObjectApp(new Clazz());
-		Thread objThread = new Thread(oApp, "ObjectThread");
-		objThread.start();
-
-		if (objThread.isAlive()) {
-			new ObjectView(oApp.getObj());
-		}
+		
+		//Set the number of bits here!
+		new ChristmasTreeView(new ChristmasTreePattern(), 8);
 	}
+	
 }
