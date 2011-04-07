@@ -28,7 +28,6 @@ HAL* HAL::getInstance(){
 }
 
 HAL::HAL() {
-	// TODO Auto-generated constructor stub
 	controlBits = BIT_CNTRLS;
 	portA = read(PORT_A);
 	portB = read(PORT_B);
@@ -231,7 +230,7 @@ const struct sigevent * ISR(void *arg, int id){
 	int iir;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK;
-	printf("hallo ISR");
+	std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	if(iir & 1) return (NULL);
 	switch(iir){
 	case INTERRUPT_PORT_A: portA = in8(PORT_A); return (event);break;

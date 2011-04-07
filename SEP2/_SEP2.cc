@@ -10,13 +10,13 @@ int main(int argc, char *argv[]) {
 	cout << "Welcome to the QNX Momentics IDE" << endl;
 	HAL::getInstance();
 	Lampen l;
-	l = Lampen();
 	l.start(NULL);
 	Sensor s;
-	s = Sensor();
 	s.start(NULL);
 	l.join();
 	s.join();
+	l.stop();
+	s.stop();
 	cout << "Versuch wird beendet" << endl;
 	return EXIT_SUCCESS;
 }

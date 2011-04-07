@@ -18,6 +18,7 @@ public:
 	void lock();
 	void unlock();
 private: pthread_mutex_t mutex;
+	//TODO
 	//Mutex (const Mutex &);
 	//void operator= (const Mutex &);
 };
