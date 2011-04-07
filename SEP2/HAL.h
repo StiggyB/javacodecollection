@@ -60,9 +60,9 @@
 #define BIT_DELETE (false)
 #define BIT_SET (true)
 
-#define REG_II
+//#define REG_II
 #define IIR_MASK 0x07
-#define HW_SERIAL_IRQ 3
+//#define HW_SERIAL_IRQ 3
 
 //BASE ADRESS
 #define D_IOBASE 0x300 								// Anfangsadresse Ports
@@ -74,10 +74,11 @@
 #define PORT_IRQ INTERRUPT_RESET_ADRESS
 #define PORT_IRQ_AND_RESET (D_IOBASE + 0x18)
 
-#define INTERRUPT_PORT_A 0x00
-#define INTERRUPT_PORT_B 0x01
-#define INTERRUPT_PORT_C 0x02
-#define INTERRUPT_PORT_C_HIGH 0x03
+#define INTERRUPT_PORT_A (1<<0)
+#define INTERRUPT_PORT_B (1<<1)
+#define INTERRUPT_PORT_C (1<<2)
+#define INTERRUPT_PORT_C_HIGH (1<<3)
+#define INTERRUPT_VECTOR_NUMMER (11)
 #define SENSOR_PULSE_CODE 0x01
 
 extern const struct sigevent * ISR(void *arg, int id);
@@ -119,6 +120,7 @@ public:
 	void activateInterrupt(int port);
 	void deactivateInterrupt(int port);
 	void attachISR(void * arg);
+	int getSetInterrupt();
 	int getInterrupt();
 private:
 	HAL();

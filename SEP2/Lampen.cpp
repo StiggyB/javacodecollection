@@ -311,17 +311,24 @@ void Lampen::lampen_M1(){
 }
 
 void Lampen::testIRQ(){
-	cout << "" << endl;
+	bool b = (*h).isOutput(PORT_B);
+	cout << "Port B output?: " << b << endl;
+	cout << "open Switch" << endl;
 	(*h).write(PORT_B,BIT_SWITCH_OPEN);
 	sleep(2);
-
+	cout << "B: 1" << endl;
 	(*h).write(PORT_B,0x01);
 	sleep(2);
+	cout << "B: 2" << endl;
 	(*h).write(PORT_B,0x02);
 	sleep(2);
+	cout << "B: 3" << endl;
 	(*h).write(PORT_B,0x03);
 	sleep(2);
+	cout << "B: 4" << endl;
 	(*h).write(PORT_B,0x04);
 	sleep(2);
+	cout << "B: 5" << endl;
 	(*h).write(PORT_B,0x05);
+	cout << "end irq test" << endl;
 }

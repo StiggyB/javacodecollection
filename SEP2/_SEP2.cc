@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	Sensor s;
 	s.start(NULL);
 	l.join();
-	s.join();
+	//s.join();
 	l.stop();
 	s.stop();
 	cout << "Versuch wird beendet" << endl;

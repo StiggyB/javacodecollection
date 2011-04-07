@@ -222,12 +222,13 @@ void HAL::engineSlowRight(){
 
 void HAL::attachISR(void * arg){
 	struct sigevent * event = (struct sigevent*) arg;
-	int id = InterruptAttach(HW_SERIAL_IRQ,ISR,&event,sizeof(event),0);
+	int id = InterruptAttach(INTERRUPT_VECTOR_NUMMER,ISR,&event,sizeof(event),0);
 }
 
 
 const struct sigevent * ISR(void *arg, int id){
 	int iir;
+	std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK;
 	std::cout << "HAL_ISR: hallo ISR" << std::endl;
@@ -248,7 +249,8 @@ void HAL::activateInterrupt(int port){
 	case PORT_C: port = INTERRUPT_PORT_C; break;
 	default: port = INTERRUPT_PORT_B; break; //portB
 	}
-	write(INTERRUPT_SET_ADRESS,port,false); // low active !
+
+	reset(INTERRUPT_SET_ADRESS,port);// low active !
 }
 
 void HAL::deactivateInterrupt(int port){
@@ -257,7 +259,7 @@ void HAL::deactivateInterrupt(int port){
 	case PORT_C: port = INTERRUPT_PORT_C; break;
 	default: port = INTERRUPT_PORT_B; break; //portB
 	}
-	write(INTERRUPT_SET_ADRESS,port,true); // low active !
+	write(INTERRUPT_SET_ADRESS,port);// low active !
 }
 
 int HAL::getInterrupt(){
@@ -266,3 +268,6 @@ int HAL::getInterrupt(){
 	return irq;
 }
 
+int HAL::getSetInterrupt(){
+	return read(PORT_IRE);
+}
