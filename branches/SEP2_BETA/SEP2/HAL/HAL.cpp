@@ -19,21 +19,24 @@ HAL* HAL::instance = NULL;
 Mutex HAL::mutEx;
 
 HAL* HAL::getInstance(){
-	mutEx.lock();
-	if( instance == NULL){
-		instance = new HAL();
+
+	if( !instance){
+		mutEx.lock();
+		if(!instance){
+			instance = new HAL;
+		}
+		mutEx.unlock();
 	}
-	mutEx.unlock();
 	return instance;
 }
 
 HAL::HAL() {
 	controlBits = BIT_CNTRLS;
 	portA = read(PORT_A);
-	portB = read(PORT_B);
-	portC = read(PORT_C);
-	portIRE = read(PORT_IRE);
-	portIRQ = read(PORT_IRQ);
+		portB = read(PORT_B);
+		portC = read(PORT_C);
+		portIRE = read(PORT_IRE);
+		portIRQ = read(PORT_IRQ);
 }
 
 HAL::~HAL() {
@@ -192,64 +195,68 @@ int HAL::checkVal(int dir, int value,bool set) {
 	return value;
 }
 
-void HAL::engineStart(int direction) {
+bool HAL::engineStart(int direction) {
+	bool ret = false;
 	if (!engineStopped()) {
 		if (direction == BIT_ENGINE_LEFT) {
-			reset(PORT_A,BIT_ENGINE_RIGHT);
-			write(PORT_A,BIT_ENGINE_LEFT);
+			ret = reset(PORT_A,BIT_ENGINE_RIGHT);
+			ret = ret && write(PORT_A,BIT_ENGINE_LEFT);
 		} else if (direction == BIT_ENGINE_RIGHT) {
-			reset(PORT_A,BIT_ENGINE_LEFT);
-			write(PORT_A,BIT_ENGINE_RIGHT);
+			ret = reset(PORT_A,BIT_ENGINE_LEFT);
+			ret = ret && write(PORT_A,BIT_ENGINE_RIGHT);
 		}
 
 	}
+	return ret;
 }
-void HAL::openSwitch(){
-	setSwitchDirection(BIT_SET);
+bool HAL::openSwitch(){
+	return setSwitchDirection(BIT_SET);
 }
-void HAL::closeSwitch(){
-	setSwitchDirection(BIT_DELETE);
+bool HAL::closeSwitch(){
+	return setSwitchDirection(BIT_DELETE);
 }
-void HAL::setSwitchDirection(bool dir){
+bool HAL::setSwitchDirection(bool dir){
 	if(dir){
-		write(PORT_A,BIT_SWITCH);
+		return write(PORT_A,BIT_SWITCH);
 	}else{
-		reset(PORT_A,BIT_SWITCH);
+		return reset(PORT_A,BIT_SWITCH);
 	}
 }
-void HAL::engineReset(){
-	reset(PORT_A,BIT_ENGINE_RIGHT);
-	reset(PORT_A,BIT_ENGINE_LEFT);
-	reset(PORT_A,BIT_ENGINE_SLOW);
+bool HAL::engineReset(){
+	bool ret = reset(PORT_A,BIT_ENGINE_RIGHT);
+	ret = ret && reset(PORT_A,BIT_ENGINE_LEFT);
+	return (ret && reset(PORT_A,BIT_ENGINE_SLOW));
 }
-void HAL::engineStop(){
-	write(PORT_A,BIT_ENGINE_STOP);
+bool HAL::engineStop(){
+	return write(PORT_A,BIT_ENGINE_STOP);
 }
-void HAL::engineContinue(){
-	reset(PORT_A,BIT_ENGINE_STOP);
+bool HAL::engineContinue(){
+	return reset(PORT_A,BIT_ENGINE_STOP);
 }
-void HAL::engineRight(){
-	engineStart(BIT_ENGINE_RIGHT);
+bool HAL::engineRight(){
+	return engineStart(BIT_ENGINE_RIGHT);
 }
-void HAL::engineLeft(){
-	engineStart(BIT_ENGINE_LEFT);
+bool HAL::engineLeft(){
+	return engineStart(BIT_ENGINE_LEFT);
 }
-void HAL::engineSlowSpeed(){
+bool HAL::engineSlowSpeed(){
 	if(!engineStopped()){
 		write(PORT_A, BIT_ENGINE_SLOW);
 	}
+	return false;
 }
-void HAL::engineNormalSpeed(){
+bool HAL::engineNormalSpeed(){
 	if(!engineStopped()){
-		reset(PORT_A, BIT_ENGINE_SLOW);
+		return reset(PORT_A, BIT_ENGINE_SLOW);
 	}
+	return false;
 }
 
 bool HAL::engineStopped(){
 	return (portA & BIT_ENGINE_STOP);
 }
 
-void HAL::engineSlowSpeed(int dir) {
+bool HAL::engineSlowSpeed(int dir) {
 	if(!engineStopped()){
 		if (BIT_ENGINE_LEFT || BIT_ENGINE_S_L) {
 			reset(PORT_A, BIT_ENGINE_RIGHT);
@@ -262,47 +269,51 @@ void HAL::engineSlowSpeed(int dir) {
 		}else{
 			write(PORT_A, BIT_ENGINE_SLOW);
 		}
+		return true;
 	}
+	return false;
 }
 
-void HAL::engineSpeed(bool slow) {
+bool HAL::engineSpeed(bool slow) {
 	if(!engineStopped()){
 		if (slow) {
 			write(PORT_A, BIT_ENGINE_SLOW);
 		} else{
 			reset(PORT_A, BIT_ENGINE_SLOW);
 		}
+		return true;
 	}
+	return false;
 }
 
 
-void HAL::engineSlowLeft(){
-	engineSlowSpeed(BIT_ENGINE_LEFT);
+bool HAL::engineSlowLeft(){
+	return engineSlowSpeed(BIT_ENGINE_LEFT);
 }
-void HAL::engineSlowRight(){
-	engineSlowSpeed(BIT_ENGINE_RIGHT);
-}
-
-void HAL::resetAllOutPut(){
-	reset(PORT_A,0xFF);
+bool HAL::engineSlowRight(){
+	return engineSlowSpeed(BIT_ENGINE_RIGHT);
 }
 
-void HAL::addLight(Color col) {
+bool HAL::resetAllOutPut(){
+	return reset(PORT_A,0xFF);
+}
+
+bool HAL::addLight(Color col) {
 	int old = getValueToAdress(PORT_A);
 	old = old | getColorCode(col);
-	write(PORT_A, old);
+	return write(PORT_A, old);
 }
 
-void HAL::removeLight(Color col) {
+bool HAL::removeLight(Color col) {
 	int old = getColorCode(col);
-	reset(PORT_A, old);
+	return reset(PORT_A, old);
 }
 
-void HAL::shine(int color) {
+bool HAL::shine(int color) {
 	if (color == BIT_LIGHT_OFF) {
-		reset(PORT_A, BIT_LIGHTS_ON);
+		return reset(PORT_A, BIT_LIGHTS_ON);
 	} else {
-		write(PORT_A, color);
+		return write(PORT_A, color);
 	}
 }
 int HAL::getColorCode(Color col) {
@@ -324,27 +335,30 @@ int HAL::getColorCode(Color col) {
 	return newColor;
 }
 
-void HAL::shine(Color col) {
+bool HAL::shine(Color col) {
+	bool ret = false;
 	switch (col) {
 	case YELLOW:
-		shine(BIT_LIGHT_YELLOW);
+		ret=shine(BIT_LIGHT_YELLOW);
 		break;
 	case GREEN:
-		shine(BIT_LIGHT_GREEN);
+		ret=shine(BIT_LIGHT_GREEN);
 		break;
 	case OFF:
-		shine(BIT_LIGHT_OFF);
+		ret=shine(BIT_LIGHT_OFF);
 		break;
 	default:
-		shine(BIT_LIGHT_RED);
+		ret=shine(BIT_LIGHT_RED);
 		break;
 	}
+	return ret;
 }
 
-void HAL::attachISR(void * arg){
+bool HAL::attachISR(void * arg){
 	struct sigevent * event = (struct sigevent*) arg;
 	int id = InterruptAttach(INTERRUPT_VECTOR_NUMMER,ISR,&event,sizeof(event),0);
 	if(id == -1)std::cout << "HAL: AttachISR failed" << std::endl;
+	return id;
 }
 
 
@@ -365,23 +379,23 @@ const struct sigevent * ISR(void *arg, int id){
 }
 
 
-void HAL::activateInterrupt(int port){
+bool HAL::activateInterrupt(int port){
 	switch(port){
 	case PORT_A: port = INTERRUPT_PORT_A; break;
 	case PORT_C: port = INTERRUPT_PORT_C; break;
 	default: port = INTERRUPT_PORT_B; break; //portB
 	}
 
-	reset(INTERRUPT_SET_ADRESS,port);// low active !
+	return reset(INTERRUPT_SET_ADRESS,port);// low active !
 }
 
-void HAL::deactivateInterrupt(int port){
+bool HAL::deactivateInterrupt(int port){
 	switch(port){
 	case PORT_A: port = INTERRUPT_PORT_A; break;
 	case PORT_C: port = INTERRUPT_PORT_C; break;
 	default: port = INTERRUPT_PORT_B; break; //portB
 	}
-	write(INTERRUPT_SET_ADRESS,port);// low active !
+	return write(INTERRUPT_SET_ADRESS,port);// low active !
 }
 
 int HAL::getInterrupt(){

@@ -9,32 +9,21 @@
 #define LAMPEN_H_
 
 #include <unistd.h>
-#include "../HAL/HAL.h"
+#include "../Controller/CoreController.h"
 #include "../Thread/HAWThread.h"
 
 class Lampen : public thread::HAWThread{
 public:
 	Lampen();
 	virtual ~Lampen();
-	void flash(int time, HAL::Color color);
-	void flash(int time, int duration, HAL::Color col);
-	void prepare();
-	void lampen_M1();
-	void removeLight(HAL::Color col);
-	void addLight(HAL::Color col);
-	void shine(HAL::Color col);
-
-	//tests:
-	void test();
-	void test_HAL();
-	void test_HAL_Lampen_write_reset();
-	void test_HAL_CheckVal();
-	void testIRQ();
+	void flash(int time, Color color);
+	void flash(int time, int duration, Color col);
+	void removeLight(Color col);
+	void addLight(Color col);
+	void shine(Color col);
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
-private:
-	HAL* h;
 };
 
 #endif /* LAMPEN_H_ */

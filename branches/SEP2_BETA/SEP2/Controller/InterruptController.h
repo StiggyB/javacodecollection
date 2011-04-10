@@ -5,8 +5,8 @@
  *      Author: Administrator
  */
 
-#ifndef SENSOR_H_
-#define SENSOR_H_
+#ifndef INTERRUPTCONTROLLER_H_
+#define INTERRUPTCONTROLLER_H_
 
 
 #include "../HAL/HAL.h"
@@ -15,10 +15,12 @@
 extern volatile struct sigevent event;
 extern const struct sigevent *eventptr;
 
-class Sensor : public thread::HAWThread {
+class InterruptController : public thread::HAWThread {
 public:
-	Sensor();
-	virtual ~Sensor();
+
+	InterruptController();
+	virtual ~InterruptController();
+
 private:
 	int interruptId, chid, coid;
 	struct _pulse pulse;
@@ -42,10 +44,9 @@ private:
 	 *  --> if there is an thread for only interrupts -> use InterruptWait or MessageReceive?
 	 *  --> how to create safepoints for the M-Versions? <--  *
 	 */
-
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 };
 
-#endif /* SENSOR_H_ */
+#endif /* INTERRUPTCONTROLLER_H_ */

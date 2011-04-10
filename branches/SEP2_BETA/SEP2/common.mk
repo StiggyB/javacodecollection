@@ -22,7 +22,7 @@ VFLAG_g=-gstabs+
 #===== EXTRA_SRCVPATH - a space-separated list of directories to search for source files.
 EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/HAL $(PROJECT_ROOT)/Lampen  \
-	$(PROJECT_ROOT)/Thread
+	$(PROJECT_ROOT)/Thread $(PROJECT_ROOT)/Tests
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL

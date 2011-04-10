@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include "HWaccess.h"
 #include "../Thread/Mutex.h"
+#include "IHAL.h"
 
 //PORT A:
 #define BIT_ENGINE_RIGHT (1<<0)
@@ -91,11 +92,6 @@ extern volatile int portIRE;
 extern volatile int portIRQ;
 extern volatile int controlBits;
 
-//Farben Enum
-enum Color {
-	RED, GREEN, YELLOW, OFF
-};
-
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
  *
@@ -113,54 +109,60 @@ enum Color {
  * in- and output from and to the Festo Transfersystem and
  * with Interrupts using Pulse Messages.
  */
-class HAL {
-
+class HAL: public IHAL {
 public:
 	static HAL* getInstance();
-	int read(int dir);
+	bool activateInterrupt(int port);
+	bool deactivateInterrupt(int port);
+	bool shine(int color);
+
+	//IHAL:
+	virtual int read(int dir);
+	virtual bool isInput(int dir);
+	virtual bool isOutput(int dir);
+	virtual int write(int dir, int value);
+	virtual int reset(int dir, int value);
+	virtual bool engineStart(int direction);
+	virtual bool openSwitch();
+	virtual bool closeSwitch();
+	virtual bool setSwitchDirection(bool dir);
+	virtual bool engineReset();
+	virtual bool engineStop();
+	virtual bool engineContinue();
+	virtual bool engineRight();
+	virtual bool engineLeft();
+	virtual bool engineSlowSpeed();
+	virtual bool engineNormalSpeed();
+	virtual bool engineStopped();
+	virtual bool engineSlowSpeed(int dir);
+	virtual bool engineSpeed(bool slow);
+	virtual bool engineSlowLeft();
+	virtual bool engineSlowRight();
+	virtual bool attachISR(void * arg);
+	virtual int getSetInterrupt();
+	virtual int getInterrupt();
+	virtual bool resetAllOutPut();
+	virtual bool removeLight(Color col);
+	virtual bool addLight(Color col);
+	virtual bool shine(Color col);
+
+
+
+private:
+	bool isOutput2(int dir);
+	bool isInput2(int dir);
 	int write(int dir, int value, bool overwrite);
 	void setPortsTo(int cb);
 	void resetPortsDirection();
-	bool isInput(int dir);
-	bool isOutput(int dir);
 	int setPortToOutput(int bits);
 	int setPortToInput(int bits);
 	int getValueToAdress(int dir);
 	int getBitsToAdress(int dir);
-	int write(int dir, int value);
-	int reset(int dir, int value);
 	int checkVal(int dir, int value, bool set);
-	void engineStart(int direction);
-	void openSwitch();
-	void closeSwitch();
-	void setSwitchDirection(bool dir);
-	void engineReset();
-	void engineStop();
-	void engineContinue();
-	void engineRight();
-	void engineLeft();
-	void engineSlowSpeed();
-	void engineNormalSpeed();
-	bool engineStopped();
-	void engineSlowSpeed(int dir);
-	void engineSpeed(bool slow);
-	void engineSlowLeft();
-	void engineSlowRight();
-	void activateInterrupt(int port);
-	void deactivateInterrupt(int port);
-	void attachISR(void * arg);
-	int getSetInterrupt();
-	int getInterrupt();
-	void resetAllOutPut();
-
 	int getColorCode(Color col);
-	void removeLight(Color col);
-	void addLight(Color col);
-	void shine(Color col);
-	void shine(int color);
-
-private:
 	HAL();
+	HAL(const HAL&);
+	HAL& operator=(const HAL&);
 	virtual ~HAL();
 	static HAL* instance;
 	static Mutex mutEx;

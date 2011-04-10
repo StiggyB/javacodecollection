@@ -1,16 +1,29 @@
 #include <cstdlib>
 #include <iostream>
-#include "Controller/MasterThread.h"
+#include "Controller/CoreController.h"
 
 int main(int argc, char *argv[]) {
 	std::cout << "Welcome to the QNX Momentics IDE" << std::endl;
-	if(ThreadCtl(_NTO_TCTL_IO,0)){
+
+#ifdef SIMULATION
+	cout << "Simulation aktiv" << endl;
+	cout << "Zum Aufbau der Verbindung muss Die Festo Simulation schon laufen."
+	<< endl;
+	IOaccess_open(); // Baue die Verbindung zur Simulation auf
+#endif
+
+	if (ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 		return EXIT_FAILURE;
 	}
-	MasterThread mt;
-	mt.start(NULL);
-	mt.join();
-	mt.stopProcess();
+	CoreController* mt = CoreController::getInstance();
+	(*mt).start(NULL);
+	(*mt).join();
+	(*mt).stopProcess();
+
+#ifdef SIMULATION
+	IOaccess_close(); // Schließe die Verbindung zur Simulation
+#endif
+
 	return EXIT_SUCCESS;
 }
