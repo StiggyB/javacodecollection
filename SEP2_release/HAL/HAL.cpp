@@ -334,10 +334,10 @@ void HAL::attachISR(void * arg){
 
 const struct sigevent * ISR(void *arg, int id){
 	int iir;
-	std::cout << "HAL_ISR: hallo ISR" << std::endl;
+	//std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK;
-	std::cout << "HAL_ISR: hallo ISR" << std::endl;
+	//std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	if(iir & 1) return (NULL);
 	switch(iir){
 	case INTERRUPT_PORT_A: portA = in8(PORT_A); return (event);break;

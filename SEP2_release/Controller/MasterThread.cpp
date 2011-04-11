@@ -20,8 +20,8 @@ MasterThread::~MasterThread() {
 void MasterThread::execute(void*){
 	HAL::getInstance();
 	l.start(NULL);
-	//Sensor s;
-	//s.start(NULL);
+	Sensor s;
+	s.start(NULL);
 	l.join();
 }
 

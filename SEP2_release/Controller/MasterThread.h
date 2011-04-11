@@ -9,6 +9,7 @@
 #define MASTERTHREAD_H_
 
 
+
 #include "../HAL/HAL.h"
 #include "../Lampen/Lampen.h"
 #include "../Thread/HAWThread.h"

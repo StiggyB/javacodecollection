@@ -67,7 +67,7 @@ void Sensor::execute(void*) {
 }
 
 void Sensor::handlePulseMessages() {
-	int rcvid;
+	int rcvid, i;
 	while (1) {
 		cout << "Sensor: waiting for Pulse" << endl;
 		rcvid = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
@@ -76,7 +76,8 @@ void Sensor::handlePulseMessages() {
 			perror("Sensor: failed to get MsgPulse\n");
 			shutdown();
 		}
-		cout << "Sensor: pulse code: " << pulse.code << endl;
+		i = (*h).getValueToAdress(PORT_B);
+		cout << "Sensor: pulse code: " << pulse.code << " Value:" << i << endl;
 	}
 }
 
