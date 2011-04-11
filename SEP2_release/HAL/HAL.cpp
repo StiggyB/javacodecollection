@@ -235,11 +235,11 @@ bool HAL::engineStopped(){
 
 void HAL::engineSlowSpeed(int dir) {
 	if(!engineStopped()){
-		if (BIT_ENGINE_LEFT || BIT_ENGINE_S_L) {
+		if (dir == BIT_ENGINE_LEFT || dir == BIT_ENGINE_S_L) {
 			reset(PORT_A, BIT_ENGINE_RIGHT);
 			write(PORT_A, BIT_ENGINE_LEFT);
 			write(PORT_A, BIT_ENGINE_SLOW);
-		} else if (BIT_ENGINE_RIGHT || BIT_ENGINE_S_R) {
+		} else if (dir == BIT_ENGINE_RIGHT || dir == BIT_ENGINE_S_R) {
 			reset(PORT_A, BIT_ENGINE_LEFT);
 			write(PORT_A, BIT_ENGINE_RIGHT);
 			write(PORT_A, BIT_ENGINE_SLOW);
