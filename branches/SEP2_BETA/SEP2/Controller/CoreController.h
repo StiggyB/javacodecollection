@@ -15,6 +15,7 @@
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_M1.h"
 #include "../Thread/HAWThread.h"
+#include "InterruptController.h"
 
 class CoreController : public thread::HAWThread, public IHAL{
 public:

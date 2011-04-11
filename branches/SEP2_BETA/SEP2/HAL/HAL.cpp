@@ -197,13 +197,16 @@ int HAL::checkVal(int dir, int value,bool set) {
 
 bool HAL::engineStart(int direction) {
 	bool ret = false;
+	bool r = false;
 	if (!engineStopped()) {
 		if (direction == BIT_ENGINE_LEFT) {
 			ret = reset(PORT_A,BIT_ENGINE_RIGHT);
-			ret = ret && write(PORT_A,BIT_ENGINE_LEFT);
+			r = write(PORT_A,BIT_ENGINE_LEFT);
+			ret = ret && r;
 		} else if (direction == BIT_ENGINE_RIGHT) {
 			ret = reset(PORT_A,BIT_ENGINE_LEFT);
-			ret = ret && write(PORT_A,BIT_ENGINE_RIGHT);
+			r = write(PORT_A,BIT_ENGINE_RIGHT);
+			ret = ret && r;
 		}
 
 	}
@@ -258,11 +261,11 @@ bool HAL::engineStopped(){
 
 bool HAL::engineSlowSpeed(int dir) {
 	if(!engineStopped()){
-		if (BIT_ENGINE_LEFT || BIT_ENGINE_S_L) {
+		if (dir == BIT_ENGINE_LEFT || dir == BIT_ENGINE_S_L) {
 			reset(PORT_A, BIT_ENGINE_RIGHT);
 			write(PORT_A, BIT_ENGINE_LEFT);
 			write(PORT_A, BIT_ENGINE_SLOW);
-		} else if (BIT_ENGINE_RIGHT || BIT_ENGINE_S_R) {
+		} else if (dir == BIT_ENGINE_RIGHT || dir == BIT_ENGINE_S_R) {
 			reset(PORT_A, BIT_ENGINE_LEFT);
 			write(PORT_A, BIT_ENGINE_RIGHT);
 			write(PORT_A, BIT_ENGINE_SLOW);

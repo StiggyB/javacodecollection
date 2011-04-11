@@ -10,7 +10,7 @@
 extern CoreController* cc;
 
 Test_M1::Test_M1() {
-	if (ThreadCtl(_NTO_TCTL_IO, 0)) {
+	if (-1==ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
 	cc = CoreController::getInstance();
@@ -26,8 +26,9 @@ void Test_M1::shutdown(){
 
 void Test_M1::execute(void*){
 	int time = 3;
-
+	/*cout << "M1: starting test" << endl;
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		cout << "HAL_T:error for io cntl"<<endl;
 		perror("ThreadCtl access failed\n");
 		shutdown();
 	}
@@ -39,6 +40,7 @@ void Test_M1::execute(void*){
 	sleep(2);
 	out8(PORT_A, 0);
 	sleep(5);
+	*/
 	// Treibe die Ampel
 	cout << "Farben starten: " << endl;
 	for (int count = 0; count < 1; count++) {
@@ -130,4 +132,5 @@ void Test_M1::execute(void*){
 		sleep(time);
 		(*cc).resetAllOutPut();
 	}
+	cout << "M1: closing..." << endl;
 }

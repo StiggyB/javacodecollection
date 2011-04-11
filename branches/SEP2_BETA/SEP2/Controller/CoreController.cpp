@@ -36,11 +36,12 @@ CoreController* CoreController::getInstance() {
 }
 
 CoreController::CoreController() {
-	HAL::getInstance();
+	h = HAL::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
 	out8(DIGITAL_CARD_CONTROL, 0x82);
+	resetAllOutPut();
 }
 
 CoreController::~CoreController() {
@@ -49,10 +50,17 @@ CoreController::~CoreController() {
 }
 
 void CoreController::execute(void*) {
+	InterruptController ic;
+	ic.start(NULL);
 	Test_HAL th;
+	cout << "starting HAL-Tests" << endl;
 	th.start(NULL);
+	cout << "waiting for HAL-Tests" << endl;
+	th.join();
 	Test_M1 tm;
+	cout << "starting M1-Tests" << endl;
 	tm.start(NULL);
+	cout << "waiting for M1-Tests" << endl;
 	tm.join();
 }
 

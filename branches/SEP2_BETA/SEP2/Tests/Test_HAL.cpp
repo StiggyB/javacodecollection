@@ -10,7 +10,7 @@
 extern CoreController* cc;
 
 Test_HAL::Test_HAL() {
-	if (ThreadCtl(_NTO_TCTL_IO, 0)) {
+	if (-1==ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
 	cc = CoreController::getInstance();
@@ -27,20 +27,13 @@ void Test_HAL::shutdown(){
 void Test_HAL::execute(void*) {
 	int time = 3;
 	bool t = false;
+	cout << "HAL: testing started" << endl;
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		cout << "HAL_T:error for io cntl"<<endl;
 		perror("ThreadCtl access failed\n");
 		shutdown();
 	}
 	//(*cc).write(PORT_CNTRL,BIT_CNTRLS,false);
-	out8(DIGITAL_CARD_CONTROL, 0x82);
-	out8(PORT_A, 0);
-	//test_HAL_Lampen_write_reset();
-	sleep(1);
-	out8(PORT_A, 0x80);
-	sleep(2);
-	out8(PORT_A, 0);
-	(*cc).resetAllOutPut();
-	sleep(5);
 	// Treibe die Ampel
 	for (int count = 0; count < 1; count++) {
 
@@ -151,4 +144,5 @@ void Test_HAL::execute(void*) {
 		(*cc).resetAllOutPut();
 		sleep(time);
 	}
+	cout << "HAL: closing..." << endl;
 }
