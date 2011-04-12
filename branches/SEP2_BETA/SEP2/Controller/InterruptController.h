@@ -10,6 +10,7 @@
 
 
 #include "../HAL/HAL.h"
+#include "CoreController.h"
 #include "../Thread/HAWThread.h"
 
 extern volatile struct sigevent event;

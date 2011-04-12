@@ -1,10 +1,3 @@
-/*
- * HAL.h
- *
- *  Created on: 08.04.2011
- *      Author: Administrator
- */
-
 #ifndef HAL_H_
 #define HAL_H_
 
@@ -14,87 +7,117 @@
 #include "../Thread/Mutex.h"
 #include "IHAL.h"
 
-//PORT A:
-#define BIT_ENGINE_RIGHT (1<<0)
-#define BIT_ENGINE_LEFT (1<<1)
-#define BIT_ENGINE_SLOW (1<<2)
-#define BIT_ENGINE_STOP (1<<3)
-#define BIT_ENGINE_S_L (0x06)
-#define BIT_ENGINE_S_R (0x05)
-#define BIT_SWITCH (1<<4)
-#define BIT_LIGHT_YELLOW (0x40)
-#define BIT_LIGHT_GREEN (0x20)
-#define BIT_LIGHT_RED (0x80)
-#define BIT_LIGHT_OFF (0x00)
-#define BIT_LIGHTS_ON (0xE0)
 
-//PORT B:
-#define BIT_WP_RUN_IN (1<<0)
-#define BIT_WP_IN_HEIGHT (1<<1)
-#define BIT_HEIGHT_1 (1<<2)
-#define BIT_WP_IN_SWITCH (1<<3)
-#define BIT_WP_METAL (1<<4)
-#define BIT_SWITCH_OPEN (1<<5)
-#define BIT_SLIDE_FULL (1<<6)
-#define BIT_WP_OUTLET (1<<7)
-
-//PORT C:
-#define BIT_LED_START (1<<0)
-#define BIT_LED_RESET (1<<1)
-#define BIT_LED_Q1 (1<<2)
-#define BIT_LED_Q2 (1<<3)
-#define BIT_START (1<<4)
-#define BIT_STOP (1<<5)
-#define BIT_RESET (1<<6)
-#define BIT_E_STOP (1<<7)
-
-//PORT ADDRESS
-#define PORT_A (D_IOBASE +0x00)
-#define PORT_B (D_IOBASE +0x01)
-#define PORT_C (D_IOBASE +0x02)
-#define PORT_CNTRL (D_IOBASE +0x03)
-
-//CONTROLBITS
-#define BIT_PORT_A (1<<4)
-#define BIT_PORT_B (1<<1)
-#define BIT_PORT_C (BIT_PORT_C_LOW + BIT_PORT_C_HIGH)
-#define BIT_PORT_C_LOW (1<<0)
-#define BIT_PORT_C_HIGH (1<<3)
-
-#define BIT_CNTRLS (0x82) // Standard: 1000 1010 ( D0 - C Low, D1 - B, D3 - C High, D4 - A)
+/**
+ * Delete a bit
+ */
 #define BIT_DELETE (false)
+/**
+ * Set a bit
+ */
 #define BIT_SET (true)
-//BASE ADRESS
+
+/**
+ * BASE ADRESS for Digital IO
+ */
 #define D_IOBASE 0x300 								// Anfangsadresse Ports
-//TODO
-#define A_IOBASE 0x280
-#define HEIGHT_MEASSURE (A_IOBASE + 0x02)
-#define HEIGHT_START_CODE (0x10)
-#define DIGITAL_CARD_CONTROL (D_IOBASE + 0x03) 		// Adresse von Card Control
-#define DIGITAL_CARD_CROUP0_PORTA (D_IOBASE + 0x00) // Adresse von Port A
-#define INTERRUPT_SET_ADRESS (D_IOBASE + 0xB)
-#define INTERRUPT_RESET_ADRESS (D_IOBASE + 0xF)
-#define PORT_IRE INTERRUPT_SET_ADRESS
-#define PORT_IRQ INTERRUPT_RESET_ADRESS
-#define PORT_IRQ_AND_RESET (D_IOBASE + 0x18)
-#define IIR_MASK 0x7
+/**
+ * BASE ADRESS for Analog IO
+ */
+#define A_IOBASE 0x240
 
-// Interrupts
-#define INTERRUPT_PORT_A (1<<0)
-#define INTERRUPT_PORT_B (1<<1)
-#define INTERRUPT_PORT_C (1<<2)
-#define INTERRUPT_PORT_C_HIGH (1<<3)
-#define INTERRUPT_VECTOR_NUMMER (11)
-#define SENSOR_PULSE_CODE 0x01
+/**
+ * PORT A:
+ */
+enum PortA{
+	BIT_ENGINE_RIGHT = (1<<0), BIT_ENGINE_LEFT = (1<<1), BIT_ENGINE_SLOW = (1<<2), BIT_ENGINE_STOP = (1<<3),
+	BIT_SWITCH = (1<<4),BIT_LIGHT_GREEN = (1<<5),BIT_LIGHT_YELLOW = (1<<6),BIT_LIGHT_RED = (1<<7),
+	BIT_ENGINE_S_L = (0x06), BIT_ENGINE_S_R = (0x05), BIT_LIGHT_OFF = (0x00), BIT_LIGHTS_ON = (0xE0)
+};
 
-//Variablen
+/**
+ * PORT B:
+ */
+enum PortB{
+	BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
+	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_SLIDE_FULL = (1<<6),BIT_WP_OUTLET = (1<<7)
+};
+
+/**
+ * PORT C:
+ */
+enum PortC{
+	BIT_LED_START,BIT_LED_RESET,BIT_LED_Q1,BIT_LED_Q2,BIT_START,BIT_STOP,BIT_RESET,BIT_E_STOP
+};
+
+/**
+ * PORT ADDRESS:
+ */
+enum PortAdress{
+	PORT_A = (D_IOBASE +0x00), PORT_B = (D_IOBASE +0x01), PORT_C = (D_IOBASE +0x02), PORT_CNTRL = (D_IOBASE +0x03)
+};
+
+/**
+ * CONTROLBITS:
+ */
+enum ControlBits {
+	BIT_PORT_A = (1<<4),BIT_PORT_B = (1<<1),BIT_PORT_C = ((1<<0) + (1<<3)),BIT_PORT_C_LOW = (1<<0),BIT_PORT_C_HIGH = (1<<3), BIT_CNTRLS = (0x82)
+};
+
+
+/**
+ * Height Measures
+ */
+enum Height{
+	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x10)
+};
+
+/**
+ *  interrupts
+ */
+enum Interrupts_D{
+	INTERRUPT_D_PORT_A = (1<<0),INTERRUPT_D_PORT_B = (1<<1),INTERRUPT_D_PORT_C = (1<<2),INTERRUPT_D_PORT_C_HIGH = (1<<3),
+	INTERRUPT_VECTOR_NUMMER_A = 5, INTERRUPT_VECTOR_NUMMER_D = 11,
+	INTERRUPT_SET_ADRESS_D = (D_IOBASE + 0xB),INTERRUPT_RESET_ADRESS_D = (D_IOBASE + 0xF),PORT_IRE =(D_IOBASE + 0xB),
+	PORT_IRQ = (D_IOBASE + 0xF),PORT_IRQ_AND_RESET = (D_IOBASE + 0x18), IIR_MASK_D = 0x7
+};
+
+/**
+ * PULS Codes
+ */
+enum PULSE_CODE{
+	LICHTSCHRANKE,HEIGHT
+};
+
+/**
+ * Interrupt Service Routine
+ */
 extern const struct sigevent * ISR(void *arg, int id);
+/**
+ * Port A: contains the byte of Port A
+ */
 extern volatile int portA;
+/**
+ * Port B: contains the byte of Port B
+ */
 extern volatile int portB;
+/**
+ * Port C: contains the byte of Port C
+ */
 extern volatile int portC;
+/**
+ * Port IRE: contains the byte of Port IRE
+ */
 extern volatile int portIRE;
+/**
+ * Port IRQ: contains the byte of Port IRQ
+ */
 extern volatile int portIRQ;
+/**
+ * Port ControlBits: contains the byte of Port ControlBits
+ */
 extern volatile int controlBits;
+
 
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
@@ -112,12 +135,33 @@ extern volatile int controlBits;
  * Capsulates many functions for the direct
  * in- and output from and to the Festo Transfersystem and
  * with Interrupts using Pulse Messages.
+ *
+ * Inherits: IHAL.h
  */
 class HAL: public IHAL {
 public:
+	/*!
+	 * returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (HAL)
+	 * \return a Pointer to HAL.
+	 */
 	static HAL* getInstance();
+	/**
+	 * activates the Interrupt to a certain
+	 * \param port an integer, specifying the Port.
+	 * \return a bool, true if action was successful, false if not.
+	 */
 	bool activateInterrupt(int port);
+	/**
+	 * deactivates the Interrupt to a certain port
+	 * \param port an integer, specifying the Port.
+	 * \return a bool, true if action was successful, false if not.
+	 */
 	bool deactivateInterrupt(int port);
+	/**
+	 * activates the light specified by color
+	 * \param color an integer, specifying the color.
+	 * \return a bool, true if action was successful, false if not.
+	 */
 	bool shine(int color);
 
 	//IHAL:
@@ -149,14 +193,29 @@ public:
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	virtual float getHeight();
+	float getHeight();
 
 
 private:
-	float convertTemp(short input);
+	/**
+	 * converts the temperature from a fixpoint integer to float
+	 * \param input value of type integer
+	 * \return a float - the value
+	 */
+	float convertTemp(int input);
+
 	bool isOutput2(int dir);
 	bool isInput2(int dir);
+
+	/**
+	 * writes to the transfersystem
+	 * \param dir an integer representing the port address
+	 * \param value an integer, the bits which should be written or deleted
+	 * \param overwrite a bool that indicates if the given bits from value should be overwritten or not.
+	 * \returns the new value from the port
+	 */
 	int write(int dir, int value, bool overwrite);
+
 	void setPortsTo(int cb);
 	void resetPortsDirection();
 	int setPortToOutput(int bits);

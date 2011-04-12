@@ -1,8 +1,8 @@
-/*
+/**
  * Mutex.h
  *
  *  Created on: 31.03.2011
- *      Author: Administrator
+ *      Author: Jan Quenzel
  */
 
 #ifndef MUTEX_H_

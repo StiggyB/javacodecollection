@@ -40,7 +40,7 @@ CoreController::CoreController() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	out8(DIGITAL_CARD_CONTROL, 0x82);
+	out8(PORT_CNTRL, 0x82);
 	resetAllOutPut();
 }
 

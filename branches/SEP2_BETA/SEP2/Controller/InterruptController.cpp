@@ -47,13 +47,13 @@ void InterruptController::connectToHAL() {
 		shutdown();
 	}
 	coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
-	SIGEV_PULSE_INIT(&event,coid,SIGEV_PULSE_PRIO_INHERIT,SENSOR_PULSE_CODE,0);
+	SIGEV_PULSE_INIT(&event,coid,SIGEV_PULSE_PRIO_INHERIT,LICHTSCHRANKE,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		shutdown();
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
-	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER, ISR, eventptr, sizeof(event), 0)) == -1) {
+	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, eventptr, sizeof(event), 0)) == -1) {
 		perror("InterruptController: failed to create ISR coupling\n");
 		shutdown();
 	}
@@ -77,10 +77,10 @@ void InterruptController::handlePulseMessages() {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}
-		if(pulse.code == SENSOR_PULSE_CODE){
+		if(pulse.code == LICHTSCHRANKE){
 			if(portB & (1<<1)){
 				(*cc).engineStop();
-				(*cc).engineSlow();
+				(*cc).engineSlowSpeed();
 				float f = (*h).getHeight();
 				cout << "InterruptController: Hoehe: " << f << endl;
 			}

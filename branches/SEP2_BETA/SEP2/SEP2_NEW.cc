@@ -2,9 +2,16 @@
 #include <iostream>
 #include "Controller/CoreController.h"
 
+/**
+ * starting the program!
+ */
+
 int main(int argc, char *argv[]) {
 	std::cout << "Welcome to the QNX Momentics IDE" << std::endl;
 
+	/**
+	 *if simulation is wanted, than you'll get it ;)
+	 */
 #ifdef SIMULATION
 	cout << "Simulation aktiv" << endl;
 	cout << "Zum Aufbau der Verbindung muss Die Festo Simulation schon laufen."
@@ -12,14 +19,23 @@ int main(int argc, char *argv[]) {
 	IOaccess_open(); // Baue die Verbindung zur Simulation auf
 #endif
 
-	perror("PERROR: hello again :D");
+	/**
+	 * getting IO Control for QNX
+	 */
 	if (-1==ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 		return EXIT_FAILURE;
 	}
+
+	/**
+	 * starting the CoreController
+	 */
 	CoreController* mt = CoreController::getInstance();
 	(*mt).start(NULL);
 	(*mt).join();
+	/**
+	 * clean up
+	 */
 	(*mt).stopProcess();
 
 	cout << "Finishing Test" << endl;

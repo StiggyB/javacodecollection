@@ -109,8 +109,8 @@ int HAL::write(int dir, int value, bool set){
 		case PORT_B: port = &portB;/* val = portB & value;*/ break;
 		case PORT_C: port = &portC;/* val = portC & value;*/ break;
 		case PORT_CNTRL: port = &controlBits;/* val = controlBits & value;*/ break;
-		case INTERRUPT_SET_ADRESS: port = &portIRE;/* val = portIRE & value;*/ break;
-		case INTERRUPT_RESET_ADRESS: port = &portIRQ;/* val = portIRQ & value;*/ break;
+		case INTERRUPT_SET_ADRESS_D: port = &portIRE;/* val = portIRE & value;*/ break;
+		case INTERRUPT_RESET_ADRESS_D: port = &portIRQ;/* val = portIRQ & value;*/ break;
 		default: port = &portA;/* val = portA & value;*/ break; //PORT_A
 	}
 	val = value;
@@ -359,7 +359,7 @@ bool HAL::shine(Color col) {
 
 bool HAL::attachISR(void * arg){
 	struct sigevent * event = (struct sigevent*) arg;
-	int id = InterruptAttach(INTERRUPT_VECTOR_NUMMER,ISR,&event,sizeof(event),0);
+	int id = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D,ISR,&event,sizeof(event),0);
 	if(id == -1)std::cout << "HAL: AttachISR failed" << std::endl;
 	return id;
 }
@@ -369,13 +369,13 @@ const struct sigevent * ISR(void *arg, int id){
 	int iir;
 	//std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	struct sigevent *event = (struct sigevent*) arg;
-	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK;
+	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK_D;
 	//std::cout << "HAL_ISR: hallo ISR" << std::endl;
 	if(iir & 1) return (NULL);
 	switch(iir){
-	case INTERRUPT_PORT_A: portA = in8(PORT_A); return (event);break;
-	case INTERRUPT_PORT_B: portB = in8(PORT_B); return (event);break;
-	case INTERRUPT_PORT_C: portC = in8(PORT_C); return (event);break;
+	case INTERRUPT_D_PORT_A: portA = in8(PORT_A); return (event);break;
+	case INTERRUPT_D_PORT_B: portB = in8(PORT_B); return (event);break;
+	case INTERRUPT_D_PORT_C: portC = in8(PORT_C); return (event);break;
 	default: return (NULL);break;
 	}
 	return (NULL);
@@ -384,26 +384,26 @@ const struct sigevent * ISR(void *arg, int id){
 
 bool HAL::activateInterrupt(int port){
 	switch(port){
-	case PORT_A: port = INTERRUPT_PORT_A; break;
-	case PORT_C: port = INTERRUPT_PORT_C; break;
-	default: port = INTERRUPT_PORT_B; break; //portB
+	case PORT_A: port = INTERRUPT_D_PORT_A; break;
+	case PORT_C: port = INTERRUPT_D_PORT_C; break;
+	default: port = INTERRUPT_D_PORT_B; break; //portB
 	}
 
-	return reset(INTERRUPT_SET_ADRESS,port);// low active !
+	return reset(INTERRUPT_SET_ADRESS_D,port);// low active !
 }
 
 bool HAL::deactivateInterrupt(int port){
 	switch(port){
-	case PORT_A: port = INTERRUPT_PORT_A; break;
-	case PORT_C: port = INTERRUPT_PORT_C; break;
-	default: port = INTERRUPT_PORT_B; break; //portB
+	case PORT_A: port = INTERRUPT_D_PORT_A; break;
+	case PORT_C: port = INTERRUPT_D_PORT_C; break;
+	default: port = INTERRUPT_D_PORT_B; break; //portB
 	}
-	return write(INTERRUPT_SET_ADRESS,port);// low active !
+	return write(INTERRUPT_SET_ADRESS_D,port);// low active !
 }
 
 int HAL::getInterrupt(){
 	int irq = read(PORT_IRQ_AND_RESET);
-	irq = irq & IIR_MASK;
+	irq = irq & IIR_MASK_D;
 	return irq;
 }
 
@@ -411,23 +411,23 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
-int HAL::getHeight(){
+float HAL::getHeight(){
 	float val = 0;
-	out8(HEIGHT_MEASSURE,HEIGHT_START_CODE);
-	int i = in8(HEIGHT_MEASSURE);
+	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
+	int i = in8(HEIGHT_MEASURE);
 	val = convertTemp(i);
 	return val;
 }
 
-float HAL::convertTemp(short input){
+float HAL::convertTemp(int input){
 	float output = 0.0;
 	short zweierk = (~input+1);
 	char t = 0;
 	int i = 0;
 
-	t = (input>>4); //nur die ganzzahl nehmen
+	t = (input>>6); //nur die ganzzahl nehmen
 
-	for(i=0;i<4;i++){//Nachkommaanteil setzen
+	for(i=0;i<6;i++){//Nachkommaanteil setzen
 		if( ( (((t<0)?zweierk:input) & (1<<i)) >> i ) == 1 ){//wenn Nachkommastelle gesetzt ist
 			switch(i){
 			case 0: output += 0.0625; break;
