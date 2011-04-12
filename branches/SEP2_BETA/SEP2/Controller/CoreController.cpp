@@ -50,9 +50,15 @@ CoreController::~CoreController() {
 }
 
 void CoreController::execute(void*) {
+	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		perror("ThreadCtl access failed\n");
+	}
 	InterruptController ic;
 	ic.start(NULL);
-	Test_HAL th;
+	//Test_IRQ ti;
+	//ti.start(NULL);
+	//resetAllOutPut();
+	/*Test_HAL th;
 	cout << "starting HAL-Tests" << endl;
 	th.start(NULL);
 	cout << "waiting for HAL-Tests" << endl;
@@ -61,7 +67,8 @@ void CoreController::execute(void*) {
 	cout << "starting M1-Tests" << endl;
 	tm.start(NULL);
 	cout << "waiting for M1-Tests" << endl;
-	tm.join();
+	tm.join();*/
+	ic.join();
 }
 
 void CoreController::shutdown() {
@@ -73,6 +80,7 @@ void CoreController::emergencyStop(){
 }
 
 void CoreController::stopMachine(){
+	engineStop();
 	cout << "CC: StopMachine ;)" <<endl;
 }
 

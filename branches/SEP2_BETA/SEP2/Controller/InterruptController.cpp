@@ -87,45 +87,45 @@ void InterruptController::handlePulseMessages() {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}
+		//int val = (int) pulse.value.sival_int;
 		switch(pulse.code){
 		case INTERRUPT_D_PORT_B:
-			if (portB & BIT_WP_IN_HEIGHT) {
-				(*cc).engineStop();
-				(*cc).engineSlowSpeed();
-				float f = (*h).getHeight();
-				cout << "InterruptController: Hoehe: " << f << endl;
+			cout << "IC: pB: " << portB << endl;
+			if (!(portB & BIT_WP_IN_HEIGHT)) {
+				cout << "InterruptController: WP_IN_H " << endl;
 			}
-			if (portB & BIT_WP_RUN_IN) {
-				(*cc).engineStop();
-				(*cc).engineSlowSpeed();
-				float f = (*h).getHeight();
-				cout << "InterruptController: Hoehe: " << f << endl;
+			if (!(portB & BIT_WP_RUN_IN)) {
+				(*cc).engineRight();
+				cout << "InterruptController: BIT_WP_RUN_IN" << endl;
 			}
 
 			if (portB & BIT_WP_IN_SWITCH) {
-				if(portB & BIT_WP_METAL){
-					cout << "IC: ist Metall :D" << endl;
-				}
-				if(!( portA & BIT_SWITCH_OPEN)){
-					(*cc).openSwitch();
-					cout << "InterruptController: opens switch " << endl;
-				}
-			}else {
-				if( portA & BIT_SWITCH_OPEN){
+				if (portB & BIT_SWITCH_OPEN) {
 					(*cc).closeSwitch();
 					cout << "InterruptController: closes switch " << endl;
 				}
+			} else {
+				if (portB & BIT_WP_METAL) {
+					if (!(portB & BIT_SWITCH_OPEN)) {
+						(*cc).openSwitch();
+						cout << "InterruptController: opens switch " << endl;
+					}
+					cout << "IC: ist Metall :D" << endl;
+				}
+
 			}
-			if(portB & BIT_SLIDE_FULL){
+			if(! (portB & BIT_SLIDE_FULL)){
 				(*cc).stopMachine();
 				(*cc).addLight(RED);
 			}
-			if(portB & BIT_WP_OUTLET){
+			if(!(portB & BIT_WP_OUTLET)){
+				(*cc).engineReset();
 				cout << "IC: somethings coming out ;)" << endl;
 			}
 
 			break;
 		case INTERRUPT_D_PORT_C_HIGH:
+			cout << "IC: pC: " << portC << endl;
 			if(!(portC & BIT_E_STOP)){
 				(*cc).emergencyStop();
 			}else if(!(portC & BIT_STOP)){
@@ -137,7 +137,7 @@ void InterruptController::handlePulseMessages() {
 			}
 			break;
 		}
-		cout << "InterruptController: pulse code: " << pulse.code << endl;
+		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
 	}
 }
 

@@ -14,6 +14,7 @@
 #include "../Lampen/Lampen.h"
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_M1.h"
+#include "../Tests/Test_IRQ.h"
 #include "../Thread/HAWThread.h"
 #include "InterruptController.h"
 

@@ -21,7 +21,6 @@ Test_IRQ::~Test_IRQ() {
 }
 
 void Test_IRQ::execute(void*){
-
 	(*cc).engineReset();
 	(*cc).engineRight();
 }
