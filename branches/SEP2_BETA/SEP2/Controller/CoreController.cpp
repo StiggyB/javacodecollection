@@ -68,6 +68,22 @@ void CoreController::shutdown() {
 
 }
 
+void CoreController::emergencyStop(){
+	cout << "CC: emergency Stop ;)" <<endl;
+}
+
+void CoreController::stopMachine(){
+	cout << "CC: StopMachine ;)" <<endl;
+}
+
+void CoreController::restart(){
+	cout << "CC: restart ;)" <<endl;
+}
+
+void CoreController::resetAll(){
+	cout << "CC: resetAll ;)" <<endl;
+}
+
 void CoreController::stopProcess() {
 	l.stop();
 	resetAllOutPut();

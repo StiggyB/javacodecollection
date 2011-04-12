@@ -115,6 +115,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a0a889e49fcc7b2b9ddbb4c8b5dc2b3d1">removeLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">addLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ac882561720204117871186694920ac03">shine</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ad21c92c3c17ab6cf0f5ee1388439bca5">emergencyStop</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5789327900cb0c98fb0605f020cd0634">stopMachine</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a44c97df99e3dd2b7cb6ac18d2f6bcddf">restart</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a3aae73ab34945b0c429fcccd67ecc4f6">resetAll</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a1b055b6eb0eb8d9c784f98ec62bfc6a5">getInstance</a> ()</td></tr>
@@ -238,6 +242,22 @@ Static Private Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a68e872f54ee4855b2821787740dd91ba">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad21c92c3c17ab6cf0f5ee1388439bca5"></a><!-- doxytag: member="CoreController::emergencyStop" ref="ad21c92c3c17ab6cf0f5ee1388439bca5" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::emergencyStop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -690,6 +710,22 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3aae73ab34945b0c429fcccd67ecc4f6"></a><!-- doxytag: member="CoreController::resetAll" ref="a3aae73ab34945b0c429fcccd67ecc4f6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::resetAll </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a519980edb577d78e52db109eb8272007"></a><!-- doxytag: member="CoreController::resetAllOutPut" ref="a519980edb577d78e52db109eb8272007" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -705,6 +741,22 @@ Static Private Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a7504c1eb1fe51914b8609b7d6d90d90a">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44c97df99e3dd2b7cb6ac18d2f6bcddf"></a><!-- doxytag: member="CoreController::restart" ref="a44c97df99e3dd2b7cb6ac18d2f6bcddf" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::restart </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -762,6 +814,22 @@ Static Private Attributes</h2></td></tr>
 <p>this function must be implemented in the derived class. The function is called once after the thread has been stopped. </p>
 
 <p>Implements <a class="el" href="classthread_1_1_h_a_w_thread.html#a843ee9493a41cec7e932fdec67a3b244">thread::HAWThread</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5789327900cb0c98fb0605f020cd0634"></a><!-- doxytag: member="CoreController::stopMachine" ref="a5789327900cb0c98fb0605f020cd0634" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::stopMachine </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -870,7 +938,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 14:40:53 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 16:28:19 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

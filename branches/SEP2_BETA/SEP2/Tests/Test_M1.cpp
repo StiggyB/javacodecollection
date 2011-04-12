@@ -13,7 +13,7 @@ Test_M1::Test_M1() {
 	if (-1==ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
-	cc = CoreController::getInstance();
+	if(cc == NULL) cc = CoreController::getInstance();
 }
 
 Test_M1::~Test_M1() {

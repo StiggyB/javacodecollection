@@ -10,8 +10,8 @@
 
 
 #include "../HAL/HAL.h"
-#include "CoreController.h"
 #include "../Thread/HAWThread.h"
+#include "CoreController.h"
 
 extern volatile struct sigevent event;
 extern const struct sigevent *eventptr;
@@ -27,10 +27,11 @@ private:
 	struct _pulse pulse;
 	void handlePulseMessages();
 	void activateInterrupts();
-	void connectToHAL();
+	void connectToHAL(int port);
 	HAL *h;
 
-	/** TODO and questions:
+	/**
+	 *  TODO and questions:
 	 * 	module for reading the value from Heightmeasurement
 	 *  module for reading/using timer
 	 *  setting up a real one core Controller?
@@ -45,6 +46,7 @@ private:
 	 *  --> if there is an thread for only interrupts -> use InterruptWait or MessageReceive?
 	 *  --> how to create safepoints for the M-Versions? <--  *
 	 */
+
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

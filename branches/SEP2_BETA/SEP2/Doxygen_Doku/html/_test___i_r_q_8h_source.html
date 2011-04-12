@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>SEP2: Controller/CoreController.h File Reference</title>
+<title>SEP2: Tests/Test_IRQ.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,28 +55,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div>
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">Controller/CoreController.h File Reference</div>  </div>
+<div class="title">Tests/Test_IRQ.h</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &quot;../HAL/HAL.h&quot;</code><br/>
-<code>#include &quot;../HAL/IHAL.h&quot;</code><br/>
-<code>#include &quot;../Lampen/Lampen.h&quot;</code><br/>
-<code>#include &quot;../Tests/Test_HAL.h&quot;</code><br/>
-<code>#include &quot;../Tests/Test_M1.h&quot;</code><br/>
-<code>#include &quot;../Thread/HAWThread.h&quot;</code><br/>
-<code>#include &quot;<a class="el" href="_interrupt_controller_8h_source.html">InterruptController.h</a>&quot;</code><br/>
-</div>
-<p><a href="_core_controller_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html">CoreController</a></td></tr>
-</table>
+<a href="_test___i_r_q_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*</span>
+<a name="l00002"></a>00002 <span class="comment"> * Test_IRQ.h</span>
+<a name="l00003"></a>00003 <span class="comment"> *</span>
+<a name="l00004"></a>00004 <span class="comment"> *  Created on: 12.04.2011</span>
+<a name="l00005"></a>00005 <span class="comment"> *      Author: Administrator</span>
+<a name="l00006"></a>00006 <span class="comment"> */</span>
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 <span class="preprocessor">#ifndef TEST_IRQ_H_</span>
+<a name="l00009"></a>00009 <span class="preprocessor"></span><span class="preprocessor">#define TEST_IRQ_H_</span>
+<a name="l00010"></a>00010 <span class="preprocessor"></span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;../Thread/HAWThread.h&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;../Controller/CoreController.h&quot;</span>
+<a name="l00013"></a>00013 
+<a name="l00014"></a><a class="code" href="class_test___i_r_q.html">00014</a> <span class="keyword">class </span><a class="code" href="class_test___i_r_q.html">Test_IRQ</a> : <span class="keyword">public</span> thread::<a class="code" href="classthread_1_1_h_a_w_thread.html#a7ae3280c8aee6ae6536c736a20d92e8d">HAWThread</a>{
+<a name="l00015"></a>00015 <span class="keyword">public</span>:
+<a name="l00016"></a>00016         <a class="code" href="class_test___i_r_q.html#a43c152cf027eadaece43e0979a975758">Test_IRQ</a>();
+<a name="l00017"></a>00017         <span class="keyword">virtual</span> <a class="code" href="class_test___i_r_q.html#aa712938dd9a6796d9ed0b2dfed7ef35e">~Test_IRQ</a>();
+<a name="l00018"></a>00018 <span class="keyword">protected</span>:
+<a name="l00019"></a>00019         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_test___i_r_q.html#ab084f0bf2bebfee7c534bbc3933f10df">execute</a>(<span class="keywordtype">void</span>*);
+<a name="l00020"></a>00020         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_test___i_r_q.html#a20abe9395ee8ca2cf876d69d3384a96f">shutdown</a>();
+<a name="l00021"></a>00021 };
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="preprocessor">#endif </span><span class="comment">/* TEST_IRQ_H_ */</span>
+</pre></div></div>
 </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"

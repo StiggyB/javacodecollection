@@ -52,6 +52,12 @@ public:
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
 
+	void emergencyStop();
+	void stopMachine();
+	void restart();
+	void resetAll();
+
+
 private:
 	CoreController();
 	~CoreController();
