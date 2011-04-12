@@ -410,3 +410,12 @@ int HAL::getInterrupt(){
 int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
+
+int HAL::getHeight(){
+	float val = 0;
+
+	out8(HEIGHT_MEASSURE,HEIGHT_START_CODE);
+	int i = in8(HEIGHT_MEASSURE);
+
+	return val;
+}

@@ -9,7 +9,7 @@
 
 volatile struct sigevent event;
 const struct sigevent *eventptr = (const struct sigevent*) &event;
-
+extern CoreController* cc;
 
 InterruptController::InterruptController() {
 	h = HAL::getInstance();
@@ -76,6 +76,15 @@ void InterruptController::handlePulseMessages() {
 		if (rcvid == -1) {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
+		}
+		if(pulse.code == SENSOR_PULSE_CODE){
+			if(portB & (1<<1)){
+				(*cc).engineStop();
+				(*cc).engineSlow();
+				float f = (*h).getHeight();
+				cout << "InterruptController: Hoehe: " << f << endl;
+			}
+
 		}
 		cout << "InterruptController: pulse code: " << pulse.code << endl;
 	}

@@ -66,6 +66,10 @@
 #define BIT_SET (true)
 //BASE ADRESS
 #define D_IOBASE 0x300 								// Anfangsadresse Ports
+//TODO
+#define A_IOBASE 0x280
+#define HEIGHT_MEASSURE (A_IOBASE + 0x02)
+#define HEIGHT_START_CODE (0x10)
 #define DIGITAL_CARD_CONTROL (D_IOBASE + 0x03) 		// Adresse von Card Control
 #define DIGITAL_CARD_CROUP0_PORTA (D_IOBASE + 0x00) // Adresse von Port A
 #define INTERRUPT_SET_ADRESS (D_IOBASE + 0xB)
@@ -145,7 +149,7 @@ public:
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-
+	virtual float getHeight();
 
 
 private:
