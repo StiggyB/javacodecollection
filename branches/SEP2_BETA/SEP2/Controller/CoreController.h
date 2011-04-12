@@ -1,9 +1,3 @@
-/*
- * MasterThread.h
- *
- *  Created on: 08.04.2011
- *      Author: Administrator
- */
 
 #ifndef CORECONTROLLER_H_
 #define CORECONTROLLER_H_
@@ -18,6 +12,29 @@
 #include "../Thread/HAWThread.h"
 #include "InterruptController.h"
 
+/**
+ * Core Controller
+ *
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Capsulates many functions for the direct
+ * in- and output from and to the Festo Transfersystem and
+ * with Interrupts using Pulse Messages.
+ * Starts the threads. Implements Singleton-Pattern.
+ *
+ * Upcoming: Other parts can get their necessary ChannelID's.
+
+ * Liste für die channelid's der Prozesse
+ * funktion um channelid zu registrieren
+ * funktion um channelid zu erfragen
+ *
+ * Inherits: IHAL.h, HAWThread.h
+ */
 class CoreController : public thread::HAWThread, public IHAL{
 public:
 	void stopProcess();
@@ -45,28 +62,52 @@ public:
 	virtual bool engineSpeed(bool slow);
 	virtual bool engineSlowLeft();
 	virtual bool engineSlowRight();
-	virtual bool attachISR(void * arg);
 	virtual int getSetInterrupt();
 	virtual int getInterrupt();
 	virtual bool resetAllOutPut();
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
+	virtual float getHeight();
 
+	/**
+	 * Performes an emergency stop.
+	 */
 	void emergencyStop();
+	/**
+	 * Stops the machine.
+	 */
 	void stopMachine();
+	/**
+	 * Restarts the machine.
+	 */
 	void restart();
+	/**
+	 * Resets all hardware and software.
+	 */
 	void resetAll();
 
 
 private:
 	CoreController();
 	~CoreController();
+	/**
+	 * for Singleton
+	 */
 	CoreController(const CoreController&);
 	CoreController& operator=(const CoreController&);
+	/**
+	 * Pointer for singleton CoreController
+	 */
 	static CoreController* pInstance;
+	/**
+	 * Pointer for singleton CoreController Instance
+	 */
 	static Mutex singleton;
-    static Mutex m;
+    /**
+     * Mutex to ensure threadsafety
+     */
+	static Mutex m;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

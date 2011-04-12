@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include <unistd.h>
+#include "IHAL.h"
 #include "HWaccess.h"
 #include "../Thread/Mutex.h"
-#include "IHAL.h"
-
+#include "../Controller/Communication.h"
 
 /**
  * Delete a bit
@@ -63,7 +63,6 @@ enum PortAdress{
 enum ControlBits {
 	BIT_PORT_A = (1<<4),BIT_PORT_B = (1<<1),BIT_PORT_C = ((1<<0) + (1<<3)),BIT_PORT_C_LOW = (1<<0),BIT_PORT_C_HIGH = (1<<3), BIT_CNTRLS = (0x82)
 };
-
 
 /**
  * Height Measures
@@ -138,7 +137,7 @@ extern volatile int controlBits;
  *
  * Inherits: IHAL.h
  */
-class HAL: public IHAL {
+class HAL: public IHAL, Communication {
 public:
 	/*!
 	 * returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (HAL)
@@ -186,29 +185,34 @@ public:
 	virtual bool engineSpeed(bool slow);
 	virtual bool engineSlowLeft();
 	virtual bool engineSlowRight();
-	virtual bool attachISR(void * arg);
 	virtual int getSetInterrupt();
 	virtual int getInterrupt();
 	virtual bool resetAllOutPut();
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	float getHeight();
-
+	virtual float getHeight();
 
 private:
 	/**
-	 * converts the temperature from a fixpoint integer to float
+	 * Converts the temperature from a fixpoint integer to float.
 	 * \param input value of type integer
 	 * \return a float - the value
 	 */
 	float convertTemp(int input);
 
-	bool isOutput2(int dir);
-	bool isInput2(int dir);
-
 	/**
-	 * writes to the transfersystem
+	 * same as isOutput(int dir);
+	 * -> needs testing
+	 */
+	bool isOutput2(int dir);
+	/**
+	 * same as isInput(int dir);
+	 * -> needs testing
+	 */
+	bool isInput2(int dir);
+	/**
+	 * Writes to the transfersystem.
 	 * \param dir an integer representing the port address
 	 * \param value an integer, the bits which should be written or deleted
 	 * \param overwrite a bool that indicates if the given bits from value should be overwritten or not.
@@ -216,19 +220,64 @@ private:
 	 */
 	int write(int dir, int value, bool overwrite);
 
+	/**
+	 * Sets ports direction to the specified value.
+	 * \param cb an integer, the new status for the ControlBit-Register
+	 */
 	void setPortsTo(int cb);
+	/**
+	 * Reset the all ports direction.
+	 */
 	void resetPortsDirection();
+	/**
+	 * Set the Ports to Output direction.
+	 * \param bits an integer, whose bits will be set to Output direction.
+	 * \return an integer
+	 */
 	int setPortToOutput(int bits);
+	/**
+	 *	Set the Ports to Input direction.
+	 * \param bits an integer, whose bits will be set to Input direction.
+	 * \return an integer, true.
+	 */
 	int setPortToInput(int bits);
+	/**
+	 * Retrieve the Value of the specified port.
+	 * \param dir an integer, the ports Address.
+	 * \return an integer, the Value of the port.
+	 */
 	int getValueToAdress(int dir);
+	/**
+	 * Calculate the bit for the specified port.
+	 * \param dir an integer, the ports Address.
+	 * \return an integer, the bits to the address.
+	 */
 	int getBitsToAdress(int dir);
+	/**
+	 *	Checks the Value, which will be written, for problems with other bits.
+	 * \param dir an integer, port which will be written to.
+	 * \param value an integer, bits which will be changed.
+	 * \param set a bool, overwrite or not.
+	 * \return an integer, the bits which will need to change.
+	 */
 	int checkVal(int dir, int value, bool set);
+	/**
+	 *	Calculate the bit mask for the Color.
+	 * \param col of enumtype Color, Color whose mask will be returned.
+	 * \return an integer, the bit mask.
+	 */
 	int getColorCode(Color col);
 	HAL();
 	HAL(const HAL&);
 	HAL& operator=(const HAL&);
 	virtual ~HAL();
+	/**
+	 * the Singleton Instance of the HAL
+	 */
 	static HAL* instance;
+	/**
+	 * Mutex to ensure threadsafety of HAL creation.
+	 */
 	static Mutex mutEx;
 };
 

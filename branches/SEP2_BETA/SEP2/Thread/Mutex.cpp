@@ -1,16 +1,22 @@
-/*
- * Mutex.cpp
+/**
+ * Mutex
  *
- *  Created on: 31.03.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Mutex for a threadsafe implementation.
+ *
  */
 
 #include "Mutex.h"
 
 Mutex::Mutex() {
-	//mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_init(&mutex,NULL);
-	//Mutex(&mutex);
 }
 
 Mutex::~Mutex() {
@@ -24,7 +30,3 @@ void Mutex::lock(){
 void Mutex::unlock(){
 	pthread_mutex_unlock(&mutex);
 }
-
-/*Mutex::Mutex (const Mutex &m){
-	pthread_mutex_init(m,NULL);
-}*/

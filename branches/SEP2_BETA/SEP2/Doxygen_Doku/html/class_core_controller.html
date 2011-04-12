@@ -108,13 +108,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a091c114b80b38ed6088c33587c9acac0">engineSpeed</a> (bool slow)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#af8879a436dc0df27dee61aaa55327639">engineSlowLeft</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#acac5beb8f3dae1bd73839e60c8789e96">engineSlowRight</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ac4a6cae86021eaffe6b0ce81250991bc">attachISR</a> (void *arg)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a9b2c3f256e0f17830956045fc3e9b18e">getSetInterrupt</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5258fa7e6b731085d0076bb3d108e0f1">getInterrupt</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a519980edb577d78e52db109eb8272007">resetAllOutPut</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a0a889e49fcc7b2b9ddbb4c8b5dc2b3d1">removeLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">addLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ac882561720204117871186694920ac03">shine</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ab8cd55d064eabdf472f8027f7046ab05">getHeight</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ad21c92c3c17ab6cf0f5ee1388439bca5">emergencyStop</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5789327900cb0c98fb0605f020cd0634">stopMachine</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a44c97df99e3dd2b7cb6ac18d2f6bcddf">restart</a> ()</td></tr>
@@ -138,7 +138,15 @@ Static Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a94ca5d6bea864545a4c0db307e517683">singleton</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#aa87e3971ed027a8024060d5bb2f1569c">m</a></td></tr>
 </table>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Core Controller</p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Starts the threads. Implements Singleton-Pattern.</p>
+<p>Upcoming: Other parts can get their necessary ChannelID's.</p>
+<p>Liste für die channelid's der Prozesse funktion um channelid zu registrieren funktion um channelid zu erfragen</p>
+<p>Inherits: IHAL.h, HAWThread.h </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab3853568fd9d732663ebf807817f3764"></a><!-- doxytag: member="CoreController::CoreController" ref="ab3853568fd9d732663ebf807817f3764" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -185,6 +193,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>for Singleton </p>
 
 </div>
 </div>
@@ -203,27 +212,16 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Adds a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ad9b019e0c939b534301181cfae79f463">IHAL</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac4a6cae86021eaffe6b0ce81250991bc"></a><!-- doxytag: member="CoreController::attachISR" ref="ac4a6cae86021eaffe6b0ce81250991bc" args="(void *arg)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CoreController::attachISR </td>
-          <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Implements <a class="el" href="class_i_h_a_l.html#ae18659e8b174f97e521500ccedddcc49">IHAL</a>.</p>
 
 </div>
 </div>
@@ -240,6 +238,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Closes the Switch. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is closed. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a68e872f54ee4855b2821787740dd91ba">IHAL</a>.</p>
 
@@ -258,6 +258,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Performes an emergency stop. </p>
 
 </div>
 </div>
@@ -274,6 +275,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Continues the engine through resetting the stopbit. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ae32eddb81183eba0df5fd737cdefd51a">IHAL</a>.</p>
 
@@ -292,6 +295,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine direction to the left, if not stopped. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a2132a79b81b8078f09d88f5e27ad78c9">IHAL</a>.</p>
 
@@ -310,6 +315,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to normal speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a44b0bd1dac1427cbcbc0edd4940fb218">IHAL</a>.</p>
 
@@ -328,6 +335,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Resets the engine. (Resetting port A Bit 0 to 3) </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a3a247cf2d1d627423f59757805d028d1">IHAL</a>.</p>
 
@@ -346,6 +355,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine direction to the right, if not stopped. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#aa9307beeb0b1e12ace8032eca347a0a5">IHAL</a>.</p>
 
@@ -364,6 +375,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed and left direction. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a95798d69118f93887cac977272f30a6a">IHAL</a>.</p>
 
@@ -382,6 +395,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed and right direction. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#afc92171bf93ee305c3834f2d41db98f9">IHAL</a>.</p>
 
@@ -400,6 +415,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a817fd0761654176b740c2f4dc9ad5ec7">IHAL</a>.</p>
 
@@ -419,6 +436,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, BIT_ENGINE_LEFT, BIT_ENGINE_S_L, else it will be slowed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a916a1b0b32b08c72390b27f41bb05dbc">IHAL</a>.</p>
 
@@ -438,6 +463,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slow</td><td>a bool. If true, the engine will be set to slow speed, false will continue. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ab4b6fddc0cb85ee55d4da48f06e586bd">IHAL</a>.</p>
 
@@ -457,6 +490,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Starting the Engine into a given direction. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>an integer, specifying the direction (LEFT (BIT_ENGINE_LEFT), RIGHT (BIT_ENGINE_RIGHT)). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if engine started. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a7963cb6f55fe035202ce046e9c9c47cf">IHAL</a>.</p>
 
@@ -475,6 +516,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Stops the engine through setting the stopbit. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#aeed7694f04684be1849516e78daf6369">IHAL</a>.</p>
 
@@ -493,6 +536,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves if the engine has stopped (stop bit set). </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if stop bit set. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a61cf096a8c691695f68412bf1f40ea94">IHAL</a>.</p>
 
@@ -515,6 +560,26 @@ Static Private Attributes</h2></td></tr>
 <p>to be implemented in the derived class. The application programmer has to write his own loop. He can check bool <a class="el" href="classthread_1_1_h_a_w_thread.html#a46e9f127856f36917b3a8a345b7be5ee">isStopped()</a> to see if the thread should exit the loop. </p>
 
 <p>Implements <a class="el" href="classthread_1_1_h_a_w_thread.html#ae565cb73c096b246664bd2474b9c8907">thread::HAWThread</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab8cd55d064eabdf472f8027f7046ab05"></a><!-- doxytag: member="CoreController::getHeight" ref="ab8cd55d064eabdf472f8027f7046ab05" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float CoreController::getHeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Calculates the value of a heightmeasurement. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a float, the value of the heightmeasurement. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#ace5862b979b2c6e41a165bdaf8e14828">IHAL</a>.</p>
 
 </div>
 </div>
@@ -547,6 +612,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves the triggered interrupts. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, triggered interrupts </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ae7923c0578051a0bdf1c5692ac28346d">IHAL</a>.</p>
 
@@ -565,6 +632,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves the set interrupts. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, set interrupts </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ad65606f969f65bcfaafb66956631416a">IHAL</a>.</p>
 
@@ -584,6 +653,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Checks if a port is set to Input. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Input. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#aa37ff7b06b6283f9ea140038b761efb8">IHAL</a>.</p>
 
@@ -603,6 +680,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Checks if a port is set to Output. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Output. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a88b8848521a3797857faab86ff16d1a5">IHAL</a>.</p>
 
@@ -621,6 +706,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Opens the Switch. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is open. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a1cd7a632f5deec1741eba212ed595fde">IHAL</a>.</p>
 
@@ -657,6 +744,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Reads from a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the value read. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a907b79a7d865d3f3ddca38160927c60f">IHAL</a>.</p>
 
@@ -676,6 +771,13 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Removes a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#ad58b5d5a3c3eb1f7ff3113ffa69e70cd">IHAL</a>.</p>
 
@@ -705,6 +807,15 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Reseting specified bit position on a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be reset to zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#af16e51f91609da5d089030c502758253">IHAL</a>.</p>
 
@@ -723,6 +834,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Resets all hardware and software. </p>
 
 </div>
 </div>
@@ -739,6 +851,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Resets all bits from Port A. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a7504c1eb1fe51914b8609b7d6d90d90a">IHAL</a>.</p>
 
@@ -757,6 +871,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Restarts the machine. </p>
 
 </div>
 </div>
@@ -774,6 +889,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the Switch to open or closed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>a bool, </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a3e5295374c4b1b019eac4a8e824ac8dc">IHAL</a>.</p>
 
@@ -793,6 +916,14 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Adds a certain light. Equals void <a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">addLight(Color col)</a>; </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a321aa701f6b50609814767071aa4abb1">IHAL</a>.</p>
 
@@ -830,6 +961,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Stops the machine. </p>
 
 </div>
 </div>
@@ -873,6 +1005,15 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Writing to a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a8b500e8f1fd364a3b5bf78247cee516f">IHAL</a>.</p>
 
@@ -889,6 +1030,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p><a class="el" href="class_mutex.html">Mutex</a> to ensure threadsafety </p>
 
 </div>
 </div>
@@ -902,7 +1044,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Liste für die channelid's der Prozesse funktion um channelid zu registrieren funktion um channelid zu erfragen </p>
+<p>Pointer for singleton <a class="el" href="class_core_controller.html">CoreController</a> </p>
 
 </div>
 </div>
@@ -916,6 +1058,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Pointer for singleton <a class="el" href="class_core_controller.html">CoreController</a> Instance </p>
 
 </div>
 </div>
@@ -938,7 +1081,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 16:28:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 23:59:22 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

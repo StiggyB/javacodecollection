@@ -103,17 +103,22 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ab4b6fddc0cb85ee55d4da48f06e586bd">engineSpeed</a> (bool slow)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#a95798d69118f93887cac977272f30a6a">engineSlowLeft</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#afc92171bf93ee305c3834f2d41db98f9">engineSlowRight</a> ()=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ae18659e8b174f97e521500ccedddcc49">attachISR</a> (void *arg)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ad65606f969f65bcfaafb66956631416a">getSetInterrupt</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ae7923c0578051a0bdf1c5692ac28346d">getInterrupt</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#a7504c1eb1fe51914b8609b7d6d90d90a">resetAllOutPut</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ad58b5d5a3c3eb1f7ff3113ffa69e70cd">removeLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ad9b019e0c939b534301181cfae79f463">addLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#a321aa701f6b50609814767071aa4abb1">shine</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#ace5862b979b2c6e41a165bdaf8e14828">getHeight</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#acbe91cfe4b0b1af149e848530128e0f7">IHAL</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_h_a_l.html#a7eed9a454d176fb608dc42cb130cea5c">~IHAL</a> ()</td></tr>
 </table>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Interface for the Hardware Abstraction Layer.</p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="acbe91cfe4b0b1af149e848530128e0f7"></a><!-- doxytag: member="IHAL::IHAL" ref="acbe91cfe4b0b1af149e848530128e0f7" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -127,6 +132,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Interface for the Hardware Abstraction Layer.</p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. </p>
 
 </div>
 </div>
@@ -161,27 +170,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Adds a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">CoreController</a>, and <a class="el" href="class_h_a_l.html#a6eaa623cf95a1d6718dcef7e7bfbaa9e">HAL</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae18659e8b174f97e521500ccedddcc49"></a><!-- doxytag: member="IHAL::attachISR" ref="ae18659e8b174f97e521500ccedddcc49" args="(void *arg)=0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool IHAL::attachISR </td>
-          <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
-          <td><code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Implemented in <a class="el" href="class_core_controller.html#ac4a6cae86021eaffe6b0ce81250991bc">CoreController</a>, and <a class="el" href="class_h_a_l.html#ab05a98f1a77f756def9cb4bd774f473f">HAL</a>.</p>
 
 </div>
 </div>
@@ -198,6 +196,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Closes the Switch. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is closed. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a79c64b1de936ecb192e37e90726532f8">CoreController</a>, and <a class="el" href="class_h_a_l.html#a0c2f54c42f1b7b8c660eaad80405580c">HAL</a>.</p>
 
@@ -216,6 +216,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Continues the engine through resetting the stopbit. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#abd1e99116dfe7bb6efea152b9bf24bc5">CoreController</a>, and <a class="el" href="class_h_a_l.html#ab8bd1ec0ba40cacbf475f9f419214786">HAL</a>.</p>
 
@@ -234,6 +236,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine direction to the left, if not stopped. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a116c879f4ed84e50d5a0cca7a34204a2">CoreController</a>, and <a class="el" href="class_h_a_l.html#a81cb35674a0f636bfa4d39da97c6dff9">HAL</a>.</p>
 
@@ -252,6 +256,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to normal speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#ab48e99d460d7ce1e9c471bb85a2707ce">CoreController</a>, and <a class="el" href="class_h_a_l.html#a489b6e5cdc5a1cdee9f0645c7b4fb9a3">HAL</a>.</p>
 
@@ -270,6 +276,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Resets the engine. (Resetting port A Bit 0 to 3) </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#ae1d9b6c58d3b22dd8c9523f5bb1131a6">CoreController</a>, and <a class="el" href="class_h_a_l.html#ab0782c4b60c8dc2fbf9efa3ba12dc4b3">HAL</a>.</p>
 
@@ -288,6 +296,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine direction to the right, if not stopped. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#aadfc22d054d70ac9e56a17e8a40dd349">CoreController</a>, and <a class="el" href="class_h_a_l.html#ade1532fc15e1fce7daeb77d3e3bb25e1">HAL</a>.</p>
 
@@ -306,6 +316,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed and left direction. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#af8879a436dc0df27dee61aaa55327639">CoreController</a>, and <a class="el" href="class_h_a_l.html#ac16fd425170877b7b3a68f9abcca0657">HAL</a>.</p>
 
@@ -324,6 +336,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed and right direction. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#acac5beb8f3dae1bd73839e60c8789e96">CoreController</a>, and <a class="el" href="class_h_a_l.html#aa3a127d2a3bd1bfe3125276ecd883e2b">HAL</a>.</p>
 
@@ -343,6 +357,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, BIT_ENGINE_LEFT, BIT_ENGINE_S_L, else it will be slowed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#af908b59f0a5305b0687cf801054148ee">CoreController</a>, and <a class="el" href="class_h_a_l.html#a4e64940f3b94ace1f7c3986147b17cf9">HAL</a>.</p>
 
@@ -361,6 +383,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a5497cf76684069c6e1fc4c3da6cba417">CoreController</a>, and <a class="el" href="class_h_a_l.html#a4155fac81c8cca0f51c051ba43511374">HAL</a>.</p>
 
@@ -380,6 +404,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the engine to slow speed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slow</td><td>a bool. If true, the engine will be set to slow speed, false will continue. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a091c114b80b38ed6088c33587c9acac0">CoreController</a>, and <a class="el" href="class_h_a_l.html#a5185ffa6e70cd6c01df2227d947f8b97">HAL</a>.</p>
 
@@ -399,6 +431,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Starting the Engine into a given direction. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>an integer, specifying the direction (LEFT (BIT_ENGINE_LEFT), RIGHT (BIT_ENGINE_RIGHT)). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if engine started. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a2127e5ed2f50fea4608c0061795b67ed">CoreController</a>, and <a class="el" href="class_h_a_l.html#a613eafd1e83edc0e3262cd18a0cce2cb">HAL</a>.</p>
 
@@ -417,6 +457,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Stops the engine through setting the stopbit. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a98e891e2ba656139251d7135587d128a">CoreController</a>, and <a class="el" href="class_h_a_l.html#a0c1ef0458a5ec899d3d78a8af3dfcab7">HAL</a>.</p>
 
@@ -435,8 +477,30 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves if the engine has stopped (stop bit set). </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if stop bit set. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#ad870f00d98edcf717b151abf2bbb2737">CoreController</a>, and <a class="el" href="class_h_a_l.html#af4f55ac3bb2eabc171d9f3bde6b37047">HAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace5862b979b2c6e41a165bdaf8e14828"></a><!-- doxytag: member="IHAL::getHeight" ref="ace5862b979b2c6e41a165bdaf8e14828" args="()=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual float IHAL::getHeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Calculates the value of a heightmeasurement. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a float, the value of the heightmeasurement. </dd></dl>
+
+<p>Implemented in <a class="el" href="class_core_controller.html#ab8cd55d064eabdf472f8027f7046ab05">CoreController</a>, and <a class="el" href="class_h_a_l.html#a34048e9f00a5044d89771a60bd23ce29">HAL</a>.</p>
 
 </div>
 </div>
@@ -453,6 +517,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves the triggered interrupts. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, triggered interrupts </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a5258fa7e6b731085d0076bb3d108e0f1">CoreController</a>, and <a class="el" href="class_h_a_l.html#aefdb8d6ca3c6e2363a47cce0928fc542">HAL</a>.</p>
 
@@ -471,6 +537,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves the set interrupts. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, set interrupts </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a9b2c3f256e0f17830956045fc3e9b18e">CoreController</a>, and <a class="el" href="class_h_a_l.html#ae752d823f503f44f10fe5287524b5269">HAL</a>.</p>
 
@@ -490,6 +558,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Checks if a port is set to Input. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Input. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a30852fafbad04ca7dd451896c670433d">CoreController</a>, and <a class="el" href="class_h_a_l.html#a36629ca35aa77cef9f52cab6c610d805">HAL</a>.</p>
 
@@ -509,6 +585,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Checks if a port is set to Output. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Output. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a5e0d1ca70653a586975164adc90a7fb2">CoreController</a>, and <a class="el" href="class_h_a_l.html#ae90a246473fda79bb2ef741d079aa26c">HAL</a>.</p>
 
@@ -527,6 +611,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Opens the Switch. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is open. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#ab196d1782337242cfce687e46d6151eb">CoreController</a>, and <a class="el" href="class_h_a_l.html#acd610121e48feda69ae488205b50c0de">HAL</a>.</p>
 
@@ -546,6 +632,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Reads from a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the value read. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a7b6e0f566590606ee2015580a0150b52">CoreController</a>, and <a class="el" href="class_h_a_l.html#a4ffbb1b7b3fe2378b5153aa20860c642">HAL</a>.</p>
 
@@ -565,6 +659,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Removes a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a0a889e49fcc7b2b9ddbb4c8b5dc2b3d1">CoreController</a>, and <a class="el" href="class_h_a_l.html#a007cfe57844c69a4aa251fdc1e0d5c98">HAL</a>.</p>
 
@@ -594,6 +695,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Reseting specified bit position on a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be reset to zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a54262e61d79786005c1bbdb827df09b2">CoreController</a>, and <a class="el" href="class_h_a_l.html#a34b65f10305a8b454a5cf08af8331a22">HAL</a>.</p>
 
@@ -612,6 +722,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Resets all bits from Port A. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a519980edb577d78e52db109eb8272007">CoreController</a>, and <a class="el" href="class_h_a_l.html#a62d455f90517b24ec833b1e4764c2308">HAL</a>.</p>
 
@@ -631,6 +743,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Sets the Switch to open or closed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>a bool, </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#aa65924834e83143f71333d1e9686327d">CoreController</a>, and <a class="el" href="class_h_a_l.html#af270c59b0735235be831992798913d6a">HAL</a>.</p>
 
@@ -650,6 +770,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Adds a certain light. Equals void <a class="el" href="class_i_h_a_l.html#ad9b019e0c939b534301181cfae79f463">addLight(Color col)</a>; </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#ac882561720204117871186694920ac03">CoreController</a>, and <a class="el" href="class_h_a_l.html#ace397ddfa721065d0f740d713b187fbe">HAL</a>.</p>
 
@@ -679,6 +807,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Writing to a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_core_controller.html#a78701c0d1164aca53af91625d8b81392">CoreController</a>, and <a class="el" href="class_h_a_l.html#a303c239092820b2250ac47b5e3bd732c">HAL</a>.</p>
 
@@ -703,7 +840,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 16:28:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 23:59:22 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -1,8 +1,17 @@
-/*
- * Sensor.cpp
+/**
+ * Interrupt Controller
  *
- *  Created on: 08.04.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Capsules many functions for Interrupts using Pulse Messages.
+ *
+ *
+ * Inherits: HAWThread.h
  */
 
 #include "InterruptController.h"
@@ -10,6 +19,7 @@
 volatile struct sigevent event;
 const struct sigevent *eventptr = (const struct sigevent*) &event;
 extern CoreController* cc;
+Sensor sens;
 
 InterruptController::InterruptController() {
 	h = HAL::getInstance();
@@ -66,16 +76,16 @@ void InterruptController::connectToHAL(int port) {
 }
 
 void InterruptController::execute(void*) {
+	getSensor();
 	connectToHAL(INTERRUPT_D_PORT_B);
 	connectToHAL(INTERRUPT_D_PORT_C_HIGH);
 	handlePulseMessages();
 }
 
-/*
- *   = (1<<1),BIT_HEIGHT_1 = (1<<2), = (1<<3),
-	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_SLIDE_FULL = (1<<6),BIT_WP_OUTLET = (1<<7)
-};
- */
+void InterruptController::getSensor(){
+
+}
+
 
 void InterruptController::handlePulseMessages() {
 	int rcvid;
@@ -87,57 +97,11 @@ void InterruptController::handlePulseMessages() {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}
-		//int val = (int) pulse.value.sival_int;
-		switch(pulse.code){
-		case INTERRUPT_D_PORT_B:
-			cout << "IC: pB: " << portB << endl;
-			if (!(portB & BIT_WP_IN_HEIGHT)) {
-				cout << "InterruptController: WP_IN_H " << endl;
-			}
-			if (!(portB & BIT_WP_RUN_IN)) {
-				(*cc).engineRight();
-				cout << "InterruptController: BIT_WP_RUN_IN" << endl;
-			}
-
-			if (portB & BIT_WP_IN_SWITCH) {
-				if (portB & BIT_SWITCH_OPEN) {
-					(*cc).closeSwitch();
-					cout << "InterruptController: closes switch " << endl;
-				}
-			} else {
-				if (portB & BIT_WP_METAL) {
-					if (!(portB & BIT_SWITCH_OPEN)) {
-						(*cc).openSwitch();
-						cout << "InterruptController: opens switch " << endl;
-					}
-					cout << "IC: ist Metall :D" << endl;
-				}
-
-			}
-			if(! (portB & BIT_SLIDE_FULL)){
-				(*cc).stopMachine();
-				(*cc).addLight(RED);
-			}
-			if(!(portB & BIT_WP_OUTLET)){
-				(*cc).engineReset();
-				cout << "IC: somethings coming out ;)" << endl;
-			}
-
-			break;
-		case INTERRUPT_D_PORT_C_HIGH:
-			cout << "IC: pC: " << portC << endl;
-			if(!(portC & BIT_E_STOP)){
-				(*cc).emergencyStop();
-			}else if(!(portC & BIT_STOP)){
-				(*cc).stopMachine();
-			}else if(portC & BIT_START){
-				(*cc).restart();
-			}else if(portC & BIT_RESET){
-				(*cc).resetAll();
-			}
-			break;
-		}
 		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
+
+		// TODO
+		// send a message to Sensor
+		sens.interrupt(pulse.code);
 	}
 }
 

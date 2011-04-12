@@ -66,9 +66,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 This is the complete list of members for <a class="el" href="class_h_a_l.html">HAL</a>, including all inherited members.<table>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a0a0d664a136e3194228b81a4e9ddf7a4">activateInterrupt</a>(int port)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a6eaa623cf95a1d6718dcef7e7bfbaa9e">addLight</a>(Color col)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ab05a98f1a77f756def9cb4bd774f473f">attachISR</a>(void *arg)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a15446d7e97082b946032f23096922813">checkVal</a>(int dir, int value, bool set)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a0c2f54c42f1b7b8c660eaad80405580c">closeSwitch</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a>()</td><td><a class="el" href="class_communication.html">Communication</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ac6d82da247b938afa30fd49be3dd9768">convertTemp</a>(int input)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a2b96c8a751c714463bb1d80be537d594">deactivateInterrupt</a>(int port)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ab8bd1ec0ba40cacbf475f9f419214786">engineContinue</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
@@ -86,7 +86,8 @@ This is the complete list of members for <a class="el" href="class_h_a_l.html">H
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#af4f55ac3bb2eabc171d9f3bde6b37047">engineStopped</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a66d7d4ea3ca6398e80910bafbc2c7a23">getBitsToAdress</a>(int dir)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a01b399d7e3baa3c5fc0b3116f6a2f331">getColorCode</a>(Color col)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a34048e9f00a5044d89771a60bd23ce29">getHeight</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_communication.html#aac8648fd1e70129c8969152d5b92608d">getComObject</a>(Com c)</td><td><a class="el" href="class_communication.html">Communication</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a34048e9f00a5044d89771a60bd23ce29">getHeight</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a78f22148fbdcbdb8d7a1db6cf772ec7a">getInstance</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#aefdb8d6ca3c6e2363a47cce0928fc542">getInterrupt</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ae752d823f503f44f10fe5287524b5269">getSetInterrupt</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
@@ -115,6 +116,7 @@ This is the complete list of members for <a class="el" href="class_h_a_l.html">H
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ace397ddfa721065d0f740d713b187fbe">shine</a>(Color col)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a303c239092820b2250ac47b5e3bd732c">write</a>(int dir, int value)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#a7abaa55189a411ddc2eaaf2cadbc3f6d">write</a>(int dir, int value, bool overwrite)</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a>()</td><td><a class="el" href="class_communication.html">Communication</a></td><td><code> [private, virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_h_a_l.html#ae3462e97cfb2641bc30525500ffb3fec">~HAL</a>()</td><td><a class="el" href="class_h_a_l.html">HAL</a></td><td><code> [private, virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_i_h_a_l.html#a7eed9a454d176fb608dc42cb130cea5c">~IHAL</a>()</td><td><a class="el" href="class_i_h_a_l.html">IHAL</a></td><td><code> [virtual]</code></td></tr>
 </table></div>
@@ -132,7 +134,7 @@ This is the complete list of members for <a class="el" href="class_h_a_l.html">H
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 16:28:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 23:59:22 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

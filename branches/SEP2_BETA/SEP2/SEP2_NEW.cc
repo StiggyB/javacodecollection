@@ -1,3 +1,15 @@
+/**
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ */
+
+
 #include <cstdlib>
 #include <iostream>
 #include "Controller/CoreController.h"

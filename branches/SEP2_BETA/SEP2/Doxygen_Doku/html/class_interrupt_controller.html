@@ -95,6 +95,7 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#aa8d400940a098ad803096ab17ccf5155">handlePulseMessages</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#ae1970599633718d6b0f34d41d9301398">activateInterrupts</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#ab9661c3fc8d702dc4b546a40d87cf0b0">connectToHAL</a> (int port)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#acf5062a46160ca9dd58895527dd21228">getSensor</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#a0947b96c4aa24a7567f8e439b866e57e">interruptId</a></td></tr>
@@ -103,7 +104,13 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct _pulse&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#a8bd966bfac2e383c9e3ca53ba1ab7191">pulse</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#aa05b16f7beece915ed8c05b455c56625">h</a></td></tr>
 </table>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Interrupt Controller</p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Capsules many functions for Interrupts using Pulse Messages.</p>
+<p>Inherits: HAWThread.h </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a1603e4bb362e4f8d0adfc67262f36f81"></a><!-- doxytag: member="InterruptController::InterruptController" ref="a1603e4bb362e4f8d0adfc67262f36f81" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -150,6 +157,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Activates all necessary interrupts. </p>
 
 </div>
 </div>
@@ -167,6 +175,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Connects the <a class="el" href="class_interrupt_controller.html">InterruptController</a> to the <a class="el" href="class_h_a_l.html">HAL</a> on specified ports. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>an integer, the port which should be connected to the ISR. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -184,9 +199,26 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>TODO and questions: module for reading the value from Heightmeasurement module for reading/using timer setting up a real one core Controller? all connections to the Hardware will be established over the controller? --&gt; interface will need to be brought all the way through the <a class="el" href="class_h_a_l.html">HAL</a> into the controller --&gt; needs to be a singleton! --&gt; should the controller wait for messages from every one? or should there be one only for Interrupts? --&gt; saving in controller all channel ids? so when you need the id of a specific thread you can get it from him. all Threads will send him a message when started. --&gt; if there is an thread for only interrupts -&gt; use InterruptWait or MessageReceive? --&gt; how to create safepoints for the M-Versions? &lt;-- * </p>
+<p>to be implemented in the derived class. The application programmer has to write his own loop. He can check bool <a class="el" href="classthread_1_1_h_a_w_thread.html#a46e9f127856f36917b3a8a345b7be5ee">isStopped()</a> to see if the thread should exit the loop. </p>
 
 <p>Implements <a class="el" href="classthread_1_1_h_a_w_thread.html#ae565cb73c096b246664bd2474b9c8907">thread::HAWThread</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acf5062a46160ca9dd58895527dd21228"></a><!-- doxytag: member="InterruptController::getSensor" ref="acf5062a46160ca9dd58895527dd21228" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InterruptController::getSensor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Gets the <a class="el" href="class_sensor.html">Sensor</a>, to send them the interrupts. </p>
 
 </div>
 </div>
@@ -203,6 +235,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Waits for PulseMessages from <a class="el" href="class_h_a_l.html">HAL</a>, sending them to <a class="el" href="class_sensor.html">Sensor</a>. </p>
 
 </div>
 </div>
@@ -262,6 +295,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Direct connection to <a class="el" href="class_h_a_l.html">HAL</a>. </p>
 
 </div>
 </div>
@@ -275,6 +309,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>ID's for Interrupt, Channel and Connection. </p>
 
 </div>
 </div>
@@ -288,6 +323,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Pulse which will be send between <a class="el" href="class_h_a_l.html">HAL</a> and <a class="el" href="class_interrupt_controller.html">InterruptController</a>. </p>
 
 </div>
 </div>
@@ -310,7 +346,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 16:28:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 23:59:22 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

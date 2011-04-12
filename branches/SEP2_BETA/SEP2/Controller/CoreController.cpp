@@ -1,8 +1,25 @@
-/*
- * MasterThread.cpp
+/**
+ * Core Controller
  *
- *  Created on: 08.04.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Capsulates many functions for the direct
+ * in- and output from and to the Festo Transfersystem and
+ * with Interrupts using Pulse Messages.
+ * Starts the threads. Implements Singleton-Pattern.
+ *
+ * Upcoming: Other parts can get their necessary ChannelID's.
+
+ * Liste für die channelid's der Prozesse
+ * funktion um channelid zu registrieren
+ * funktion um channelid zu erfragen
+ *
+ * Inherits: IHAL.h, HAWThread.h
  */
 
 #include "CoreController.h"
@@ -12,15 +29,6 @@ Mutex CoreController::singleton;
 Mutex CoreController::m;
 HAL* h;
 CoreController* cc;
-
-/**
- * Liste für die channelid's der Prozesse
- * funktion um channelid zu registrieren
- * funktion um channelid zu erfragen
- *
- */
-
-
 
 CoreController* CoreController::pInstance = NULL;
 
@@ -224,12 +232,6 @@ bool CoreController::engineSlowRight() {
 	m.unlock();
 	return ret;
 }
-bool CoreController::attachISR(void * arg) {
-	m.lock();
-	bool ret = (*h).attachISR(arg);
-	m.unlock();
-	return ret;
-}
 int CoreController::getSetInterrupt() {
 	m.lock();
 	int ret = (*h).getSetInterrupt();
@@ -263,6 +265,13 @@ bool CoreController::addLight(Color col) {
 bool CoreController::shine(Color col) {
 	m.lock();
 	bool ret = (*h).shine(col);
+	m.unlock();
+	return ret;
+}
+
+float CoreController::getHeight(){
+	m.lock();
+	float ret = (*h).getHeight();
 	m.unlock();
 	return ret;
 }

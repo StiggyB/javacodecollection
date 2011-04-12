@@ -1,21 +1,59 @@
-/*
- * HAL.cpp
+
+/**
+ * Hardware Abstraction Layer for Aktorik and Sensorik.
  *
- *  Created on: 08.04.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 2: HAL Aktorik
+ * Milestone 3: HAL Sensorik
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Capsulates many functions for the direct
+ * in- and output from and to the Festo Transfersystem and
+ * with Interrupts using Pulse Messages.
+ *
+ * Inherits: IHAL.h
  */
-
 #include "HAL.h"
-
+/**
+ * Interrupt Service Routine
+ */
 const struct sigevent * ISR(void *arg, int id);
+/**
+ * copy of port A
+ */
 volatile int portA;
+/**
+ * copy of port B
+ */
 volatile int portB;
+/**
+ * copy of port C
+ */
 volatile int portC;
+/**
+ * copy of port IRE
+ */
 volatile int portIRE;
+/**
+ * copy of port IRQ
+ */
 volatile int portIRQ;
+/**
+ * copy of ControlBits
+ */
 volatile int controlBits;
-
+/**
+ * instance of HAL
+ */
 HAL* HAL::instance = NULL;
+/**
+ * mutex to ensure that HAL stays a singleton
+ */
 Mutex HAL::mutEx;
 
 HAL* HAL::getInstance(){
@@ -33,10 +71,10 @@ HAL* HAL::getInstance(){
 HAL::HAL() {
 	controlBits = BIT_CNTRLS;
 	portA = read(PORT_A);
-		portB = read(PORT_B);
-		portC = read(PORT_C);
-		portIRE = read(PORT_IRE);
-		portIRQ = read(PORT_IRQ);
+	portB = read(PORT_B);
+	portC = read(PORT_C);
+	portIRE = read(PORT_IRE);
+	portIRQ = read(PORT_IRQ);
 }
 
 HAL::~HAL() {
@@ -358,14 +396,6 @@ bool HAL::shine(Color col) {
 	}
 	return ret;
 }
-
-bool HAL::attachISR(void * arg){
-	struct sigevent * event = (struct sigevent*) arg;
-	int id = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D,ISR,&event,sizeof(event),0);
-	if(id == -1)std::cout << "HAL: AttachISR failed" << std::endl;
-	return id;
-}
-
 
 const struct sigevent * ISR(void *arg, int id){
 	int iir;
