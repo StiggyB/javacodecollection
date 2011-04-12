@@ -413,9 +413,43 @@ int HAL::getSetInterrupt(){
 
 int HAL::getHeight(){
 	float val = 0;
-
 	out8(HEIGHT_MEASSURE,HEIGHT_START_CODE);
 	int i = in8(HEIGHT_MEASSURE);
-
+	val = convertTemp(i);
 	return val;
 }
+
+float HAL::convertTemp(short input){
+	float output = 0.0;
+	short zweierk = (~input+1);
+	char t = 0;
+	int i = 0;
+
+	t = (input>>4); //nur die ganzzahl nehmen
+
+	for(i=0;i<4;i++){//Nachkommaanteil setzen
+		if( ( (((t<0)?zweierk:input) & (1<<i)) >> i ) == 1 ){//wenn Nachkommastelle gesetzt ist
+			switch(i){
+			case 0: output += 0.0625; break;
+			case 1: output += 0.125; break;
+			case 2: output += 0.25; break;
+			case 3: output += 0.5; break;
+			}//switch
+		}//if
+	}//for
+
+	if( t<0 ){//falls Erg. negativ ist
+		output = (-1)*output;
+		if((output != 0)){//falls Nachkommaanteil
+			t = t + 1;
+		}//if
+		output = output + t;
+
+	}//if
+	else{//positives Erg.
+		output = output + t;
+
+	}//else
+
+	return output;
+}//convertTemp

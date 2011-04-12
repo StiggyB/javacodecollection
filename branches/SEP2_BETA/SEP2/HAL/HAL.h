@@ -153,6 +153,7 @@ public:
 
 
 private:
+	float convertTemp(short input);
 	bool isOutput2(int dir);
 	bool isInput2(int dir);
 	int write(int dir, int value, bool overwrite);
