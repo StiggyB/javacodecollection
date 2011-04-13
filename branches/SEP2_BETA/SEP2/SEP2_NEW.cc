@@ -12,7 +12,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "Controller/CoreController.h"
+#include "Controller/StartThread.h"
 
 /**
  * starting the program!
@@ -42,13 +42,13 @@ int main(int argc, char *argv[]) {
 	/**
 	 * starting the CoreController
 	 */
-	CoreController* mt = CoreController::getInstance();
-	(*mt).start(NULL);
-	(*mt).join();
+	StartThread st;
+	st.start(NULL);
+	st.join();
 	/**
 	 * clean up
 	 */
-	(*mt).stopProcess();
+	st.stopProcess();
 
 	cout << "Finishing Test" << endl;
 
