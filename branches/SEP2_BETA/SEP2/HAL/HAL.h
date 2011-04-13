@@ -195,7 +195,7 @@ public:
 
 private:
 	/**
-	 * Converts the temperature from a fixpoint integer to float.
+	 * Converts the temperature from a fix point integer to float.
 	 * \param input value of type integer
 	 * \return a float - the value
 	 */
@@ -276,7 +276,7 @@ private:
 	 */
 	static HAL* instance;
 	/**
-	 * Mutex to ensure threadsafety of HAL creation.
+	 * Mutex to ensure thread-safety of HAL creation.
 	 */
 	static Mutex mutEx;
 };

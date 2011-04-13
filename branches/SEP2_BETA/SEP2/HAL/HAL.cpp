@@ -18,6 +18,25 @@
  *
  * Inherits: IHAL.h
  */
+
+
+//TODO Bitte um Kommentar zur Code Pruefung HAL
+/*
+ * Code Pruefung HAL:
+	Kritik:
+	- Namensgebung, Defines, Enums und Struktur ueberzeugend
+	- Funktion: int HAL::write(int dir, int value, bool set)
+  	  ist unübersichtlich und unleserlich
+  	  Verbesserungsvorschlag: Extract Method für switch-case und evt. mehr.
+	- Funktionen: int HAL::getValueToAdress(int dir),
+              	  int HAL::getBitsToAdress(int dir)
+  	  Namensgebung nicht erklaerend. Bitte um Feedback bzw. Klaerung.
+	- Funktion: float HAL::convertTemp(int input)
+  	  wozu ist diese Funktion notwendig?
+  	- An welcher Stelle wird die instance der HAL zerstoert?
+  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr)
+*/
+
 #include "HAL.h"
 /**
  * Interrupt Service Routine
