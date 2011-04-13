@@ -29,11 +29,6 @@
 
 #include "Test_M1.h"
 
-/**
- * pointer to the CoreController
- */
-extern CoreController* cc;
-
 Test_M1::Test_M1() {
 	/**
 	 * gaining IO privileges
@@ -44,9 +39,7 @@ Test_M1::Test_M1() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	if (cc == NULL){
-		cc = CoreController::getInstance();
-	}
+	cc = CoreController::getInstance();
 }
 
 Test_M1::~Test_M1() {
