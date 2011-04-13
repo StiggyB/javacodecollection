@@ -26,6 +26,8 @@ public:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+private:
+	CoreController *cc;
 };
 
 #endif /* TEST_IRQ_H_ */
