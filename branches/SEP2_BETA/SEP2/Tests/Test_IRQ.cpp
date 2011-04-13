@@ -29,9 +29,7 @@ Test_IRQ::Test_IRQ() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	if(cc == NULL){
-		cc = CoreController::getInstance();
-	}
+	cc = CoreController::getInstance();
 }
 
 Test_IRQ::~Test_IRQ() {
