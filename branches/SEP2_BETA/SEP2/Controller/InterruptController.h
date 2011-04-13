@@ -4,7 +4,6 @@
 
 
 #include "Sensor.h"
-//#include "CoreController.h"
 #include "../HAL/HAL.h"
 #include "../Thread/HAWThread.h"
 
