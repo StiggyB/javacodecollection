@@ -23,7 +23,7 @@ VFLAG_g=-gstabs+
 EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/HAL $(PROJECT_ROOT)/Lampen  \
 	$(PROJECT_ROOT)/Thread $(PROJECT_ROOT)/Tests  \
-	$(PROJECT_ROOT_serial)
+	$(PROJECT_ROOT)/Serial
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL

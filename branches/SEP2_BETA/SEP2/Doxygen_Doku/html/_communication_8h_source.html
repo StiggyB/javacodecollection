@@ -64,18 +64,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00002"></a>00002 <span class="preprocessor">#ifndef COMMUNICATION_H_</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span><span class="preprocessor">#define COMMUNICATION_H_</span>
 <a name="l00004"></a>00004 <span class="preprocessor"></span>
-<a name="l00005"></a><a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">00005</a> <span class="keyword">enum</span> <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a>{
-<a name="l00006"></a><a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a6d497d39379053324114e5611323b558">00006</a>         <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a26325e446e2d6a22ca141f417538bfd0">INTERRUPTCONTROLLER</a>, <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a6d497d39379053324114e5611323b558">SENSOR</a>, <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8ad1585ba6029c0179c7f129fb078b77ba">LIGHTS</a>
-<a name="l00007"></a>00007 };
-<a name="l00008"></a>00008 
-<a name="l00023"></a><a class="code" href="class_communication.html">00023</a> <span class="keyword">class </span><a class="code" href="class_communication.html">Communication</a> {
-<a name="l00024"></a>00024 <span class="keyword">public</span>:
-<a name="l00030"></a>00030         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#aac8648fd1e70129c8969152d5b92608d">getComObject</a>(<a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a> c);
-<a name="l00031"></a>00031         <a class="code" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a>();
-<a name="l00032"></a>00032         <span class="keyword">virtual</span> <a class="code" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a>();
-<a name="l00033"></a>00033 };
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="preprocessor">#endif </span><span class="comment">/* COMMUNICATION_H_ */</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00006"></a>00006 
+<a name="l00007"></a><a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">00007</a> <span class="keyword">enum</span> <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a>{
+<a name="l00008"></a><a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a6d497d39379053324114e5611323b558">00008</a>         <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a26325e446e2d6a22ca141f417538bfd0">INTERRUPTCONTROLLER</a>, <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8a6d497d39379053324114e5611323b558">SENSOR</a>, <a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8ad1585ba6029c0179c7f129fb078b77ba">LIGHTS</a>
+<a name="l00009"></a>00009 };
+<a name="l00010"></a>00010 
+<a name="l00026"></a><a class="code" href="class_communication.html">00026</a> <span class="keyword">class </span><a class="code" href="class_communication.html">Communication</a> {
+<a name="l00027"></a>00027 <span class="keyword">public</span>:
+<a name="l00033"></a>00033         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#aac8648fd1e70129c8969152d5b92608d">getComObject</a>(<a class="code" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a> c);
+<a name="l00034"></a>00034         <a class="code" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a>();
+<a name="l00035"></a>00035         <span class="keyword">virtual</span> <a class="code" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a>();
+<a name="l00036"></a>00036 <span class="keyword">private</span>:
+<a name="l00037"></a><a class="code" href="class_communication.html#a753bb2ab4c37a22dcd7a6f7138ec9ace">00037</a>         std::vector&lt;int&gt; <a class="code" href="class_communication.html#a753bb2ab4c37a22dcd7a6f7138ec9ace">vc</a>;
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039 };
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 <span class="preprocessor">#endif </span><span class="comment">/* COMMUNICATION_H_ */</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -92,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Apr 12 2011 23:59:22 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:46 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
