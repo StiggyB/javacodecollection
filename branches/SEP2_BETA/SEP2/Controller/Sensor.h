@@ -4,7 +4,7 @@
 
 
 #include "CoreController.h"
-#include "InterruptController.h"
+//#include "InterruptController.h"
 #include "../Thread/HAWThread.h"
 
 /**
@@ -23,6 +23,8 @@
  *
  * Inherits: HAWThread.h
  */
+//class CoreController;
+
 class Sensor : public thread::HAWThread{
 public:
 	/**
@@ -35,6 +37,8 @@ public:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+private:
+	CoreController *cc;
 };
 
 #endif /* SENSOR_H_ */

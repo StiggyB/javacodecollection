@@ -24,7 +24,6 @@
 
 #include "CoreController.h"
 
-Lampen l;
 Mutex CoreController::singleton;
 Mutex CoreController::m;
 HAL* h;
@@ -61,8 +60,12 @@ void CoreController::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	InterruptController ic;
-	ic.start(NULL);
+
+	//setting up Communication!
+
+	/*old*/
+	//InterruptController ic;
+	//ic.start(NULL);
 	//Test_IRQ ti;
 	//ti.start(NULL);
 	//resetAllOutPut();
@@ -76,7 +79,7 @@ void CoreController::execute(void*) {
 	tm.start(NULL);
 	cout << "waiting for M1-Tests" << endl;
 	tm.join();*/
-	ic.join();
+	//ic.join();
 }
 
 void CoreController::shutdown() {
@@ -98,11 +101,6 @@ void CoreController::restart(){
 
 void CoreController::resetAll(){
 	cout << "CC: resetAll ;)" <<endl;
-}
-
-void CoreController::stopProcess() {
-	l.stop();
-	resetAllOutPut();
 }
 
 int CoreController::read(int dir) {

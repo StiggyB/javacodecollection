@@ -16,8 +16,6 @@
  */
 #include "Sensor.h"
 
-extern CoreController* cc;
-
 Sensor::Sensor() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;

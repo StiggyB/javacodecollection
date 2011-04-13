@@ -15,7 +15,9 @@
 
 #include "Communication.h"
 
-Communication::Communication() {
+
+//TODO
+Communication::Communication() : vc(10) {
 
 }
 

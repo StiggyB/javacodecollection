@@ -18,10 +18,8 @@
 
 volatile struct sigevent event;
 const struct sigevent *eventptr = (const struct sigevent*) &event;
-extern CoreController* cc;
-Sensor sens;
 
-InterruptController::InterruptController() {
+InterruptController::InterruptController(): sens() {
 	h = HAL::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;

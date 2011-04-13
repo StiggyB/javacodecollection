@@ -2,6 +2,8 @@
 #ifndef COMMUNICATION_H_
 #define COMMUNICATION_H_
 
+#include <vector>
+
 enum Com{
 	INTERRUPTCONTROLLER, SENSOR, LIGHTS
 };
@@ -19,6 +21,7 @@ enum Com{
  * Capsulates many functions for the direct
  * connection of components via Messages.
  *
+ * UNDER CONSTRUCTION!!!
  */
 class Communication {
 public:
@@ -30,6 +33,9 @@ public:
 	int getComObject(Com c);
 	Communication();
 	virtual ~Communication();
+private:
+	std::vector<int> vc;
+
 };
 
 #endif /* COMMUNICATION_H_ */

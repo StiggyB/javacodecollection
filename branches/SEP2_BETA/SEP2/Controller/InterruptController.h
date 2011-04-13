@@ -4,7 +4,7 @@
 
 
 #include "Sensor.h"
-#include "CoreController.h"
+//#include "CoreController.h"
 #include "../HAL/HAL.h"
 #include "../Thread/HAWThread.h"
 
@@ -63,6 +63,10 @@ private:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+
+private:
+	Sensor sens;
+//	CoreController* cc;
 };
 
 #endif /* INTERRUPTCONTROLLER_H_ */

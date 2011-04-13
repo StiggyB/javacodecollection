@@ -5,12 +5,7 @@
 
 #include "../HAL/HAL.h"
 #include "../HAL/IHAL.h"
-#include "../Lampen/Lampen.h"
-#include "../Tests/Test_HAL.h"
-#include "../Tests/Test_M1.h"
-#include "../Tests/Test_IRQ.h"
 #include "../Thread/HAWThread.h"
-#include "InterruptController.h"
 
 /**
  * Core Controller
@@ -35,7 +30,7 @@
  *
  * Inherits: IHAL.h, HAWThread.h
  */
-class CoreController : public thread::HAWThread, public IHAL{
+class CoreController : public thread::HAWThread, public IHAL{//, public Communication{
 public:
 	void stopProcess();
     static CoreController* getInstance();
