@@ -42,8 +42,6 @@
 /**
  * pointer to the CoreController
  */
-extern CoreController* cc;
-
 Test_HAL::Test_HAL() {
 	/**
 	 * gaining IO privileges
@@ -54,9 +52,7 @@ Test_HAL::Test_HAL() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	if (cc == NULL) {
-		cc = CoreController::getInstance();
-	}
+	cc = CoreController::getInstance();
 }
 
 Test_HAL::~Test_HAL() {
