@@ -160,9 +160,9 @@ int Serial::send(void* data, int lenBytes) {
 }
 
 int Serial::receive(void* data, int lenBytes) {
-	printf("Want to receive..\n");
+	//printf("Want to receive..\n");
 	int n = readcond(ser, data, lenBytes, 10, 0, 10);
-	printf("n=%i",n);
+	//printf("n=%i",n);
 	if (n <= 0) {
 		if (errno == EAGAIN || n==0) {
 			//printf ("EAGAIN com-port %i\n", comPort );
