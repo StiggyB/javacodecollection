@@ -6,9 +6,10 @@
 #include "Sensor.h"
 #include "../HAL/HAL.h"
 #include "../Thread/HAWThread.h"
+//#include "CoreController.h"
 
-extern volatile struct sigevent event;
-extern const struct sigevent *eventptr;
+extern struct sigevent event;
+//extern const struct sigevent *eventptr;
 
 /**
  * Interrupt Controller

@@ -117,7 +117,6 @@ extern volatile int portIRQ;
  */
 extern volatile int controlBits;
 
-
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
  *

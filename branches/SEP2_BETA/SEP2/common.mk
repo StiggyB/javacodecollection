@@ -25,6 +25,9 @@ EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/Thread $(PROJECT_ROOT)/Tests  \
 	$(PROJECT_ROOT)/Serial
 
+#===== LIBS - a space-separated list of library items to be included in the link.
+LIBS+=phrender ph cpt_terminal
+
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL
 QNX_INTERNAL=$(PROJECT_ROOT)/.qnx_internal.mk

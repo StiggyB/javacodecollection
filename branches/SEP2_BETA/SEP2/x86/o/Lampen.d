@@ -1,5 +1,5 @@
-Lampen.o: Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/Lampen.cpp \
- Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/Lampen.h \
+Lampen.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.cpp \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.h \
  C:/QNX650/target/qnx6/usr/include/unistd.h \
  C:/QNX650/target/qnx6/usr/include/sys/platform.h \
  C:/QNX650/target/qnx6/usr/include/sys/srcversion.h \
@@ -11,8 +11,8 @@ Lampen.o: Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/Lampen.cpp \
  C:/QNX650/target/qnx6/usr/include/_packpop.h \
  C:/QNX650/target/qnx6/usr/include/confname.h \
  C:/QNX650/target/qnx6/usr/include/process.h \
- Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/../HAL/HAL.h \
- C:/QNX650/target/qnx6/usr/include/cpp/iostream \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Thread/HAWThread.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
  C:/QNX650/target/qnx6/usr/include/cpp/istream \
  C:/QNX650/target/qnx6/usr/include/cpp/ostream \
  C:/QNX650/target/qnx6/usr/include/cpp/ios \
@@ -59,20 +59,28 @@ Lampen.o: Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/Lampen.cpp \
  C:/QNX650/target/qnx6/usr/include/cpp/c/ctime \
  C:/QNX650/target/qnx6/usr/include/time.h \
  C:/QNX650/target/qnx6/usr/include/cpp/xlocinfo.h \
- Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/../HAL/HWaccess.h \
- C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
- C:/QNX650/target/qnx6/usr/include/sys/types.h \
- C:/QNX650/target/qnx6/usr/include/sched.h \
- C:/QNX650/target/qnx6/usr/include/sys/storage.h \
- C:/QNX650/target/qnx6/usr/include/sys/states.h \
- C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
- C:/QNX650/target/qnx6/usr/include/hw/inout.h \
- C:/QNX650/target/qnx6/usr/include/gulliver.h \
+ C:/QNX650/target/qnx6/usr/include/pthread.h \
  C:/QNX650/target/qnx6/usr/include/sys/cpuinline.h \
  C:/QNX650/target/qnx6/usr/include/x86/cpuinline.h \
- C:/QNX650/target/qnx6/usr/include/x86/inout.h \
- Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/../HAL/../Thread/Mutex.h \
- C:/QNX650/target/qnx6/usr/include/pthread.h \
+ C:/QNX650/target/qnx6/usr/include/sched.h \
+ C:/QNX650/target/qnx6/usr/include/sys/types.h \
+ C:/QNX650/target/qnx6/usr/include/sys/storage.h \
  C:/QNX650/target/qnx6/usr/include/x86/smpxchg.h \
- Z:/TI_Labor/QNX650/workspace1/SEP2_NEW/Lampen/../Thread/HAWThread.h \
- C:/QNX650/target/qnx6/usr/include/cpp/iostream.h
+ C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
+ C:/QNX650/target/qnx6/usr/include/sys/states.h \
+ C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/Communication.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/vector \
+ C:/QNX650/target/qnx6/usr/include/cpp/memory \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/HAL.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/iostream \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/HWaccess.h \
+ C:/QNX650/target/qnx6/usr/include/hw/inout.h \
+ C:/QNX650/target/qnx6/usr/include/gulliver.h \
+ C:/QNX650/target/qnx6/usr/include/x86/inout.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../Thread/HAWThread.h

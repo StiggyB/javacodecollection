@@ -10,7 +10,7 @@
  *
  * Capsulates many functions for the direct
  * connection of components via Messages.
- *
+ * symbolic: auskunft für die channelid's
  */
 
 #include "Communication.h"

@@ -109,7 +109,7 @@ void Serial::execute(void* data) {
 
 			switch (sender_receiver) {
 			case 0:
-				//printf("ser = %d\n",ser);
+				printf("ser = %d\n",ser);
 				sprintf(msg1, "ACK%6d", cnt++);
 				send(msg1, 10); // send SYN, get ACK
 				//printf("msg1=%s\n",msg1);
@@ -124,16 +124,16 @@ void Serial::execute(void* data) {
 				break;
 
 			case 1: //get SYN, send ACK
-				printf("ser = %d\n",ser);
-				printf("----wait for SYN\n");
+				//printf("ser = %d\n",ser);
+				//printf("----wait for SYN\n");
 				while (receive(msg_rec, 10) == -2)
 					;
 				printf("----%s\n", msg_rec);
 				sprintf(msg2, "SYN%6d", cnt++);
-				printf("msg2=%s\n",msg2);
+				//printf("msg2=%s\n",msg2);
 				send(msg2, 10);
-				printf("----ACK send\n");
-				printf("cnt = %i\n",cnt);
+				//printf("----ACK send\n");
+				//printf("cnt = %i\n",cnt);
 				fflush(stdout);
 				sleep(1);
 				break;
@@ -160,9 +160,7 @@ int Serial::send(void* data, int lenBytes) {
 }
 
 int Serial::receive(void* data, int lenBytes) {
-	//printf("Want to receive..\n");
 	int n = readcond(ser, data, lenBytes, 10, 0, 10);
-	//printf("n=%i",n);
 	if (n <= 0) {
 		if (errno == EAGAIN || n==0) {
 			//printf ("EAGAIN com-port %i\n", comPort );

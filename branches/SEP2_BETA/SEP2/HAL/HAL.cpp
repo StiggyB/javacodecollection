@@ -69,14 +69,13 @@ volatile int controlBits;
 /**
  * instance of HAL
  */
-HAL* HAL::instance = NULL;
+HAL* HAL::instance = NULL; //0 rein
 /**
  * mutex to ensure that HAL stays a singleton
  */
 Mutex HAL::mutEx;
 
 HAL* HAL::getInstance(){
-
 	if( !instance){
 		mutEx.lock();
 		if(!instance){
@@ -88,6 +87,9 @@ HAL* HAL::getInstance(){
 }
 
 HAL::HAL() {
+	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		std::cout << "error for IO Control" << std::endl;
+	}
 	controlBits = BIT_CNTRLS;
 	portA = read(PORT_A);
 	portB = read(PORT_B);

@@ -20,7 +20,7 @@ StartThread::StartThread(){
 	th = Test_HAL();
 #endif
 #ifdef TEST_SER
-	ser = Test_Serial();
+	//ser = Test_Serial();
 #endif
 }
 
@@ -32,11 +32,21 @@ void StartThread::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	//InterruptController ic;
+	(*cc).start(NULL);
 	ic.start(NULL);
 
 #ifdef TEST_IRQ
+	Test_IRQ ti;
 	ti.start(NULL);
+#endif
+
+#ifdef TEST_SER
+	cout << "starting SERIAL-Tests" << endl;
+	Serial ser;
+	ser.init(1,1,true);
+	ser.start(NULL);
+	cout << "waiting for SERIAL-Tests" << endl;
+	//ser.join();
 #endif
 
 #ifdef TEST_HAL
@@ -53,12 +63,6 @@ void StartThread::execute(void*) {
 	tm.join();
 #endif
 
-#ifdef TEST_SER
-	cout << "starting SERIAL-Tests" << endl;
-	ser.start(NULL);
-	cout << "waiting for SERIAL-Tests" << endl;
-	ser.join();
-#endif
 	sleep(40);
 	//ic.join();
 }

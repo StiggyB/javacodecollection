@@ -1,6 +1,9 @@
-HAWThread.o: \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.cpp \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.h \
+StartThread.o: \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/StartThread.cpp \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/StartThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/test.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/Test_M1.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Thread/HAWThread.h \
  C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
  C:/QNX650/target/qnx6/usr/include/cpp/istream \
  C:/QNX650/target/qnx6/usr/include/cpp/ostream \
@@ -65,4 +68,35 @@ HAWThread.o: \
  C:/QNX650/target/qnx6/usr/include/x86/smpxchg.h \
  C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
  C:/QNX650/target/qnx6/usr/include/sys/states.h \
- C:/QNX650/target/qnx6/usr/include/x86/neutrino.h
+ C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/HAL.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/iostream \
+ C:/QNX650/target/qnx6/usr/include/unistd.h \
+ C:/QNX650/target/qnx6/usr/include/confname.h \
+ C:/QNX650/target/qnx6/usr/include/process.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/HWaccess.h \
+ C:/QNX650/target/qnx6/usr/include/hw/inout.h \
+ C:/QNX650/target/qnx6/usr/include/gulliver.h \
+ C:/QNX650/target/qnx6/usr/include/x86/inout.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/../Controller/Communication.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/vector \
+ C:/QNX650/target/qnx6/usr/include/cpp/memory \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Controller/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/Test_HAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/Test_IRQ.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/Test_Serial.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Serial/Serial.h \
+ C:/QNX650/target/qnx6/usr/include/errno.h \
+ C:/QNX650/target/qnx6/usr/include/fcntl.h \
+ C:/QNX650/target/qnx6/usr/include/sys/stat.h \
+ C:/QNX650/target/qnx6/usr/include/termios.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Tests/../Serial/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/InterruptController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/Sensor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Controller/../HAL/HAL.h

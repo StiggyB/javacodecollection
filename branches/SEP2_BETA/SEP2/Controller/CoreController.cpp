@@ -60,6 +60,8 @@ void CoreController::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
+	//InterruptController ic;
+	//ic.start(NULL);
 
 	//setting up Communication!
 

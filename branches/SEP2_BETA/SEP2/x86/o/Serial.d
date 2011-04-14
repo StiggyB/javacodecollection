@@ -1,13 +1,6 @@
-HAWThread.o: \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.cpp \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.h \
- C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
- C:/QNX650/target/qnx6/usr/include/cpp/istream \
- C:/QNX650/target/qnx6/usr/include/cpp/ostream \
- C:/QNX650/target/qnx6/usr/include/cpp/ios \
- C:/QNX650/target/qnx6/usr/include/cpp/xlocnum \
- C:/QNX650/target/qnx6/usr/include/cpp/c/climits \
- C:/QNX650/target/qnx6/usr/include/yvals.h \
+Serial.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Serial/Serial.cpp \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Serial/Serial.h \
+ C:/QNX650/target/qnx6/usr/include/errno.h \
  C:/QNX650/target/qnx6/usr/include/sys/platform.h \
  C:/QNX650/target/qnx6/usr/include/sys/srcversion.h \
  C:/QNX650/target/qnx6/usr/include/sys/compiler_gnu.h \
@@ -16,16 +9,31 @@ HAWThread.o: \
  C:/QNX650/target/qnx6/usr/include/_pack64.h \
  C:/QNX650/target/qnx6/usr/include/sys/target_nto.h \
  C:/QNX650/target/qnx6/usr/include/_packpop.h \
+ C:/QNX650/target/qnx6/usr/include/fcntl.h \
+ C:/QNX650/target/qnx6/usr/include/unistd.h \
+ C:/QNX650/target/qnx6/usr/include/confname.h \
+ C:/QNX650/target/qnx6/usr/include/process.h \
+ C:/QNX650/target/qnx6/usr/include/sys/stat.h \
+ C:/QNX650/target/qnx6/usr/include/stdio.h \
+ C:/QNX650/target/qnx6/usr/include/signal.h \
+ C:/QNX650/target/qnx6/usr/include/sys/siginfo.h \
+ C:/QNX650/target/qnx6/usr/include/termios.h \
+ C:/QNX650/target/qnx6/usr/include/sys/types.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Serial/../Thread/HAWThread.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/istream \
+ C:/QNX650/target/qnx6/usr/include/cpp/ostream \
+ C:/QNX650/target/qnx6/usr/include/cpp/ios \
+ C:/QNX650/target/qnx6/usr/include/cpp/xlocnum \
+ C:/QNX650/target/qnx6/usr/include/cpp/c/climits \
+ C:/QNX650/target/qnx6/usr/include/yvals.h \
  C:/QNX650/target/qnx6/usr/include/limits.h \
  C:/QNX650/target/qnx6/usr/include/cpp/c/cstdio \
- C:/QNX650/target/qnx6/usr/include/stdio.h \
  C:/QNX650/target/qnx6/usr/include/cpp/c/cstdlib \
  C:/QNX650/target/qnx6/usr/include/stdlib.h \
  C:/QNX650/target/qnx6/usr/include/malloc.h \
  C:/QNX650/target/qnx6/usr/include/alloca.h \
  C:/QNX650/target/qnx6/usr/include/sys/wait.h \
- C:/QNX650/target/qnx6/usr/include/signal.h \
- C:/QNX650/target/qnx6/usr/include/sys/siginfo.h \
  C:/QNX650/target/qnx6/usr/include/cpp/streambuf \
  C:/QNX650/target/qnx6/usr/include/cpp/xiosbase \
  C:/QNX650/target/qnx6/usr/include/cpp/xlocale \
@@ -60,7 +68,6 @@ HAWThread.o: \
  C:/QNX650/target/qnx6/usr/include/sys/cpuinline.h \
  C:/QNX650/target/qnx6/usr/include/x86/cpuinline.h \
  C:/QNX650/target/qnx6/usr/include/sched.h \
- C:/QNX650/target/qnx6/usr/include/sys/types.h \
  C:/QNX650/target/qnx6/usr/include/sys/storage.h \
  C:/QNX650/target/qnx6/usr/include/x86/smpxchg.h \
  C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \

@@ -45,6 +45,7 @@ void Sensor::shutdown() {
 void Sensor::interrupt(int port) {
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
+		// CA = 1100 1010 ->
 		cout << "Sensor: pB: " << portB << endl;
 		if (!(portB & BIT_WP_IN_HEIGHT)) {
 			cout << "Sensor: WP_IN_H " << endl;
@@ -61,6 +62,7 @@ void Sensor::interrupt(int port) {
 			}
 		} else {
 			if (portB & BIT_WP_METAL) {
+				cout << " ist metall " << endl;
 				if (!(portB & BIT_SWITCH_OPEN)) {
 					(*cc).openSwitch();
 					cout << "Sensor: opens switch " << endl;
