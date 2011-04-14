@@ -3,6 +3,7 @@
 #define STARTTHREAD_H_
 
 //#include "../Lampen/Lampen.h"
+#include "../Tests/test.h"
 #include "../Tests/Test_M1.h"
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_IRQ.h"
