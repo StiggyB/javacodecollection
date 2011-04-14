@@ -106,31 +106,31 @@ void Serial::execute(void* data) {
 
 			switch (sender_receiver) {
 			case 0:
-				printf("ser = %d\n",ser);
+				//printf("ser = %d\n",ser);
 				sprintf(msg1, "ACK%6d", cnt++);
 				send(msg1, 10); // send SYN, get ACK
-				printf("msg1=%s\n",msg1);
-				printf("SYN send\n");
-				printf("wait for ACK\n");
+				//printf("msg1=%s\n",msg1);
+				//printf("SYN send\n");
+				//printf("wait for ACK\n");
 				while (receive(msg_rec, 10) == -2)
 					;
 				printf("%s\n", msg_rec);
-				printf("cnt = %i\n",cnt);
+				//printf("cnt = %i\n",cnt);
 				fflush(stdout);
 				sleep(1);
 				break;
 
 			case 1: //get SYN, send ACK
-				printf("ser = %d\n",ser);
-				printf("----wait for SYN\n");
+				//printf("ser = %d\n",ser);
+				//printf("----wait for SYN\n");
 				while (receive(msg_rec, 10) == -2)
 					;
 				printf("----%s\n", msg_rec);
 				sprintf(msg2, "SYN%6d", cnt++);
-				printf("msg2=%s\n",msg2);
+				//printf("msg2=%s\n",msg2);
 				send(msg2, 10);
-				printf("----ACK send\n");
-				printf("cnt = %i\n",cnt);
+				//printf("----ACK send\n");
+				//printf("cnt = %i\n",cnt);
 				fflush(stdout);
 				sleep(1);
 				break;
