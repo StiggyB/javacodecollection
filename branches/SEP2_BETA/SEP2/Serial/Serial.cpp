@@ -160,7 +160,7 @@ int Serial::send(void* data, int lenBytes) {
 }
 
 int Serial::receive(void* data, int lenBytes) {
-	printf("Want to receive..");
+	printf("Want to receive..\n");
 	int n = readcond(ser, data, lenBytes, 10, 0, 10);
 	printf("n=%i",n);
 	if (n <= 0) {
@@ -168,7 +168,7 @@ int Serial::receive(void* data, int lenBytes) {
 			//printf ("EAGAIN com-port %i\n", comPort );
 			return -2; // assume that command generated no response
 		} else {
-			//printf("receive failed for com-port %i, errno=%i\n", comPort, errno );
+			printf("receive failed for com-port %i, errno=%i\n", comPort, errno );
 			return -1;
 		}
 	} else {
