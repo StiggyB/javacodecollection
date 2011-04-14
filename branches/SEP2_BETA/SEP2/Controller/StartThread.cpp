@@ -59,8 +59,8 @@ void StartThread::execute(void*) {
 	cout << "waiting for SERIAL-Tests" << endl;
 	ser.join();
 #endif
-
-	ic.join();
+	sleep(40);
+	//ic.join();
 }
 
 void StartThread::stopProcess() {
