@@ -46,9 +46,9 @@ void InterruptController::activateInterrupts() {
 	(*h).activateInterrupt(PORT_B);
 	i = (*h).getSetInterrupt();
 	cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
-	(*h).activateInterrupt(PORT_C);
+	/*(*h).activateInterrupt(PORT_C);
 	i = (*h).getSetInterrupt();
-	cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;
+	cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;*/
 }
 
 void InterruptController::connectToHAL(int port) {
@@ -64,6 +64,7 @@ void InterruptController::connectToHAL(int port) {
 		shutdown();
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
+	cout << INTERRUPT_VECTOR_NUMMER_D << endl;
 	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, eventptr, sizeof(event), 0)) == -1) {
 		perror("InterruptController: failed to create ISR coupling\n");
 		shutdown();
@@ -76,7 +77,7 @@ void InterruptController::connectToHAL(int port) {
 void InterruptController::execute(void*) {
 	getSensor();
 	connectToHAL(INTERRUPT_D_PORT_B);
-	connectToHAL(INTERRUPT_D_PORT_C_HIGH);
+	//connectToHAL(INTERRUPT_D_PORT_C_HIGH);
 	handlePulseMessages();
 }
 

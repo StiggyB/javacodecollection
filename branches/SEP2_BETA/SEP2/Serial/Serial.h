@@ -35,10 +35,10 @@ public:
 	 * \param modi an integer, 0 for send SYN, get ACK; 1 for get SYN, send ACK
 	 * \param debug a bool, indicates debugging mode.
 	 */
-	Serial(int numComPort, int modi, bool debug);
+	//Serial(int numComPort, int modi, bool debug);
 	Serial();
 	~Serial();
-
+	void init(int numComPort, int modi, bool debug);
 protected:
 	/**
 	 * Writes on Com Port.

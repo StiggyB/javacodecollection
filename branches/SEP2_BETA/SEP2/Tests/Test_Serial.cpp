@@ -15,8 +15,6 @@
 #include "Test_Serial.h"
 
 Test_Serial::Test_Serial() {
-	s_0 = Serial(1,0,false);
-	s_1 = Serial(2,1,false);
 }
 
 Test_Serial::~Test_Serial() {
@@ -24,11 +22,13 @@ Test_Serial::~Test_Serial() {
 }
 
 void Test_Serial::execute(void*){
+	s_0.init(1,0,false);
+	//s_1.init(2,1,false);
 	s_0.start(NULL);
-	s_1.start(NULL);
+	//s_1.start(NULL);
 }
 
 void Test_Serial::shutdown(){
 	s_0.~Serial();
-	s_1.~Serial();
+	//s_1.~Serial();
 }

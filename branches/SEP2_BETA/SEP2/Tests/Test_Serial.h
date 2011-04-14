@@ -28,7 +28,7 @@ protected:
 	virtual void shutdown();
 private:
 	Serial s_0;
-	Serial s_1;
+	//Serial s_1;
 };
 
 #endif /* TEST_IRQ_H_ */

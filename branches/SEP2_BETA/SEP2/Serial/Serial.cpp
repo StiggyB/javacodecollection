@@ -19,9 +19,9 @@
 #include "Serial.h"
 
 Serial::Serial(){
-
 }
-Serial::Serial(int numComPort, int modi, bool debug) {
+
+void Serial::init(int numComPort, int modi, bool debug) {
 	hasSettings = false;
 	cnt = 0;
 	struct termios termSettings;
