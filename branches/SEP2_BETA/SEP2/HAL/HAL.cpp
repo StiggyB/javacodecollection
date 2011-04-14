@@ -20,21 +20,15 @@
  */
 
 
-//TODO Bitte um Kommentar zur Code Pruefung HAL
+//TODO HAL- Singleton zerstören siehe Code Pruefung
 /*
  * Code Pruefung HAL:
-	Kritik:
-	- Namensgebung, Defines, Enums und Struktur ueberzeugend
 	- Funktion: int HAL::write(int dir, int value, bool set)
   	  ist unübersichtlich und unleserlich
   	  Verbesserungsvorschlag: Extract Method für switch-case und evt. mehr.
-	- Funktionen: int HAL::getValueToAdress(int dir),
-              	  int HAL::getBitsToAdress(int dir)
-  	  Namensgebung nicht erklaerend. Bitte um Feedback bzw. Klaerung.
-	- Funktion: float HAL::convertTemp(int input)
-  	  wozu ist diese Funktion notwendig?
-  	- An welcher Stelle wird die instance der HAL zerstoert?
-  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr)
+  	  Steht nach wie vor zur Disskussion!
+  	- Zerstoerzung der instance der HAL steht noch aus.
+  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr - Besprochen)
 */
 
 #include "HAL.h"
@@ -219,7 +213,7 @@ int HAL::read(int dir){
 	return l;
 }
 
-int HAL::getValueToAdress(int dir){
+int HAL::getValueFromAdress(int dir){
 	int value = 0x00;
 	switch (dir) {
 		case PORT_CNTRL: value = controlBits; break;
@@ -363,7 +357,7 @@ bool HAL::resetAllOutPut(){
 }
 
 bool HAL::addLight(Color col) {
-	int old = getValueToAdress(PORT_A);
+	int old = getValueFromAdress(PORT_A);
 	old = old | getColorCode(col);
 	return write(PORT_A, old);
 }
@@ -471,11 +465,13 @@ float HAL::getHeight(){
 	float val = 0;
 	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
 	int i = in8(HEIGHT_MEASURE);
-	val = convertTemp(i);
+	val = convertHight(i);
 	return val;
 }
-
-float HAL::convertTemp(int input){
+/*
+ * This method converts the fix point value from the hight measure
+ */
+float HAL::convertHight(int input){
 	float output = 0.0;
 	short zweierk = (~input+1);
 	char t = 0;

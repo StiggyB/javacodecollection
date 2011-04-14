@@ -14,6 +14,9 @@
  * Inherits: HAWThread.h
  */
 
+//TODO implement handlePulseMasseges with correct scenarios
+
+
 #include "InterruptController.h"
 
 struct sigevent event;
@@ -103,6 +106,7 @@ void InterruptController::handlePulseMessages() {
 	}
 	/*CoreController *cc = CoreController::getInstance();*/
 	int rcvid;
+	(*h).addLight(GREEN);
 	while (1) {
 		cout << "InterruptController: waiting for Pulse" << endl;
 		rcvid = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
@@ -115,9 +119,12 @@ void InterruptController::handlePulseMessages() {
 		case INTERRUPT_D_PORT_B:
 			cout << "IC: pB: " << portB << endl;
 			if (!(portB & BIT_WP_IN_HEIGHT)) {
+				// (*h).getHeight();
+				// test height of correctness
 				cout << "InterruptController: WP_IN_H " << endl;
 			}
 			if (!(portB & BIT_WP_RUN_IN)) {
+				(*h).removeLight(YELLOW);
 				(*h).engineRight();
 				cout << "InterruptController: BIT_WP_RUN_IN" << endl;
 			}
@@ -139,7 +146,8 @@ void InterruptController::handlePulseMessages() {
 			}
 			if(! (portB & BIT_SLIDE_FULL)){
 				//(*h).stopMachine();
-				(*h).addLight(RED);
+				(*h).addLight(YELLOW);
+				//Exception handling for isSlideFull() : bool
 			}
 			if(!(portB & BIT_WP_OUTLET)){
 				(*h).engineReset();
@@ -160,8 +168,7 @@ void InterruptController::handlePulseMessages() {
 			}
 			break;
 		}
-		// TODO
-		// send a message to Sensor
+		// TODO send a message to Sensor
 		//int j = pulse.code;
 		//sens.interrupt(j);
 		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;

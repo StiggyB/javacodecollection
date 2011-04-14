@@ -24,7 +24,7 @@
 /**
  * BASE ADRESS for Analog IO
  */
-#define A_IOBASE 0x240
+#define A_IOBASE 0x320
 
 /**
  * PORT A:
@@ -38,6 +38,8 @@ enum PortA{
 /**
  * PORT B:
  */
+
+//TODO Improvement: SLIDE_FULL -> WP_IN_SLIDE & Usefull: test function isSlideFull() : bool
 enum PortB{
 	BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
 	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_SLIDE_FULL = (1<<6),BIT_WP_OUTLET = (1<<7)
@@ -76,7 +78,7 @@ enum Height{
  */
 enum Interrupts_D{
 	INTERRUPT_D_PORT_A = (1<<0),INTERRUPT_D_PORT_B = (1<<1),INTERRUPT_D_PORT_C = (1<<2),INTERRUPT_D_PORT_C_HIGH = (1<<3),
-	INTERRUPT_VECTOR_NUMMER_A = 5, INTERRUPT_VECTOR_NUMMER_D = 11,
+	INTERRUPT_VECTOR_NUMMER_A = 14, INTERRUPT_VECTOR_NUMMER_D = 11,
 	INTERRUPT_SET_ADRESS_D = (D_IOBASE + 0xB),INTERRUPT_RESET_ADRESS_D = (D_IOBASE + 0xF),PORT_IRE =(D_IOBASE + 0xB),
 	PORT_IRQ = (D_IOBASE + 0xF),PORT_IRQ_AND_RESET = (D_IOBASE + 0x18), IIR_MASK_D = 0x7
 };
@@ -198,7 +200,7 @@ private:
 	 * \param input value of type integer
 	 * \return a float - the value
 	 */
-	float convertTemp(int input);
+	float convertHight(int input);
 
 	/**
 	 * same as isOutput(int dir);
@@ -245,7 +247,7 @@ private:
 	 * \param dir an integer, the ports Address.
 	 * \return an integer, the Value of the port.
 	 */
-	int getValueToAdress(int dir);
+	int getValueFromAdress(int dir);
 	/**
 	 * Calculate the bit for the specified port.
 	 * \param dir an integer, the ports Address.
