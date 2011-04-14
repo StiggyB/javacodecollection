@@ -19,6 +19,9 @@
 #include "Serial.h"
 
 Serial::Serial(){
+	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+			perror("ThreadCtl access failed\n");
+		}
 }
 
 void Serial::init(int numComPort, int modi, bool debug) {
@@ -112,25 +115,25 @@ void Serial::execute(void* data) {
 				//printf("msg1=%s\n",msg1);
 				//printf("SYN send\n");
 				//printf("wait for ACK\n");
-				while (receive(msg_rec, 10) == -2)
-					;
+				while (receive(msg_rec, 10) == -2);
 				printf("%s\n", msg_rec);
+				msg_rec[0]= '\0';
 				//printf("cnt = %i\n",cnt);
 				fflush(stdout);
 				sleep(1);
 				break;
 
 			case 1: //get SYN, send ACK
-				//printf("ser = %d\n",ser);
-				//printf("----wait for SYN\n");
+				printf("ser = %d\n",ser);
+				printf("----wait for SYN\n");
 				while (receive(msg_rec, 10) == -2)
 					;
 				printf("----%s\n", msg_rec);
 				sprintf(msg2, "SYN%6d", cnt++);
-				//printf("msg2=%s\n",msg2);
+				printf("msg2=%s\n",msg2);
 				send(msg2, 10);
-				//printf("----ACK send\n");
-				//printf("cnt = %i\n",cnt);
+				printf("----ACK send\n");
+				printf("cnt = %i\n",cnt);
 				fflush(stdout);
 				sleep(1);
 				break;

@@ -27,7 +27,7 @@ protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 private:
-	Serial s_0;
+	//Serial s_0;
 	Serial s_1;
 };
 
