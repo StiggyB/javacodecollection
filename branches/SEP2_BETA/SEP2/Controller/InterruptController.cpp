@@ -119,8 +119,8 @@ void InterruptController::handlePulseMessages() {
 		case INTERRUPT_D_PORT_B:
 			cout << "IC: pB: " << portB << endl;
 			if (!(portB & BIT_WP_IN_HEIGHT)) {
-				// (*h).getHeight();
-				// test height of correctness
+				// (*cc).getHeight();
+				// test height for correctness
 				cout << "InterruptController: WP_IN_H " << endl;
 			}
 			if (!(portB & BIT_WP_RUN_IN)) {
@@ -158,13 +158,13 @@ void InterruptController::handlePulseMessages() {
 		case INTERRUPT_D_PORT_C_HIGH:
 			cout << "IC: pC: " << portC << endl;
 			if(!(portC & BIT_E_STOP)){
-				//(*h).emergencyStop();
+				//(*cc).emergencyStop();
 			}else if(!(portC & BIT_STOP)){
-				//(*h).stopMachine();
+				//(*cc).stopMachine();
 			}else if(portC & BIT_START){
-				//(*h).restart();
+				//(*cc).restart();
 			}else if(portC & BIT_RESET){
-				//(*h).resetAll();
+				//(*cc).resetAll();
 			}
 			break;
 		}

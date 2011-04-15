@@ -26,6 +26,7 @@ extern struct sigevent event;
  *
  * Inherits: HAWThread.h
  */
+
 class InterruptController : public thread::HAWThread {
 public:
 	InterruptController();

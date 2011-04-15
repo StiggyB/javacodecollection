@@ -39,7 +39,7 @@ enum PortA{
  * PORT B:
  */
 
-//TODO Improvement: SLIDE_FULL -> WP_IN_SLIDE & Usefull: test function isSlideFull() : bool
+//TODO Improvement: SLIDE_FULL -> WP_IN_SLIDE & Useful: test function isSlideFull() : bool
 enum PortB{
 	BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
 	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_SLIDE_FULL = (1<<6),BIT_WP_OUTLET = (1<<7)

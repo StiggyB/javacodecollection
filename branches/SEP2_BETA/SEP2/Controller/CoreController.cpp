@@ -22,6 +22,8 @@
  * Inherits: IHAL.h, HAWThread.h
  */
 
+//TODO Destroy CC-Singleton correctly
+
 #include "CoreController.h"
 
 Mutex CoreController::singleton;
