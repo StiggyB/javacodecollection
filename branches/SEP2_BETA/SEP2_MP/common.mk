@@ -26,7 +26,7 @@ EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/Serial
 
 #===== LIBS - a space-separated list of library items to be included in the link.
-LIBS+=phrender ph cpt_terminal
+LIBS+=phrender ph cpt_terminal ioaccess
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL

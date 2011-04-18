@@ -1,5 +1,6 @@
-Lampen.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.cpp \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.h \
+Lampen.o: \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/Lampen.cpp \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/Lampen.h \
  C:/QNX650/target/qnx6/usr/include/unistd.h \
  C:/QNX650/target/qnx6/usr/include/sys/platform.h \
  C:/QNX650/target/qnx6/usr/include/sys/srcversion.h \
@@ -11,7 +12,7 @@ Lampen.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.cpp \
  C:/QNX650/target/qnx6/usr/include/_packpop.h \
  C:/QNX650/target/qnx6/usr/include/confname.h \
  C:/QNX650/target/qnx6/usr/include/process.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Thread/HAWThread.h \
  C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
  C:/QNX650/target/qnx6/usr/include/cpp/istream \
  C:/QNX650/target/qnx6/usr/include/cpp/ostream \
@@ -69,18 +70,18 @@ Lampen.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/Lampen.cpp \
  C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
  C:/QNX650/target/qnx6/usr/include/sys/states.h \
  C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/Communication.h \
  C:/QNX650/target/qnx6/usr/include/cpp/vector \
  C:/QNX650/target/qnx6/usr/include/cpp/memory \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/CoreController.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/HAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/HAL.h \
  C:/QNX650/target/qnx6/usr/include/cpp/iostream \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/IHAL.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/HWaccess.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/HWaccess.h \
  C:/QNX650/target/qnx6/usr/include/hw/inout.h \
  C:/QNX650/target/qnx6/usr/include/gulliver.h \
  C:/QNX650/target/qnx6/usr/include/x86/inout.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/../Thread/Mutex.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/../Controller/Communication.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../HAL/IHAL.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Lampen/../Controller/../Thread/HAWThread.h
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../HAL/IHAL.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Lampen/../Controller/../Thread/HAWThread.h

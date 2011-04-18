@@ -1,6 +1,6 @@
 HAWThread.o: \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.cpp \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH/Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Thread/HAWThread.cpp \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_MP/Thread/HAWThread.h \
  C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
  C:/QNX650/target/qnx6/usr/include/cpp/istream \
  C:/QNX650/target/qnx6/usr/include/cpp/ostream \

@@ -1,4 +1,3 @@
-
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
  *
@@ -500,3 +499,7 @@ float HAL::convertHight(int input){
 	}//else
 	return output;
 }//convertTemp
+
+bool HAL::isSlideFull() {
+	return false;
+}

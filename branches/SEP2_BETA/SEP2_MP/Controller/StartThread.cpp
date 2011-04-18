@@ -9,7 +9,7 @@
 
 StartThread::StartThread(){
 	cc = CoreController::getInstance();
-	//ic = InterruptController();
+	ic = InterruptController();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
@@ -21,6 +21,9 @@ StartThread::StartThread(){
 #endif
 #ifdef TEST_SER
 	//ser = Test_Serial();
+#endif
+#ifdef TEST_SEN
+	ts = Test_Sensor();
 #endif
 }
 
@@ -61,6 +64,13 @@ void StartThread::execute(void*) {
 	tm.start(NULL);
 	cout << "waiting for M1-Tests" << endl;
 	tm.join();
+#endif
+
+#ifdef TEST_SEN
+	cout << "starting Sensor-Tests" << endl;
+	ts.start(NULL);
+	cout << "waiting for Sensor-Tests" << endl;
+	ts.join();
 #endif
 
 	sleep(40);

@@ -144,7 +144,7 @@ void InterruptController::handlePulseMessages() {
 				}
 
 			}
-			if(! (portB & BIT_SLIDE_FULL)){
+			if(! (portB & BIT_WP_IN_SLIDE)){
 				//(*h).stopMachine();
 				(*h).addLight(YELLOW);
 				//Exception handling for isSlideFull() : bool

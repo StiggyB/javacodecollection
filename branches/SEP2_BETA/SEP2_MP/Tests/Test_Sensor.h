@@ -18,13 +18,22 @@
  */
 
 #include "../Controller/Sensor.h"
+#include "../Controller/CoreController.h"
+#include "../Thread/HAWThread.h"
 
 class Test_Sensor : public thread::HAWThread {
 public:
 	Test_Sensor();
 	virtual ~Test_Sensor();
+	virtual void execute(void*);
+	virtual void shutdown();
+	void test_Software_Only();
+	void test_Operator_Included();
+	bool print_Test(string sen, int res);
 
 
+private:
+	CoreController *cc;
 };
 
 

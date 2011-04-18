@@ -70,7 +70,7 @@ void Sensor::interrupt(int port) {
 				cout << "Sensor: ist Metall :D" << endl;
 			}
 		}
-		if (!(portB & BIT_SLIDE_FULL)) {
+		if (!(portB & BIT_WP_IN_SLIDE)) {
 			(*cc).stopMachine();
 			(*cc).addLight(RED);
 		}
