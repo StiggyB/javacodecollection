@@ -64,6 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">CoreController Class Reference</div>  </div>
@@ -122,6 +123,7 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a1b055b6eb0eb8d9c784f98ec62bfc6a5">getInstance</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a3351b51e987e993bc0169cb402fe2cfa">deleteInstance</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a08cc28b18fdf57eeb976babd21801635">execute</a> (void *)</td></tr>
@@ -132,6 +134,9 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a334c26059c56bff3eb22059450e9c7a9">~CoreController</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#af2a20b797721f22392fe50637541b736">CoreController</a> (const <a class="el" href="class_core_controller.html">CoreController</a> &amp;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_core_controller.html">CoreController</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a6e988aeab2e16bf8169ab75c8d4cb9c1">operator=</a> (const <a class="el" href="class_core_controller.html">CoreController</a> &amp;)</td></tr>
+<tr><td colspan="2"><h2><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a8d6dd976362667c47a177c0e305964b0">h</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ae1d9dfe452794375c400db4befe8a434">pInstance</a> = NULL</td></tr>
@@ -145,7 +150,7 @@ Static Private Attributes</h2></td></tr>
 <p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Starts the threads. Implements Singleton-Pattern.</p>
 <p>Upcoming: Other parts can get their necessary ChannelID's.</p>
 <p>Liste für die channelid's der Prozesse funktion um channelid zu registrieren funktion um channelid zu erfragen</p>
-<p>Inherits: IHAL.h, HAWThread.h </p>
+<p>Inherits: <a class="el" href="_i_h_a_l_8h.html">IHAL.h</a>, <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab3853568fd9d732663ebf807817f3764"></a><!-- doxytag: member="CoreController::CoreController" ref="ab3853568fd9d732663ebf807817f3764" args="()" -->
 <div class="memitem">
@@ -193,7 +198,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>for Singleton </p>
+<p>for <a class="el" href="class_singleton.html">Singleton</a> </p>
 
 </div>
 </div>
@@ -242,6 +247,22 @@ Static Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is closed. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a68e872f54ee4855b2821787740dd91ba">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3351b51e987e993bc0169cb402fe2cfa"></a><!-- doxytag: member="CoreController::deleteInstance" ref="a3351b51e987e993bc0169cb402fe2cfa" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::deleteInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -1020,6 +1041,19 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a8d6dd976362667c47a177c0e305964b0"></a><!-- doxytag: member="CoreController::h" ref="a8d6dd976362667c47a177c0e305964b0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_h_a_l.html">HAL</a>* <a class="el" href="class_core_controller.html#a8d6dd976362667c47a177c0e305964b0">CoreController::h</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa87e3971ed027a8024060d5bb2f1569c"></a><!-- doxytag: member="CoreController::m" ref="aa87e3971ed027a8024060d5bb2f1569c" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1065,7 +1099,7 @@ Static Private Attributes</h2></td></tr>
 <p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Starts the threads. Implements Singleton-Pattern.</p>
 <p>Upcoming: Other parts can get their necessary ChannelID's.</p>
 <p>Liste für die channelid's der Prozesse funktion um channelid zu registrieren funktion um channelid zu erfragen</p>
-<p>Inherits: IHAL.h, HAWThread.h </p>
+<p>Inherits: <a class="el" href="_i_h_a_l_8h.html">IHAL.h</a>, <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
 
 </div>
 </div>
@@ -1088,7 +1122,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:47 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

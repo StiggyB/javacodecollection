@@ -68,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">InterruptController Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="InterruptController" --><!-- doxytag: inherits="thread::HAWThread" -->
+<!-- doxytag: class="InterruptController" --><!-- doxytag: inherits="thread::HAWThread,Singleton" -->
 <p><code>#include &lt;<a class="el" href="_interrupt_controller_8h_source.html">InterruptController.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for InterruptController:</div>
@@ -77,6 +77,7 @@ Inheritance diagram for InterruptController:</div>
   <img src="class_interrupt_controller.png" usemap="#InterruptController_map" alt=""/>
   <map id="InterruptController_map" name="InterruptController_map">
 <area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,123,24"/>
+<area href="class_singleton.html" alt="Singleton" shape="rect" coords="133,0,256,24"/>
 </map>
  </div></div>
 
@@ -103,14 +104,13 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#a11164328ea92f541ccd4e50f1b838a8f">coid</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct _pulse&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#a8bd966bfac2e383c9e3ca53ba1ab7191">pulse</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#aa05b16f7beece915ed8c05b455c56625">h</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_sensor.html">Sensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interrupt_controller.html#a8c5a25f38203e302476447682f768e2e">sens</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Interrupt Controller</p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Capsules many functions for Interrupts using Pulse Messages.</p>
-<p>Inherits: HAWThread.h </p>
+<p>Inherits: <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a1603e4bb362e4f8d0adfc67262f36f81"></a><!-- doxytag: member="InterruptController::InterruptController" ref="a1603e4bb362e4f8d0adfc67262f36f81" args="()" -->
 <div class="memitem">
@@ -328,19 +328,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8c5a25f38203e302476447682f768e2e"></a><!-- doxytag: member="InterruptController::sens" ref="a8c5a25f38203e302476447682f768e2e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_sensor.html">Sensor</a> <a class="el" href="class_interrupt_controller.html#a8c5a25f38203e302476447682f768e2e">InterruptController::sens</a><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Controller/<a class="el" href="_interrupt_controller_8h_source.html">InterruptController.h</a></li>
 <li>Controller/<a class="el" href="_interrupt_controller_8cpp.html">InterruptController.cpp</a></li>
@@ -360,7 +347,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:47 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

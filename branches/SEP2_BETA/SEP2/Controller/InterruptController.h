@@ -3,10 +3,9 @@
 #define INTERRUPTCONTROLLER_H_
 
 
-#include "Sensor.h"
 #include "../HAL/HAL.h"
 #include "../Thread/HAWThread.h"
-//#include "CoreController.h"
+#include "../Thread/Singleton.h"
 
 extern struct sigevent event;
 //extern const struct sigevent *eventptr;
@@ -27,8 +26,11 @@ extern struct sigevent event;
  * Inherits: HAWThread.h
  */
 
-class InterruptController : public thread::HAWThread {
+class InterruptController : public thread::HAWThread, public Singleton {
 public:
+	//static void deleteInstance();
+	//static InterruptController* getInstance();
+
 	InterruptController();
 	virtual ~InterruptController();
 private:
@@ -61,13 +63,16 @@ private:
 	 * Direct connection to HAL.
 	 */
 	HAL *h;
+
+
+
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 
 private:
-	Sensor sens;
-//	CoreController* cc;
+
+
 };
 
 #endif /* INTERRUPTCONTROLLER_H_ */

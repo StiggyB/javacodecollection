@@ -13,9 +13,9 @@
  * symbolic: auskunft für die channelid's
  */
 
+//TODO all... message storage, messages exchange
+
 #include "Communication.h"
-
-
 
 
 Communication::Communication() : vc(10) {

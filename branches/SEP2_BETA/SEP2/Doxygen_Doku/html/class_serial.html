@@ -83,9 +83,9 @@ Inheritance diagram for Serial:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial.html#aa67f9b1049c2554cc184babd39000bc8">Serial</a> (int numComPort, int modi, bool debug)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial.html#a3667c3137f2df94716b5193f9fb736ab">Serial</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial.html#a5b32c394c0ff923a4ef1c13cfb20a6ba">~Serial</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial.html#aaa7d631084176f283801e66e64c151cf">init</a> (int numComPort, int modi, bool debug)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial.html#ae4459b0f4aa86df987ab4ab3af82ddf9">send</a> (void *data, int lenByte)</td></tr>
@@ -106,48 +106,6 @@ Private Attributes</h2></td></tr>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>This will test the serial interface To do a successful test: -&gt; one thread has to have modus 1 and the other modus 0. Two threads with the same modus won't work. </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa67f9b1049c2554cc184babd39000bc8"></a><!-- doxytag: member="Serial::Serial" ref="aa67f9b1049c2554cc184babd39000bc8" args="(int numComPort, int modi, bool debug)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Serial::Serial </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numComPort</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>modi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>debug</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Constructor with integrated initialization. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">numComPort</td><td>an integer, specifying the Com Port. </td></tr>
-    <tr><td class="paramname">modi</td><td>an integer, 0 for send SYN, get ACK; 1 for get SYN, send ACK </td></tr>
-    <tr><td class="paramname">debug</td><td>a bool, indicates debugging mode. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a3667c3137f2df94716b5193f9fb736ab"></a><!-- doxytag: member="Serial::Serial" ref="a3667c3137f2df94716b5193f9fb736ab" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -161,6 +119,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Constructor with integrated initialization.</p>
 <p>Interface for the <a class="el" href="class_serial.html">Serial</a> Connection</p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
@@ -208,6 +167,48 @@ Private Attributes</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classthread_1_1_h_a_w_thread.html#ae565cb73c096b246664bd2474b9c8907">thread::HAWThread</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa7d631084176f283801e66e64c151cf"></a><!-- doxytag: member="Serial::init" ref="aaa7d631084176f283801e66e64c151cf" args="(int numComPort, int modi, bool debug)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Serial::init </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numComPort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>modi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>debug</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Initialization of <a class="el" href="class_serial.html">Serial</a> Port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numComPort</td><td>an integer, specifying the Com Port. </td></tr>
+    <tr><td class="paramname">modi</td><td>an integer, 0 for send SYN, get ACK; 1 for get SYN, send ACK </td></tr>
+    <tr><td class="paramname">debug</td><td>a bool, indicates debugging mode. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -387,7 +388,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:47 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

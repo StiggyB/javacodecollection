@@ -22,14 +22,13 @@
  * Inherits: IHAL.h, HAWThread.h
  */
 
-//TODO Destroy CC-Singleton correctly
+//TODO inherit Singleton
+//TODO capsulate all activities on port variables through CoreController -> HAL
 
 #include "CoreController.h"
 
 Mutex CoreController::singleton;
 Mutex CoreController::m;
-HAL* h;
-CoreController* cc;
 
 CoreController* CoreController::pInstance = NULL;
 
@@ -42,6 +41,17 @@ CoreController* CoreController::getInstance() {
 		singleton.unlock();
 	}
 	return pInstance;
+}
+
+void CoreController::deleteInstance(){
+	if( pInstance != NULL ){
+		singleton.lock();
+		if( pInstance != NULL ){
+			delete pInstance;
+			pInstance = NULL;
+		}
+		singleton.unlock();
+	}
 }
 
 CoreController::CoreController() {
@@ -62,28 +72,8 @@ void CoreController::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	//InterruptController ic;
-	//ic.start(NULL);
-
 	//setting up Communication!
 
-	/*old*/
-	//InterruptController ic;
-	//ic.start(NULL);
-	//Test_IRQ ti;
-	//ti.start(NULL);
-	//resetAllOutPut();
-	/*Test_HAL th;
-	cout << "starting HAL-Tests" << endl;
-	th.start(NULL);
-	cout << "waiting for HAL-Tests" << endl;
-	th.join();
-	Test_M1 tm;
-	cout << "starting M1-Tests" << endl;
-	tm.start(NULL);
-	cout << "waiting for M1-Tests" << endl;
-	tm.join();*/
-	//ic.join();
 }
 
 void CoreController::shutdown() {

@@ -19,16 +19,19 @@
  * Inherits: IHAL.h
  */
 
+//TODO inherit Singleton
 
-//TODO HAL- Singleton zerstören siehe Code Pruefung
+//TODO HAL -> port variables threadsafe while in ISR? would say sure!
+
 /*
- * Code Pruefung HAL:
+ * TODO Code Pruefung HAL:
 	- Funktion: int HAL::write(int dir, int value, bool set)
   	  ist unübersichtlich und unleserlich
   	  Verbesserungsvorschlag: Extract Method für switch-case und evt. mehr.
   	  Steht nach wie vor zur Disskussion!
-  	- Zerstoerzung der instance der HAL steht noch aus.
-  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr - Besprochen)
+  	  --> Noch diskutieren (Jan)
+  	- Zerstoerung der instance der HAL steht noch aus.
+  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr - Besprochen) -> DONE!
 */
 
 #include "HAL.h"
@@ -94,6 +97,17 @@ HAL::HAL() {
 
 HAL::~HAL() {
 	mutEx.~Mutex();
+}
+
+void HAL::deleteInstance(){
+	if( instance != NULL ){
+		mutEx.lock();
+		if( instance != NULL ){
+			delete instance;
+			instance = NULL;
+		}
+		mutEx.unlock();
+	}
 }
 
 int HAL::setPortToInput(int bits){

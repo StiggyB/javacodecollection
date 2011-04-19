@@ -61,6 +61,7 @@ private:
 	 * Bool to ensure the flashing of the Light.
 	 */
 	bool running;
+	CoreController *cc;
 };
 
 #endif /* LAMPEN_H_ */

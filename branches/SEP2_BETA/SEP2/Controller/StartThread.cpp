@@ -7,9 +7,12 @@
 
 #include "StartThread.h"
 
+//TODO Korf fragen wegen dem Cast dort... obs die beste Loesung ist oder ob jeden ableiten besser waere...
+
 StartThread::StartThread(){
+	h = HAL::getInstance();
 	cc = CoreController::getInstance();
-	//ic = InterruptController();
+	ic = (InterruptController*) InterruptController::getInstance();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
@@ -33,7 +36,7 @@ void StartThread::execute(void*) {
 		perror("ThreadCtl access failed\n");
 	}
 	(*cc).start(NULL);
-	ic.start(NULL);
+	(*ic).start(NULL);
 
 #ifdef TEST_IRQ
 	Test_IRQ ti;
@@ -65,6 +68,7 @@ void StartThread::execute(void*) {
 
 	sleep(40);
 	//ic.join();
+
 }
 
 void StartThread::stopProcess() {

@@ -119,9 +119,10 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a78f22148fbdcbdb8d7a1db6cf772ec7a">getInstance</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#ad4ab8cfdfc8059473f87b5d4d3b3dbbf">deleteInstance</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#ac6d82da247b938afa30fd49be3dd9768">convertTemp</a> (int input)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a4547f5eefde3a015205968ae9be3fd48">convertHight</a> (int input)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#aa6f9d3440bc234fcea338e156b800855">isOutput2</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#ace7a330bcb760b9bc175c114272945c3">isInput2</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a7abaa55189a411ddc2eaaf2cadbc3f6d">write</a> (int dir, int value, bool overwrite)</td></tr>
@@ -129,7 +130,7 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a40b196bc34a40bfb9dcca5f4b3e810b5">resetPortsDirection</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a501bfa4992144c5978af3da56b7eb547">setPortToOutput</a> (int bits)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a0de8a4600792bf6ff0130f2080f9476e">setPortToInput</a> (int bits)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a0851d0a5e3607de99999af64068afc40">getValueToAdress</a> (int dir)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a2656991f3ced5b8b3ed7db206d73262f">getValueFromAdress</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a66d7d4ea3ca6398e80910bafbc2c7a23">getBitsToAdress</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a15446d7e97082b946032f23096922813">checkVal</a> (int dir, int value, bool set)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l.html#a01b399d7e3baa3c5fc0b3116f6a2f331">getColorCode</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
@@ -148,7 +149,7 @@ Static Private Attributes</h2></td></tr>
 <p>Milestone 2: <a class="el" href="class_h_a_l.html">HAL</a> Aktorik Milestone 3: <a class="el" href="class_h_a_l.html">HAL</a> Sensorik</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages.</p>
-<p>Inherits: IHAL.h </p>
+<p>Inherits: <a class="el" href="_i_h_a_l_8h.html">IHAL.h</a> </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7d08a1223bbd6d12a6c3755b007e9a33"></a><!-- doxytag: member="HAL::HAL" ref="a7d08a1223bbd6d12a6c3755b007e9a33" args="()" -->
 <div class="memitem">
@@ -315,12 +316,12 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac6d82da247b938afa30fd49be3dd9768"></a><!-- doxytag: member="HAL::convertTemp" ref="ac6d82da247b938afa30fd49be3dd9768" args="(int input)" -->
+<a class="anchor" id="a4547f5eefde3a015205968ae9be3fd48"></a><!-- doxytag: member="HAL::convertHight" ref="a4547f5eefde3a015205968ae9be3fd48" args="(int input)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float HAL::convertTemp </td>
+          <td class="memname">float HAL::convertHight </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
@@ -362,6 +363,23 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if action was successful, false if not. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad4ab8cfdfc8059473f87b5d4d3b3dbbf"></a><!-- doxytag: member="HAL::deleteInstance" ref="ad4ab8cfdfc8059473f87b5d4d3b3dbbf" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HAL::deleteInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>deletes the Instance </p>
 
 </div>
 </div>
@@ -729,7 +747,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (<a class="el" href="class_h_a_l.html">HAL</a>) </p>
+<p>returns a Pointer to the threadsafe <a class="el" href="class_singleton.html">Singleton</a> Instance of the Hardware Abstraction Layer (<a class="el" href="class_h_a_l.html">HAL</a>) </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a Pointer to <a class="el" href="class_h_a_l.html">HAL</a>. </dd></dl>
 
 </div>
@@ -774,12 +792,12 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0851d0a5e3607de99999af64068afc40"></a><!-- doxytag: member="HAL::getValueToAdress" ref="a0851d0a5e3607de99999af64068afc40" args="(int dir)" -->
+<a class="anchor" id="a2656991f3ced5b8b3ed7db206d73262f"></a><!-- doxytag: member="HAL::getValueFromAdress" ref="a2656991f3ced5b8b3ed7db206d73262f" args="(int dir)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int HAL::getValueToAdress </td>
+          <td class="memname">int HAL::getValueFromAdress </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>dir</em></td><td>)</td>
@@ -1155,33 +1173,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ace397ddfa721065d0f740d713b187fbe"></a><!-- doxytag: member="HAL::shine" ref="ace397ddfa721065d0f740d713b187fbe" args="(Color col)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool HAL::shine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>&#160;</td>
-          <td class="paramname"><em>col</em></td><td>)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Adds a certain light. Equals void <a class="el" href="class_h_a_l.html#a6eaa623cf95a1d6718dcef7e7bfbaa9e">addLight(Color col)</a>; </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
-
-<p>Implements <a class="el" href="class_i_h_a_l.html#a321aa701f6b50609814767071aa4abb1">IHAL</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a84a328fd1a6478554e439b3c35cad11d"></a><!-- doxytag: member="HAL::shine" ref="a84a328fd1a6478554e439b3c35cad11d" args="(int color)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1207,41 +1198,30 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a303c239092820b2250ac47b5e3bd732c"></a><!-- doxytag: member="HAL::write" ref="a303c239092820b2250ac47b5e3bd732c" args="(int dir, int value)" -->
+<a class="anchor" id="ace397ddfa721065d0f740d713b187fbe"></a><!-- doxytag: member="HAL::shine" ref="ace397ddfa721065d0f740d713b187fbe" args="(Color col)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int HAL::write </td>
+          <td class="memname">bool HAL::shine </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>dir</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [virtual]</code></td>
+          <td class="paramtype"><a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>&#160;</td>
+          <td class="paramname"><em>col</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Writing to a port. </p>
+<p>Adds a certain light. Equals void <a class="el" href="class_h_a_l.html#a6eaa623cf95a1d6718dcef7e7bfbaa9e">addLight(Color col)</a>; </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
-    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
-<p>Implements <a class="el" href="class_i_h_a_l.html#a8b500e8f1fd364a3b5bf78247cee516f">IHAL</a>.</p>
+<p>Implements <a class="el" href="class_i_h_a_l.html#a321aa701f6b50609814767071aa4abb1">IHAL</a>.</p>
 
 </div>
 </div>
@@ -1288,6 +1268,44 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a303c239092820b2250ac47b5e3bd732c"></a><!-- doxytag: member="HAL::write" ref="a303c239092820b2250ac47b5e3bd732c" args="(int dir, int value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HAL::write </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Writing to a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a8b500e8f1fd364a3b5bf78247cee516f">IHAL</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a05c2ae49ad52c49e331c7160e8bd83f9"></a><!-- doxytag: member="HAL::instance" ref="a05c2ae49ad52c49e331c7160e8bd83f9" args="" -->
 <div class="memitem">
@@ -1299,7 +1317,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>the Singleton Instance of the <a class="el" href="class_h_a_l.html">HAL</a></p>
+<p>the <a class="el" href="class_singleton.html">Singleton</a> Instance of the <a class="el" href="class_h_a_l.html">HAL</a></p>
 <p>instance of <a class="el" href="class_h_a_l.html">HAL</a> </p>
 
 </div>
@@ -1338,7 +1356,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:47 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

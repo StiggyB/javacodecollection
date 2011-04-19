@@ -13,6 +13,11 @@
 #include <cstdlib>
 #include <iostream>
 #include "Controller/StartThread.h"
+#include "Controller/InterruptController.h"
+#include "Controller/CoreController.h"
+#include "HAL/HAL.h"
+
+void stopController();
 
 /**
  * starting the program!
@@ -20,7 +25,7 @@
 
 int main(int argc, char *argv[]) {
 	std::cout << "Welcome to the QNX Momentics IDE" << std::endl;
-
+	atexit(stopController);
 	/**
 	 *if simulation is wanted, than you'll get it ;)
 	 */
@@ -57,4 +62,13 @@ int main(int argc, char *argv[]) {
 #endif
 
 	return EXIT_SUCCESS;
+}
+
+/**
+ * stops all Controller
+ */
+void stopController(){
+	CoreController::deleteInstance();
+	InterruptController::deleteInstance();
+	HAL::deleteInstance();
 }

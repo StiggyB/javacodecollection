@@ -84,7 +84,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#acfff24a9bf2f97395b0b0d919a49e1b6">BIT_DELETE</a>&#160;&#160;&#160;(false)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#a866ec7a0cb6212ddae348fa16d33ee63">BIT_SET</a>&#160;&#160;&#160;(true)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#a43bae56ba813b69f37719556fa3eac30">D_IOBASE</a>&#160;&#160;&#160;0x300</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#a0595f302d3148a4ce45ee1d895554a5c">A_IOBASE</a>&#160;&#160;&#160;0x240</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#a0595f302d3148a4ce45ee1d895554a5c">A_IOBASE</a>&#160;&#160;&#160;0x320</td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_8h.html#a2c340c494395ce8fe3132d923cb7127f">PortA</a> { <br/>
@@ -152,7 +152,7 @@ Enumerations</h2></td></tr>
 <a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea78bc9898087e4923c2fed67263f51a1c">INTERRUPT_D_PORT_C</a> =  (1&lt;&lt;2), 
 <a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea35071e096acca2004cc5a58dfb800d8c">INTERRUPT_D_PORT_C_HIGH</a> =  (1&lt;&lt;3), 
 <br/>
-&#160;&#160;<a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea3474cb7fcaa9a9e9d797f7ad47c27063">INTERRUPT_VECTOR_NUMMER_A</a> =  5, 
+&#160;&#160;<a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea3474cb7fcaa9a9e9d797f7ad47c27063">INTERRUPT_VECTOR_NUMMER_A</a> =  14, 
 <a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9eac9019037ba9ee51e39f51c8857997ede">INTERRUPT_VECTOR_NUMMER_D</a> =  11, 
 <a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea6d3440c2a36ea4e295ea0062e3448d42">INTERRUPT_SET_ADRESS_D</a> =  (D_IOBASE + 0xB), 
 <a class="el" href="_h_a_l_8h.html#a95b2558b4504285562a8993aa805ca9ea9236d8276182877a59a8b231d7280da1">INTERRUPT_RESET_ADRESS_D</a> =  (D_IOBASE + 0xF), 
@@ -184,7 +184,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define A_IOBASE&#160;&#160;&#160;0x240</td>
+          <td class="memname">#define A_IOBASE&#160;&#160;&#160;0x320</td>
         </tr>
       </table>
 </div>
@@ -519,7 +519,7 @@ Variables</h2></td></tr>
 <p>Milestone 2: <a class="el" href="class_h_a_l.html">HAL</a> Aktorik Milestone 3: <a class="el" href="class_h_a_l.html">HAL</a> Sensorik</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages.</p>
-<p>Inherits: IHAL.h Interrupt Service Routine </p>
+<p>Inherits: <a class="el" href="_i_h_a_l_8h.html">IHAL.h</a> Interrupt Service Routine </p>
 
 </div>
 </div>
@@ -629,7 +629,7 @@ Variables</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:37:47 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -14,13 +14,36 @@
  * Inherits: HAWThread.h
  */
 
-//TODO implement handlePulseMasseges with correct scenarios
-
+//TODO implement handlePulseMasseges
 
 #include "InterruptController.h"
 
 struct sigevent event;
-//const struct sigevent *eventptr = (const struct sigevent*) &event;
+
+/*InterruptController* InterruptController::pInstance = NULL;
+
+InterruptController* InterruptController::getInstance() {
+	if (!pInstance) {
+		singleton.lock();
+		if (!pInstance) {
+			pInstance = new InterruptController;
+		}
+		singleton.unlock();
+	}
+	return pInstance;
+}
+
+void InterruptController::deleteInstance(){
+	if( pInstance != null ){
+		singleton.lock();
+		if( pInstance != null ){
+			delete pInstance;
+			pInstance = null;
+		}
+		singleton.unlock();
+	}
+}
+*/
 
 InterruptController::InterruptController() {//: sens() {
 	h = HAL::getInstance();
@@ -35,6 +58,7 @@ InterruptController::InterruptController() {//: sens() {
 InterruptController::~InterruptController() {
 
 }
+
 
 void InterruptController::activateInterrupts() {
 	(*h).deactivateInterrupt(PORT_A);
@@ -71,8 +95,6 @@ void InterruptController::connectToHAL(int port) {
 		perror("error for IO Control\n");
 		shutdown();
 	}
-	//eventptr = (const struct sigevent*) &event;
-	//cout << "IC: evp=" << eventptr << " &ev=" <<hex<< (&event) << endl;
 	cout << "InterruptController: Interrupt will be attached." << endl;
 	cout << INTERRUPT_VECTOR_NUMMER_D << endl;
 	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &event, sizeof(event), 0))
@@ -168,9 +190,9 @@ void InterruptController::handlePulseMessages() {
 			}
 			break;
 		}
+
 		// TODO send a message to Sensor
-		//int j = pulse.code;
-		//sens.interrupt(j);
+		// sendInterrupt();
 		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
 	}
 }

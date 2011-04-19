@@ -146,6 +146,10 @@ public:
 	 */
 	static HAL* getInstance();
 	/**
+	 * deletes the Instance
+	 */
+	static void deleteInstance();
+	/**
 	 * activates the Interrupt to a certain
 	 * \param port an integer, specifying the Port.
 	 * \return a bool, true if action was successful, false if not.

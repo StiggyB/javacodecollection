@@ -35,7 +35,7 @@ class CoreController : public thread::HAWThread, public IHAL{//, public Communic
 public:
 	void stopProcess();
     static CoreController* getInstance();
-
+    static void deleteInstance();
     //IHAL:
 	virtual int read(int dir);
 	virtual bool isInput(int dir);
@@ -104,6 +104,10 @@ private:
      * Mutex to ensure threadsafety
      */
 	static Mutex m;
+	/**
+	 *
+	 */
+	HAL* h;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

@@ -2,7 +2,7 @@
 #ifndef STARTTHREAD_H_
 #define STARTTHREAD_H_
 
-//#include "../Lampen/Lampen.h"
+#include <stdlib.h>
 #include "../Tests/test.h"
 #include "../Tests/Test_M1.h"
 #include "../Tests/Test_HAL.h"
@@ -20,8 +20,18 @@ protected:
     virtual void execute(void*);
     virtual void shutdown();
 private:
+    /**
+     * pointer to the CoreController
+     */
     CoreController *cc;
-    InterruptController ic;
+    /**
+     * pointer to the InterruptController
+     */
+    InterruptController *ic;
+    /**
+     * pointer to the HAL
+     */
+    HAL *h;
 #ifdef TEST_M1
     Test_M1 tm;
 #endif

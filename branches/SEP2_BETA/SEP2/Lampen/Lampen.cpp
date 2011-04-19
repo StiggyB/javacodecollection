@@ -15,8 +15,6 @@
 
 #include "Lampen.h"
 
-extern CoreController* cc;
-
 Lampen::Lampen() {
 	/**
 	 * gaining IO privileges
