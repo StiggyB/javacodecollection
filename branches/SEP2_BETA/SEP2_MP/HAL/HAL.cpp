@@ -277,6 +277,8 @@ bool HAL::setSwitchDirection(bool dir){
 		return reset(PORT_A,BIT_SWITCH);
 	}
 }
+
+//TODO Switch close implementation - could be a useful
 bool HAL::engineReset(){
 	bool ret = reset(PORT_A,BIT_ENGINE_RIGHT);
 	bool r = reset(PORT_A,BIT_ENGINE_LEFT);
@@ -500,6 +502,7 @@ float HAL::convertHight(int input){
 	return output;
 }//convertTemp
 
+//TODO implement timer - test B(6)
 bool HAL::isSlideFull() {
 	return false;
 }

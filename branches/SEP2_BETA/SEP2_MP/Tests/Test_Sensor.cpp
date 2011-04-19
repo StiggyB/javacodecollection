@@ -119,34 +119,95 @@ void Test_Sensor::test_Software_Only() {
 	*/
 }
 
-//TODO Test some sensors with actor action
+//TODO implement yellow for test session - green for successful - red for failure
 void Test_Sensor::test_Operator_Included() {
 	bool go_on = true;
+	bool section1 = true;
+	bool section2 = true;
 
 	cout << "\nSensor with work piece: testing started" << endl;
+
 	while(1) {
+		while(section1) {
+			if (!(portB & BIT_WP_RUN_IN) && go_on) {
+				cout << go_on << "TEST 0" << endl;
+				go_on = !go_on;
+				(*cc).engineSlowRight();
+				sleep(1);
+				(*cc).engineSlowLeft();
+				sleep(1);
+				(*cc).engineSlowRight();
 
-	go_on = print_Test("B(0)", (*cc).read(PORT_B));
-	if (!(portB & BIT_WP_RUN_IN)) {
-		(*cc).engineSlowRight();
-	}else if(!(portB & BIT_WP_RUN_IN)) {
-		go_on = print_Test("B(1)", (*cc).read(PORT_B));
-		(*cc).engineSlowLeft();
+			}
+			//TODO test getHeight()
+			if (!(portB & BIT_WP_IN_HEIGHT) && !(go_on)) {
+				cout << go_on << "TEST 1" << endl;
+				go_on = !go_on;
+				(*cc).engineSlowRight();
+				sleep(1);
+				(*cc).engineSlowLeft();
+				sleep(1);
+				(*cc).engineSlowRight();
+
+			}
+			//TODO test metal with BIT_WP_METAL - to prints
+			if (!(portB & BIT_WP_IN_SWITCH) && go_on) {
+				cout << go_on << "TEST 2"<< endl;
+				go_on = !go_on;
+				(*cc).openSwitch();
+				(*cc).engineSlowRight();
+				sleep(1);
+				(*cc).engineSlowLeft();
+				sleep(1);
+				(*cc).engineSlowRight();
+			}
+			//TODO implement inductive sensor test B(5) - BIT_SWITCH_OPEN
+			if (!(portB & BIT_WP_OUTLET) && !(go_on)) {
+				cout << go_on << "TEST 3"<< endl;
+				go_on = !go_on;
+				(*cc).engineSlowLeft();
+				sleep(1);
+				(*cc).engineSlowRight();
+				sleep(1);
+				(*cc).engineSlowLeft();
+				section1 = false;
+			}
+		}
+
+		while(section2) {
+			if (!(portB & BIT_WP_IN_HEIGHT)) {
+				(*cc).closeSwitch();
+				(*cc).engineSlowRight();
+			}
+
+			if (!(portB & BIT_WP_IN_SLIDE)) {
+				section2 = false;
+			}
+		}
+		(*cc).engineReset();
 	}
-	sleep(1);
-	//go_on = print_Test("B(2)", (*cc).read(PORT_B));
+
+
+		if ((portB & BIT_WP_RUN_IN)) {
+			(*cc).engineSlowLeft();
+			if (!(portB & BIT_WP_RUN_IN)) {
+				go_on = print_Test("B(0)", (*cc).read(PORT_B));
+				(*cc).engineSlowRight();
+			if ((portB & BIT_WP_RUN_IN)) {
+				go_on = print_Test("B(0)", (*cc).read(PORT_B));
+				(*cc).engineSlowLeft();
+			}
+		}
 	}
-
-
 }
 
 bool Test_Sensor::print_Test(string sen, int res) {
 
 	if((res & BIT_WP_RUN_IN) != RUN_IN_STATE ) {
-		cout << "TEST " << " FAILED" << (res & BIT_WP_RUN_IN) << endl;
+		cout << "TEST B(0)" << " FAILED: " << (res & BIT_WP_RUN_IN) << endl;
 		return true;
 	} else {
-		cout << "TEST " << " SUCCESSFUL" << (res & BIT_WP_RUN_IN) << endl;
+		cout << "TEST B(0)" << " SUCCESSFUL" << (res & BIT_WP_RUN_IN) << endl;
 		return false;
 	}
 	return false;

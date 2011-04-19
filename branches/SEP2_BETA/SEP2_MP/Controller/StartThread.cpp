@@ -9,7 +9,7 @@
 
 StartThread::StartThread(){
 	cc = CoreController::getInstance();
-	ic = InterruptController();
+//	ic = InterruptController();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
