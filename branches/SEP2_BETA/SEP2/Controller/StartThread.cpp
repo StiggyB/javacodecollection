@@ -35,9 +35,11 @@ void StartThread::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	(*cc).start(NULL);
-	(*ic).start(NULL);
 
+	(*cc).start(NULL);
+	cout << "starting IC" <<endl;
+	(*ic).start(NULL);
+	cout << "IC started" <<endl;
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);

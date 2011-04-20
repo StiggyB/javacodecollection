@@ -3,9 +3,9 @@
 #define CORECONTROLLER_H_
 
 
+#include <stdlib.h>
 #include "../HAL/HAL.h"
 #include "../HAL/IHAL.h"
-//#include "InterruptController.h"
 #include "../Thread/HAWThread.h"
 
 /**

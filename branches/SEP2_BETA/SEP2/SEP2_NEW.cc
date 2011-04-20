@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	 */
 	st.stopProcess();
 
-	cout << "Finishing Test" << endl;
+	cout << "Finishing Program" << endl;
 
 #ifdef SIMULATION
 	IOaccess_close(); // Schließe die Verbindung zur Simulation

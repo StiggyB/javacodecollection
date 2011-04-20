@@ -69,16 +69,22 @@ CoreController::~CoreController() {
 }
 
 void CoreController::execute(void*) {
+	int rcvid = 0;
+	Message *m = (Message *) malloc(sizeof(Message));
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
 	//setting up Communication!
 	if(!setUpChannel()){
-		cout << "IC: channel setup failed" << endl;
+		cout << "CC: channel setup failed" << endl;
 	}else{
-		cout << "IC: channel setup successful" << endl;
+		cout << "CC: channel setup successful" << endl;
 	}
 	Communication::serverChannelId = chid;
+	while(1){
+		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
+		cout << "message received"<<endl;
+	}
 }
 
 void CoreController::shutdown() {
