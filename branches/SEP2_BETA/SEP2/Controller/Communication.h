@@ -3,16 +3,17 @@
 #define COMMUNICATION_H_
 
 #include <list>
+#include <iostream>
 #include <stdlib.h>
 #include "HAL.h"
 
 enum CommunicatorType{
-	INTERRUPTCONTROLLER, SENSOR, LIGHTS, ANLAGENSTEUERUNG
+	INTERRUPTCONTROLLER, SENSOR, LIGHTS, ANLAGENSTEUERUNG,CORECONTROLLER
 };
 
 enum MsgType{
 	addToServer,removeFromServer,closeConnection,startConnection,
-	getIDforCom, react, information, OK, notAvailable, sendID
+	getIDforCom, react, information, OK, notAvailable, sendID, error
 };
 
 typedef struct message{
@@ -57,6 +58,8 @@ public:
 	bool deregisterChannel();
 	bool attachConnection(int id, CommunicatorType c);
 	bool detachConnection(int id);
+	bool addCommunicator(int ch, CommunicatorType ct);
+	bool removeCommunicator(int ch, CommunicatorType ct);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c);
 	/**

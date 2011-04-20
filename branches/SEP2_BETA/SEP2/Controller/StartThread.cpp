@@ -12,7 +12,7 @@
 StartThread::StartThread(){
 	h = HAL::getInstance();
 	cc = CoreController::getInstance();
-	ic = (InterruptController*) InterruptController::getInstance();
+	ic = InterruptController::getInstance();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
@@ -37,8 +37,10 @@ void StartThread::execute(void*) {
 	}
 
 	(*cc).start(NULL);
+	//sleep(3);
 	cout << "starting IC" <<endl;
 	(*ic).start(NULL);
+	//cout << "" << ic << endl;
 	cout << "IC started" <<endl;
 #ifdef TEST_IRQ
 	Test_IRQ ti;
@@ -68,8 +70,8 @@ void StartThread::execute(void*) {
 	tm.join();
 #endif
 
-	sleep(40);
-	//ic.join();
+	//sleep(40);
+	(*cc).join();
 
 }
 

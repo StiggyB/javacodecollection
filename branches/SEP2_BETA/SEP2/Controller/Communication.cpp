@@ -65,18 +65,36 @@ int Communication::requestChannelIDForObject(CommunicatorType c){
 	if (-1 == ConnectDetach(coid)) {
 		perror("Communication: failed to detach client from server!");
 	}
-	Communicator *com = new Communicator((*r_msg).chid,c);
-	lst.insert(lst.begin(),*com);
+	addCommunicator((*r_msg).chid,c);
 	//lst.insert(lst.begin(),(new Communicator((*r_msg).chid,c)));
 	return true;
 }
 
+bool Communication::addCommunicator(int ch, CommunicatorType ct){
+	Communicator *com = new Communicator(ch,ct);
+	lst.insert(lst.begin(),*com);
+	return true;
+}
+
+bool Communication::removeCommunicator(int ch, CommunicatorType ct){
+	std::list<Communicator>::iterator it;
+	for (it = lst.begin(); it != lst.end(); it++) {
+		if ((*it).getCom() == ct) {
+			lst.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Communication::setUpChannel(){
 	chid =  0;
+	std::cout << "trying setUpChannel" << std::endl;
 	if ((chid = ChannelCreate(0)) == -1) {
 		perror("Communication: failed to create Channel\n");
 		return false;
 	}
+	std::cout << "setUpChannel done" << std::endl;
 	return true;
 }
 

@@ -4,9 +4,10 @@
 
 
 #include "../HAL/HAL.h"
+#include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
-#include "../Thread/Singleton.h"
-#include "../Controller/Communication.h"
+#include "Communication.h"
+#include "CoreController.h"
 
 extern struct sigevent event;
 //extern const struct sigevent *eventptr;
@@ -27,13 +28,13 @@ extern struct sigevent event;
  * Inherits: HAWThread.h
  */
 
-class InterruptController : public thread::HAWThread, public Communication, public Singleton {
+class InterruptController : public thread::HAWThread, public Communication{//, public Singleton {
 public:
-	//static void deleteInstance();
-	//static InterruptController* getInstance();
+	static void deleteInstance();
+	static InterruptController* getInstance();
 
-	InterruptController();
-	virtual ~InterruptController();
+	//InterruptController();
+	//virtual ~InterruptController();
 private:
 	/**
 	 * ID's for Interrupt, Channel and Connection.
@@ -60,20 +61,28 @@ private:
 	 * Gets the Sensor, to send them the interrupts.
 	 */
 	void getSensor();
-	/**
-	 * Direct connection to HAL.
-	 */
-	HAL *h;
-
-
-
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 
 private:
-
-
+	InterruptController();
+	virtual ~InterruptController();
+	InterruptController(const InterruptController&);
+	InterruptController& operator=(const InterruptController&);
+	/**
+	 * Pointer for singleton CoreController
+	 */
+	static InterruptController* pInstance;
+	/**
+	 * Pointer for singleton CoreController Instance
+	 */
+	static Mutex singleton;
+	/**
+	 * Direct connection to HAL.
+	 */
+	HAL *h;
+	CoreController *cc;
 };
 
 #endif /* INTERRUPTCONTROLLER_H_ */

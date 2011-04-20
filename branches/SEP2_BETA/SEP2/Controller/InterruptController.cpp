@@ -19,8 +19,9 @@
 #include "InterruptController.h"
 
 struct sigevent event;
+Mutex InterruptController::singleton;
 
-/*InterruptController* InterruptController::pInstance = NULL;
+InterruptController* InterruptController::pInstance = NULL;
 
 InterruptController* InterruptController::getInstance() {
 	if (!pInstance) {
@@ -34,19 +35,20 @@ InterruptController* InterruptController::getInstance() {
 }
 
 void InterruptController::deleteInstance(){
-	if( pInstance != null ){
+	if( pInstance != NULL ){
 		singleton.lock();
-		if( pInstance != null ){
+		if( pInstance != NULL ){
 			delete pInstance;
-			pInstance = null;
+			pInstance = NULL;
 		}
 		singleton.unlock();
 	}
 }
-*/
+
 
 InterruptController::InterruptController() {//: sens() {
 	h = HAL::getInstance();
+	cc = CoreController::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
@@ -111,6 +113,8 @@ void InterruptController::connectToHAL(int port) {
 }
 
 void InterruptController::execute(void*) {
+	cout << "IC: now getting shit up!" << endl;
+
 	//getSensor();
 	if(!setUpChannel()){
 		cout << "IC: channel setup failed" << endl;
@@ -121,13 +125,27 @@ void InterruptController::execute(void*) {
 		cout << "IC: register channel failed" << endl;
 	}else{
 		cout << "IC: register channel successful" << endl;
-	}
+	}//*/
+
+
+	if(!requestChannelIDForObject(INTERRUPTCONTROLLER)){
+		cout << "IC: request failed" << endl;
+	}else{
+		cout << "IC: request successful" << endl;
+	}//*/
+	//TODO -> attach Connection here
 	//attachConnection(int id, CommunicatorType c);
 	//detachConnection(int id);
 
 	connectToHAL(INTERRUPT_D_PORT_B);
 	connectToHAL(INTERRUPT_D_PORT_C_HIGH);
 	handlePulseMessages();
+	if (!registerChannel()) {
+		cout << "IC: register channel failed" << endl;
+	} else {
+		cout << "IC: register channel successful" << endl;
+	}//*/
+	destroyChannel(chid);
 }
 
 void InterruptController::getSensor() {
@@ -139,75 +157,114 @@ void InterruptController::handlePulseMessages() {
 		perror("error for IO Control\n");
 		shutdown();
 	}
-	/*CoreController *cc = CoreController::getInstance();*/
-	int rcvid;
-	(*h).addLight(GREEN);
+	int rcvid;//, coid,chid;
+	//TODO -> attach Connection here
+	/*Message * m = (Message *) malloc(sizeof(Message));
+	message * r_msg = (message*) malloc(sizeof(message));
+	if (r_msg == NULL) {
+		perror("Communication: failed to get Space for Receive Message.");
+		return false;
+	}
+	if(-1 == ( chid = getChannelIdForObject(SENSOR))){
+		perror("IC - HPM: failed to get ChannelId!");
+	}
+	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		perror("Communication: failed to attach Channel for ID Request\n");
+	}
+	if (m == NULL) {
+		perror("Communication: failed to get Space for Message.");
+		return false;
+	}
+	if (-1 == buildMessage(m, serverChannelId, coid, getIDforCom, c)) {
+		perror("Communication: failed to create Message!");
+		return false;
+	}*/
+	(*cc).addLight(GREEN);
 	while (1) {
 		cout << "InterruptController: waiting for Pulse" << endl;
 		rcvid = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
 		cout << "InterruptController: Pulse received" << endl;
+
+		//buildMessage(m,,,OK,CORECONTROLLER);
+
 		if (rcvid == -1) {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}
-		switch(pulse.code){
-		case INTERRUPT_D_PORT_B:
-			cout << "IC: pB: " << portB << endl;
-			if (!(portB & BIT_WP_IN_HEIGHT)) {
-				// (*cc).getHeight();
-				// test height for correctness
-				cout << "InterruptController: WP_IN_H " << endl;
-			}
-			if (!(portB & BIT_WP_RUN_IN)) {
-				(*h).removeLight(YELLOW);
-				(*h).engineRight();
-				cout << "InterruptController: BIT_WP_RUN_IN" << endl;
-			}
+		//TODO -> Interrupt Handling goes here!
+		/**
+		if (-1 == MsgSend(coid, msg_s, sizeof(msg_s), r_msg, sizeof(r_msg))) {
+			perror("Communication: failed to send message to server!");
+			return false;
+		}*/
+		/*switch(pulse.code){
+		 case INTERRUPT_D_PORT_B:
+		 cout << "IC: pB: " << portB << endl;
+		 if (!(portB & BIT_WP_IN_HEIGHT)) {
+		 // (*cc).getHeight();
+		 // test height for correctness
+		 cout << "InterruptController: WP_IN_H " << endl;
+		 }
+		 if (!(portB & BIT_WP_RUN_IN)) {
+		 (*h).removeLight(YELLOW);
+		 (*h).engineRight();
+		 cout << "InterruptController: BIT_WP_RUN_IN" << endl;
+		 }
 
-			if (portB & BIT_WP_IN_SWITCH) {
-				if (portB & BIT_SWITCH_OPEN) {
-					(*h).closeSwitch();
-					cout << "InterruptController: closes switch " << endl;
-				}
-			} else {
-				if (portB & BIT_WP_METAL) {
-					if (!(portB & BIT_SWITCH_OPEN)) {
-						(*h).openSwitch();
-						cout << "InterruptController: opens switch " << endl;
-					}
-					cout << "IC: ist Metall :D" << endl;
-				}
+		 if (portB & BIT_WP_IN_SWITCH) {
+		 if (portB & BIT_SWITCH_OPEN) {
+		 (*h).closeSwitch();
+		 cout << "InterruptController: closes switch " << endl;
+		 }
+		 } else {
+		 if (portB & BIT_WP_METAL) {
+		 if (!(portB & BIT_SWITCH_OPEN)) {
+		 (*h).openSwitch();
+		 cout << "InterruptController: opens switch " << endl;
+		 }
+		 cout << "IC: ist Metall :D" << endl;
+		 }
 
-			}
-			if(! (portB & BIT_SLIDE_FULL)){
-				//(*h).stopMachine();
-				(*h).addLight(YELLOW);
-				//Exception handling for isSlideFull() : bool
-			}
-			if(!(portB & BIT_WP_OUTLET)){
-				(*h).engineReset();
-				cout << "IC: somethings coming out ;)" << endl;
-			}
+		 }
+		 if(! (portB & BIT_SLIDE_FULL)){
+		 //(*h).stopMachine();
+		 (*h).addLight(YELLOW);
+		 //Exception handling for isSlideFull() : bool
+		 }
+		 if(!(portB & BIT_WP_OUTLET)){
+		 (*h).engineReset();
+		 cout << "IC: somethings coming out ;)" << endl;
+		 }
 
-			break;
-		case INTERRUPT_D_PORT_C_HIGH:
-			cout << "IC: pC: " << portC << endl;
-			if(!(portC & BIT_E_STOP)){
-				//(*cc).emergencyStop();
-			}else if(!(portC & BIT_STOP)){
-				//(*cc).stopMachine();
-			}else if(portC & BIT_START){
-				//(*cc).restart();
-			}else if(portC & BIT_RESET){
-				//(*cc).resetAll();
-			}
-			break;
-		}
+		 break;
+		 case INTERRUPT_D_PORT_C_HIGH:
+		 cout << "IC: pC: " << portC << endl;
+		 if(!(portC & BIT_E_STOP)){
+		 //(*cc).emergencyStop();
+		 }else if(!(portC & BIT_STOP)){
+		 //(*cc).stopMachine();
+		 }else if(portC & BIT_START){
+		 //(*cc).restart();
+		 }else if(portC & BIT_RESET){
+		 //(*cc).resetAll();
+		 }
+		 break;
+		 }
 
-		// TODO send a message to Sensor
-		// sendInterrupt();
-		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
+		 // TODO send a message to Sensor
+		 // sendInterrupt();
+		 cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
+		 */
 	}
+	/*if (-1 == ConnectDetach(coid)) {
+		perror("Communication: failed to detach client from server!");
+	}
+	if (!deregisterChannel()) {
+		cout << "IC: deregister channel failed" << endl;
+	} else {
+		cout << "IC: deregister channel successful" << endl;
+	}*/
+
 }
 
 void InterruptController::shutdown() {

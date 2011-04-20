@@ -69,12 +69,11 @@ CoreController::~CoreController() {
 }
 
 void CoreController::execute(void*) {
-	int rcvid = 0;
+	int rcvid = 0,id = 0;
 	Message *m = (Message *) malloc(sizeof(Message));
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	//setting up Communication!
 	if(!setUpChannel()){
 		cout << "CC: channel setup failed" << endl;
 	}else{
@@ -84,6 +83,24 @@ void CoreController::execute(void*) {
 	while(1){
 		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
 		cout << "message received"<<endl;
+		switch((*m).ca){
+		case addToServer:
+			addCommunicator((*m).chid,(*m).Msg.comtype);
+			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER);
+			break;
+		case removeFromServer:
+			removeCommunicator((*m).chid,(*m).Msg.comtype);
+			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER); break;
+		case getIDforCom:
+			id = getChannelIdForObject((*m).Msg.comtype);
+			if(id == -1){
+				buildMessage(m,id,(*m).coid,error,CORECONTROLLER); break;
+			}else{
+				buildMessage(m,id,(*m).coid,OK,CORECONTROLLER); break;
+			}
+		default: buildMessage(m,(*m).chid,(*m).coid,error,CORECONTROLLER); break;
+		}
+		MsgReply(rcvid,0,m,sizeof(m));
 	}
 }
 
