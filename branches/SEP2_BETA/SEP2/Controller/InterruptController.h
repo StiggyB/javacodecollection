@@ -6,6 +6,7 @@
 #include "../HAL/HAL.h"
 #include "../Thread/HAWThread.h"
 #include "../Thread/Singleton.h"
+#include "../Controller/Communication.h"
 
 extern struct sigevent event;
 //extern const struct sigevent *eventptr;
@@ -26,7 +27,7 @@ extern struct sigevent event;
  * Inherits: HAWThread.h
  */
 
-class InterruptController : public thread::HAWThread, public Singleton {
+class InterruptController : public thread::HAWThread, public Communication, public Singleton {
 public:
 	//static void deleteInstance();
 	//static InterruptController* getInstance();

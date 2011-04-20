@@ -112,6 +112,19 @@ void InterruptController::connectToHAL(int port) {
 
 void InterruptController::execute(void*) {
 	//getSensor();
+	if(!setUpChannel()){
+		cout << "IC: channel setup failed" << endl;
+	}else{
+		cout << "IC: channel setup successful" << endl;
+ 	}
+	if(!registerChannel()){
+		cout << "IC: register channel failed" << endl;
+	}else{
+		cout << "IC: register channel successful" << endl;
+	}
+	//attachConnection(int id, CommunicatorType c);
+	//detachConnection(int id);
+
 	connectToHAL(INTERRUPT_D_PORT_B);
 	connectToHAL(INTERRUPT_D_PORT_C_HIGH);
 	handlePulseMessages();

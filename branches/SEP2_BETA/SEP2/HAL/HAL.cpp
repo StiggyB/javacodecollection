@@ -297,6 +297,10 @@ bool HAL::engineReset(){
 	bool r = reset(PORT_A,BIT_ENGINE_LEFT);
 	ret = ret && r;
 	r = reset(PORT_A,BIT_ENGINE_SLOW);
+	ret = ret && r;
+	r = reset(PORT_A,BIT_ENGINE_STOP);
+	ret = ret && r;
+	r = closeSwitch();
 	return (ret && r);
 }
 bool HAL::engineStop(){
@@ -381,13 +385,6 @@ bool HAL::removeLight(Color col) {
 	return reset(PORT_A, old);
 }
 
-bool HAL::shine(int color) {
-	if (color == BIT_LIGHT_OFF) {
-		return reset(PORT_A, BIT_LIGHTS_ON);
-	} else {
-		return write(PORT_A, color);
-	}
-}
 int HAL::getColorCode(Color col) {
 	int newColor = 0x00;
 	switch (col) {
@@ -405,6 +402,16 @@ int HAL::getColorCode(Color col) {
 		break;
 	}
 	return newColor;
+}
+
+bool HAL::shine(int color) {
+	if (color == BIT_LIGHT_OFF) {
+		return reset(PORT_A, BIT_LIGHTS_ON);
+	} else {
+		bool r = reset(PORT_A, BIT_LIGHTS_ON);
+		bool w = write(PORT_A, color);
+		return (r && w);
+	}
 }
 
 bool HAL::shine(Color col) {
@@ -479,13 +486,13 @@ float HAL::getHeight(){
 	float val = 0;
 	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
 	int i = in8(HEIGHT_MEASURE);
-	val = convertHight(i);
+	val = convertHeight(i);
 	return val;
 }
 /*
  * This method converts the fix point value from the hight measure
  */
-float HAL::convertHight(int input){
+float HAL::convertHeight(int input){
 	float output = 0.0;
 	short zweierk = (~input+1);
 	char t = 0;

@@ -6,6 +6,7 @@
 #include "CoreController.h"
 //#include "InterruptController.h"
 #include "../Thread/HAWThread.h"
+#include "Communication.h"
 
 /**
  * Sensor
@@ -25,7 +26,7 @@
  */
 //class CoreController;
 
-class Sensor : public thread::HAWThread{
+class Sensor : public thread::HAWThread, public Communication{
 public:
 	/**
 	 * Deal with the Interrupt for given port.

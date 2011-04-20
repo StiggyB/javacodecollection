@@ -73,7 +73,12 @@ void CoreController::execute(void*) {
 		perror("ThreadCtl access failed\n");
 	}
 	//setting up Communication!
-
+	if(!setUpChannel()){
+		cout << "IC: channel setup failed" << endl;
+	}else{
+		cout << "IC: channel setup successful" << endl;
+	}
+	Communication::serverChannelId = chid;
 }
 
 void CoreController::shutdown() {
@@ -266,4 +271,8 @@ float CoreController::getHeight(){
 	float ret = (*h).getHeight();
 	m.unlock();
 	return ret;
+}
+
+void CoreController::stopProcess(){
+
 }

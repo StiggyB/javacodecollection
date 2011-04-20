@@ -2,11 +2,29 @@
 #ifndef COMMUNICATION_H_
 #define COMMUNICATION_H_
 
-#include <vector>
+#include <list>
+#include <stdlib.h>
+#include "HAL.h"
 
-enum Com{
-	INTERRUPTCONTROLLER, SENSOR, LIGHTS
+enum CommunicatorType{
+	INTERRUPTCONTROLLER, SENSOR, LIGHTS, ANLAGENSTEUERUNG
 };
+
+enum MsgType{
+	addToServer,removeFromServer,closeConnection,startConnection,
+	getIDforCom, react, information, OK, notAvailable, sendID
+};
+
+typedef struct message{
+	int chid;
+	int coid;
+	MsgType ca;
+	union msg{
+		int messwert;
+		CommunicatorType comtype;
+		//more can be added here!
+	} Msg;
+} Message;
 
 /**
  * Communication
@@ -24,18 +42,54 @@ enum Com{
  * UNDER CONSTRUCTION!!!
  */
 class Communication {
+
 public:
 	/**
 	 * Get the ChannelID of the specified component.
 	 * \param c the specified component.
 	 * \return ChannelID
 	 */
-	int getComObject(Com c);
+	int getChannelIdForObject(CommunicatorType c);
+	int requestChannelIDForObject(CommunicatorType c);
+	bool setUpChannel();
+	bool registerChannel();
+	bool destroyChannel(int id);
+	bool deregisterChannel();
+	bool attachConnection(int id, CommunicatorType c);
+	bool detachConnection(int id);
+	int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
+	int buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c);
+	/**
+	 * CoreController ChannelID
+	 */
+	static volatile int serverChannelId;
+
 	Communication();
 	virtual ~Communication();
 private:
-	std::vector<int> vc;
+	class Communicator{
+		public:
+			Communicator(int id,CommunicatorType c){
+				chid = id;
+				cm = c;
+			}
+			~Communicator(){}
+			CommunicatorType getCom(){
+				return cm;
+			}
+			int getChannelID(){
+				return chid;
+			}
+		private:
+			int chid;
+			CommunicatorType cm;
+		};
 
+
+	std::list<Communicator> lst;
+	std::list<int> connections;
+protected:
+	int chid, coid;
 };
 
 #endif /* COMMUNICATION_H_ */

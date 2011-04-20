@@ -138,7 +138,7 @@ extern volatile int controlBits;
  *
  * Inherits: IHAL.h
  */
-class HAL: public IHAL, Communication {
+class HAL: public IHAL {
 public:
 	/*!
 	 * returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (HAL)
@@ -178,8 +178,8 @@ public:
 	virtual bool openSwitch();
 	virtual bool closeSwitch();
 	virtual bool setSwitchDirection(bool dir);
-	virtual bool engineReset();
 	virtual bool engineStop();
+	virtual bool engineReset();
 	virtual bool engineContinue();
 	virtual bool engineRight();
 	virtual bool engineLeft();
@@ -204,7 +204,7 @@ private:
 	 * \param input value of type integer
 	 * \return a float - the value
 	 */
-	float convertHight(int input);
+	float convertHeight(int input);
 
 	/**
 	 * same as isOutput(int dir);

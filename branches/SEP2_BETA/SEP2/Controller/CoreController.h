@@ -31,7 +31,7 @@
  *
  * Inherits: IHAL.h, HAWThread.h
  */
-class CoreController : public thread::HAWThread, public IHAL{//, public Communication{
+class CoreController : public thread::HAWThread, public IHAL, public Communication{
 public:
 	void stopProcess();
     static CoreController* getInstance();
