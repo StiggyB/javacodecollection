@@ -56,7 +56,7 @@ private:
 	 * Connects the InterruptController to the HAL on specified ports.
 	 * \param port an integer, the port which should be connected to the ISR.
 	 */
-	void connectToHAL(int port);
+	void connectToHAL();
 	/**
 	 * Gets the Sensor, to send them the interrupts.
 	 */

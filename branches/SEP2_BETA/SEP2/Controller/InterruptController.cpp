@@ -82,7 +82,7 @@ void InterruptController::activateInterrupts() {
 	 cout << "IC: interrupts=" << i << endl;
 }
 
-void InterruptController::connectToHAL(int port) {
+void InterruptController::connectToHAL() {
 
 	if ((chid = ChannelCreate(0)) == -1) {
 		perror("InterruptController: failed to create Channel for Interrupt\n");
@@ -92,7 +92,7 @@ void InterruptController::connectToHAL(int port) {
 	if (coid == -1) {
 		perror("InterruptController: failed to attach Channel for Interrupt\n");
 	}
-	SIGEV_PULSE_INIT(&event,coid,SIGEV_PULSE_PRIO_INHERIT,port,0);
+	SIGEV_PULSE_INIT(&event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		shutdown();
@@ -119,7 +119,7 @@ void InterruptController::execute(void*) {
 	if(!setUpChannel()){
 		cout << "IC: channel setup failed" << endl;
 	}else{
-		cout << "IC: channel setup successful" << endl;
+		cout << "IC: channel setup successful "<<chid << endl;
  	}
 	if(!registerChannel()){
 		cout << "IC: register channel failed" << endl;
@@ -128,7 +128,7 @@ void InterruptController::execute(void*) {
 	}//*/
 
 
-	if(!requestChannelIDForObject(INTERRUPTCONTROLLER)){
+	/*if(!requestChannelIDForObject(INTERRUPTCONTROLLER)){
 		cout << "IC: request failed" << endl;
 	}else{
 		cout << "IC: request successful" << endl;
@@ -137,9 +137,9 @@ void InterruptController::execute(void*) {
 	//attachConnection(int id, CommunicatorType c);
 	//detachConnection(int id);
 
-	connectToHAL(INTERRUPT_D_PORT_B);
-	connectToHAL(INTERRUPT_D_PORT_C_HIGH);
+	connectToHAL();
 	handlePulseMessages();
+
 	if (!registerChannel()) {
 		cout << "IC: register channel failed" << endl;
 	} else {
@@ -157,46 +157,50 @@ void InterruptController::handlePulseMessages() {
 		perror("error for IO Control\n");
 		shutdown();
 	}
-	int rcvid;//, coid,chid;
+	int rcvid, coid, id;
+
 	//TODO -> attach Connection here
-	/*Message * m = (Message *) malloc(sizeof(Message));
+
+	Message * m = (Message *) malloc(sizeof(Message));
+	if (m == NULL) {
+		perror("IC: failed to get Space for Message.");
+		return false;
+	}
 	message * r_msg = (message*) malloc(sizeof(message));
 	if (r_msg == NULL) {
-		perror("Communication: failed to get Space for Receive Message.");
+		perror("IC: failed to get Space for Receive Message.");
 		return false;
 	}
-	if(-1 == ( chid = getChannelIdForObject(SENSOR))){
-		perror("IC - HPM: failed to get ChannelId!");
-	}
-	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
-		perror("Communication: failed to attach Channel for ID Request\n");
-	}
-	if (m == NULL) {
-		perror("Communication: failed to get Space for Message.");
-		return false;
-	}
-	if (-1 == buildMessage(m, serverChannelId, coid, getIDforCom, c)) {
-		perror("Communication: failed to create Message!");
-		return false;
-	}*/
+
 	(*cc).addLight(GREEN);
 	while (1) {
 		cout << "InterruptController: waiting for Pulse" << endl;
-		rcvid = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+		rcvid = MsgReceive(chid,r_msg, sizeof(r_msg), NULL);
 		cout << "InterruptController: Pulse received" << endl;
+		if (rcvid == 0) {
+			//pulse inc
 
-		//buildMessage(m,,,OK,CORECONTROLLER);
+			//TODO -> Interrupt Handling goes here!
+			if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
+				perror("Communication: failed to send message to server!");
+				return false;
+			}//*/
 
-		if (rcvid == -1) {
+
+		}else if (rcvid == -1) {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
+		}else{
+			if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
+							perror("Communication: failed to send message to server!");
+							return false;
+						}//*/
 		}
-		//TODO -> Interrupt Handling goes here!
-		/**
-		if (-1 == MsgSend(coid, msg_s, sizeof(msg_s), r_msg, sizeof(r_msg))) {
-			perror("Communication: failed to send message to server!");
-			return false;
-		}*/
+
+
+
+
+
 		/*switch(pulse.code){
 		 case INTERRUPT_D_PORT_B:
 		 cout << "IC: pB: " << portB << endl;
@@ -256,15 +260,6 @@ void InterruptController::handlePulseMessages() {
 		 cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
 		 */
 	}
-	/*if (-1 == ConnectDetach(coid)) {
-		perror("Communication: failed to detach client from server!");
-	}
-	if (!deregisterChannel()) {
-		cout << "IC: deregister channel failed" << endl;
-	} else {
-		cout << "IC: deregister channel successful" << endl;
-	}*/
-
 }
 
 void InterruptController::shutdown() {
