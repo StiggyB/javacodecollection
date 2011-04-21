@@ -38,6 +38,27 @@ int Communication::getChannelIdForObject(CommunicatorType c){
 	return -1;
 }
 
+int Communication::getConnectIdForObject(CommunicatorType c){
+	std::list<Communicator>::iterator it;
+	for(it  = lst.begin(); it != lst.end();it++){
+		if((*it).getCom() == c){
+			return (*it).getConnectID();
+		}
+	}
+	return -1;
+}
+
+std::list<Communication::Communicator>::iterator Communication::getCommunicatorForObject(int ci,int co){
+	std::list<Communicator>::iterator it;
+	for(it  = lst.begin(); it != lst.end();it++){
+		if((*it).getChannelID() == ci && (*it).getConnectID() == co ){
+			return it;
+		}
+	}
+	return NULL;
+}
+
+
 //holt id vom server (cc)
 int Communication::requestChannelIDForObject(CommunicatorType c){
 	int coid = ConnectAttach(0, 0, serverChannelId, _NTO_SIDE_CHANNEL, 0);
@@ -65,21 +86,21 @@ int Communication::requestChannelIDForObject(CommunicatorType c){
 	if (-1 == ConnectDetach(coid)) {
 		perror("Communication: failed to detach client from server!");
 	}
-	addCommunicator((*r_msg).chid,c);
+	addCommunicator((*r_msg).chid,0,c);
 	//lst.insert(lst.begin(),(new Communicator((*r_msg).chid,c)));
 	return true;
 }
 
-bool Communication::addCommunicator(int ch, CommunicatorType ct){
-	Communicator *com = new Communicator(ch,ct);
+bool Communication::addCommunicator(int ch, int cod, CommunicatorType ct){
+	Communicator *com = new Communicator(ch,cod,ct);
 	lst.insert(lst.begin(),*com);
 	return true;
 }
 
-bool Communication::removeCommunicator(int ch, CommunicatorType ct){
+bool Communication::removeCommunicator(int ch, int cod,  CommunicatorType ct){
 	std::list<Communicator>::iterator it;
 	for (it = lst.begin(); it != lst.end(); it++) {
-		if ((*it).getCom() == ct) {
+		if ((*it).getCom() == ct && (*it).getConnectID() == cod  && (*it).getChannelID() == ch) {
 			lst.erase(it);
 			return true;
 		}
@@ -164,7 +185,7 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		perror("Communication: failed to get Space for Message.");
 		return false;
 	}
-	if (-1 == buildMessage(msg_s,id, coid, closeConnection, c)) {
+	if (-1 == buildMessage(msg_s,id, coid, startConnection, c)) {
 		perror("Communication: failed to create Message!");
 		return false;
 	}
@@ -180,10 +201,16 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		perror("Communication: no OK from Receiver!");
 		return false;
 	}
-	return true;
+	std::list<Communicator>::iterator it = getCommunicatorForObject(id,0);
+	if(it == NULL){
+		return false;
+	}else{
+		(*it).setConnectID(coid);
+		return true;
+	}
 }
 
-bool Communication::detachConnection(int id){
+bool Communication::detachConnection(int id,int coid){
 	message * msg_s = (message *) malloc(sizeof(message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
@@ -235,5 +262,13 @@ int Communication::buildMessage(void *s, int chid, int coid, MsgType activity,Co
 	(*m).coid = coid;
 	(*m).ca =  activity;
 	(*m).Msg.comtype = c;
+	return 1;
+}
+int buildMessage(void *s, int chid, int coid, MsgType activity, struct _pulse p) {
+	message *m = (message*) s;
+	(*m).chid = chid;
+	(*m).coid = coid;
+	(*m).ca = activity;
+	(*m).Msg.puls = p;
 	return 1;
 }

@@ -46,7 +46,7 @@ void InterruptController::deleteInstance(){
 }
 
 
-InterruptController::InterruptController() {//: sens() {
+InterruptController::InterruptController() {
 	h = HAL::getInstance();
 	cc = CoreController::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -161,17 +161,14 @@ void InterruptController::handlePulseMessages() {
 
 	//TODO -> attach Connection here
 
-	Message * m = (Message *) malloc(sizeof(Message));
+	Message * m = (Message *) malloc(512);//sizeof(Message));
 	if (m == NULL) {
 		perror("IC: failed to get Space for Message.");
-		return false;
 	}
-	message * r_msg = (message*) malloc(sizeof(message));
+	message * r_msg = (message*) malloc(512);//sizeof(message));
 	if (r_msg == NULL) {
 		perror("IC: failed to get Space for Receive Message.");
-		return false;
 	}
-
 	(*cc).addLight(GREEN);
 	while (1) {
 		cout << "InterruptController: waiting for Pulse" << endl;
@@ -179,27 +176,43 @@ void InterruptController::handlePulseMessages() {
 		cout << "InterruptController: Pulse received" << endl;
 		if (rcvid == 0) {
 			//pulse inc
-
-			//TODO -> Interrupt Handling goes here!
+			cout << "PulseCode: " << (*r_msg).Msg.puls.code << endl;
+			if ((*r_msg).Msg.puls.code == INTERRUPT_D_PORT_C) {
+				id = getChannelIdForObject(SENSOR);
+				coid = getConnectIdForObject(SENSOR);
+				buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
+			} else { //pulse.code == port B
+				id = getChannelIdForObject(SENSOR);
+				coid = getConnectIdForObject(SENSOR);
+				buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
+			}
 			if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
-				perror("Communication: failed to send message to server!");
-				return false;
+				perror("InterruptController: failed to send message to server!");
 			}//*/
-
-
+			cout << "IC: send message to Sensor!" << endl;
 		}else if (rcvid == -1) {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}else{
-			if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
-							perror("Communication: failed to send message to server!");
-							return false;
-						}//*/
+			//add new Communicator
+			if ((*r_msg).ca == startConnection) {
+				if (addCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
+					if (-1 == MsgSend((*r_msg).coid, m, sizeof(m), r_msg,sizeof(r_msg))) {
+						perror("InterruptController: failed to send message to server!");
+					}//*/
+					cout << "IC: added Communicator" << endl;
+				} else {
+					perror("IC: failed to addCommunicator");
+				}
+			}else if((*r_msg).ca ==  closeConnection){
+				if(removeCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)){
+					perror("IC: remove Communicator.");
+				}
+			} else{
+				cout << "message encountered, but not known..." <<endl;
+			}
+
 		}
-
-
-
-
 
 		/*switch(pulse.code){
 		 case INTERRUPT_D_PORT_B:

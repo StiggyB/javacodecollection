@@ -13,7 +13,7 @@ enum CommunicatorType{
 
 enum MsgType{
 	addToServer,removeFromServer,closeConnection,startConnection,
-	getIDforCom, react, information, OK, notAvailable, sendID, error
+	getIDforCom, react,reactC, information, OK, notAvailable, sendID, error
 };
 
 typedef struct message{
@@ -23,7 +23,9 @@ typedef struct message{
 	union msg{
 		int messwert;
 		CommunicatorType comtype;
+		struct _pulse puls;
 		//more can be added here!
+
 	} Msg;
 } Message;
 
@@ -51,17 +53,19 @@ public:
 	 * \return ChannelID
 	 */
 	int getChannelIdForObject(CommunicatorType c);
+	int getConnectIdForObject(CommunicatorType c);
 	int requestChannelIDForObject(CommunicatorType c);
+	bool addCommunicator(int ch, int cod, CommunicatorType ct);
+	bool removeCommunicator(int ch, int cod,  CommunicatorType ct);
 	bool setUpChannel();
 	bool registerChannel();
 	bool destroyChannel(int id);
 	bool deregisterChannel();
 	bool attachConnection(int id, CommunicatorType c);
-	bool detachConnection(int id);
-	bool addCommunicator(int ch, CommunicatorType ct);
-	bool removeCommunicator(int ch, CommunicatorType ct);
+	bool detachConnection(int id,int coid);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c);
+	int buildMessage(void *s, int chid, int coid, MsgType activity,struct _pulse p);
 	/**
 	 * CoreController ChannelID
 	 */
@@ -70,29 +74,39 @@ public:
 	Communication();
 	virtual ~Communication();
 private:
-	class Communicator{
-		public:
-			Communicator(int id,CommunicatorType c){
-				chid = id;
-				cm = c;
-			}
-			~Communicator(){}
-			CommunicatorType getCom(){
-				return cm;
-			}
-			int getChannelID(){
-				return chid;
-			}
-		private:
-			int chid;
-			CommunicatorType cm;
-		};
+	class Communicator {
+	public:
+		Communicator(int id, int cod, CommunicatorType c) {
+			chid = id;
+			coid = cod;
+			cm = c;
+		}
+		~Communicator() {
+		}
+		CommunicatorType getCom() {
+			return cm;
+		}
+		int getChannelID() {
+			return chid;
+		}
+		int getConnectID() {
+			return coid;
+		}
+		void setConnectID(int co) {
+			coid = co;
+		}
+	private:
+		int chid;
+		int coid;
+		CommunicatorType cm;
+	};
 
 
 	std::list<Communicator> lst;
-	std::list<int> connections;
 protected:
 	int chid, coid;
+public:
+	std::list<Communicator>::iterator getCommunicatorForObject(int ci,int co);
 };
 
 #endif /* COMMUNICATION_H_ */

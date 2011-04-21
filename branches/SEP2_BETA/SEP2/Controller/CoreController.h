@@ -7,6 +7,7 @@
 #include "../HAL/HAL.h"
 #include "../HAL/IHAL.h"
 #include "../Thread/HAWThread.h"
+#include "Communication.h"
 
 /**
  * Core Controller

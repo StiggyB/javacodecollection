@@ -85,11 +85,11 @@ void CoreController::execute(void*) {
 		cout << "message received"<<endl;
 		switch((*m).ca){
 		case addToServer:
-			addCommunicator((*m).chid,(*m).Msg.comtype);
+			addCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER);
 			break;
 		case removeFromServer:
-			removeCommunicator((*m).chid,(*m).Msg.comtype);
+			removeCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER); break;
 		case getIDforCom:
 			id = getChannelIdForObject((*m).Msg.comtype);
