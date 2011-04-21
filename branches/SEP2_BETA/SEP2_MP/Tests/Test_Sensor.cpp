@@ -35,11 +35,10 @@
 
 #include "Test_Sensor.h"
 
-//TODO Write a enum for the various port states
-
 enum PortState {
-	RUN_IN_STATE = 1, IN_HEIGHT_STATE = 2, DEFAULT_HEIGHT = 0, IN_SWITCH_STATE = 0,
-	IN_SLIDE_STATE = 0, OUTLET_STATE = 0,
+	RUN_IN_STATE_LOW = 0, RUN_IN_STATE_HIGH = (1<<0), IN_HEIGHT_STATE_LOW = 0, IN_HEIGHT_STATE_HIGH = (1<<1), DEFAULT_HEIGHT = 0,
+	IN_SWITCH_STATE_LOW = 0, IN_SWITCH_STATE_HIGH = (1<<3), IS_METAL_STATE = 0, NO_METAL_STATE = (1<<4), SWITCH_OPEN_STATE = (1<<5),
+	SWITCH_CLOSED_STATE = 0, IN_SLIDE_STATE_LOW = 0, IN_SLIDE_STATE_HIGH = (1<<6), OUTLET_STATE_LOW = 0, OUTLET_STATE_HIGH = (1<<7)
 };
 
 Test_Sensor::Test_Sensor() {
@@ -55,6 +54,7 @@ void Test_Sensor::shutdown() {
 
 }
 
+//TODO implement MsgReceive/Reply
 void Test_Sensor::execute(void*) {
 
 	//test_Software_Only();
@@ -70,25 +70,22 @@ void Test_Sensor::test_Software_Only() {
 
 	while(1) {
 		cout << "TEST B(0)" << endl;
-		//(*cc).write(PORT_B, BIT_WP_RUN_IN);
 		res = (*cc).read(PORT_B);
 		cout << "TEST B(0) SUCCESSFUL" << (res & BIT_WP_RUN_IN) << endl;
-		if((res & BIT_WP_RUN_IN) != RUN_IN_STATE ) {
+		if((res & BIT_WP_RUN_IN) != RUN_IN_STATE_LOW ) {
 			cout << "TEST B(0) FAILED" << (res & BIT_WP_RUN_IN) << endl;
 		}
 		sleep(3);
 
 		cout << "TEST B(1)" << endl;
-		//(*cc).write(PORT_B, BIT_WP_IN_HEIGHT);
 		res = (*cc).read(PORT_B);
 		cout << "TEST B(1) SUCCESSFUL" << (res & BIT_WP_IN_HEIGHT) << endl;
-		if((res & BIT_WP_IN_HEIGHT) != IN_HEIGHT_STATE) {
+		if((res & BIT_WP_IN_HEIGHT) != IN_HEIGHT_STATE_LOW) {
 			cout << "TEST B(1) FAILED" << (res & BIT_WP_IN_HEIGHT) << endl;
 		}
 		sleep(3);
 
 		cout << "TEST B(2)" << endl;
-		//(*cc).write(PORT_B, BIT_HEIGHT_1);
 		res = (*cc).getHeight();
 		cout << "TEST B(2) SUCCESSFUL" << res << endl;
 		if(res != DEFAULT_HEIGHT) { //how exact is the measure?
@@ -96,120 +93,147 @@ void Test_Sensor::test_Software_Only() {
 		}
 		sleep(3);
 	}
-	/*
-	cout << "TEST B(3)" << endl;
-	(*cc).write(PORT_B, BIT_WP_IN_SWITCH);
-	(*cc).read(PORT_B);
-
-	cout << "TEST B(4)" << endl;
-	(*cc).write(PORT_B, BIT_WP_METAL);
-	(*cc).read(PORT_B);
-
-	cout << "TEST B(5)" << endl;
-	(*cc).write(PORT_B, BIT_SWITCH_OPEN);
-	(*cc).read(PORT_B);
-
-	cout << "TEST B(6)" << endl;
-	(*cc).write(PORT_B, BIT_WP_IN_SLIDE);
-	(*cc).read(PORT_B);
-
-	cout << "TEST B(7)" << endl;
-	(*cc).write(PORT_B, BIT_WP_OUTLET);
-	(*cc).read(PORT_B);
-	*/
 }
 
-//TODO implement yellow for test session - green for successful - red for failure
 void Test_Sensor::test_Operator_Included() {
-	bool go_on = true;
-	bool section1 = true;
-	bool section2 = true;
+
+	bool next_test = true;
+	bool section1 = false;
+	bool section2 = false;
+	bool success = false;
+	int height = 0;
+	int time = 1;
+	int res = 0;
 
 	cout << "\nSensor with work piece: testing started" << endl;
-
+	(*cc).shine(YELLOW);
 	while(1) {
+		if (!(portB & BIT_WP_IN_HEIGHT) ) {
+			height = (*cc).getHeight();
+			cout << "Height: " << height << hex << endl;
+
+		}
+
 		while(section1) {
-			if (!(portB & BIT_WP_RUN_IN) && go_on) {
-				cout << go_on << "TEST 0" << endl;
-				go_on = !go_on;
-				(*cc).engineSlowRight();
-				sleep(1);
-				(*cc).engineSlowLeft();
-				sleep(1);
-				(*cc).engineSlowRight();
 
-			}
-			//TODO test getHeight()
-			if (!(portB & BIT_WP_IN_HEIGHT) && !(go_on)) {
-				cout << go_on << "TEST 1" << endl;
-				go_on = !go_on;
+			if (!(portB & BIT_WP_RUN_IN) && next_test) {
+				cout << "Section test1" <<  endl;
+				next_test = !next_test;
+				res = (*cc).read(PORT_B);
+				success &= test_print(0, res, BIT_WP_RUN_IN, RUN_IN_STATE_LOW);
 				(*cc).engineSlowRight();
-				sleep(1);
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(0, res, BIT_WP_RUN_IN, RUN_IN_STATE_HIGH);
 				(*cc).engineSlowLeft();
-				sleep(1);
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(0, res, BIT_WP_RUN_IN, RUN_IN_STATE_LOW);
 				(*cc).engineSlowRight();
-
 			}
-			//TODO test metal with BIT_WP_METAL - to prints
-			if (!(portB & BIT_WP_IN_SWITCH) && go_on) {
-				cout << go_on << "TEST 2"<< endl;
-				go_on = !go_on;
+
+			if (!(portB & BIT_WP_IN_HEIGHT) && !(next_test)) {
+				next_test = !next_test;
+				res = (*cc).read(PORT_B);
+				success &= test_print(1, res, BIT_WP_IN_HEIGHT, IN_HEIGHT_STATE_LOW);
+				height = (*cc).getHeight();
+				cout << "Height: " << height << endl;
+				res = (*cc).read(PORT_B);
+				success &= test_print(2, res, BIT_HEIGHT_1, DEFAULT_HEIGHT);
+				(*cc).engineSlowLeft();
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(1, res, BIT_WP_IN_HEIGHT, IN_HEIGHT_STATE_HIGH);
+				(*cc).engineSlowRight();
+				sleep(time);
+				(*cc).engineStop();
+				sleep(5);
+				res = (*cc).read(PORT_B);
+				success &= test_print(1, res, BIT_WP_IN_HEIGHT, IN_HEIGHT_STATE_LOW);
+				(*cc).engineContinue();
+				(*cc).engineSlowRight();
+			}
+
+			if (!(portB & BIT_WP_IN_SWITCH) && next_test) {
+				next_test = !next_test;
+				res = (*cc).read(PORT_B);
+				success &= test_print(3, res, BIT_WP_IN_SWITCH, IN_SWITCH_STATE_LOW);
+				res = (*cc).read(PORT_B);
+				success &= test_print(4, res, BIT_WP_METAL, IS_METAL_STATE);
 				(*cc).openSwitch();
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success = test_print(5, res, BIT_SWITCH_OPEN, SWITCH_OPEN_STATE);
 				(*cc).engineSlowRight();
-				sleep(1);
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(3, res, BIT_WP_IN_SWITCH, IN_SWITCH_STATE_HIGH);
 				(*cc).engineSlowLeft();
-				sleep(1);
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(3, res, BIT_WP_IN_SWITCH, IN_SWITCH_STATE_LOW);
 				(*cc).engineSlowRight();
 			}
-			//TODO implement inductive sensor test B(5) - BIT_SWITCH_OPEN
-			if (!(portB & BIT_WP_OUTLET) && !(go_on)) {
-				cout << go_on << "TEST 3"<< endl;
-				go_on = !go_on;
+
+			if (!(portB & BIT_WP_OUTLET) && !(next_test)) {
+
+				next_test = !next_test;
+				res = (*cc).read(PORT_B);
+				success &= test_print(7, res, BIT_WP_OUTLET, OUTLET_STATE_LOW);
 				(*cc).engineSlowLeft();
-				sleep(1);
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(7, res, BIT_WP_OUTLET, OUTLET_STATE_HIGH);
 				(*cc).engineSlowRight();
-				sleep(1);
+				sleep(time);
+				(*cc).engineStop();
+				sleep(5);
+				res = (*cc).read(PORT_B);
+				success &= test_print(7, res, BIT_WP_OUTLET, OUTLET_STATE_LOW);
+				(*cc).engineContinue();
 				(*cc).engineSlowLeft();
 				section1 = false;
+				cout << "out" << endl;
 			}
 		}
 
 		while(section2) {
-			if (!(portB & BIT_WP_IN_HEIGHT)) {
+			//cout << "section2" << endl;
+			if (!(portB & BIT_WP_IN_HEIGHT) && next_test) {
+				cout << "Section test2" <<  endl;
+				next_test = !next_test;
 				(*cc).closeSwitch();
+				sleep(time);
+				res = (*cc).read(PORT_B);
+				success &= test_print(5, res, BIT_SWITCH_OPEN, SWITCH_CLOSED_STATE);
 				(*cc).engineSlowRight();
 			}
 
-			if (!(portB & BIT_WP_IN_SLIDE)) {
+			if (!(portB & BIT_WP_IN_SLIDE) && !(next_test)) {
+				res = (*cc).read(PORT_B);
+				success &= test_print(6, res, BIT_WP_IN_SLIDE, IN_SLIDE_STATE_LOW);
+				(*cc).engineReset();
 				section2 = false;
-			}
-		}
-		(*cc).engineReset();
-	}
-
-
-		if ((portB & BIT_WP_RUN_IN)) {
-			(*cc).engineSlowLeft();
-			if (!(portB & BIT_WP_RUN_IN)) {
-				go_on = print_Test("B(0)", (*cc).read(PORT_B));
-				(*cc).engineSlowRight();
-			if ((portB & BIT_WP_RUN_IN)) {
-				go_on = print_Test("B(0)", (*cc).read(PORT_B));
-				(*cc).engineSlowLeft();
+				if(success) {
+					cout << "Test successful." << endl;
+					(*cc).shine(GREEN);
+				} else {
+					cout << "Test failure." << endl;
+					(*cc).shine(RED);
+				}
 			}
 		}
 	}
 }
 
-bool Test_Sensor::print_Test(string sen, int res) {
+bool Test_Sensor::test_print(int sen_no, int res, const int bit, const int state) {
 
-	if((res & BIT_WP_RUN_IN) != RUN_IN_STATE ) {
-		cout << "TEST B(0)" << " FAILED: " << (res & BIT_WP_RUN_IN) << endl;
-		return true;
-	} else {
-		cout << "TEST B(0)" << " SUCCESSFUL" << (res & BIT_WP_RUN_IN) << endl;
+	if((res & bit) != state ) {
+		cout << "TEST B(" << sen_no << ")" << " FAILED: " << (res & bit) << "!=" << state << endl;
 		return false;
+	} else {
+		cout << "TEST B(" << sen_no << ")" << " SUCCESSFUL: " << (res & bit)  << endl;
+		return true;
 	}
 	return false;
-
 }

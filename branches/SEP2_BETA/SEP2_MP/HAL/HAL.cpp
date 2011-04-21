@@ -151,6 +151,7 @@ int HAL::write(int dir, int value, bool set){
 	bool reset = false;
 	// if(!isOutput(dir)){ setPortToOutput(dir); reset = true }
 	if((controlBits & val ) != 0){
+		std::cout << "ja irgendwas" << std::endl;
 		setPortToOutput(dir);
 		reset = true;
 	}
@@ -278,7 +279,7 @@ bool HAL::setSwitchDirection(bool dir){
 	}
 }
 
-//TODO Switch close implementation - could be a useful
+
 bool HAL::engineReset(){
 	bool ret = reset(PORT_A,BIT_ENGINE_RIGHT);
 	bool r = reset(PORT_A,BIT_ENGINE_LEFT);
@@ -462,45 +463,29 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
+//TODO implement getHeight
 float HAL::getHeight(){
-	float val = 0;
+	//float val = 0;
 	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
-	int i = in8(HEIGHT_MEASURE);
-	val = convertHight(i);
-	return val;
-}
-/*
- * This method converts the fix point value from the hight measure
- */
-float HAL::convertHight(int input){
-	float output = 0.0;
-	short zweierk = (~input+1);
-	char t = 0;
-	int i = 0;
-	t = (input>>6); //nur die ganzzahl nehmen
-	for(i=0;i<6;i++){//Nachkommaanteil setzen
-		if( ( (((t<0)?zweierk:input) & (1<<i)) >> i ) == 1 ){//wenn Nachkommastelle gesetzt ist
-			switch(i){
-			case 0: output += 0.0625; break;
-			case 1: output += 0.125; break;
-			case 2: output += 0.25; break;
-			case 3: output += 0.5; break;
-			}//switch
-		}//if
-	}//for
-	if( t<0 ){//falls Erg. negativ ist
-		output = (-1)*output;
-		if((output != 0)){//falls Nachkommaanteil
-			t = t + 1;
-		}//if
-		output = output + t;
+	//75kHz wandeln.. zeit nötig
+	while((HEIGHT_MEASURE & (1<<7)) == 0) {
+		/*DAC busy waiting*/
+	}
+	//busy waiting bis bit7 1
+	int voltage = in8(HEIGHT_MEASURE);
+	// 4095 -0 / V10 - V0
+	//plane WP 6,55 / normal WP 8,4 / hole WP 5,84
+	switch(voltage) {
+	case PLANE_WP:
+		break;
+	case NORMAL_WP:
+		break;
+	case HOLE_WP:
+		break;
+	}
 
-	}//if
-	else{//positives Erg.
-		output = output + t;
-	}//else
-	return output;
-}//convertTemp
+	return voltage;
+}
 
 //TODO implement timer - test B(6)
 bool HAL::isSlideFull() {

@@ -29,12 +29,13 @@ Sensor::~Sensor() {
 
 }
 
-//TODO
+//TODO implement MsgReceive/Reply
 void Sensor::execute(void*) {
+	//int rcvid;
 	while (1) {
-		int p = 0;
-		//MsgReceive();
-		interrupt(p);
+		//rcvid = MsgReceive(chid, rmsg, sizeof(rmsg), NULL);
+		//MsgReply(rcvid, state, data, sizeof(data));
+		//interrupt(data.port);
 	}
 }
 
@@ -43,6 +44,7 @@ void Sensor::shutdown() {
 }
 
 void Sensor::interrupt(int port) {
+
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->
@@ -76,7 +78,7 @@ void Sensor::interrupt(int port) {
 		}
 		if (!(portB & BIT_WP_OUTLET)) {
 			(*cc).engineReset();
-			cout << "Sensor: somethings coming out ;)" << endl;
+			cout << "Sensor: something coming out ;)" << endl;
 		}
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:

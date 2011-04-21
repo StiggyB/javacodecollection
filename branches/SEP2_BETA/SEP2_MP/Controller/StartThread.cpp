@@ -37,6 +37,7 @@ void StartThread::execute(void*) {
 	}
 	(*cc).start(NULL);
 	ic.start(NULL);
+	//s.start(NULL);
 
 #ifdef TEST_IRQ
 	Test_IRQ ti;

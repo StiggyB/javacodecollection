@@ -71,6 +71,16 @@ enum Height{
 	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x10)
 };
 
+/*
+ * plane WP 6,55
+ * normal WP 8,4
+ * hole WP 5,84
+ * Write as int value
+ */
+enum WPVoltage{
+	//PLANE_WP = (6.55), NORMAL_WP = (8.4), HOLE_WP = (5.84)
+};
+
 /**
  *  interrupts
  */
@@ -194,12 +204,6 @@ public:
 	virtual bool isSlideFull();
 
 private:
-	/**
-	 * Converts the temperature from a fix point integer to float.
-	 * \param input value of type integer
-	 * \return a float - the value
-	 */
-	float convertHight(int input);
 
 	/**
 	 * same as isOutput(int dir);

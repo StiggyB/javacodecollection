@@ -29,7 +29,7 @@ public:
 	virtual void shutdown();
 	void test_Software_Only();
 	void test_Operator_Included();
-	bool print_Test(string sen, int res);
+	bool test_print(int sen_no, int res, int port, int state);
 
 
 private:

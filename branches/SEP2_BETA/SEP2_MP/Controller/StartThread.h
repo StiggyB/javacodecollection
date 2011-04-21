@@ -23,6 +23,7 @@ protected:
 private:
     CoreController *cc;
     InterruptController ic;
+    Sensor s;
 
 #ifdef TEST_M1
     Test_M1 tm;

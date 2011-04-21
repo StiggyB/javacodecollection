@@ -14,8 +14,8 @@
  * Inherits: HAWThread.h
  */
 
-//TODO implement handlePulseMasseges with correct scenarios
-
+//TODO implement handlePulseMasseges
+//TODO implement struct Massege & built_massege
 
 #include "InterruptController.h"
 
@@ -106,15 +106,26 @@ void InterruptController::handlePulseMessages() {
 	}
 	/*CoreController *cc = CoreController::getInstance();*/
 	int rcvid;
-	(*h).addLight(GREEN);
 	while (1) {
-		cout << "InterruptController: waiting for Pulse" << endl;
+		//cout << "InterruptController: waiting for Pulse" << endl;
 		rcvid = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
-		cout << "InterruptController: Pulse received" << endl;
+		//cout << "InterruptController: Pulse received" << endl;
 		if (rcvid == -1) {
 			perror("InterruptController: failed to get MsgPulse\n");
 			shutdown();
 		}
+		/*
+		switch(pulse.code) {
+		case INTERRUPT_D_PORT_B:
+			//MsgSend(coid, data, sizeof(data), rmsg, sizeof(rmsg));
+			break;
+		case INTERRUPT_D_PORT_C_HIGH:
+			//MsgSend(coid, data, sizeof(data), rmsg, sizeof(rmsg));
+			break;
+		}
+*/
+		//Old
+		/*
 		switch(pulse.code){
 		case INTERRUPT_D_PORT_B:
 			cout << "IC: pB: " << portB << endl;
@@ -168,10 +179,11 @@ void InterruptController::handlePulseMessages() {
 			}
 			break;
 		}
+		*/
 		// TODO send a message to Sensor
 		//int j = pulse.code;
 		//sens.interrupt(j);
-		cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
+		//cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
 	}
 }
 
