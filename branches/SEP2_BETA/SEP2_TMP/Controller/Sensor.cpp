@@ -16,6 +16,8 @@
  */
 #include "Sensor.h"
 
+//TODO Who is the server between ic and sensor? -- should be the processing part the sensor?
+
 Sensor::Sensor() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;

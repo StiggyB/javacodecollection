@@ -72,7 +72,7 @@ HAL* HAL::getInstance(){
 	if( !instance){
 		mutEx.lock();
 		if(!instance){
-			instance = new HAL;
+			instance = new HAL; //--?
 		}
 		mutEx.unlock();
 	}

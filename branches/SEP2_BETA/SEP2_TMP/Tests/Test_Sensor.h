@@ -58,8 +58,8 @@ public:
 	bool test_sen_b7();
 	void test_Operator_Included();
 	void test_Software_Only();
-	bool is_correct_state(int sen_no, int res, int port, int state);
-	void test_print(int sen_no, int res, const int bit);
+	bool assert_equals(int sen_no, int actual, int state);
+	void test_print(int sen_no, int actual, int state);
 
 
 private:
