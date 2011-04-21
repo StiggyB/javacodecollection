@@ -8,6 +8,7 @@
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_IRQ.h"
 #include "../Tests/Test_Serial.h"
+#include "Sensor.h"
 #include "CoreController.h"
 #include "InterruptController.h"
 

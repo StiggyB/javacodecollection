@@ -17,8 +17,7 @@
 //TODO implement handlePulseMasseges
 
 #include "InterruptController.h"
-
-struct sigevent event;
+Message msg;
 Mutex InterruptController::singleton;
 
 InterruptController* InterruptController::pInstance = NULL;
@@ -92,7 +91,7 @@ void InterruptController::connectToHAL() {
 	if (coid == -1) {
 		perror("InterruptController: failed to attach Channel for Interrupt\n");
 	}
-	SIGEV_PULSE_INIT(&event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
+	SIGEV_PULSE_INIT(&msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		shutdown();
@@ -176,7 +175,7 @@ void InterruptController::handlePulseMessages() {
 		cout << "InterruptController: Pulse received" << endl;
 		if (rcvid == 0) {
 			//pulse inc
-			cout << "PulseCode: " << (*r_msg).Msg.puls.code << endl;
+			cout << "PulseCode: " << (*r_msg).event.sigevent << endl;
 			if ((*r_msg).Msg.puls.code == INTERRUPT_D_PORT_C) {
 				id = getChannelIdForObject(SENSOR);
 				coid = getConnectIdForObject(SENSOR);

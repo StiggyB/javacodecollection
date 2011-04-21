@@ -9,7 +9,7 @@
 #include "Communication.h"
 #include "CoreController.h"
 
-extern struct sigevent event;
+extern Message msg;
 //extern const struct sigevent *eventptr;
 
 /**

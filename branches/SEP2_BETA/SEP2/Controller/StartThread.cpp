@@ -42,6 +42,8 @@ void StartThread::execute(void*) {
 	(*ic).start(NULL);
 	//cout << "" << ic << endl;
 	cout << "IC started" <<endl;
+	Sensor s;
+	s.start(NULL);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);

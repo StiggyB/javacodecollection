@@ -20,10 +20,10 @@ typedef struct message{
 	int chid;
 	int coid;
 	MsgType ca;
+	struct sigevent event;
 	union msg{
 		int messwert;
 		CommunicatorType comtype;
-		struct _pulse puls;
 		//more can be added here!
 
 	} Msg;
