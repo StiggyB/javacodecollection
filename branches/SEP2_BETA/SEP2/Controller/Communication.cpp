@@ -195,28 +195,34 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 	if (coid == -1) {
 		perror("Communication: failed to attach Channel for Interrupt\n");
 	}
+	std::cout << "Com_attachConnection done" << std::endl;
 	Message * msg_s = (Message *) malloc(sizeof(Message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
 		return false;
 	}
+	std::cout << "Com_attachConnection got space 4 Message" << std::endl;
 	if (-1 == buildMessage(msg_s,id, coid, startConnection, c)) {
 		perror("Communication: failed to create Message!");
 		return false;
 	}
+	std::cout << "Com_attachConnection build Message done" << std::endl;
 	Message * r_msg = (Message*) malloc(sizeof(Message));
 	if (r_msg == NULL) {
 		perror("Communication: failed to get Space for Receive Message.");
 		return false;
 	}
+	std::cout << "Com_attachConnection got Space 4 Receive Message" << std::endl;
 	if (-1 == MsgSend(coid, msg_s, sizeof(Message), r_msg, sizeof(Message))) {
-		perror("Communication: failed to send Message to server,");
+		perror("Communication: failed to send Message to server.");
 	}
+	std::cout << "Com_attachConnection got answer!" << std::endl;
 	if (r_msg->ca != OK) {
 		std::cout << "ReturnMessageType: " << r_msg->ca << std::endl;
 		perror("Communication: no OK from Receiver! ");
 		return false;
 	}
+	std::cout << "Com_attachConnection Msg was OK" << std::endl;
 	std::list<Communicator>::iterator it = getCommunicatorForObject(id,0);
 	if(it == NULL){
 		return false;
@@ -226,13 +232,13 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 	}
 }
 
-bool Communication::detachConnection(int id,int coid){
+bool Communication::detachConnection(int id,int coid,CommunicatorType c){
 	Message * msg_s = (Message *) malloc(sizeof(Message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
 		return false;
 	}
-	if (-1 == buildMessage(msg_s, id, coid, closeConnection, 0)) {
+	if (-1 == buildMessage(msg_s, id, coid, closeConnection, c)) {
 		perror("Communication: failed to create Message!");
 		return false;
 	}
@@ -263,6 +269,7 @@ bool Communication::destroyChannel(int id){
 	return true;
 }
 
+/*
 int Communication::buildMessage(void *s, int chid, int coid, MsgType activity,int mw){
 	Message *m =  (Message*) s;
 	(*m).chid = chid;
@@ -270,7 +277,7 @@ int Communication::buildMessage(void *s, int chid, int coid, MsgType activity,in
 	(*m).ca =  activity;
 	(*m).Msg.messwert =  mw;
 	return 1;
-}
+}*/
 
 int Communication::buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c){
 	Message *m =  (Message*) s;

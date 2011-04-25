@@ -49,7 +49,7 @@ void Sensor::execute(void*) {
 		cout << "Sensor: request successful."<< endl;
 	}//*/
 	Message * m = (Message *) malloc(sizeof(Message));
-	message * r_msg = (message*) malloc(sizeof(message));
+	Message * r_msg = (Message*) malloc(sizeof(Message));
 	if (r_msg == NULL) {
 		perror("Sensor: failed to get Space for Receive Message.");
 	}
@@ -61,20 +61,22 @@ void Sensor::execute(void*) {
 	if (!attachConnection(id, INTERRUPTCONTROLLER)) {
 		perror("Sensor: failed to AttachConnection!");
 	}
+	cout << "Sensor: attached Connection" << endl;
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	if (-1 == buildMessage(m, id, coid, addToServer, SENSOR)) {
 		perror("Sensor: failed to create Message!");
 	}
+	cout << "Sensor: message Build" << endl;
 	if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
-		perror("Communication: failed to send message to server!");
+		perror("Sensor: failed to send message to IC!");
 	}//*/
-
+	cout << "Sensor: message Send successful!" << endl;
 	if (-1 == (id = getChannelIdForObject(INTERRUPTCONTROLLER))) {
 		perror("Sensor: failed to get ChannelId!");
 	}
-
-
+	cout << "Sensor: Channel id of IC: " << id << endl;
 	while (1) {
+		cout << "Sensor: waiting for Interrupt..." << endl;
 		rcvid = MsgReceive(chid,r_msg, sizeof(r_msg), NULL);
 		cout << "Sensor: received Message " << endl;
 		if((*r_msg).ca  == react){
@@ -85,7 +87,7 @@ void Sensor::execute(void*) {
 		}
 		interrupt(p);
 	}
-	if (!detachConnection(id,coid)) {
+	if (!detachConnection(id,coid,SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
 	}
 	if (!deregisterChannel(SENSOR)) {

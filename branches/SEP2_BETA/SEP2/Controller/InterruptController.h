@@ -39,7 +39,7 @@ private:
 	/**
 	 * ID's for Interrupt, Channel and Connection.
 	 */
-	int interruptId;//, chid, coid;
+	int interruptId,interruptChannelId,interruptCoid;
 	/**
 	 * Pulse which will be send between HAL and InterruptController.
 	 */
@@ -53,14 +53,13 @@ private:
 		 */
 	void activateInterrupts();
 	/**
-	 * Connects the InterruptController to the HAL on specified ports.
-	 * \param port an integer, the port which should be connected to the ISR.
+	 * Connects the InterruptController to the HAL and the ISR.
 	 */
 	void connectToHAL();
 	/**
-	 * Gets the Sensor, to send them the interrupts.
+	 * Disconnects the InterruptController from the HAL and the ISR.
 	 */
-	void getSensor();
+	void disconnectFromHAL();
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

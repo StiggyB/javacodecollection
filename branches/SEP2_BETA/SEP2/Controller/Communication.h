@@ -62,8 +62,8 @@ public:
 	bool destroyChannel(int id);
 	bool deregisterChannel(CommunicatorType c);
 	bool attachConnection(int id, CommunicatorType c);
-	bool detachConnection(int id,int coid);
-	int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
+	bool detachConnection(int id,int coid,CommunicatorType c);
+	//int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c);
 	void printList();
 	/**
