@@ -8,22 +8,22 @@
 #include "HAL.h"
 
 enum CommunicatorType{
-	INTERRUPTCONTROLLER, SENSOR, LIGHTS, ANLAGENSTEUERUNG,CORECONTROLLER
+	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),CORECONTROLLER=(5)
 };
 
 enum MsgType{
-	addToServer,removeFromServer,closeConnection,startConnection,
-	getIDforCom, react,reactC, information, OK, notAvailable, sendID, error
+	addToServer=(4),removeFromServer=(5),closeConnection=(6),startConnection=(7),
+	getIDforCom=(8), react=(9),reactC=(0xa), information=(0xb), OK = (1), notAvailable = (-2), sendID =(3), error = (-1)
 };
 
 typedef struct message{
 	int chid;
 	int coid;
 	MsgType ca;
-	struct sigevent event;
 	union msg{
 		int messwert;
 		CommunicatorType comtype;
+		struct sigevent event;
 		//more can be added here!
 
 	} Msg;
@@ -58,14 +58,14 @@ public:
 	bool addCommunicator(int ch, int cod, CommunicatorType ct);
 	bool removeCommunicator(int ch, int cod,  CommunicatorType ct);
 	bool setUpChannel();
-	bool registerChannel();
+	bool registerChannel(CommunicatorType c);
 	bool destroyChannel(int id);
-	bool deregisterChannel();
+	bool deregisterChannel(CommunicatorType c);
 	bool attachConnection(int id, CommunicatorType c);
 	bool detachConnection(int id,int coid);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,int mw);
 	int buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c);
-	int buildMessage(void *s, int chid, int coid, MsgType activity,struct _pulse p);
+	void printList();
 	/**
 	 * CoreController ChannelID
 	 */

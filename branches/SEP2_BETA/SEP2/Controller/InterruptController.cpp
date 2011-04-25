@@ -91,14 +91,14 @@ void InterruptController::connectToHAL() {
 	if (coid == -1) {
 		perror("InterruptController: failed to attach Channel for Interrupt\n");
 	}
-	SIGEV_PULSE_INIT(&msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
+	SIGEV_PULSE_INIT(&msg.Msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		shutdown();
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
 	cout << INTERRUPT_VECTOR_NUMMER_D << endl;
-	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &event, sizeof(event), 0))
+	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &msg.Msg.event, sizeof(msg.Msg.event), 0))
 			== -1) {
 		cout << "IC: error attaching!" << endl;
 		perror("InterruptController: failed to create ISR coupling\n");
@@ -118,28 +118,26 @@ void InterruptController::execute(void*) {
 	if(!setUpChannel()){
 		cout << "IC: channel setup failed" << endl;
 	}else{
-		cout << "IC: channel setup successful "<<chid << endl;
+		cout << "IC: channel setup successful "<< chid << endl;
  	}
-	if(!registerChannel()){
+	if(!registerChannel(INTERRUPTCONTROLLER)){
 		cout << "IC: register channel failed" << endl;
 	}else{
 		cout << "IC: register channel successful" << endl;
 	}//*/
 
 
+	//TEST Only
 	/*if(!requestChannelIDForObject(INTERRUPTCONTROLLER)){
 		cout << "IC: request failed" << endl;
 	}else{
 		cout << "IC: request successful" << endl;
 	}//*/
-	//TODO -> attach Connection here
-	//attachConnection(int id, CommunicatorType c);
-	//detachConnection(int id);
 
 	connectToHAL();
 	handlePulseMessages();
 
-	if (!registerChannel()) {
+	if (!deregisterChannel(INTERRUPTCONTROLLER)) {
 		cout << "IC: register channel failed" << endl;
 	} else {
 		cout << "IC: register channel successful" << endl;
@@ -175,8 +173,8 @@ void InterruptController::handlePulseMessages() {
 		cout << "InterruptController: Pulse received" << endl;
 		if (rcvid == 0) {
 			//pulse inc
-			cout << "PulseCode: " << (*r_msg).event.sigevent << endl;
-			if ((*r_msg).Msg.puls.code == INTERRUPT_D_PORT_C) {
+			cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un2.__st.__sigev_code << endl;
+			if ((*r_msg).Msg.event.__sigev_un2.__st.__sigev_code == INTERRUPT_D_PORT_C) {
 				id = getChannelIdForObject(SENSOR);
 				coid = getConnectIdForObject(SENSOR);
 				buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);

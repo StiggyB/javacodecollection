@@ -39,7 +39,7 @@ private:
 	/**
 	 * ID's for Interrupt, Channel and Connection.
 	 */
-	int interruptId, chid, coid;
+	int interruptId;//, chid, coid;
 	/**
 	 * Pulse which will be send between HAL and InterruptController.
 	 */

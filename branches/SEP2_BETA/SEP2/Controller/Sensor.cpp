@@ -33,20 +33,20 @@ Sensor::~Sensor() {
 void Sensor::execute(void*) {
 	int p = 0,id=0,coid=0,rcvid  = 0;
 	if (!setUpChannel()) {
-		cout << "Sensor: channel setup failed" << endl;
+		cout << "Sensor: channel setup failed!" << endl;
 	} else {
-		cout << "Sensor: channel setup successful" << endl;
+		cout << "Sensor: channel setup successful! chid: " << chid  << endl;
 	}
-	if (!registerChannel()) {
-		cout << "Sensor: register channel failed" << endl;
+	if (!registerChannel(SENSOR)) {
+		cout << "Sensor: register channel failed!" << endl;
 	} else {
-		cout << "Sensor: register channel successful" << endl;
+		cout << "Sensor: register channel successful!" << endl;
 	}//*/
 
 	if (!requestChannelIDForObject(INTERRUPTCONTROLLER)) {
 		cout << "Sensor: request failed" << endl;
 	} else {
-		cout << "Sensor: request successful" << chid << endl;
+		cout << "Sensor: request successful."<< endl;
 	}//*/
 	Message * m = (Message *) malloc(sizeof(Message));
 	message * r_msg = (message*) malloc(sizeof(message));
@@ -57,8 +57,9 @@ void Sensor::execute(void*) {
 		perror("Sensor: failed to get Space for Message.");
 	}
 	id = getChannelIdForObject(INTERRUPTCONTROLLER);
+	cout << "Sensor: channel id for object: " << id << endl;
 	if (!attachConnection(id, INTERRUPTCONTROLLER)) {
-		perror("Sensor: failed to get ChannelId!");
+		perror("Sensor: failed to AttachConnection!");
 	}
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	if (-1 == buildMessage(m, id, coid, addToServer, SENSOR)) {
@@ -87,10 +88,10 @@ void Sensor::execute(void*) {
 	if (!detachConnection(id,coid)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
 	}
-	if (!registerChannel()) {
-		cout << "Sensor: register channel failed" << endl;
+	if (!deregisterChannel(SENSOR)) {
+		cout << "Sensor: register channel failed!" << endl;
 	} else {
-		cout << "Sensor: register channel successful" << endl;
+		cout << "Sensor: register channel successful!" << endl;
 	}//*/
 	destroyChannel(chid);
 }

@@ -82,23 +82,31 @@ void CoreController::execute(void*) {
 	Communication::serverChannelId = chid;
 	while(1){
 		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
-		cout << "message received"<<endl;
+		cout << "CC: message received. CA: "<<(*m).ca<<endl;
 		switch((*m).ca){
 		case addToServer:
+			cout << "CC: addToServer ->type: "<< (*m).Msg.comtype <<endl;
 			addCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER);
 			break;
 		case removeFromServer:
+			cout << "CC: removeFromServer"<<endl;
 			removeCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER); break;
 		case getIDforCom:
+			cout << "CC: getIDforCom("<<(*m).Msg.comtype<<")"<<endl;
 			id = getChannelIdForObject((*m).Msg.comtype);
+			cout << "CC: ID: " << id <<endl;
 			if(id == -1){
-				buildMessage(m,id,(*m).coid,error,CORECONTROLLER); break;
+				cout << "CC: BuildMessage -> error"<<endl;
+				buildMessage(m,id,(*m).coid,error,CORECONTROLLER);
 			}else{
-				buildMessage(m,id,(*m).coid,OK,CORECONTROLLER); break;
-			}
-		default: buildMessage(m,(*m).chid,(*m).coid,error,CORECONTROLLER); break;
+				cout << "CC: BuildMessage -> OK"<<endl;
+				buildMessage(m,id,(*m).coid,OK,CORECONTROLLER);
+			}break;
+		default:
+			cout << "CC: defaultError"<<endl;
+			buildMessage(m,(*m).chid,(*m).coid,error,CORECONTROLLER); break;
 		}
 		MsgReply(rcvid,0,m,sizeof(m));
 	}
