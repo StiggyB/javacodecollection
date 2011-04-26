@@ -95,21 +95,22 @@ void InterruptController::disconnectFromHAL(){
 }
 
 void InterruptController::connectToHAL() {
-	if ((interruptChannelId = ChannelCreate(0)) == -1) {
+	/*if ((interruptChannelId = ChannelCreate(0)) == -1) {
 		perror("InterruptController: failed to create Channel for Interrupt\n");
 		shutdown();
-	}
-	interruptCoid = ConnectAttach(0, 0, interruptChannelId, _NTO_SIDE_CHANNEL, 0);
-	if (interruptCoid == -1) {
+	}*/
+	coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
+	if (coid == -1) {
 		perror("InterruptController: failed to attach Channel for Interrupt\n");
 	}
+	cout << "InterruptController: COID for all is =" << coid << endl;
 	SIGEV_PULSE_INIT(&msg.Msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		shutdown();
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
-	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &msg.Msg.event, sizeof(msg.Msg.event), 0))
+	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &(msg.Msg.event), sizeof((msg.Msg.event)), 0))
 			== -1) {
 		cout << "IC: error attaching!" << endl;
 		perror("InterruptController: failed to create ISR coupling\n");
@@ -177,19 +178,19 @@ void InterruptController::handlePulseMessages() {
 	while (1) {
 		cout << "InterruptController: waiting for Pulse on Channel " << chid <<endl;
 		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
-		cout << "InterruptController: Pulse received" << endl;
+		cout << "InterruptController: Message Received" << endl;
 		if (rcvid == 0) {
 			//pulse inc
-			cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un2.__st.__sigev_code << endl;
-			if ((*r_msg).Msg.event.__sigev_un2.__st.__sigev_code == INTERRUPT_D_PORT_C) {
-				id = getChannelIdForObject(SENSOR);
-				coid = getConnectIdForObject(SENSOR);
+			cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un1.__sigev_signo << endl;
+			id = getChannelIdForObject(SENSOR);
+			coid = getConnectIdForObject(SENSOR);
+			cout << "IC: sending to Sensor: ID=" << id<<" COID="<<coid<<endl;
+			if ((*r_msg).Msg.event.__sigev_un1.__sigev_signo == INTERRUPT_D_PORT_C) {
 				buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
 			} else { //pulse.code == port B
-				id = getChannelIdForObject(SENSOR);
-				coid = getConnectIdForObject(SENSOR);
 				buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
 			}
+			cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
 			if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 				perror("InterruptController: failed to send message to server!");
 			}//*/
@@ -200,6 +201,7 @@ void InterruptController::handlePulseMessages() {
 		}else{
 			//add new Communicator
 			if ((*r_msg).ca == startConnection) {
+				cout << "IC: adding Sensor: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
 				if (addCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
 					//cout << "IC: adding successful."<<endl;
 					buildMessage(m, (*r_msg).chid, (*r_msg).coid, OK,INTERRUPTCONTROLLER);
@@ -211,6 +213,11 @@ void InterruptController::handlePulseMessages() {
 				} else {
 					perror("IC: failed to addCommunicator");
 				}
+				if ((coid = ConnectAttach(0, 0, (*r_msg).chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+					perror("InterruptController: failed to attach Channel to other Instance\n");
+				}
+				(*getCommunicatorForObject((*r_msg).chid,(*r_msg).coid)).setConnectID(coid);
+				cout << "IC: connectAttached to other channel on coid: "<<coid <<endl;
 			}else if((*r_msg).ca ==  closeConnection){
 				if(removeCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)){
 					perror("IC: remove Communicator.");

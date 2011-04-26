@@ -63,11 +63,11 @@ void Sensor::execute(void*) {
 	}
 	cout << "Sensor: attached Connection" << endl;
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
-	if (-1 == buildMessage(m, id, coid, addToServer, SENSOR)) {
+	if (-1 == buildMessage(m, chid, coid, startConnection, SENSOR)) {
 		perror("Sensor: failed to create Message!");
 	}
 	cout << "Sensor: message Build" << endl;
-	if (-1 == MsgSend(coid, m, sizeof(m), r_msg, sizeof(r_msg))) {
+	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Sensor: failed to send message to IC!");
 	}//*/
 	cout << "Sensor: message Send successful!" << endl;
@@ -76,14 +76,22 @@ void Sensor::execute(void*) {
 	}
 	cout << "Sensor: Channel id of IC: " << id << endl;
 	while (1) {
-		cout << "Sensor: waiting for Interrupt..." << endl;
-		rcvid = MsgReceive(chid,r_msg, sizeof(r_msg), NULL);
+		cout << "Sensor: waiting for Interrupt...on chid: "<< chid << " coid: " << coid << endl;
+		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
 		cout << "Sensor: received Message " << endl;
-		if((*r_msg).ca  == react){
+		cout << "Sensor: Message from IC: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
+		coid = getConnectIdForObject(INTERRUPTCONTROLLER);
+		buildMessage(m, (*r_msg).chid, coid, OK, SENSOR);
+		//cout << "IC: build message complete" << endl;
+		if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
+			perror("Sensor: failed to send reply message to IC!");
+		}//*/
+		cout << "Sensor: react="<<(*r_msg).ca << endl;
+		if ((*r_msg).ca == react) {
 			p = INTERRUPT_D_PORT_B;
-		}else{
+		} else {
 			cout << "Sensor: do something else..." << endl;
-			p = INTERRUPT_D_PORT_C;
+			p = INTERRUPT_D_PORT_C_HIGH;
 		}
 		interrupt(p);
 	}
@@ -133,7 +141,7 @@ void Sensor::interrupt(int port) {
 		}
 		if (!(portB & BIT_SLIDE_FULL)) {
 			(*cc).stopMachine();
-			(*cc).addLight(RED);
+			(*cc).shine(RED);
 		}
 		if (!(portB & BIT_WP_OUTLET)) {
 			(*cc).engineReset();
