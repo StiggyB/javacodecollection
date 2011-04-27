@@ -31,78 +31,100 @@ Sensor::~Sensor() {
 
 //TODO
 void Sensor::execute(void*) {
+	settingUpAndWaitingSensor();
+}
+
+void Sensor::settingUpAndWaitingSensor(){
 	int p = 0,id=0,coid=0,rcvid  = 0;
 	if (!setUpChannel()) {
-		cout << "Sensor: channel setup failed!" << endl;
-	} else {
-		cout << "Sensor: channel setup successful! chid: " << chid  << endl;
+		perror("Sensor: channel setup failed!");
+		return;
 	}
 	if (!registerChannel(SENSOR)) {
-		cout << "Sensor: register channel failed!" << endl;
-	} else {
-		cout << "Sensor: register channel successful!" << endl;
-	}//*/
-
+		perror("Sensor: register channel failed!");
+		return;
+	}
 	if (!requestChannelIDForObject(INTERRUPTCONTROLLER)) {
-		cout << "Sensor: request failed" << endl;
-	} else {
-		cout << "Sensor: request successful."<< endl;
-	}//*/
+		perror("Sensor: request failed");
+		unregisterChannel(SENSOR);
+		return;
+	}
 	Message * m = (Message *) malloc(sizeof(Message));
 	Message * r_msg = (Message*) malloc(sizeof(Message));
 	if (r_msg == NULL) {
 		perror("Sensor: failed to get Space for Receive Message.");
+		unregisterChannel(SENSOR);
+		cleanUp(0, NULL,NULL);
+		destroyChannel(chid);
+		return;
 	}
 	if (m == NULL) {
 		perror("Sensor: failed to get Space for Message.");
+		unregisterChannel(SENSOR);
+		cleanUp(0,NULL,r_msg);
+		destroyChannel(chid);
+		return;
 	}
 	id = getChannelIdForObject(INTERRUPTCONTROLLER);
-	cout << "Sensor: channel id for object: " << id << endl;
 	if (!attachConnection(id, INTERRUPTCONTROLLER)) {
 		perror("Sensor: failed to AttachConnection!");
+		unregisterChannel(SENSOR);
+		cleanUp(0,m,r_msg);
+		destroyChannel(chid);
+		return;
 	}
-	cout << "Sensor: attached Connection" << endl;
+	//cout << "Sensor: attached Connection" << endl;
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
-	if (-1 == buildMessage(m, chid, coid, startConnection, SENSOR)) {
-		perror("Sensor: failed to create Message!");
-	}
-	cout << "Sensor: message Build" << endl;
+	buildMessage(m, chid, coid, startConnection, SENSOR);
+	//cout << "Sensor: message Build" << endl;
 	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Sensor: failed to send message to IC!");
+		unregisterChannel(SENSOR);
+		cleanUp(coid,m,r_msg);
+		destroyChannel(chid);
+		return;
 	}//*/
-	cout << "Sensor: message Send successful!" << endl;
+	//cout << "Sensor: message Send successful!" << endl;
 	if (-1 == (id = getChannelIdForObject(INTERRUPTCONTROLLER))) {
 		perror("Sensor: failed to get ChannelId!");
+		unregisterChannel(SENSOR);
+		cleanUp(coid,m,r_msg);
+		destroyChannel(chid);
+		return;
 	}
-	cout << "Sensor: Channel id of IC: " << id << endl;
+	//cout << "Sensor: Channel id of IC: " << id << endl;
 	while (1) {
-		cout << "Sensor: waiting for Interrupt...on chid: "<< chid << " coid: " << coid << endl;
+		//cout << "Sensor: waiting for Interrupt...on chid: "<< chid << " coid: " << coid << endl;
 		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
-		cout << "Sensor: received Message " << endl;
-		cout << "Sensor: Message from IC: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
+		//cout << "Sensor: received Message " << endl;
+		//cout << "Sensor: Message from IC: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
 		coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 		buildMessage(m, (*r_msg).chid, coid, OK, SENSOR);
 		//cout << "IC: build message complete" << endl;
 		if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 			perror("Sensor: failed to send reply message to IC!");
 		}//*/
-		cout << "Sensor: react="<<(*r_msg).ca << endl;
+		//cout << "Sensor: react="<<(*r_msg).ca << endl;
 		if ((*r_msg).ca == react) {
 			p = INTERRUPT_D_PORT_B;
 		} else {
-			cout << "Sensor: do something else..." << endl;
+			//cout << "Sensor: do something else..." << endl;
 			p = INTERRUPT_D_PORT_C_HIGH;
 		}
 		interrupt(p);
 	}
 	if (!detachConnection(id,coid,SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
+		unregisterChannel(SENSOR);
+		cleanUp(coid,m,r_msg);
+		destroyChannel(chid);
+		return;
 	}
-	if (!deregisterChannel(SENSOR)) {
-		cout << "Sensor: register channel failed!" << endl;
-	} else {
-		cout << "Sensor: register channel successful!" << endl;
-	}//*/
+	if (!unregisterChannel(SENSOR)) {
+		perror("Sensor: register channel failed!");
+		cleanUp(coid,m,r_msg);
+	}
+	cleanUp(0,m,r_msg);
 	destroyChannel(chid);
 }
 
@@ -111,7 +133,6 @@ void Sensor::shutdown() {
 }
 
 void Sensor::interrupt(int port) {
-	cout << "Sensor: proceeding..." << endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->

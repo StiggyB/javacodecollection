@@ -125,7 +125,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00116"></a>00116 <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> <a class="code" href="_h_a_l_8cpp.html#a2f27c0142fb575176be926cfb74d250f">portIRQ</a>;
 <a name="l00120"></a>00120 <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> <a class="code" href="_h_a_l_8cpp.html#a105f0b87587741c2da630f3f27d33f55">controlBits</a>;
 <a name="l00121"></a>00121 
-<a name="l00141"></a><a class="code" href="class_h_a_l.html">00141</a> <span class="keyword">class </span><a class="code" href="class_h_a_l.html">HAL</a>: <span class="keyword">public</span> <a class="code" href="class_i_h_a_l.html">IHAL</a>, <a class="code" href="class_communication.html">Communication</a> {
+<a name="l00141"></a><a class="code" href="class_h_a_l.html">00141</a> <span class="keyword">class </span><a class="code" href="class_h_a_l.html">HAL</a>: <span class="keyword">public</span> <a class="code" href="class_i_h_a_l.html">IHAL</a> {
 <a name="l00142"></a>00142 <span class="keyword">public</span>:
 <a name="l00147"></a>00147         <span class="keyword">static</span> <a class="code" href="class_h_a_l.html">HAL</a>* <a class="code" href="class_h_a_l.html#a78f22148fbdcbdb8d7a1db6cf772ec7a">getInstance</a>();
 <a name="l00151"></a>00151         <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_h_a_l.html#ad4ab8cfdfc8059473f87b5d4d3b3dbbf">deleteInstance</a>();
@@ -143,8 +143,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00178"></a>00178         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#acd610121e48feda69ae488205b50c0de">openSwitch</a>();
 <a name="l00179"></a>00179         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#a0c2f54c42f1b7b8c660eaad80405580c">closeSwitch</a>();
 <a name="l00180"></a>00180         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#af270c59b0735235be831992798913d6a">setSwitchDirection</a>(<span class="keywordtype">bool</span> dir);
-<a name="l00181"></a>00181         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#ab0782c4b60c8dc2fbf9efa3ba12dc4b3">engineReset</a>();
-<a name="l00182"></a>00182         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#a0c1ef0458a5ec899d3d78a8af3dfcab7">engineStop</a>();
+<a name="l00181"></a>00181         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#a0c1ef0458a5ec899d3d78a8af3dfcab7">engineStop</a>();
+<a name="l00182"></a>00182         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#ab0782c4b60c8dc2fbf9efa3ba12dc4b3">engineReset</a>();
 <a name="l00183"></a>00183         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#ab8bd1ec0ba40cacbf475f9f419214786">engineContinue</a>();
 <a name="l00184"></a>00184         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#ade1532fc15e1fce7daeb77d3e3bb25e1">engineRight</a>();
 <a name="l00185"></a>00185         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#a81cb35674a0f636bfa4d39da97c6dff9">engineLeft</a>();
@@ -164,7 +164,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00199"></a>00199         <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="class_h_a_l.html#a34048e9f00a5044d89771a60bd23ce29">getHeight</a>();
 <a name="l00200"></a>00200 
 <a name="l00201"></a>00201 <span class="keyword">private</span>:
-<a name="l00207"></a>00207         <span class="keywordtype">float</span> <a class="code" href="class_h_a_l.html#a4547f5eefde3a015205968ae9be3fd48">convertHight</a>(<span class="keywordtype">int</span> input);
+<a name="l00207"></a>00207         <span class="keywordtype">float</span> <a class="code" href="class_h_a_l.html#ac73412bd68da77f73e1287eb5e169022">convertHeight</a>(<span class="keywordtype">int</span> input);
 <a name="l00208"></a>00208 
 <a name="l00213"></a>00213         <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#aa6f9d3440bc234fcea338e156b800855">isOutput2</a>(<span class="keywordtype">int</span> dir);
 <a name="l00218"></a>00218         <span class="keywordtype">bool</span> <a class="code" href="class_h_a_l.html#ace7a330bcb760b9bc175c114272945c3">isInput2</a>(<span class="keywordtype">int</span> dir);
@@ -194,7 +194,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -203,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:17 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

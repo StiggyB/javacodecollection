@@ -10,7 +10,6 @@
 #include "CoreController.h"
 
 extern Message msg;
-//extern const struct sigevent *eventptr;
 
 /**
  * Interrupt Controller
@@ -30,7 +29,14 @@ extern Message msg;
 
 class InterruptController : public thread::HAWThread, public Communication{//, public Singleton {
 public:
+	/**
+	 * deletes the singleton Instance
+	 */
 	static void deleteInstance();
+	/**
+	 * Gets an instance of the Interrupt Controller
+	 * \return reference to the Interrupt Controller singleton instance
+	 */
 	static InterruptController* getInstance();
 
 	//InterruptController();
@@ -70,17 +76,20 @@ private:
 	InterruptController(const InterruptController&);
 	InterruptController& operator=(const InterruptController&);
 	/**
-	 * Pointer for singleton CoreController
+	 * Pointer for singleton InterruptController
 	 */
 	static InterruptController* pInstance;
 	/**
-	 * Pointer for singleton CoreController Instance
+	 * Pointer for singleton Mutex to ensure threadsafety InterruptController Instance
 	 */
 	static Mutex singleton;
 	/**
 	 * Direct connection to HAL.
 	 */
 	HAL *h;
+	/**
+	 * Pointer to the CoreController singleton
+	 */
 	CoreController *cc;
 };
 

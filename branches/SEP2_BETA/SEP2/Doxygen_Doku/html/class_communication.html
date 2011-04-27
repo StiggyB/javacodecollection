@@ -60,7 +60,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Communication Class Reference</div>  </div>
@@ -74,28 +77,54 @@ Inheritance diagram for Communication:</div>
  <div class="center">
   <img src="class_communication.png" usemap="#Communication_map" alt=""/>
   <map id="Communication_map" name="Communication_map">
-<area href="class_h_a_l.html" alt="HAL" shape="rect" coords="0,56,97,80"/>
-<area href="class_lampen.html" alt="Lampen" shape="rect" coords="107,56,204,80"/>
+<area href="class_core_controller.html" alt="CoreController" shape="rect" coords="0,56,115,80"/>
+<area href="class_interrupt_controller.html" alt="InterruptController" shape="rect" coords="125,56,240,80"/>
+<area href="class_lampen.html" alt="Lampen" shape="rect" coords="250,56,365,80"/>
+<area href="class_sensor.html" alt="Sensor" shape="rect" coords="375,56,490,80"/>
 </map>
  </div></div>
 
 <p><a href="class_communication-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html">Communicator</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#aac8648fd1e70129c8969152d5b92608d">getComObject</a> (<a class="el" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ad02703abb2259e85cd3e5a3e1f971cd0">getChannelIdForObject</a> (<a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a573ed5cd2a09645b3869e530ef43f3c9">getConnectIdForObject</a> (<a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ac39875d45c4eca6cd0de3acc2b68c8f6">requestChannelIDForObject</a> (<a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ad306c33c27b41cf28bf30d5176bb6712">addCommunicator</a> (int ch, int cod, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#afe1e84e708135a54c3933eafda3405b0">removeCommunicator</a> (int ch, int cod, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ab8bee166b34ab75a8659a73942fe60dd">setUpChannel</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ad5b33ec110ddebcd06515254b43e262d">registerChannel</a> (<a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#aacadde27914b530cf7fdcd709e7cbd49">destroyChannel</a> (int id)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a3f62397cd668355dca5e4de704df6afb">unregisterChannel</a> (<a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a6cdfcc70a83166c72405d2f2a192abd3">attachConnection</a> (int id, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a78b99433d86597ec15fdd5c9f56a1929">detachConnection</a> (int id, int <a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a16749e337298ff29dcaa68d55840eb94">buildMessage</a> (void *s, int <a class="el" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a>, int <a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>, <a class="el" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> activity, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#aa8a8aefb61b1f43e6f8170335d294200">printList</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a827b31cc1b982509c76fc2dadba669bc">cleanUp</a> (int <a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a1c8713db4b54d93b7dda1bd2f511a64a">cleanUp</a> (int <a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>, <a class="el" href="structmessage.html">Message</a> *m, <a class="el" href="structmessage.html">Message</a> *r)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#aaceffbf90ba93d40e9a8697cfa680bdf">getCommunicatorForObject</a> (int ci, int co)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">serverChannelId</a> = 0</td></tr>
+<tr><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a753bb2ab4c37a22dcd7a6f7138ec9ace">vc</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">lst</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_communication.html">Communication</a></p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
-<p>Capsulates many functions for the direct connection of components via Messages.</p>
-<p>UNDER CONSTRUCTION!!! </p>
+<p>Capsulates many functions for the direct connection of components via Messages. </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a88aa7a2d2ac5202e2b8eef787d1a8689"></a><!-- doxytag: member="Communication::Communication" ref="a88aa7a2d2ac5202e2b8eef787d1a8689" args="()" -->
 <div class="memitem">
@@ -110,10 +139,6 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p><a class="el" href="class_communication.html">Communication</a></p>
-<p>SE2 (+ SY and PL) Project SoSe 2011</p>
-<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
-<p>Capsulates many functions for the direct connection of components via Messages. symbolic: auskunft für die channelid's </p>
 
 </div>
 </div>
@@ -134,24 +159,296 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="aac8648fd1e70129c8969152d5b92608d"></a><!-- doxytag: member="Communication::getComObject" ref="aac8648fd1e70129c8969152d5b92608d" args="(Com c)" -->
+<a class="anchor" id="ad306c33c27b41cf28bf30d5176bb6712"></a><!-- doxytag: member="Communication::addCommunicator" ref="ad306c33c27b41cf28bf30d5176bb6712" args="(int ch, int cod, CommunicatorType ct)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Communication::getComObject </td>
+          <td class="memname">bool Communication::addCommunicator </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_communication_8h.html#aa0294f2b7541099fa3b7ee8e680ea6f8">Com</a>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>ct</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Adds a <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> to the local list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ch</td><td>an integer, specifying the ChannelID. </td></tr>
+    <tr><td class="paramname">cod</td><td>and integer, specifying the ConnectID. </td></tr>
+    <tr><td class="paramname">ct</td><td>the type of the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6cdfcc70a83166c72405d2f2a192abd3"></a><!-- doxytag: member="Communication::attachConnection" ref="a6cdfcc70a83166c72405d2f2a192abd3" args="(int id, CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::attachConnection </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Attaches a connection to a Channel and informs the Target-Communicator. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>an integer specifying the ChannelID </td></tr>
+    <tr><td class="paramname">c</td><td>the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which wants to be attached </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a16749e337298ff29dcaa68d55840eb94"></a><!-- doxytag: member="Communication::buildMessage" ref="a16749e337298ff29dcaa68d55840eb94" args="(void *s, int chid, int coid, MsgType activity, CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Communication::buildMessage </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>chid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>coid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a>&#160;</td>
+          <td class="paramname"><em>activity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Builds a Message. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>an pointer to the Message, which should be build </td></tr>
+    <tr><td class="paramname">chid</td><td>an integer specifying the ChannelID of the sender </td></tr>
+    <tr><td class="paramname">coid</td><td>an integer specifying the ConnectID of the sender </td></tr>
+    <tr><td class="paramname">activity</td><td>is the message type, which tells us what should happen </td></tr>
+    <tr><td class="paramname">c</td><td>the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which sends the message </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1c8713db4b54d93b7dda1bd2f511a64a"></a><!-- doxytag: member="Communication::cleanUp" ref="a1c8713db4b54d93b7dda1bd2f511a64a" args="(int coid, Message *m, Message *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::cleanUp </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>coid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmessage.html">Message</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmessage.html">Message</a> *&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Detaches connection and frees memory </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coid</td><td>an integer, the connectionId which should be cleared </td></tr>
+    <tr><td class="paramname">m</td><td>pointer of type Message, this memory will be freed </td></tr>
+    <tr><td class="paramname">r</td><td>pointer of type Message, this memory will be freed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a827b31cc1b982509c76fc2dadba669bc"></a><!-- doxytag: member="Communication::cleanUp" ref="a827b31cc1b982509c76fc2dadba669bc" args="(int coid)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::cleanUp </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>coid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Detaches connection and frees memory </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coid</td><td>an integer, the connectionId which should be cleared </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aacadde27914b530cf7fdcd709e7cbd49"></a><!-- doxytag: member="Communication::destroyChannel" ref="aacadde27914b530cf7fdcd709e7cbd49" args="(int id)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::destroyChannel </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Destroys a Channel for Message Passing </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>and integer specifying the Channel which should be destroyed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a78b99433d86597ec15fdd5c9f56a1929"></a><!-- doxytag: member="Communication::detachConnection" ref="a78b99433d86597ec15fdd5c9f56a1929" args="(int id, int coid, CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::detachConnection </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>coid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Detaches a connection to a Channel and informs the Target-Communicator. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>an integer specifying the ChannelID </td></tr>
+    <tr><td class="paramname">coid</td><td>an integer specifying the ConnectID </td></tr>
+    <tr><td class="paramname">c</td><td>the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which wants to be detached </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad02703abb2259e85cd3e5a3e1f971cd0"></a><!-- doxytag: member="Communication::getChannelIdForObject" ref="ad02703abb2259e85cd3e5a3e1f971cd0" args="(CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Communication::getChannelIdForObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Get the ChannelID of the specified component. </p>
+<p>Get the ChannelID of the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> from the local list. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">c</td><td>the specified component. </td></tr>
+    <tr><td class="paramname">c</td><td>the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -159,17 +456,277 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a753bb2ab4c37a22dcd7a6f7138ec9ace"></a><!-- doxytag: member="Communication::vc" ref="a753bb2ab4c37a22dcd7a6f7138ec9ace" args="" -->
+<a class="anchor" id="aaceffbf90ba93d40e9a8697cfa680bdf"></a><!-- doxytag: member="Communication::getCommunicatorForObject" ref="aaceffbf90ba93d40e9a8697cfa680bdf" args="(int ci, int co)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;int&gt; <a class="el" href="class_communication.html#a753bb2ab4c37a22dcd7a6f7138ec9ace">Communication::vc</a><code> [private]</code></td>
+          <td class="memname">std::list&lt; <a class="el" href="class_communication_1_1_communicator.html">Communication::Communicator</a> &gt;::iterator Communication::getCommunicatorForObject </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ci</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>co</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Retrieves the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> with the given ChannelID and ConnectionID. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ci</td><td>ChannelID of the searched <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> </td></tr>
+    <tr><td class="paramname">co</td><td>ConnectionID of the searched <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>iterator representing a pointer to a <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> object or NULL </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a573ed5cd2a09645b3869e530ef43f3c9"></a><!-- doxytag: member="Communication::getConnectIdForObject" ref="a573ed5cd2a09645b3869e530ef43f3c9" args="(CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Communication::getConnectIdForObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Get the ConnectID of the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> from the local list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>ChannelID </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa8a8aefb61b1f43e6f8170335d294200"></a><!-- doxytag: member="Communication::printList" ref="aa8a8aefb61b1f43e6f8170335d294200" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Communication::printList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Prints the local list of Communicators </p>
+
+</div>
+</div>
+<a class="anchor" id="ad5b33ec110ddebcd06515254b43e262d"></a><!-- doxytag: member="Communication::registerChannel" ref="ad5b33ec110ddebcd06515254b43e262d" args="(CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::registerChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Registers a Channel at the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> Server (<a class="el" href="class_core_controller.html">CoreController</a>) for Message Passing so it will be available for other parts </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which wants to be registered </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afe1e84e708135a54c3933eafda3405b0"></a><!-- doxytag: member="Communication::removeCommunicator" ref="afe1e84e708135a54c3933eafda3405b0" args="(int ch, int cod, CommunicatorType ct)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::removeCommunicator </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>ct</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Removes a <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> from the local list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ch</td><td>an integer, specifying the ChannelID. </td></tr>
+    <tr><td class="paramname">cod</td><td>and integer, specifying the ConnectID. </td></tr>
+    <tr><td class="paramname">ct</td><td>the type of the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac39875d45c4eca6cd0de3acc2b68c8f6"></a><!-- doxytag: member="Communication::requestChannelIDForObject" ref="ac39875d45c4eca6cd0de3acc2b68c8f6" args="(CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::requestChannelIDForObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Gets the ChannelID of the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> from the CommunicatorServer (<a class="el" href="class_core_controller.html">CoreController</a>) over a separate connection to the CommunicatorServer and adds it to the local list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the specified <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>if </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab8bee166b34ab75a8659a73942fe60dd"></a><!-- doxytag: member="Communication::setUpChannel" ref="ab8bee166b34ab75a8659a73942fe60dd" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::setUpChannel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Creates a Channel for Message Passing </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3f62397cd668355dca5e4de704df6afb"></a><!-- doxytag: member="Communication::unregisterChannel" ref="a3f62397cd668355dca5e4de704df6afb" args="(CommunicatorType c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::unregisterChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Unregisters a Channel and removes it from the Communicators Server list </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which wants to be unregistered </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool, true if successful </dd></dl>
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a0aeb08979d0227a64a089d3ed8612c3e"></a><!-- doxytag: member="Communication::chid" ref="a0aeb08979d0227a64a089d3ed8612c3e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">Communication::chid</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>ChannelID and ConnectionID of this <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="acbcafcf22a0eb30681fc9081910366fd"></a><!-- doxytag: member="Communication::coid" ref="acbcafcf22a0eb30681fc9081910366fd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">Communication::coid</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a61cac84b7f4ee836ddec99e1dbd4f83c"></a><!-- doxytag: member="Communication::lst" ref="a61cac84b7f4ee836ddec99e1dbd4f83c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="class_communication_1_1_communicator.html">Communicator</a>&gt; <a class="el" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">Communication::lst</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>List of all connected Communicators </p>
+
+</div>
+</div>
+<a class="anchor" id="ae9c5e1f3d2895c26b7b8bfa5466cbf2a"></a><!-- doxytag: member="Communication::serverChannelId" ref="ae9c5e1f3d2895c26b7b8bfa5466cbf2a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int <a class="el" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">Communication::serverChannelId</a> = 0<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p><a class="el" href="class_core_controller.html">CoreController</a> ChannelID</p>
+<p><a class="el" href="class_communication.html">Communication</a></p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Capsulates many functions for the direct connection of components via Messages. </p>
 
 </div>
 </div>
@@ -183,7 +740,7 @@ Private Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -192,7 +749,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:18 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

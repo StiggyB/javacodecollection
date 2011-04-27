@@ -11,18 +11,12 @@
  * Capsulates many functions for the direct
  * in- and output from and to the Festo Transfersystem and
  * with Interrupts using Pulse Messages.
- * Starts the threads. Implements Singleton-Pattern.
+ * Implements Singleton-Pattern.
+ * Other parts can get their necessary ChannelID's and  register/unregister themself.
  *
- * Upcoming: Other parts can get their necessary ChannelID's.
-
- * Liste für die channelid's der Prozesse
- * funktion um channelid zu registrieren
- * funktion um channelid zu erfragen
  *
- * Inherits: IHAL.h, HAWThread.h
  */
 
-//TODO inherit Singleton
 //TODO capsulate all activities on port variables through CoreController -> HAL
 
 #include "CoreController.h"
@@ -68,67 +62,85 @@ CoreController::~CoreController() {
 	m.~Mutex();
 }
 
-void CoreController::execute(void*) {
+void CoreController::serveAsCommunicationServer(){
 	int rcvid = 0,id = 0;
-	Message *m = (Message *) malloc(sizeof(Message));
-	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
-		perror("ThreadCtl access failed\n");
-	}
 	if(!setUpChannel()){
-		cout << "CC: channel setup failed" << endl;
+		perror("CC: channel setup failed");
+		return;
 	}else{
 		cout << "CC: channel setup successful" << endl;
+	}
+	Message *m = (Message *) malloc(sizeof(Message));
+	if(m == NULL){
+		perror("CoreController: failed to get Space for Message!");
+		destroyChannel(chid);
+		return;
 	}
 	Communication::serverChannelId = chid;
 	while(1){
 		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
-		cout << "CC: message received. CA: "<<(*m).ca<<endl;
+		//cout << "CC: message received. CA: "<<(*m).ca<<endl;
 		switch((*m).ca){
 		case addToServer:
-			cout << "CC: addToServer ->type: "<< (*m).Msg.comtype <<endl;
+			//cout << "CC: addToServer ->type: "<< (*m).Msg.comtype <<endl;
 			addCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER);
 			break;
 		case removeFromServer:
-			cout << "CC: removeFromServer"<<endl;
+			//cout << "CC: removeFromServer"<<endl;
 			removeCommunicator((*m).chid,(*m).coid,(*m).Msg.comtype);
 			buildMessage(m,(*m).chid,(*m).coid,OK,CORECONTROLLER); break;
 		case getIDforCom:
-			cout << "CC: getIDforCom("<<(*m).Msg.comtype<<")"<<endl;
+			//cout << "CC: getIDforCom("<<(*m).Msg.comtype<<")"<<endl;
 			id = getChannelIdForObject((*m).Msg.comtype);
-			cout << "CC: ID: " << id <<endl;
+			//cout << "CC: ID: " << id <<endl;
 			if(id == -1){
-				cout << "CC: BuildMessage -> error"<<endl;
+				//cout << "CC: BuildMessage -> error"<<endl;
 				buildMessage(m,id,(*m).coid,error,CORECONTROLLER);
 			}else{
-				cout << "CC: BuildMessage -> OK"<<endl;
+				//cout << "CC: BuildMessage -> OK"<<endl;
 				buildMessage(m,id,(*m).coid,OK,CORECONTROLLER);
 			}break;
 		default:
-			cout << "CC: defaultError"<<endl;
+			cout << "CoreController: defaultError"<<endl;
 			buildMessage(m,(*m).chid,(*m).coid,error,CORECONTROLLER); break;
 		}
 		MsgReply(rcvid,0,m,sizeof(m));
 	}
+	cleanUp(0,m,NULL);
+	destroyChannel(chid);
+}
+
+void CoreController::execute(void*) {
+	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		perror("ThreadCtl access failed\n");
+	}
+	serveAsCommunicationServer();
 }
 
 void CoreController::shutdown() {
 
 }
 
+//TODO implement
+void CoreController::stopProcess(){
+
+}
+
+//TODO implement
 void CoreController::emergencyStop(){
 	cout << "CC: emergency Stop ;)" <<endl;
 }
-
+//TODO implement
 void CoreController::stopMachine(){
 	engineStop();
 	cout << "CC: StopMachine ;)" <<endl;
 }
-
+//TODO implement
 void CoreController::restart(){
 	cout << "CC: restart ;)" <<endl;
 }
-
+//TODO implement
 void CoreController::resetAll(){
 	cout << "CC: resetAll ;)" <<endl;
 }
@@ -302,8 +314,4 @@ float CoreController::getHeight(){
 	float ret = (*h).getHeight();
 	m.unlock();
 	return ret;
-}
-
-void CoreController::stopProcess(){
-
 }

@@ -14,8 +14,6 @@
  * Inherits: HAWThread.h
  */
 
-//TODO implement handlePulseMasseges
-
 #include "InterruptController.h"
 Message msg;
 Mutex InterruptController::singleton;
@@ -95,32 +93,27 @@ void InterruptController::disconnectFromHAL(){
 }
 
 void InterruptController::connectToHAL() {
-	/*if ((interruptChannelId = ChannelCreate(0)) == -1) {
-		perror("InterruptController: failed to create Channel for Interrupt\n");
-		shutdown();
-	}*/
 	coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
 		perror("InterruptController: failed to attach Channel for Interrupt\n");
+		return;
 	}
 	cout << "InterruptController: COID for all is =" << coid << endl;
 	SIGEV_PULSE_INIT(&msg.Msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
-		shutdown();
+		cleanUp(coid);
+		return;
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
-	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &(msg.Msg.event), sizeof((msg.Msg.event)), 0))
-			== -1) {
-		cout << "IC: error attaching!" << endl;
+	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &(msg.Msg.event), sizeof((msg.Msg.event)), 0)) == -1) {
 		perror("InterruptController: failed to create ISR coupling\n");
-		shutdown();
+		cleanUp(coid);
+		return;
 	}
-	cout << "InterruptController: Interrupt Attached to event with InterruptCoid="
-			<< interruptCoid << endl;
+	cout << "InterruptController: Interrupt Attached to event with InterruptCoid="<< interruptCoid << endl;
 	int i = (*h).getSetInterrupt();
-	cout << "InterruptController: Interrupt 0x" << hex << i << " ready."
-			<< endl;
+	cout << "InterruptController: Interrupt 0x" << hex << i << " ready."<< endl;
 }
 
 void InterruptController::execute(void*) {
@@ -128,80 +121,77 @@ void InterruptController::execute(void*) {
 
 	//getSensor();
 	if(!setUpChannel()){
-		cout << "IC: channel setup failed" << endl;
+		perror("IC: channel setup failed");
+		return;
 	}else{
 		cout << "IC: channel setup successful "<< chid << endl;
  	}
 	if(!registerChannel(INTERRUPTCONTROLLER)){
-		cout << "IC: register channel failed" << endl;
+		perror("IC: register channel failed");
+		destroyChannel(chid);
+		return;
 	}else{
 		cout << "IC: register channel successful" << endl;
-	}//*/
-
-
-	//TEST Only
-	/*if(!requestChannelIDForObject(INTERRUPTCONTROLLER)){
-		cout << "IC: request failed" << endl;
-	}else{
-		cout << "IC: request successful" << endl;
-	}//*/
+	}
 
 	connectToHAL();
 	handlePulseMessages();
 	disconnectFromHAL();
-	if (!deregisterChannel(INTERRUPTCONTROLLER)) {
-		cout << "IC: register channel failed" << endl;
-	} else {
-		cout << "IC: register channel successful" << endl;
-	}//*/
+
+	if (!unregisterChannel(INTERRUPTCONTROLLER)) {
+		perror("IC: unregister channel failed");
+	}
 	destroyChannel(chid);
 }
 
 void InterruptController::handlePulseMessages() {
+	int rcvid, coid, id;
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
-		shutdown();
+		return;
 	}
-	int rcvid, coid, id;
-
-	//TODO -> attach Connection here
-
 	Message * m = (Message *) malloc(sizeof(Message));
 	if (m == NULL) {
 		perror("IC: failed to get Space for Message.");
 	}
 	Message * r_msg = (Message*) malloc(sizeof(Message));
 	if (r_msg == NULL) {
+		cleanUp(0,m,NULL);
 		perror("IC: failed to get Space for Receive Message.");
+		return;
 	}
 	(*cc).addLight(GREEN);
 	while (1) {
-		cout << "InterruptController: waiting for Pulse on Channel " << chid <<endl;
-		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
-		cout << "InterruptController: Message Received" << endl;
-		if (rcvid == 0) {
+	//	cout << "InterruptController: waiting for Pulse on Channel " << chid <<endl;
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		//cout << "InterruptController: Message Received" << endl;
+		switch (rcvid) {
+		case 0:
 			//pulse inc
-			cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un1.__sigev_signo << endl;
+			//cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un1.__sigev_signo << endl;
 			id = getChannelIdForObject(SENSOR);
 			coid = getConnectIdForObject(SENSOR);
-			cout << "IC: sending to Sensor: ID=" << id<<" COID="<<coid<<endl;
+			//cout << "IC: sending to Sensor: ID=" << id<<" COID="<<coid<<endl;
+
+			// here can more Sensors be added
 			if ((*r_msg).Msg.event.__sigev_un1.__sigev_signo == INTERRUPT_D_PORT_C) {
 				buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
 			} else { //pulse.code == port B
 				buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
 			}
-			cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
+			//cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
 			if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 				perror("InterruptController: failed to send message to server!");
 			}//*/
-			cout << "IC: send message to Sensor!" << endl;
-		}else if (rcvid == -1) {
+			//cout << "IC: send message to Sensor!" << endl;
+			break;
+		case -1:
 			perror("InterruptController: failed to get MsgPulse\n");
-			shutdown();
-		}else{
+			break;
+		default:
 			//add new Communicator
 			if ((*r_msg).ca == startConnection) {
-				cout << "IC: adding Sensor: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
+				//cout << "IC: adding Sensor: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
 				if (addCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
 					//cout << "IC: adding successful."<<endl;
 					buildMessage(m, (*r_msg).chid, (*r_msg).coid, OK,INTERRUPTCONTROLLER);
@@ -209,83 +199,24 @@ void InterruptController::handlePulseMessages() {
 					if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 						perror("InterruptController: failed to send reply message to Communicator!");
 					}//*/
-					cout << "IC: added Communicator" << endl;
+					//cout << "IC: added Communicator" << endl;
 				} else {
 					perror("IC: failed to addCommunicator");
 				}
-				if ((coid = ConnectAttach(0, 0, (*r_msg).chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+				if ((coid = ConnectAttach(0, 0, (*r_msg).chid,_NTO_SIDE_CHANNEL, 0)) == -1) {
 					perror("InterruptController: failed to attach Channel to other Instance\n");
 				}
-				(*getCommunicatorForObject((*r_msg).chid,(*r_msg).coid)).setConnectID(coid);
-				cout << "IC: connectAttached to other channel on coid: "<<coid <<endl;
-			}else if((*r_msg).ca ==  closeConnection){
-				if(removeCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)){
+				(*getCommunicatorForObject((*r_msg).chid, (*r_msg).coid)).setConnectID(coid);
+				//cout << "IC: connectAttached to other channel on coid: "<<coid <<endl;
+			} else if ((*r_msg).ca == closeConnection) {
+				if (removeCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
 					perror("IC: remove Communicator.");
 				}
-			} else{
-				cout << "message encountered, but not known..." <<endl;
+			} else {
+				cout << "IC: message encountered, but not known..." << endl;
 			}
-
+			break;
 		}
-
-		/*switch(pulse.code){
-		 case INTERRUPT_D_PORT_B:
-		 cout << "IC: pB: " << portB << endl;
-		 if (!(portB & BIT_WP_IN_HEIGHT)) {
-		 // (*cc).getHeight();
-		 // test height for correctness
-		 cout << "InterruptController: WP_IN_H " << endl;
-		 }
-		 if (!(portB & BIT_WP_RUN_IN)) {
-		 (*h).removeLight(YELLOW);
-		 (*h).engineRight();
-		 cout << "InterruptController: BIT_WP_RUN_IN" << endl;
-		 }
-
-		 if (portB & BIT_WP_IN_SWITCH) {
-		 if (portB & BIT_SWITCH_OPEN) {
-		 (*h).closeSwitch();
-		 cout << "InterruptController: closes switch " << endl;
-		 }
-		 } else {
-		 if (portB & BIT_WP_METAL) {
-		 if (!(portB & BIT_SWITCH_OPEN)) {
-		 (*h).openSwitch();
-		 cout << "InterruptController: opens switch " << endl;
-		 }
-		 cout << "IC: ist Metall :D" << endl;
-		 }
-
-		 }
-		 if(! (portB & BIT_SLIDE_FULL)){
-		 //(*h).stopMachine();
-		 (*h).addLight(YELLOW);
-		 //Exception handling for isSlideFull() : bool
-		 }
-		 if(!(portB & BIT_WP_OUTLET)){
-		 (*h).engineReset();
-		 cout << "IC: somethings coming out ;)" << endl;
-		 }
-
-		 break;
-		 case INTERRUPT_D_PORT_C_HIGH:
-		 cout << "IC: pC: " << portC << endl;
-		 if(!(portC & BIT_E_STOP)){
-		 //(*cc).emergencyStop();
-		 }else if(!(portC & BIT_STOP)){
-		 //(*cc).stopMachine();
-		 }else if(portC & BIT_START){
-		 //(*cc).restart();
-		 }else if(portC & BIT_RESET){
-		 //(*cc).resetAll();
-		 }
-		 break;
-		 }
-
-		 // TODO send a message to Sensor
-		 // sendInterrupt();
-		 cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
-		 */
 	}
 }
 

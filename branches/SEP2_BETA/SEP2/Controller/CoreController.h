@@ -98,7 +98,7 @@ private:
 	 */
 	static CoreController* pInstance;
 	/**
-	 * Pointer for singleton CoreController Instance
+	 * Pointer for Mutex to keep singleton threadsafe
 	 */
 	static Mutex singleton;
     /**
@@ -106,9 +106,13 @@ private:
      */
 	static Mutex m;
 	/**
-	 *
+	 * Pointer for singleton HAL
 	 */
 	HAL* h;
+	/**
+	 * Sets up the CoreController as the Communication Server
+	 */
+	void serveAsCommunicationServer();
 protected:
     virtual void execute(void*);
     virtual void shutdown();

@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">CoreController Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="CoreController" --><!-- doxytag: inherits="thread::HAWThread,IHAL" -->
+<!-- doxytag: class="CoreController" --><!-- doxytag: inherits="thread::HAWThread,IHAL,Communication" -->
 <p><code>#include &lt;<a class="el" href="_core_controller_8h_source.html">CoreController.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CoreController:</div>
@@ -80,6 +80,7 @@ Inheritance diagram for CoreController:</div>
   <map id="CoreController_map" name="CoreController_map">
 <area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,123,24"/>
 <area href="class_i_h_a_l.html" alt="IHAL" shape="rect" coords="133,0,256,24"/>
+<area href="class_communication.html" alt="Communication" shape="rect" coords="266,0,389,24"/>
 </map>
  </div></div>
 
@@ -134,6 +135,7 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a334c26059c56bff3eb22059450e9c7a9">~CoreController</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#af2a20b797721f22392fe50637541b736">CoreController</a> (const <a class="el" href="class_core_controller.html">CoreController</a> &amp;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_core_controller.html">CoreController</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a6e988aeab2e16bf8169ab75c8d4cb9c1">operator=</a> (const <a class="el" href="class_core_controller.html">CoreController</a> &amp;)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5dd7e1cf155bc8b0b75f70b09b91e528">serveAsCommunicationServer</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a8d6dd976362667c47a177c0e305964b0">h</a></td></tr>
@@ -896,6 +898,23 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5dd7e1cf155bc8b0b75f70b09b91e528"></a><!-- doxytag: member="CoreController::serveAsCommunicationServer" ref="a5dd7e1cf155bc8b0b75f70b09b91e528" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CoreController::serveAsCommunicationServer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Sets up the <a class="el" href="class_core_controller.html">CoreController</a> as the <a class="el" href="class_communication.html">Communication</a> Server </p>
+
+</div>
+</div>
 <a class="anchor" id="aa65924834e83143f71333d1e9686327d"></a><!-- doxytag: member="CoreController::setSwitchDirection" ref="aa65924834e83143f71333d1e9686327d" args="(bool dir)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1051,6 +1070,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Pointer for singleton <a class="el" href="class_h_a_l.html">HAL</a> </p>
 
 </div>
 </div>
@@ -1092,14 +1112,11 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Pointer for singleton <a class="el" href="class_core_controller.html">CoreController</a> Instance</p>
+<p>Pointer for <a class="el" href="class_mutex.html">Mutex</a> to keep singleton threadsafe</p>
 <p>Core Controller</p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
-<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Starts the threads. Implements Singleton-Pattern.</p>
-<p>Upcoming: Other parts can get their necessary ChannelID's.</p>
-<p>Liste für die channelid's der Prozesse funktion um channelid zu registrieren funktion um channelid zu erfragen</p>
-<p>Inherits: <a class="el" href="_i_h_a_l_8h.html">IHAL.h</a>, <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
+<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Implements Singleton-Pattern. Other parts can get their necessary ChannelID's and register/unregister themself. </p>
 
 </div>
 </div>
@@ -1113,7 +1130,7 @@ Static Private Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -1122,7 +1139,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 20 2011 01:26:14 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:18 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

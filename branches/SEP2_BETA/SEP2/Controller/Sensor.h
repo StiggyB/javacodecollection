@@ -3,11 +3,9 @@
 #define SENSOR_H_
 
 
-#include "CoreController.h"
-//#include "InterruptController.h"
 #include "../Thread/HAWThread.h"
 #include "Communication.h"
-
+#include "CoreController.h"
 /**
  * Sensor
  *
@@ -24,13 +22,12 @@
  *
  * Inherits: HAWThread.h
  */
-//class CoreController;
 
 class Sensor : public thread::HAWThread, public Communication{
 public:
 	/**
 	 * Deal with the Interrupt for given port.
-	 * \param port an integer representing the given port.
+	 * \param port an integer representing the port where an interrupt occures.
 	 */
 	void interrupt(int port);
 	Sensor();
@@ -39,7 +36,14 @@ protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 private:
+	/**
+	 * Pointer to the Singleton Core Controller
+	 */
 	CoreController *cc;
+	/**
+	 *  Sets up the Communication to IC and waits for Messages from it.
+	 */
+	void settingUpAndWaitingSensor();
 };
 
 #endif /* SENSOR_H_ */
