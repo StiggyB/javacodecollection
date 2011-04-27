@@ -48,7 +48,7 @@ void CoreController::deleteInstance(){
 	}
 }
 
-CoreController::CoreController() {
+CoreController::CoreController():stopped(true) {
 	h = HAL::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
@@ -77,6 +77,7 @@ void CoreController::serveAsCommunicationServer(){
 		return;
 	}
 	Communication::serverChannelId = chid;
+	addLED(LEDS_ON);
 	while(1){
 		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
 		//cout << "CC: message received. CA: "<<(*m).ca<<endl;
@@ -127,22 +128,59 @@ void CoreController::stopProcess(){
 
 }
 
-//TODO implement
 void CoreController::emergencyStop(){
+	(*h).engineStop();
+	(*h).closeSwitch();
+	(*h).engineReset();
+	(*h).engineStop();
+	stopped = true;
+	m.lock();
+	// TODO call EXCEPTION HANDLER
+	shine(RED);
+	removeLED(START_LED);
+	//EXCEPTION HANDLER end
 	cout << "CC: emergency Stop ;)" <<endl;
+	while (stopped) {
+		if(!(*h).engineStopped()){
+			(*h).closeSwitch();
+			(*h).engineReset();
+			(*h).engineStop();
+		}
+	}
+	m.unlock();
 }
-//TODO implement
+
 void CoreController::stopMachine(){
-	engineStop();
-	cout << "CC: StopMachine ;)" <<endl;
+	(*h).engineStop();
+	(*h).closeSwitch();
+	stopped = true;
+	m.lock();
+	// TODO call EXCEPTION HANDLER
+	shine(RED);
+	//EXCEPTION HANDLER end
+	cout << "CC: Stop Machine! ;)" <<endl;
+	while (stopped) {
+		if(!(*h).engineStopped()){
+			(*h).engineStop();
+			(*h).closeSwitch();
+		}
+	}
+	m.unlock();
 }
-//TODO implement
+
 void CoreController::restart(){
+	stopped = false;
 	cout << "CC: restart ;)" <<endl;
+	engineContinue();
 }
-//TODO implement
+
 void CoreController::resetAll(){
+	stopped = false;
 	cout << "CC: resetAll ;)" <<endl;
+	closeSwitch();
+	engineReset();
+	shine(OFF);
+	shineLED(LEDS_ON);
 }
 
 int CoreController::read(int dir) {
@@ -308,10 +346,35 @@ bool CoreController::shine(Color col) {
 	m.unlock();
 	return ret;
 }
-
-float CoreController::getHeight(){
+bool CoreController::removeLED(LEDS led) {
 	m.lock();
-	float ret = (*h).getHeight();
+	bool ret = (*h).removeLED(led);
+	m.unlock();
+	return ret;
+}
+bool CoreController::addLED(LEDS led) {
+	m.lock();
+	bool ret = (*h).addLED(led);
+	m.unlock();
+	return ret;
+}
+bool CoreController::shineLED(LEDS led) {
+	m.lock();
+	bool ret = (*h).shineLED(led);
+	m.unlock();
+	return ret;
+}
+
+bool CoreController::activateInterrupt(int port) {
+	m.lock();
+	bool ret = (*h).activateInterrupt(port);
+	m.unlock();
+	return ret;
+}
+
+bool CoreController::deactivateInterrupt(int port) {
+	m.lock();
+	bool ret = (*h).deactivateInterrupt(port);
 	m.unlock();
 	return ret;
 }

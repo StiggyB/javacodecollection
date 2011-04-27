@@ -49,7 +49,7 @@ InterruptController::InterruptController() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
-	int i = (*h).getSetInterrupt();
+	int i = (*cc).getSetInterrupt();
 	cout << "InterruptController: first_Interrupt 0x" << hex << i << endl;
 	activateInterrupts();
 }
@@ -60,22 +60,22 @@ InterruptController::~InterruptController() {
 
 
 void InterruptController::activateInterrupts() {
-	(*h).deactivateInterrupt(PORT_A);
-	int i = (*h).getSetInterrupt();
+	(*cc).deactivateInterrupt(PORT_A);
+	int i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortA_reset_Interrupt 0x" << hex << i << endl;
-	(*h).deactivateInterrupt(PORT_B);
-	i = (*h).getSetInterrupt();
+	(*cc).deactivateInterrupt(PORT_B);
+	i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortB_reset_Interrupt 0x" << hex << i << endl;
-	(*h).deactivateInterrupt(PORT_C);
-	i = (*h).getSetInterrupt();
+	(*cc).deactivateInterrupt(PORT_C);
+	i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortC_reset_Interrupt 0x" << hex << i << endl;
-	(*h).activateInterrupt(PORT_B);
-	i = (*h).getSetInterrupt();
+	(*cc).activateInterrupt(PORT_B);
+	i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
-	(*h).activateInterrupt(PORT_C);
-	 i = (*h).getSetInterrupt();
+	(*cc).activateInterrupt(PORT_C);
+	 i = (*cc).getSetInterrupt();
 	 cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;
-	 i = (*h).getInterrupt();
+	 i = (*cc).getInterrupt();
 	 cout << "IC: interrupts=" << i << endl;
 }
 
@@ -112,7 +112,7 @@ void InterruptController::connectToHAL() {
 		return;
 	}
 	cout << "InterruptController: Interrupt Attached to event with InterruptCoid="<< interruptCoid << endl;
-	int i = (*h).getSetInterrupt();
+	int i = (*cc).getSetInterrupt();
 	cout << "InterruptController: Interrupt 0x" << hex << i << " ready."<< endl;
 }
 
@@ -221,5 +221,4 @@ void InterruptController::handlePulseMessages() {
 }
 
 void InterruptController::shutdown() {
-
 }

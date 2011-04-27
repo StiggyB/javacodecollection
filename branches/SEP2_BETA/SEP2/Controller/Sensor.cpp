@@ -29,7 +29,6 @@ Sensor::~Sensor() {
 
 }
 
-//TODO
 void Sensor::execute(void*) {
 	settingUpAndWaitingSensor();
 }

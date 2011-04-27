@@ -49,7 +49,7 @@ enum PortB{
  * PORT C:
  */
 enum PortC{
-	BIT_LED_START,BIT_LED_RESET,BIT_LED_Q1,BIT_LED_Q2,BIT_START,BIT_STOP,BIT_RESET,BIT_E_STOP
+	BIT_LED_START,BIT_LED_RESET,BIT_LED_Q1,BIT_LED_Q2,BIT_START,BIT_STOP,BIT_RESET,BIT_E_STOP,BIT_LEDS_ON=(0x0F)
 };
 
 /**
@@ -150,23 +150,17 @@ public:
 	 */
 	static void deleteInstance();
 	/**
-	 * activates the Interrupt to a certain
-	 * \param port an integer, specifying the Port.
-	 * \return a bool, true if action was successful, false if not.
-	 */
-	bool activateInterrupt(int port);
-	/**
-	 * deactivates the Interrupt to a certain port
-	 * \param port an integer, specifying the Port.
-	 * \return a bool, true if action was successful, false if not.
-	 */
-	bool deactivateInterrupt(int port);
-	/**
 	 * activates the light specified by color
 	 * \param color an integer, specifying the color.
 	 * \return a bool, true if action was successful, false if not.
 	 */
 	bool shine(int color);
+	/**
+	 * activates the LED specified by led
+	 * \param led an integer, specifying the Led which should be activated.
+	 * \return a bool, true if action was successful, false if not.
+	 */
+	bool shineLED(int led);
 
 	//IHAL:
 	virtual int read(int dir);
@@ -192,19 +186,17 @@ public:
 	virtual bool engineSlowRight();
 	virtual int getSetInterrupt();
 	virtual int getInterrupt();
+	virtual bool deactivateInterrupt(int port);
+	virtual bool activateInterrupt(int port);
 	virtual bool resetAllOutPut();
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	virtual float getHeight();
+	virtual bool removeLED(LEDS led);
+	virtual bool addLED(LEDS led);
+	virtual bool shineLED(LEDS led);
 
 private:
-	/**
-	 * Converts the temperature from a fix point integer to float.
-	 * \param input value of type integer
-	 * \return a float - the value
-	 */
-	float convertHeight(int input);
 
 	/**
 	 * same as isOutput(int dir);
@@ -272,6 +264,7 @@ private:
 	 * \return an integer, the bit mask.
 	 */
 	int getColorCode(Color col);
+	int getLEDCode(LEDS led);
 	HAL();
 	HAL(const HAL&);
 	HAL& operator=(const HAL&);

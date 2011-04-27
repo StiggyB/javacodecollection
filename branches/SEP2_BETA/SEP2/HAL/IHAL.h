@@ -8,6 +8,12 @@
 enum Color {
 	RED, GREEN, YELLOW, OFF
 };
+/**
+ * Enumeration for LEDS
+ */
+enum LEDS{
+	START_LED, RESET_LED, Q1_LED, Q2_LED, LEDS_OFF, LEDS_ON
+};
 
 /**
  * Interface for the Hardware Abstraction Layer.
@@ -156,11 +162,22 @@ public:
 	 */
 	virtual int getInterrupt()=0;
 	/**
+	 * activates the Interrupt to a certain
+	 * \param port an integer, specifying the Port.
+	 * \return a bool, true if action was successful, false if not.
+	 */
+	virtual bool activateInterrupt(int port)=0;
+	/**
+	 * deactivates the Interrupt to a certain port
+	 * \param port an integer, specifying the Port.
+	 * \return a bool, true if action was successful, false if not.
+	 */
+	virtual bool deactivateInterrupt(int port)=0;
+	/**
 	 * Resets all bits from Port A.
 	 * \return a bool, true action succeeded.
 	 */
 	virtual bool resetAllOutPut()=0;
-
 	/**
 	 * Removes a certain light.
 	 * \param col specifies the color of the light.
@@ -180,10 +197,25 @@ public:
 	 */
 	virtual bool shine(Color col)=0;
 	/**
-	 * Calculates the value of a heightmeasurement.
-	 * \return a float, the value of the heightmeasurement.
+	 * Removes a certain light.
+	 * \param col specifies the color of the light.
 	 */
-	virtual float getHeight()=0;
+	virtual bool removeLED(LEDS led)=0;
+	/**
+	 * Adds a certain light.
+	 * \param col specifies the color of the light.
+	 * \return a bool, true action succeeded.
+	 */
+	virtual bool addLED(LEDS led)=0;
+	/**
+	 * Adds a certain light.
+	 * Equals void addLight(Color col);
+	 * \param col specifies the color of the light.
+	 * \return a bool, true action succeeded.
+	 */
+	virtual bool shineLED(LEDS led)=0;
+
+
 	IHAL();
 	virtual ~IHAL();
 };

@@ -65,8 +65,11 @@ public:
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	virtual float getHeight();
-
+	virtual bool removeLED(LEDS led);
+	virtual bool addLED(LEDS led);
+	virtual bool shineLED(LEDS led);
+	virtual bool deactivateInterrupt(int port);
+	virtual bool activateInterrupt(int port);
 	/**
 	 * Performes an emergency stop.
 	 */
@@ -83,7 +86,6 @@ public:
 	 * Resets all hardware and software.
 	 */
 	void resetAll();
-
 
 private:
 	CoreController();
@@ -113,6 +115,10 @@ private:
 	 * Sets up the CoreController as the Communication Server
 	 */
 	void serveAsCommunicationServer();
+	/**
+	 * Stopped
+	 */
+	bool stopped;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

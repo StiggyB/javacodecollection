@@ -18,9 +18,6 @@
  *
  * Inherits: IHAL.h
  */
-
-//TODO inherit Singleton
-
 //TODO HAL -> port variables threadsafe while in ISR? would say sure!
 
 /*
@@ -362,7 +359,6 @@ bool HAL::engineSpeed(bool slow) {
 	return false;
 }
 
-
 bool HAL::engineSlowLeft(){
 	return engineSlowSpeed(BIT_ENGINE_LEFT);
 }
@@ -404,6 +400,11 @@ int HAL::getColorCode(Color col) {
 	return newColor;
 }
 
+bool HAL::shine(Color col) {
+	int val = getColorCode(col);
+	return shineLED(val);
+}
+
 bool HAL::shine(int color) {
 	if (color == BIT_LIGHT_OFF) {
 		return reset(PORT_A, BIT_LIGHTS_ON);
@@ -414,26 +415,57 @@ bool HAL::shine(int color) {
 	}
 }
 
-bool HAL::shine(Color col) {
-	bool ret = false;
-	switch (col) {
-	case YELLOW:
-		ret=shine(BIT_LIGHT_YELLOW);
+int HAL::getLEDCode(LEDS led) {
+	int val = 0;
+	switch (led) {
+	case START_LED:
+		val = BIT_LED_START;
 		break;
-	case GREEN:
-		ret=shine(BIT_LIGHT_GREEN);
+	case RESET_LED:
+		val = BIT_LED_RESET;
 		break;
-	case OFF:
-		ret=shine(BIT_LIGHT_OFF);
+	case Q1_LED:
+		val = BIT_LED_Q1;
 		break;
-	default:
-		ret=shine(BIT_LIGHT_RED);
+	case Q2_LED:
+		val = BIT_LED_Q2;
+		break;
+	case LEDS_ON:
+		val = BIT_LEDS_ON;
+		break;
+	default: // Q1_LED
+		val = 0x00;
 		break;
 	}
-	return ret;
+	return val;
 }
 
-const struct sigevent * ISR(void *arg, int id){
+bool HAL::removeLED(LEDS led){
+	int old = getLEDCode(led);
+	return reset(PORT_C, old);
+}
+bool HAL::addLED(LEDS led){
+	int old = getValueFromAdress(PORT_C);
+	old = old | getLEDCode(led);
+	return write(PORT_C, old);
+}
+
+bool HAL::shineLED(LEDS led){
+	int val = getLEDCode(led);
+	return shineLED(val);
+}
+
+bool HAL::shineLED(int led) {
+	if (led == 0) {
+		return reset(PORT_C, BIT_LEDS_ON);
+	} else {
+		bool r = reset(PORT_C, BIT_LIGHTS_ON);
+		bool w = write(PORT_C, led);
+		return (r && w);
+	}
+}
+
+const struct sigevent * ISR(void *arg, int id) {
 	int iir;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK_D;
@@ -482,42 +514,3 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
-float HAL::getHeight(){
-	float val = 0;
-	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
-	int i = in8(HEIGHT_MEASURE);
-	val = convertHeight(i);
-	return val;
-}
-/*
- * This method converts the fix point value from the hight measure
- */
-float HAL::convertHeight(int input){
-	float output = 0.0;
-	short zweierk = (~input+1);
-	char t = 0;
-	int i = 0;
-	t = (input>>6); //nur die ganzzahl nehmen
-	for(i=0;i<6;i++){//Nachkommaanteil setzen
-		if( ( (((t<0)?zweierk:input) & (1<<i)) >> i ) == 1 ){//wenn Nachkommastelle gesetzt ist
-			switch(i){
-			case 0: output += 0.0625; break;
-			case 1: output += 0.125; break;
-			case 2: output += 0.25; break;
-			case 3: output += 0.5; break;
-			}//switch
-		}//if
-	}//for
-	if( t<0 ){//falls Erg. negativ ist
-		output = (-1)*output;
-		if((output != 0)){//falls Nachkommaanteil
-			t = t + 1;
-		}//if
-		output = output + t;
-
-	}//if
-	else{//positives Erg.
-		output = output + t;
-	}//else
-	return output;
-}//convertTemp

@@ -175,6 +175,11 @@ void Test_HAL::execute(void*) {
 		cout << "RESET" << endl;
 		(*cc).resetAllOutPut();
 		sleep(time);
+
+		cout << "LED - Port 3 activate" << endl;
+
+		sleep(time);
+
 	}
 	cout << "HAL: closing..." << endl;
 }
