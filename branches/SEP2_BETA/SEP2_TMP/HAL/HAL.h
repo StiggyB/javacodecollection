@@ -48,7 +48,7 @@ enum PortA{
  * PORT B:
  */
 enum PortB{
-	BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
+	BIT_WP_OUT = 0, BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
 	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_WP_IN_SLIDE = (1<<6),BIT_WP_OUTLET = (1<<7)
 };
 
@@ -56,7 +56,7 @@ enum PortB{
  * PORT C:
  */
 enum PortC{
-	BIT_LED_START,BIT_LED_RESET,BIT_LED_Q1,BIT_LED_Q2,BIT_START,BIT_STOP,BIT_RESET,BIT_E_STOP
+	BIT_LED_START, BIT_LED_RESET, BIT_LED_Q1, BIT_LED_Q2, BIT_START, BIT_STOP, BIT_RESET, BIT_E_STOP
 };
 
 /**
@@ -206,7 +206,7 @@ public:
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	virtual float identifyHeight();
+	virtual int identifyHeight();
 	virtual bool isSlideFull();
 
 private:

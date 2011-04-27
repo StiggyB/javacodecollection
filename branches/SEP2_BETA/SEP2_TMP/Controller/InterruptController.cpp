@@ -14,8 +14,6 @@
  * Inherits: HAWThread.h
  */
 
-//TODO implement handlePulseMasseges
-//TODO implement struct Massege & built_massege
 
 #include "InterruptController.h"
 
@@ -180,7 +178,7 @@ void InterruptController::handlePulseMessages() {
 			break;
 		}
 		*/
-		// TODO send a message to Sensor
+		//send a message to Sensor
 		//int j = pulse.code;
 		//sens.interrupt(j);
 		//cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;

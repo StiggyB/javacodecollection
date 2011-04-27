@@ -36,7 +36,6 @@ Lampen::~Lampen() {
 }
 
 void Lampen::execute(void*) {
-	//TODO
 }
 
 void Lampen::shutdown() {

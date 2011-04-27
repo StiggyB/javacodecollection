@@ -64,7 +64,8 @@ public:
 	virtual bool removeLight(Color col);
 	virtual bool addLight(Color col);
 	virtual bool shine(Color col);
-	virtual float getHeight();
+	virtual int identifyHeight();
+	virtual bool isSlideFull();
 
 	/**
 	 * Performes an emergency stop.

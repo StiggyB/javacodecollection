@@ -19,7 +19,7 @@
  */
 
 
-//TODO HAL- Singleton zerstören siehe Code Pruefung
+// HAL- Singleton zerstören siehe Code Pruefung
 /*
  * Code Pruefung HAL:
 	- Funktion: int HAL::write(int dir, int value, bool set)
@@ -463,27 +463,27 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
-//TODO implement getHeight
-float HAL::identifyHeight(){
+//TODO 0prio -- implement & test identifyHeight
+int HAL::identifyHeight(){
 	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
 	//busy waiting bis bit7 1
-	while((HEIGHT_MEASURE & (1<<7)) == 0) {
+	while((HEIGHT_MEASURE & (1<<7)) == 0) { //Datenblatt auf interrupt prüfen statt busy waiting
 		/*DAC busy waiting*/
 	}
 	int height = in8(HEIGHT_MEASURE);
 	// 4095 -0 / V10 - V0
 	if((height <= PLANE_WP + tolerance_normal) && (height >= PLANE_WP - tolerance_normal)) {
-		//write(PLANE_WP);
+		//height = PLANE_WP;
 	} else if ((height <= NORMAL_WP + tolerance_normal) && (height >= NORMAL_WP - tolerance_normal)) {
-		//write(NORMAL_WP);
+		//height = NORMAL_WP;
 	} else if ((height <= POCKET_WP + tolerance_pocket) && (height >= POCKET_WP - tolerance_pocket)) {
-		//write(POCKET_WP);
+		//height = POCKET_WP;
 	}
 
 	return height;
 }
 
-//TODO implement timer - test B(6)
+//TODO 1prio -- implement timer - test B(6)
 bool HAL::isSlideFull() {
 	return false;
 }

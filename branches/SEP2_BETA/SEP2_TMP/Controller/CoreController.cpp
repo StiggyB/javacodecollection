@@ -269,9 +269,16 @@ bool CoreController::shine(Color col) {
 	return ret;
 }
 
-float CoreController::getHeight(){
+int CoreController::identifyHeight(){
 	m.lock();
-	float ret = (*h).identifyHeight();
+	int ret = (*h).identifyHeight();
+	m.unlock();
+	return ret;
+}
+
+bool CoreController::isSlideFull() {
+	m.lock();
+	bool ret = (*h).isSlideFull();
 	m.unlock();
 	return ret;
 }

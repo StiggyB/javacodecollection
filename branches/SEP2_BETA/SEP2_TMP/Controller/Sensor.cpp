@@ -16,7 +16,8 @@
  */
 #include "Sensor.h"
 
-//TODO Who is the server between ic and sensor? -- should be the processing part the sensor?
+//TODO Who is the server between ic and sensor? -- ic -> dispatcher-thread(server) / sensor -> server
+//should be the processing part the sensor?
 
 Sensor::Sensor() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -31,7 +32,6 @@ Sensor::~Sensor() {
 
 }
 
-//TODO implement MsgReceive/Reply
 void Sensor::execute(void*) {
 	//int rcvid;
 	while (1) {

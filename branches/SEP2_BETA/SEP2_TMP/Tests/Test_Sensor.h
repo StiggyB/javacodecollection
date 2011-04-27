@@ -42,6 +42,16 @@
 
 #define TIME 1
 
+enum portState {
+	RUN_IN_STATE_LOW = 0, RUN_IN_STATE_HIGH = (1<<0), IN_HEIGHT_STATE_LOW = 0, IN_HEIGHT_STATE_HIGH = (1<<1), PLANE_WP_DEFAULT_HEIGHT = 2715,
+	IN_SWITCH_STATE_LOW = 0, IN_SWITCH_STATE_HIGH = (1<<3), IS_METAL_STATE = 0, NO_METAL_STATE = (1<<4), SWITCH_OPEN_STATE = (1<<5),
+	SWITCH_CLOSED_STATE = 0, IN_SLIDE_STATE_LOW = 0, IN_SLIDE_STATE_HIGH = (1<<6), OUTLET_STATE_LOW = 0, OUTLET_STATE_HIGH = (1<<7)
+};
+
+enum SensorState {
+	RUN_IN_STATE = 1, HEIGHT_MEASURE_STATE = 1 /*,...*/
+};
+
 class Test_Sensor : public thread::HAWThread {
 public:
 	Test_Sensor();
@@ -58,12 +68,15 @@ public:
 	bool test_sen_b7();
 	void test_Operator_Included();
 	void test_Software_Only();
+	void test_sen(int port);
+	void test_isSuccessful(bool success);
 	bool assert_equals(int sen_no, int actual, int state);
 	void test_print(int sen_no, int actual, int state);
 
 
 private:
 	CoreController *cc;
+	PortB lastState;
 };
 
 

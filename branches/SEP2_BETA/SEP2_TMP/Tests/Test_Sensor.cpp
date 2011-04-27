@@ -35,20 +35,12 @@
 
 #include "Test_Sensor.h"
 
-enum PortState {
-	RUN_IN_STATE_LOW = 0, RUN_IN_STATE_HIGH = (1<<0), IN_HEIGHT_STATE_LOW = 0, IN_HEIGHT_STATE_HIGH = (1<<1), PLANE_WP_DEFAULT_HEIGHT = 2715,
-	IN_SWITCH_STATE_LOW = 0, IN_SWITCH_STATE_HIGH = (1<<3), IS_METAL_STATE = 0, NO_METAL_STATE = (1<<4), SWITCH_OPEN_STATE = (1<<5),
-	SWITCH_CLOSED_STATE = 0, IN_SLIDE_STATE_LOW = 0, IN_SLIDE_STATE_HIGH = (1<<6), OUTLET_STATE_LOW = 0, OUTLET_STATE_HIGH = (1<<7)
-};
 
-//TODO Add some states
-enum SensorState {
-	RUN_IN_STATE = 1, HEIGHT_MEASURE_STATE = 1 /*,...*/
-};
-
-Test_Sensor::Test_Sensor() {
-
+Test_Sensor::Test_Sensor()
+:lastState(BIT_WP_OUT)
+{
 	cc = CoreController::getInstance();
+
 }
 
 Test_Sensor::~Test_Sensor() {
@@ -59,16 +51,146 @@ void Test_Sensor::shutdown() {
 
 }
 
-//TODO implement MsgReceive/Reply and communication stuff
-void Test_Sensor::execute(void*) {
+void Test_Sensor::test_sen(int port) {
 
+	bool success = false;
+	int res = 0;
+	int height = 0;
+	int section = 0;
+
+	switch(port) {
+	case INTERRUPT_D_PORT_B:
+		if(section == 0) {
+			if(!(portB & BIT_WP_RUN_IN)) {
+				if(lastState != 0) {
+					success &= false;
+				}
+				cout << "Section test1" <<  endl;
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
+				(*cc).engineSlowRight();
+				lastState = BIT_WP_RUN_IN;
+			}
+			if(!(portB & BIT_WP_IN_HEIGHT)) {
+				if(lastState != BIT_WP_RUN_IN) {
+					success &= false;
+				}
+				height = (*cc).identifyHeight();
+				cout << "Height: " << height << endl;
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(2, (res & BIT_HEIGHT_1), PLANE_WP_DEFAULT_HEIGHT);
+				lastState = BIT_WP_IN_HEIGHT;
+			}
+
+			if (!(portB & BIT_WP_IN_SWITCH)) {
+				if(lastState != BIT_WP_IN_HEIGHT) {
+					success &= false;
+				}
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(4, (res & BIT_WP_METAL), IS_METAL_STATE);
+				(*cc).openSwitch();
+				lastState = BIT_WP_IN_SWITCH;
+				section++;
+			}
+
+			if (!(portB & BIT_WP_OUTLET)) {
+				if(lastState != BIT_WP_IN_SWITCH) {
+					success &= false;
+				}
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(7, (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
+				(*cc).engineLeft();
+				lastState = BIT_WP_OUTLET;
+			}
+		}
+		else if(section == 1) {
+			if (!(portB & BIT_WP_IN_HEIGHT)) {
+				if(lastState != BIT_WP_IN_SWITCH) {
+					success &= false;
+				}
+				(*cc).closeSwitch();
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(5, (res & BIT_SWITCH_OPEN), SWITCH_CLOSED_STATE);
+				(*cc).engineRight();
+				lastState = BIT_WP_IN_HEIGHT;
+			}
+			if (!(portB & BIT_WP_IN_SWITCH)) {
+				if(lastState != BIT_WP_IN_HEIGHT) {
+					success &= false;
+				}
+				lastState = BIT_WP_IN_SWITCH;
+				/*do nothing*/
+			}
+
+			if (!(portB & BIT_WP_IN_SLIDE)) {
+				if(lastState != BIT_WP_IN_SWITCH) {
+					success &= false;
+				}
+				res = (*cc).read(PORT_B);
+				success &= assert_equals(6, (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
+				(*cc).engineReset();
+				test_isSuccessful(success);
+				lastState = BIT_WP_IN_SLIDE;
+				section--;
+			}
+		}
+		break;
+	case INTERRUPT_D_PORT_C:
+		//TODO 0prio -- create a PORTC-Test with Operator
+		if (!(portC & BIT_E_STOP)) {
+			(*cc).emergencyStop();
+		} else if (!(portC & BIT_STOP)) {
+			(*cc).stopMachine();
+		} else if (portC & BIT_START) {
+			(*cc).restart();
+		} else if (portC & BIT_RESET) {
+			(*cc).resetAll();
+			test_isSuccessful(success);
+		}
+		break;
+	}
+
+}
+
+void Test_Sensor::test_isSuccessful(bool success) {
+	if(success) {
+		cout << "Test successful." << endl;
+		(*cc).shine(GREEN);
+	} else {
+		cout << "Test failure." << endl;
+		(*cc).shine(RED);
+	}
+}
+
+bool Test_Sensor::assert_equals(int sen_no, int actual, const int state) {
+	if(actual != state ) {
+		test_print(sen_no, actual, state);
+		return false;
+	} else {
+		test_print(sen_no, actual, state);
+		return true;
+	}
+	return false;
+}
+
+void Test_Sensor::test_print(int sen_no, int actual, const int state) {
+	cout << "TEST B(" << sen_no << ")" << " RESULT: " << actual << "=?" << state << endl;
+}
+
+
+
+
+
+//could implement MsgReceive/Reply and communication stuff -- later!
+void Test_Sensor::execute(void*) {
+	/*
 	int coid;
 	int rcvid;
 	int pulse;
 	int id;
 
 
-	/*
+
 	// Do some communication stuff!!!
 	//attachConnection(id, c);
 
@@ -99,7 +221,7 @@ void Test_Sensor::execute(void*) {
 }
 
 
-//TODO Durch eine Vielzahl von Interrupts sollte jeder Sensor nur 1x geprueft werden
+// Durch eine Vielzahl von Interrupts sollte jeder Sensor nur 1x geprueft werden
 bool Test_Sensor::test_sen_b0() {
 	bool success = false;
 	int res = 0;
@@ -143,9 +265,9 @@ bool Test_Sensor::test_sen_b1() {
 bool Test_Sensor::test_height_sen_b2() {
 	bool success = false;
 	int height = 0;
-	height = (*cc).getHeight();
+	height = (*cc).identifyHeight();
 	cout << "Height: " << height << endl;
-	//TODO test if it is the same in getHeight()!
+	//TODO 1prio -- test if it is the same in getHeight()!
 	if((height <= PLANE_WP_DEFAULT_HEIGHT + tolerance_normal) && (height >= PLANE_WP_DEFAULT_HEIGHT - tolerance_normal)) {
 		success = true;
 	} else {
@@ -232,7 +354,7 @@ void Test_Sensor::test_Operator_Included() {
 	(*cc).shine(YELLOW);
 	while(1) {
 		if (!(portB & BIT_WP_IN_HEIGHT) ) {
-			height = (*cc).getHeight();
+			height = (*cc).identifyHeight();
 			cout << "Height: " << height << hex << endl;
 
 		}
@@ -259,7 +381,7 @@ void Test_Sensor::test_Operator_Included() {
 				next_test = !next_test;
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(1, (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-				height = (*cc).getHeight();
+				height = (*cc).identifyHeight();
 				cout << "Height: " << height << endl;
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(2, (res & BIT_HEIGHT_1), PLANE_WP_DEFAULT_HEIGHT);
@@ -349,7 +471,7 @@ void Test_Sensor::test_Operator_Included() {
 	}
 }
 
-//TODO Tests some sensors without hardware
+//TODO 2prio -- Tests some sensors without hardware
 void Test_Sensor::test_Software_Only() {
 
 	cout << "\nTest_Sensor: software only test started" << endl;
@@ -369,17 +491,3 @@ void Test_Sensor::test_Software_Only() {
 	//...
 }
 
-bool Test_Sensor::assert_equals(int sen_no, int actual, const int state) {
-	if(actual != state ) {
-		test_print(sen_no, actual, state);
-		return false;
-	} else {
-		test_print(sen_no, actual, state);
-		return true;
-	}
-	return false;
-}
-
-void Test_Sensor::test_print(int sen_no, int actual, const int state) {
-	cout << "TEST B(" << sen_no << ")" << " RESULT: " << actual << "=?" << state << endl;
-}

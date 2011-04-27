@@ -16,7 +16,7 @@
 #include "Communication.h"
 
 
-//TODO Destroy Com-Singleton correctly
+
 
 Communication::Communication() : vc(10) {
 

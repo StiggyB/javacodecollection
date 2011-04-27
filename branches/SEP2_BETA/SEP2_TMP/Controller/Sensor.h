@@ -5,6 +5,8 @@
 
 #include "CoreController.h"
 //#include "InterruptController.h"
+#include "../Tests/test.h"
+#include "../Tests/Test_Sensor.h"
 #include "../Thread/HAWThread.h"
 
 /**
@@ -39,6 +41,7 @@ protected:
 	virtual void shutdown();
 private:
 	CoreController *cc;
+
 };
 
 #endif /* SENSOR_H_ */
