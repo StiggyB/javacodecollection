@@ -26,6 +26,9 @@ Sensor::Sensor() {
 	if (cc == NULL){
 		cc = CoreController::getInstance();
 	}
+#ifdef TEST_SEN
+		ts = Test_Sensor();
+#endif
 }
 
 Sensor::~Sensor() {
@@ -39,6 +42,11 @@ void Sensor::execute(void*) {
 		//MsgReply(rcvid, state, data, sizeof(data));
 		//interrupt(data.port);
 	}
+#ifdef TEST_SEN
+		//read interrupt for testing
+		(*ts).test_sen(p);
+		//read register for testing
+#endif
 }
 
 void Sensor::shutdown() {
