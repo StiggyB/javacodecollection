@@ -24,11 +24,11 @@ Serial::Serial(){
 		}
 }
 
-void Serial::init(int numComPort, int modi, bool debug) {
+void Serial::init(int comPort, int modi, bool debug) {
 	hasSettings = false;
 	cnt = 0;
 	struct termios termSettings;
-	comPort = numComPort;
+	comPort = comPort;
 
 	if (modi == 0 or modi == 1) { //send SYN, get ACK OR get SYN, send ACK
 		sender_receiver = modi;
@@ -39,7 +39,7 @@ void Serial::init(int numComPort, int modi, bool debug) {
 		//return -1;
 	} //if
 
-	switch (numComPort) {
+	switch (comPort) {
 	case 1:
 		ser = open("/dev/ser1", O_RDWR);
 		break;
@@ -51,13 +51,13 @@ void Serial::init(int numComPort, int modi, bool debug) {
 
 	if (ser == -1) {
 		if (debug) {
-			printf("Error serial port %i init\n", numComPort);
+			printf("Error serial port %i init\n", comPort);
 			fflush(stdout);
 		}
 		//return -1;
 	} else {
 		if (debug) {
-			printf("serial port %i open\n", numComPort);
+			printf("serial port %i open\n", comPort);
 			fflush(stdout);
 		}
 	}
@@ -100,44 +100,18 @@ Serial::~Serial() {
 }
 
 void Serial::execute(void* data) {
-	char msg1[10];
-	char msg2[10];
-	char msg_rec[10];
+	string msg_rec;
 
 	if (hasSettings) {
 		while (!isStopped()) {
 
-			switch (sender_receiver) {
-			case 0:
-				printf("ser = %d\n",ser);
-				sprintf(msg1, "ACK%6d", cnt++);
-				send(msg1, 10); // send SYN, get ACK
-				//printf("msg1=%s\n",msg1);
-				//printf("SYN send\n");
-				//printf("wait for ACK\n");
-				while (receive(msg_rec, 10) == -2);
-				printf("%s\n", msg_rec);
-				msg_rec[0]= '\0';
-				//printf("cnt = %i\n",cnt);
-				fflush(stdout);
-				sleep(1);
-				break;
-
-			case 1: //get SYN, send ACK
-				//printf("ser = %d\n",ser);
-				//printf("----wait for SYN\n");
-				while (receive(msg_rec, 10) == -2)
+			while (receive(msg_rec, SIZE_OF_WS) == -2)
 					;
-				printf("----%s\n", msg_rec);
-				sprintf(msg2, "SYN%6d", cnt++);
-				//printf("msg2=%s\n",msg2);
-				send(msg2, 10);
-				//printf("----ACK send\n");
-				//printf("cnt = %i\n",cnt);
-				fflush(stdout);
-				sleep(1);
-				break;
-			}//switch
+			if(debug){
+				printf("----msg_rec--- %s\n", msg_rec);
+			}
+			if()
+
 		}//while
 	} else {
 		printf("com-port %i not initiated\n");
@@ -145,7 +119,11 @@ void Serial::execute(void* data) {
 }
 
 void Serial::shutdown() {
-	close(ser);
+	if(-1 == close(ser)){
+		perror("close Serial %i failed\n",numComPort);
+	}else if(debug){
+		cout << "close successful" << endl;
+	}
 }
 
 int Serial::send(void* data, int lenBytes) {

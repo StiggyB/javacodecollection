@@ -11,6 +11,8 @@
 #include <sys/types.h>
 #include "../Thread/HAWThread.h"
 
+#define SIZE_OF_WS sizeof(WS)
+
 /**
  * Interface for the Serial Connection
  *
