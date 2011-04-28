@@ -117,9 +117,13 @@ private:
 	 */
 	void serveAsCommunicationServer();
 	/**
-	 * Stopped
+	 * Stop pushed!
 	 */
 	bool stopped;
+	/*
+	 * Emergency Stop pushed!
+	 */
+	bool emstopped;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

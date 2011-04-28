@@ -74,8 +74,8 @@ void InterruptController::activateInterrupts() {
 	i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortC_reset_Interrupt 0x" << hex << i << endl;
 	(*cc).activateInterrupt(PORT_B);
-	i = (*cc).getSetInterrupt();
-	cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
+	//i = (*cc).getSetInterrupt();
+	//cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
 	(*cc).activateInterrupt(PORT_C);
 	 i = (*cc).getSetInterrupt();
 	 cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;
@@ -177,7 +177,7 @@ void InterruptController::handlePulseMessages() {
 			//pulse inc
 
 			//cout << "P_0 COID: " << (*r_msg).pulse.scoid << endl;
-			cout << "PC_O: Code: " << (*r_msg).pulse.code << " " << (*r_msg).pulse.value.sival_int << endl;
+			//cout << "PC_O: Code: " << (*r_msg).pulse.code << " " << (*r_msg).pulse.value.sival_int << endl;
 
 			/*cout << "P_0 COID: " << r_msg.sigev_coid << endl;
 			cout << "P_1 NOTIFIY: " << r_msg.sigev_notify  << " "<< hex << r_msg.sigev_priority <<endl;
@@ -192,7 +192,7 @@ void InterruptController::handlePulseMessages() {
 			if(id != -1 && coid != -1){
 				if ((*r_msg).pulse.code == INTERRUPT_D_PORT_C_HIGH) {
 					buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER,(*r_msg).pulse.value.sival_int);
-					cout << "React C!"<<endl;
+					//cout << "React C!"<<endl;
 				} else { //pulse.code == port B
 					buildMessage(m, id, coid, react , INTERRUPTCONTROLLER,(*r_msg).pulse.value.sival_int);
 				}

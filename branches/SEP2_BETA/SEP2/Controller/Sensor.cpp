@@ -16,7 +16,7 @@
  */
 #include "Sensor.h"
 
-Sensor::Sensor() {
+Sensor::Sensor():cnt(0) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
@@ -132,7 +132,7 @@ void Sensor::shutdown() {
 }
 
 void Sensor::interrupt(int port, int val) {
-	cout << "S: cB: " << hex << controlBits <<endl;
+	//cout << "S: cB: " << hex << controlBits <<endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->
@@ -161,8 +161,13 @@ void Sensor::interrupt(int port, int val) {
 			}
 		}
 		if (!(val & BIT_SLIDE_FULL)) {
-			(*cc).stopMachine();
-			(*cc).shine(RED);
+			cnt++;
+			if(cnt == 4){
+				cnt = 0;
+				(*cc).shine(RED);
+				(*cc).stopMachine();
+			}
+
 		}
 		if (!(val & BIT_WP_OUTLET)) {
 			(*cc).engineReset();
@@ -171,14 +176,22 @@ void Sensor::interrupt(int port, int val) {
 		(*cc).setValueOfPort(PORT_B,val);
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
-		cout << "Sensor: pC: " << val << endl;
+		/*cout << "Sensor: pC: " << val << endl;
+		cout << "1. " << (val & BIT_E_STOP) << endl;
+		cout << "1_2. " << (!(val & BIT_E_STOP)) << endl;
+		cout << "2. " << (val & BIT_STOP) << endl;
+		cout << "2_2. " << (!(val & BIT_STOP)) << endl;
+		cout << "3. " << (val & BIT_START) << endl;
+		cout << "4. " << (val & BIT_RESET) << endl;*/
 		if (!(val & BIT_E_STOP)) {
 			(*cc).emergencyStop();
 		} else if (!(val & BIT_STOP)) {
 			(*cc).stopMachine();
 		} else if (val & BIT_START) {
+			cnt = 0;
 			(*cc).restart();
 		} else if (val & BIT_RESET) {
+			cnt = 0;
 			(*cc).resetAll();
 		}
 		(*cc).setValueOfPort(PORT_C,val);

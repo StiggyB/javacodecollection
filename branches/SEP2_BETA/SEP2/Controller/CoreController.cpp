@@ -17,8 +17,6 @@
  *
  */
 
-//TODO capsulate all activities on port variables through CoreController -> HAL
-
 #include "CoreController.h"
 
 Mutex CoreController::singleton;
@@ -48,7 +46,7 @@ void CoreController::deleteInstance(){
 	}
 }
 
-CoreController::CoreController():stopped(true) {
+CoreController::CoreController():stopped(false),emstopped(false){
 	h = HAL::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
@@ -132,14 +130,15 @@ void CoreController::emergencyStop(){
 	(*h).engineStop();
 	(*h).closeSwitch();
 	(*h).engineReset();
-	(*h).engineStop();
+	(*h).shine(RED);
+	(*h).removeLED(START_LED);
+	emstopped = true;
 	stopped = true;
-	m.lock();
-	// TODO call EXCEPTION HANDLER
-	shine(RED);
-	removeLED(START_LED);
+	//TODO EXCEPTION HANDLEN!
+	//(*h).engineStop();
+	//m.lock();
 	//EXCEPTION HANDLER end
-	cout << "CC: emergency Stop ;)" <<endl;
+	/*cout << "CC: emergency Stop ;)" <<endl;
 	while (stopped) {
 		if(!(*h).engineStopped()){
 			(*h).closeSwitch();
@@ -148,18 +147,18 @@ void CoreController::emergencyStop(){
 		}
 		sleep(1);
 	}
-	m.unlock();
+	m.unlock();*/
 }
 
 void CoreController::stopMachine(){
 	(*h).engineStop();
 	(*h).closeSwitch();
+	(*h).shine(RED);
 	stopped = true;
-	m.lock();
-	// TODO call EXCEPTION HANDLER
-	shine(RED);
+	// TODO EXCEPTION HANDLen!!!
+	//m.lock();
 	//EXCEPTION HANDLER end
-	cout << "CC: Stop Machine! ;)" <<endl;
+	/*cout << "CC: Stop Machine! ;)" <<endl;
 	while (stopped) {
 		if(!(*h).engineStopped()){
 			(*h).engineStop();
@@ -167,29 +166,36 @@ void CoreController::stopMachine(){
 		}
 		sleep(1);
 	}
-	m.unlock();
+	m.unlock();*/
 }
 
-void CoreController::restart(){
-	stopped = false;
-	cout << "CC: restart ;)" <<endl;
-	engineContinue();
+void CoreController::restart() {
+	if (!emstopped) {
+		stopped = false;
+		cout << "CC: restart ;)" << endl;
+		engineContinue();
+		shine(GREEN);
+	}
 }
 
-void CoreController::resetAll(){
+void CoreController::resetAll() {
 	stopped = false;
-	cout << "CC: resetAll ;)" <<endl;
+	emstopped = false;
+	cout << "CC: resetAll ;)" << endl;
 	closeSwitch();
 	engineReset();
-	shine(OFF);
+	shine(GREEN);
 	shineLED(LEDS_ON);
 }
 
 int CoreController::read(int dir) {
-	m.lock();
-	int ret = (*h).read(dir);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		int ret = (*h).read(dir);
+		m.unlock();
+		return ret;
+	}
+	return -1;
 
 }
 bool CoreController::isInput(int dir) {
@@ -205,28 +211,40 @@ bool CoreController::isOutput(int dir) {
 	return ret;
 }
 int CoreController::write(int dir, int value) {
-	m.lock();
-	bool ret = (*h).write(dir, value);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).write(dir, value);
+		m.unlock();
+		return ret;
+	}
+	return -1;
 }
 int CoreController::reset(int dir, int value) {
-	m.lock();
-	int ret = (*h).reset(dir, value);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		int ret = (*h).reset(dir, value);
+		m.unlock();
+		return ret;
+	}
+	return -1;
 }
 bool CoreController::engineStart(int direction) {
-	m.lock();
-	bool ret = (*h).engineStart(direction);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineStart(direction);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::openSwitch() {
-	m.lock();
-	bool ret = (*h).openSwitch();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).openSwitch();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::closeSwitch() {
 	m.lock();
@@ -235,16 +253,22 @@ bool CoreController::closeSwitch() {
 	return ret;
 }
 bool CoreController::setSwitchDirection(bool dir) {
-	m.lock();
-	bool ret = (*h).setSwitchDirection(dir);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).setSwitchDirection(dir);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineReset() {
-	m.lock();
-	bool ret = (*h).engineReset();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineReset();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineStop() {
 	m.lock();
@@ -253,137 +277,203 @@ bool CoreController::engineStop() {
 	return ret;
 }
 bool CoreController::engineContinue() {
-	m.lock();
-	bool ret = (*h).engineContinue();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineContinue();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineRight() {
-	m.lock();
-	bool ret = (*h).engineRight();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineRight();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineLeft() {
-	m.lock();
-	bool ret = (*h).engineLeft();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineLeft();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineSlowSpeed() {
-	m.lock();
-	bool ret = (*h).engineSlowSpeed();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineSlowSpeed();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineNormalSpeed() {
-	m.lock();
-	bool ret = (*h).engineNormalSpeed();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineNormalSpeed();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineStopped() {
-	m.lock();
-	bool ret = (*h).engineStopped();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineStopped();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineSlowSpeed(int dir) {
-	m.lock();
-	bool ret = (*h).engineSlowSpeed(dir);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineSlowSpeed(dir);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineSpeed(bool slow) {
-	m.lock();
-	bool ret = (*h).engineSpeed(slow);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineSpeed(slow);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineSlowLeft() {
-	m.lock();
-	bool ret = (*h).engineSlowLeft();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineSlowLeft();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::engineSlowRight() {
-	m.lock();
-	bool ret = (*h).engineSlowRight();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).engineSlowRight();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 int CoreController::getSetInterrupt() {
-	m.lock();
-	int ret = (*h).getSetInterrupt();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		int ret = (*h).getSetInterrupt();
+		m.unlock();
+		return ret;
+	}
+	return -1;
 }
 int CoreController::getInterrupt() {
-	m.lock();
-	int ret = (*h).getInterrupt();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		int ret = (*h).getInterrupt();
+		m.unlock();
+		return ret;
+	}
+	return -1;
 }
 bool CoreController::resetAllOutPut() {
-	m.lock();
-	bool ret = (*h).resetAllOutPut();
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).resetAllOutPut();
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::removeLight(Color col) {
-	m.lock();
-	bool ret = (*h).removeLight(col);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).removeLight(col);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::addLight(Color col) {
-	m.lock();
-	bool ret = (*h).addLight(col);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).addLight(col);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::shine(Color col) {
-	m.lock();
-	bool ret = (*h).shine(col);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).shine(col);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::removeLED(LEDS led) {
-	m.lock();
-	bool ret = (*h).removeLED(led);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).removeLED(led);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::addLED(LEDS led) {
-	m.lock();
-	bool ret = (*h).addLED(led);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).addLED(led);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 bool CoreController::shineLED(LEDS led) {
-	m.lock();
-	bool ret = (*h).shineLED(led);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).shineLED(led);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 
 bool CoreController::activateInterrupt(int port) {
-	m.lock();
-	bool ret = (*h).activateInterrupt(port);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).activateInterrupt(port);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 
 bool CoreController::deactivateInterrupt(int port) {
-	m.lock();
-	bool ret = (*h).deactivateInterrupt(port);
-	m.unlock();
-	return ret;
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).deactivateInterrupt(port);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }
 
-bool CoreController::setValueOfPort(int port,int val){
-	m.lock();
-	bool ret = (*h).setValueOfPort(port,val);
-	m.unlock();
-	return ret;
+bool CoreController::setValueOfPort(int port, int val) {
+	if (!(stopped && emstopped)) {
+		m.lock();
+		bool ret = (*h).setValueOfPort(port, val);
+		m.unlock();
+		return ret;
+	}
+	return false;
 }

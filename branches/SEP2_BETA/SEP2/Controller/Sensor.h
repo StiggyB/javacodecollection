@@ -44,6 +44,7 @@ private:
 	 *  Sets up the Communication to IC and waits for Messages from it.
 	 */
 	void settingUpAndWaitingSensor();
+	int cnt;
 };
 
 #endif /* SENSOR_H_ */

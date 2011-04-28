@@ -147,13 +147,13 @@ void HAL::setPortsTo(int cb){
 int HAL::write(int dir, int value, bool set){
 	//if(!set) std::cout<< "Write: port: "<< std::hex <<dir << " StartVal="<< std::hex<< value << " set?" << set <<std::endl;
 	int val = getBitsToAdress(dir);
-	bool reset = false;
+	//bool reset = false;
 	// if(!isOutput(dir)){ setPortToOutput(dir); reset = true }
-	if((controlBits & val ) != 0){
+	/*if((controlBits & val ) != 0){
 		std::cout << "setting to output :D cb: " << controlBits << " val: " <<std::hex << val << " dir: "<< dir <<std::endl;
 		setPortToOutput(dir);
 		reset = true;
-	}
+	}*/
 	//if(!set) std::cout<< "Write: reset: "<< reset << " controlBits: " << controlBits << " val:" << std::hex << val  <<std::endl;
 	value = checkVal(dir,value, set);
 	int volatile *port = 0;
@@ -189,9 +189,9 @@ int HAL::write(int dir, int value, bool set){
 	*port = newVal;
 	//if(!set) std::cout<< "Write: port: "<< std::hex <<dir << " val="<< std::hex<< *port  << " newVal="<<std::hex<<newVal<< std::endl;
 	out8(dir,newVal);
-	if(reset){
+	/*if(reset){
 		std::cout << "reset ports!"<< std::endl;
-		setPortToInput(dir); }
+		setPortToInput(dir); }*/
 	return newVal;
 }
 
@@ -395,7 +395,7 @@ int HAL::getColorCode(Color col) {
 
 bool HAL::shine(Color col) {
 	int val = getColorCode(col);
-	return shineLED(val);
+	return shine(val);
 }
 
 bool HAL::shine(int color) {
@@ -472,9 +472,12 @@ const struct sigevent * ISR(void *arg, int id) {
 	(*event).sigev_code = 7;
 	(*event).__sigev_un2.__st.__sigev_code = 7;
 	(*event).sigev_value.sival_int = iir;
-	*///SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,SIGEV_PULSE_PRIO_INHERIT,otto++,peter++);
+
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,SIGEV_PULSE_PRIO_INHERIT,otto++,iir);
 	//return (event);//break;
-	//*
+	return (event);
+	//*/
+
 
 	switch(iir){
 	case INTERRUPT_D_PORT_A: val = in8(PORT_A);
