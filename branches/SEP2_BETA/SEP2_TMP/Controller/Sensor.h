@@ -41,6 +41,10 @@ protected:
 	virtual void shutdown();
 private:
 	CoreController *cc;
+#ifdef TEST_SEN
+	//cout << "ts" << endl;
+	Test_Sensor ts;
+#endif
 
 };
 

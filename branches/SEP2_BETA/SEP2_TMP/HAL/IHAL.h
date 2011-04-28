@@ -183,7 +183,7 @@ public:
 	 * Calculates the value of a heightmeasurement.
 	 * \return a float, the value of the heightmeasurement.
 	 */
-	virtual float getHeight()=0;
+	virtual int identifyHeight()=0;
 	IHAL();
 	virtual ~IHAL();
 };

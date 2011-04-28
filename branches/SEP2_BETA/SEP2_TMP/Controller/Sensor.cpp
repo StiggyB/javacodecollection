@@ -37,6 +37,8 @@ Sensor::~Sensor() {
 
 void Sensor::execute(void*) {
 	//int rcvid;
+	int p = 0;
+
 	while (1) {
 		//rcvid = MsgReceive(chid, rmsg, sizeof(rmsg), NULL);
 		//MsgReply(rcvid, state, data, sizeof(data));
@@ -44,7 +46,7 @@ void Sensor::execute(void*) {
 	}
 #ifdef TEST_SEN
 		//read interrupt for testing
-		(*ts).test_sen(p);
+		ts.test_sen(p);
 		//read register for testing
 #endif
 }
