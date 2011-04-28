@@ -110,7 +110,7 @@ void Sensor::settingUpAndWaitingSensor(){
 			//cout << "Sensor: do something else..." << endl;
 			p = INTERRUPT_D_PORT_C_HIGH;
 		}
-		interrupt(p);
+		interrupt(p,(*r_msg).pulse.value.sival_int);
 	}
 	if (!detachConnection(id,coid,SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
@@ -131,54 +131,57 @@ void Sensor::shutdown() {
 
 }
 
-void Sensor::interrupt(int port) {
+void Sensor::interrupt(int port, int val) {
+	cout << "S: cB:" << controlBits <<endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->
 		//cout << "Sensor: pB: " << portB << endl;
-		if (!(portB & BIT_WP_IN_HEIGHT)) {
+		if (!(val & BIT_WP_IN_HEIGHT)) {
 			cout << "Sensor: WP_IN_H " << endl;
 		}
-		if (!(portB & BIT_WP_RUN_IN)) {
+		if (!(val & BIT_WP_RUN_IN)) {
 			(*cc).engineRight();
 			cout << "Sensor: BIT_WP_RUN_IN" << endl;
 		}
 
-		if (portB & BIT_WP_IN_SWITCH) {
-			if (portB & BIT_SWITCH_OPEN) {
+		if (val & BIT_WP_IN_SWITCH) {
+			if (val & BIT_SWITCH_OPEN) {
 				(*cc).closeSwitch();
 				cout << "Sensor: closes switch " << endl;
 			}
 		} else {
-			if (portB & BIT_WP_METAL) {
+			if (val & BIT_WP_METAL) {
 				//cout << " ist metall " << endl;
-				if (!(portB & BIT_SWITCH_OPEN)) {
+				if (!(val & BIT_SWITCH_OPEN)) {
 					(*cc).openSwitch();
 					cout << "Sensor: opens switch " << endl;
 				}
 				cout << "Sensor: ist Metall :D" << endl;
 			}
 		}
-		if (!(portB & BIT_SLIDE_FULL)) {
+		if (!(val & BIT_SLIDE_FULL)) {
 			(*cc).stopMachine();
 			(*cc).shine(RED);
 		}
-		if (!(portB & BIT_WP_OUTLET)) {
+		if (!(val & BIT_WP_OUTLET)) {
 			(*cc).engineReset();
 			cout << "Sensor: somethings coming out ;)" << endl;
 		}
+		(*cc).setValueOfPort(PORT_B,val);
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
-		cout << "Sensor: pC: " << portC << endl;
-		if (!(portC & BIT_E_STOP)) {
+		cout << "Sensor: pC: " << val << endl;
+		if (!(val & BIT_E_STOP)) {
 			(*cc).emergencyStop();
-		} else if (!(portC & BIT_STOP)) {
+		} else if (!(val & BIT_STOP)) {
 			(*cc).stopMachine();
-		} else if (portC & BIT_START) {
+		} else if (val & BIT_START) {
 			(*cc).restart();
-		} else if (portC & BIT_RESET) {
+		} else if (val & BIT_RESET) {
 			(*cc).resetAll();
 		}
+		(*cc).setValueOfPort(PORT_C,val);
 		break;
 	}
 }

@@ -53,7 +53,7 @@ CoreController::CoreController():stopped(true) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	out8(PORT_CNTRL, 0x82);
+	out8(PORT_CNTRL,0x8A);
 	resetAllOutPut();
 }
 
@@ -63,6 +63,7 @@ CoreController::~CoreController() {
 }
 
 void CoreController::serveAsCommunicationServer(){
+	//write(PORT_CNTRL,BIT_PORT_C_HIGH);
 	int rcvid = 0,id = 0;
 	if(!setUpChannel()){
 		perror("CC: channel setup failed");
@@ -78,7 +79,7 @@ void CoreController::serveAsCommunicationServer(){
 	}
 	Communication::serverChannelId = chid;
 	addLED(LEDS_ON);
-	while(1){
+	while(!isStopped()){
 		rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
 		//cout << "CC: message received. CA: "<<(*m).ca<<endl;
 		switch((*m).m.ca){
@@ -146,6 +147,7 @@ void CoreController::emergencyStop(){
 			(*h).engineReset();
 			(*h).engineStop();
 		}
+		sleep(1);
 	}
 	m.unlock();
 }
@@ -164,6 +166,7 @@ void CoreController::stopMachine(){
 			(*h).engineStop();
 			(*h).closeSwitch();
 		}
+		sleep(1);
 	}
 	m.unlock();
 }
@@ -375,6 +378,13 @@ bool CoreController::activateInterrupt(int port) {
 bool CoreController::deactivateInterrupt(int port) {
 	m.lock();
 	bool ret = (*h).deactivateInterrupt(port);
+	m.unlock();
+	return ret;
+}
+
+bool CoreController::setValueOfPort(int port,int val){
+	m.lock();
+	bool ret = (*h).setValueOfPort(port,val);
 	m.unlock();
 	return ret;
 }

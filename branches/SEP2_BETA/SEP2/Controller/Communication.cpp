@@ -297,9 +297,14 @@ bool Communication::destroyChannel(int id){
 }
 
 void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c){
+	buildMessage(s,chid,coid,activity,c,0);
+}
+
+void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c, int val){
 	Message *m =  (Message*) s;
 	(*m).m.chid = chid;
 	(*m).m.coid = coid;
 	(*m).m.ca =  activity;
 	(*m).m.comtype = c;
+	(*m).m.wert = val;
 }

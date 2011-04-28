@@ -214,7 +214,7 @@ public:
 	 * \return a bool, true action succeeded.
 	 */
 	virtual bool shineLED(LEDS led)=0;
-
+	virtual bool setValueOfPort(int port,int val)=0;
 
 	IHAL();
 	virtual ~IHAL();

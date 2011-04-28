@@ -85,6 +85,8 @@ HAL::HAL() {
 		std::cout << "error for IO Control" << std::endl;
 	}
 	controlBits = BIT_CNTRLS;
+	setPortToInput(BIT_CNTRLS);
+	out8(PORT_CNTRL,BIT_CNTRLS);
 	portA = read(PORT_A);
 	portB = read(PORT_B);
 	portC = read(PORT_C);
@@ -120,11 +122,11 @@ int HAL::setPortToOutput(int bits){
 }
 
 
-bool HAL::isInput(int dir){
-	return !isOutput(dir);
+bool HAL::isInput2(int dir){
+	return !isOutput2(dir);
 }
 
-bool HAL::isOutput(int dir){
+bool HAL::isOutput2(int dir){
 	switch(dir){
 	case PORT_A:dir = BIT_PORT_A;break;
 	case PORT_B:dir = BIT_PORT_B;break;
@@ -134,11 +136,11 @@ bool HAL::isOutput(int dir){
 	return (controlBits & dir);
 }
 
-bool HAL::isOutput2(int dir){
-	return !isInput2(dir);
+bool HAL::isOutput(int dir){
+	return !isInput(dir);
 }
 
-bool HAL::isInput2(int dir){
+bool HAL::isInput(int dir){
 	switch(dir){
 	case PORT_A:dir = BIT_PORT_A; break;
 	case PORT_B:dir = BIT_PORT_B; break;
@@ -163,6 +165,7 @@ int HAL::write(int dir, int value, bool set){
 	bool reset = false;
 	// if(!isOutput(dir)){ setPortToOutput(dir); reset = true }
 	if((controlBits & val ) != 0){
+		std::cout << "setting to output :D cb: " << controlBits << " val: " <<std::hex << val << " dir: "<< dir <<std::endl;
 		setPortToOutput(dir);
 		reset = true;
 	}
@@ -214,14 +217,17 @@ int HAL::reset(int dir, int value){
 }
 
 int HAL::read(int dir){
-	int cb = controlBits;
-	bool reset = !isInput(dir);
-	int bits = getBitsToAdress(dir);
-	if(reset){ setPortToInput(bits); }
-	int l = in8(dir);
-	if(reset){ setPortToInput(bits); }
-	setPortsTo(cb);
-	return l;
+	//int cb = controlBits;
+	//bool reset = !isInput(dir);
+	//int bits = getBitsToAdress(dir);
+	//if(reset){
+	//	std::cout << "HAL: needed to set to input" << std::endl;
+	//	setPortToInput(bits); }
+	//int l = in8(dir);
+	//if(reset){ setPortToInput(bits); }
+	//setPortsTo(cb);
+	//return l;
+	return in8(dir);
 }
 
 int HAL::getValueFromAdress(int dir){
@@ -468,6 +474,7 @@ bool HAL::shineLED(int led) {
 const struct sigevent * ISR(void *arg, int id) {
 	//static short peter = 0;
 	//static short otto = 0;
+	int val;
 	short iir;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK_D;
@@ -483,14 +490,14 @@ const struct sigevent * ISR(void *arg, int id) {
 	//*
 
 	switch(iir){
-	case INTERRUPT_D_PORT_A: portA = in8(PORT_A);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_A,1);
+	case INTERRUPT_D_PORT_A: val = in8(PORT_A);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_A,val);
 	return (event);break;
-	case INTERRUPT_D_PORT_B: portB = in8(PORT_B);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,2);// ;
+	case INTERRUPT_D_PORT_B: val = in8(PORT_B);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,val);// ;
 	return (event);break;
-	case INTERRUPT_D_PORT_C_HIGH: portC = in8(PORT_C);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,3);
+	case INTERRUPT_D_PORT_C: val = in8(PORT_C);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
 	return (event);break;
 	default: return (NULL);break;
 	}
@@ -526,3 +533,13 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
+bool HAL::setValueOfPort(int port,int val){
+	bool ret = true;
+	switch(port){
+	case PORT_A: portA = val; break;
+	case PORT_C: portC = val; break;
+	case PORT_B: portB = val; break;
+	default: ret = false; break;
+	}
+	return ret;
+}

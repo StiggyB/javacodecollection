@@ -63,7 +63,7 @@ enum PortAdress{
  * CONTROLBITS:
  */
 enum ControlBits {
-	BIT_PORT_A = (1<<4),BIT_PORT_B = (1<<1),BIT_PORT_C = ((1<<0) + (1<<3)),BIT_PORT_C_LOW = (1<<0),BIT_PORT_C_HIGH = (1<<3), BIT_CNTRLS = (0x82)
+	BIT_PORT_A = (1<<4),BIT_PORT_B = (1<<1),BIT_PORT_C = ((1<<0) + (1<<3)),BIT_PORT_C_LOW = (1<<0),BIT_PORT_C_HIGH = (1<<3), BIT_CNTRLS = (0x8A)
 };
 
 /**
@@ -195,6 +195,7 @@ public:
 	virtual bool removeLED(LEDS led);
 	virtual bool addLED(LEDS led);
 	virtual bool shineLED(LEDS led);
+	virtual bool setValueOfPort(int port,int val);
 
 private:
 

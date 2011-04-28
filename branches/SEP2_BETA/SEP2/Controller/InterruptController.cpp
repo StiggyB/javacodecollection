@@ -176,7 +176,7 @@ void InterruptController::handlePulseMessages() {
 		case 0:
 			//pulse inc
 
-			cout << "P_0 COID: " << (*r_msg).pulse.scoid << endl;
+			//cout << "P_0 COID: " << (*r_msg).pulse.scoid << endl;
 			cout << "PC_O: Code: " << (*r_msg).pulse.code << " " << (*r_msg).pulse.value.sival_int << endl;
 
 			/*cout << "P_0 COID: " << r_msg.sigev_coid << endl;
@@ -191,10 +191,10 @@ void InterruptController::handlePulseMessages() {
 			// here can more Sensors be added
 			if(id != -1 && coid != -1){
 				if ((*r_msg).pulse.code == INTERRUPT_D_PORT_C_HIGH) {
-					buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
+					buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER,(*r_msg).pulse.value.sival_int);
 					cout << "React C!"<<endl;
 				} else { //pulse.code == port B
-					buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
+					buildMessage(m, id, coid, react , INTERRUPTCONTROLLER,(*r_msg).pulse.value.sival_int);
 				}
 				//cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
 				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {

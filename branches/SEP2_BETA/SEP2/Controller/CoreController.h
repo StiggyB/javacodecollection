@@ -70,6 +70,7 @@ public:
 	virtual bool shineLED(LEDS led);
 	virtual bool deactivateInterrupt(int port);
 	virtual bool activateInterrupt(int port);
+	virtual bool setValueOfPort(int port,int val);
 	/**
 	 * Performes an emergency stop.
 	 */

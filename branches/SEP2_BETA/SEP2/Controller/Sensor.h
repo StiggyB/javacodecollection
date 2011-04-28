@@ -29,7 +29,7 @@ public:
 	 * Deal with the Interrupt for given port.
 	 * \param port an integer representing the port where an interrupt occures.
 	 */
-	void interrupt(int port);
+	void interrupt(int port, int val);
 	Sensor();
 	virtual ~Sensor();
 protected:
