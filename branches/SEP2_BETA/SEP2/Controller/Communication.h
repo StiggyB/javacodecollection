@@ -24,19 +24,24 @@ enum MsgType{
 /**
  * Message structure containing information about the Sender and what he wants from the Receiver
  */
-typedef struct message{
+typedef struct msg{
 	int chid;
 	int coid;
 	MsgType ca;
 	/**
 	 * the message which should be transmitted itself, like event for InterruptPulses
 	 */
-	union msg{
-		int messwert;
-		CommunicatorType comtype;
-		struct sigevent event;
-		//more can be added here!
-	} Msg;
+	//int messwert;
+	CommunicatorType comtype;
+} Msg;
+
+typedef union message{
+	struct sigevent event;
+	struct _pulse pulse;
+	/**
+	 * the message which should be transmitted itself, like event for InterruptPulses
+	 */
+	Msg m;
 } Message;
 
 /**
@@ -162,7 +167,6 @@ public:
 	 * CoreController ChannelID
 	 */
 	static volatile int serverChannelId;
-
 	Communication();
 	virtual ~Communication();
 private:

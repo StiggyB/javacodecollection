@@ -9,8 +9,6 @@
 #include "Communication.h"
 #include "CoreController.h"
 
-extern Message msg;
-
 /**
  * Interrupt Controller
  *
@@ -26,7 +24,6 @@ extern Message msg;
  *
  * Inherits: HAWThread.h
  */
-
 class InterruptController : public thread::HAWThread, public Communication{//, public Singleton {
 public:
 	/**
@@ -91,6 +88,8 @@ private:
 	 * Pointer to the CoreController singleton
 	 */
 	CoreController *cc;
+	Message *msg;
+
 };
 
 #endif /* INTERRUPTCONTROLLER_H_ */

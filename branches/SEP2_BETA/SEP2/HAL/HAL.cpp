@@ -466,23 +466,35 @@ bool HAL::shineLED(int led) {
 }
 
 const struct sigevent * ISR(void *arg, int id) {
-	int iir;
+	//static short peter = 0;
+	//static short otto = 0;
+	short iir;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK_D;
-	if(iir & 1) return (NULL);
+	//if(iir & 1) return (NULL);
+	//out8(PORT_A,iir);
+	/*
+	(*event).sigev_notify = SIGEV_PULSE;
+	(*event).sigev_code = 7;
+	(*event).__sigev_un2.__st.__sigev_code = 7;
+	(*event).sigev_value.sival_int = iir;
+	*///SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,SIGEV_PULSE_PRIO_INHERIT,otto++,peter++);
+	//return (event);//break;
+	//*
+
 	switch(iir){
 	case INTERRUPT_D_PORT_A: portA = in8(PORT_A);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un1.__sigev_id,INTERRUPT_D_PORT_A,0);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_A,1);
 	return (event);break;
 	case INTERRUPT_D_PORT_B: portB = in8(PORT_B);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un1.__sigev_id,INTERRUPT_D_PORT_B,0);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,2);// ;
 	return (event);break;
-	case INTERRUPT_D_PORT_C: portC = in8(PORT_C);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un1.__sigev_id,INTERRUPT_D_PORT_C,0);
+	case INTERRUPT_D_PORT_C_HIGH: portC = in8(PORT_C);
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,3);
 	return (event);break;
 	default: return (NULL);break;
 	}
-	return (NULL);
+	return (NULL);//*/
 }
 
 bool HAL::activateInterrupt(int port){

@@ -71,7 +71,23 @@ void StartThread::execute(void*) {
 	cout << "waiting for M1-Tests" << endl;
 	tm.join();
 #endif
-
+/*
+	sleep(4);
+	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
+	if (coid == -1) {
+		perror("InterruptController: failed to attach Channel for Interrupt\n");
+	}else{
+		short otto = 0;
+		short peter = 0;
+		while(1){
+			//struct _pulse puls;
+			//SIGEV_PULSE_INIT(&puls,coid,SIGEV_PULSE_PRIO_INHERIT,otto,peter);
+			if(-1 == MsgSendPulse(coid,SIGEV_PULSE_PRIO_INHERIT,otto++,peter++)){
+				perror("ST: failed to send puls!");
+			}
+		}
+	}
+*/
 	//sleep(40);
 	(*cc).join();
 

@@ -15,7 +15,7 @@
  */
 
 #include "InterruptController.h"
-Message msg;
+
 Mutex InterruptController::singleton;
 
 InterruptController* InterruptController::pInstance = NULL;
@@ -44,6 +44,10 @@ void InterruptController::deleteInstance(){
 
 
 InterruptController::InterruptController() {
+	msg =(Message*) malloc(sizeof(Message));
+	if(msg == NULL){
+		perror("IC: couldn't get space for ISR-Message!");
+	}
 	h = HAL::getInstance();
 	cc = CoreController::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -99,14 +103,14 @@ void InterruptController::connectToHAL() {
 		return;
 	}
 	cout << "InterruptController: COID for all is =" << coid << endl;
-	SIGEV_PULSE_INIT(&msg.Msg.event,coid,SIGEV_PULSE_PRIO_INHERIT,INTERRUPT_D_PORT_B,0);
+	SIGEV_PULSE_INIT(&((*msg).event),coid,SIGEV_PULSE_PRIO_INHERIT,7,0);
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("error for IO Control\n");
 		cleanUp(coid);
 		return;
 	}
 	cout << "InterruptController: Interrupt will be attached." << endl;
-	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &(msg.Msg.event), sizeof((msg.Msg.event)), 0)) == -1) {
+	if ((interruptId = InterruptAttach(INTERRUPT_VECTOR_NUMMER_D, ISR, &((*msg).event), sizeof(((*msg).event)), 0)) == -1) {
 		perror("InterruptController: failed to create ISR coupling\n");
 		cleanUp(coid);
 		return;
@@ -126,6 +130,7 @@ void InterruptController::execute(void*) {
 	}else{
 		cout << "IC: channel setup successful "<< chid << endl;
  	}
+	//Communication::serverChannelId = chid;
 	if(!registerChannel(INTERRUPTCONTROLLER)){
 		perror("IC: register channel failed");
 		destroyChannel(chid);
@@ -160,56 +165,71 @@ void InterruptController::handlePulseMessages() {
 		perror("IC: failed to get Space for Receive Message.");
 		return;
 	}
+	//Message r_msg;
+	//struct _pulse r_msg;
 	(*cc).addLight(GREEN);
-	while (1) {
+	while (!isStopped()){
 	//	cout << "InterruptController: waiting for Pulse on Channel " << chid <<endl;
 		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 		//cout << "InterruptController: Message Received" << endl;
 		switch (rcvid) {
 		case 0:
 			//pulse inc
-			//cout << "PulseCode: " << (*r_msg).Msg.event.__sigev_un1.__sigev_signo << endl;
+
+			cout << "P_0 COID: " << (*r_msg).pulse.scoid << endl;
+			cout << "PC_O: Code: " << (*r_msg).pulse.code << " " << (*r_msg).pulse.value.sival_int << endl;
+
+			/*cout << "P_0 COID: " << r_msg.sigev_coid << endl;
+			cout << "P_1 NOTIFIY: " << r_msg.sigev_notify  << " "<< hex << r_msg.sigev_priority <<endl;
+			cout << "PC_O: Code: " << r_msg.sigev_code<< " " << r_msg.sigev_value.sival_int << endl;
+			 */
+			//cout << "PC:" << (*r_msg).event.__sigev_un2.__st.__sigev_code << endl;
+			//cout << "PulseCode: " << (*r_msg).event.__sigev_un1.__sigev_signo << endl;
+			//cout << "PulseCode: " << (*r_msg).event.__sigev_un2.__st.__sigev_code<< endl;
 			id = getChannelIdForObject(SENSOR);
 			coid = getConnectIdForObject(SENSOR);
-			//cout << "IC: sending to Sensor: ID=" << id<<" COID="<<coid<<endl;
-
 			// here can more Sensors be added
-			if ((*r_msg).Msg.event.__sigev_un1.__sigev_signo == INTERRUPT_D_PORT_C) {
-				buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
-			} else { //pulse.code == port B
-				buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
+			if(id != -1 && coid != -1){
+				if ((*r_msg).pulse.code == INTERRUPT_D_PORT_C_HIGH) {
+					buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER);
+					cout << "React C!"<<endl;
+				} else { //pulse.code == port B
+					buildMessage(m, id, coid, react, INTERRUPTCONTROLLER);
+				}
+				//cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
+				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
+					perror("InterruptController: failed to send Puls message to Sensor!");
+				}//*/
+				//cout << "IC: send message to Sensor!" << endl;
+			}else{
+				perror("InterruptController: no Sensor available!");
 			}
-			//cout << "InterruptController: Message to Sensor: CHID=" <<(*m).chid<<" COID="<< (*m).coid<<endl;
-			if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-				perror("InterruptController: failed to send message to server!");
-			}//*/
-			//cout << "IC: send message to Sensor!" << endl;
 			break;
 		case -1:
 			perror("InterruptController: failed to get MsgPulse\n");
 			break;
 		default:
 			//add new Communicator
-			if ((*r_msg).ca == startConnection) {
+			if ((*r_msg).m.ca == startConnection) {
 				//cout << "IC: adding Sensor: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
-				if (addCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
+				if (addCommunicator((*r_msg).m.chid, (*r_msg).m.coid,(*r_msg).m.comtype)) {
 					//cout << "IC: adding successful."<<endl;
-					buildMessage(m, (*r_msg).chid, (*r_msg).coid, OK,INTERRUPTCONTROLLER);
+					buildMessage(m, (*r_msg).m.chid, (*r_msg).m.coid, OK,INTERRUPTCONTROLLER);
 					//cout << "IC: build message complete" << endl;
 					if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 						perror("InterruptController: failed to send reply message to Communicator!");
-					}//*/
+					}//
 					//cout << "IC: added Communicator" << endl;
 				} else {
 					perror("IC: failed to addCommunicator");
 				}
-				if ((coid = ConnectAttach(0, 0, (*r_msg).chid,_NTO_SIDE_CHANNEL, 0)) == -1) {
+				if ((coid = ConnectAttach(0, 0, (*r_msg).m.chid,_NTO_SIDE_CHANNEL, 0)) == -1) {
 					perror("InterruptController: failed to attach Channel to other Instance\n");
 				}
-				(*getCommunicatorForObject((*r_msg).chid, (*r_msg).coid)).setConnectID(coid);
+				(*getCommunicatorForObject((*r_msg).m.chid, (*r_msg).m.coid)).setConnectID(coid);
 				//cout << "IC: connectAttached to other channel on coid: "<<coid <<endl;
-			} else if ((*r_msg).ca == closeConnection) {
-				if (removeCommunicator((*r_msg).chid, (*r_msg).coid,(*r_msg).Msg.comtype)) {
+			} else if ((*r_msg).m.ca == closeConnection) {
+				if (removeCommunicator((*r_msg).m.chid, (*r_msg).m.coid,(*r_msg).m.comtype)) {
 					perror("IC: remove Communicator.");
 				}
 			} else {

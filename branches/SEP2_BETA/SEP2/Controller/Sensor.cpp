@@ -91,20 +91,20 @@ void Sensor::settingUpAndWaitingSensor(){
 		destroyChannel(chid);
 		return;
 	}
-	//cout << "Sensor: Channel id of IC: " << id << endl;
-	while (1) {
+	//cout << "Sensor: Channel id of IC: " << id << endl;#
+	while (!isStopped()) {
 		//cout << "Sensor: waiting for Interrupt...on chid: "<< chid << " coid: " << coid << endl;
 		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
 		//cout << "Sensor: received Message " << endl;
 		//cout << "Sensor: Message from IC: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
 		coid = getConnectIdForObject(INTERRUPTCONTROLLER);
-		buildMessage(m, (*r_msg).chid, coid, OK, SENSOR);
+		buildMessage(m, (*r_msg).m.chid, coid, OK, SENSOR);
 		//cout << "IC: build message complete" << endl;
 		if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 			perror("Sensor: failed to send reply message to IC!");
 		}//*/
 		//cout << "Sensor: react="<<(*r_msg).ca << endl;
-		if ((*r_msg).ca == react) {
+		if ((*r_msg).m.ca == react) {
 			p = INTERRUPT_D_PORT_B;
 		} else {
 			//cout << "Sensor: do something else..." << endl;
@@ -135,7 +135,7 @@ void Sensor::interrupt(int port) {
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->
-		cout << "Sensor: pB: " << portB << endl;
+		//cout << "Sensor: pB: " << portB << endl;
 		if (!(portB & BIT_WP_IN_HEIGHT)) {
 			cout << "Sensor: WP_IN_H " << endl;
 		}
@@ -151,7 +151,7 @@ void Sensor::interrupt(int port) {
 			}
 		} else {
 			if (portB & BIT_WP_METAL) {
-				cout << " ist metall " << endl;
+				//cout << " ist metall " << endl;
 				if (!(portB & BIT_SWITCH_OPEN)) {
 					(*cc).openSwitch();
 					cout << "Sensor: opens switch " << endl;

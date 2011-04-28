@@ -87,7 +87,7 @@ bool Communication::requestChannelIDForObject(CommunicatorType c){
 		cleanUp(0,msg_s,r_msg);
 		return false;
 	}
-	addCommunicator((*r_msg).chid,0,c);
+	addCommunicator((*r_msg).m.chid,0,c);
 	cleanUp(0,msg_s,r_msg);
 	return true;
 }
@@ -239,7 +239,7 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		return false;
 	}
 	//std::cout << "Com_attachConnection got answer!" << std::endl;
-	if (r_msg->ca != OK) {
+	if ((*r_msg).m.ca != OK) {
 		//std::cout << "ReturnMessageType: " << r_msg->ca << std::endl;
 		perror("Communication: no OK from Receiver! ");
 		cleanUp(coid,msg_s,r_msg);
@@ -274,7 +274,7 @@ bool Communication::detachConnection(int id,int coid,CommunicatorType c){
 		perror("Communication: failed to send Message to server,");
 		cleanUp(0,msg_s,r_msg);
 	}
-	if(r_msg->ca != OK){
+	if((*r_msg).m.ca != OK){
 		perror("Communication: _Detach_Communication_ no OK from Receiver!");
 		cleanUp(0,msg_s,r_msg);
 		return false;
@@ -298,8 +298,8 @@ bool Communication::destroyChannel(int id){
 
 void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c){
 	Message *m =  (Message*) s;
-	(*m).chid = chid;
-	(*m).coid = coid;
-	(*m).ca =  activity;
-	(*m).Msg.comtype = c;
+	(*m).m.chid = chid;
+	(*m).m.coid = coid;
+	(*m).m.ca =  activity;
+	(*m).m.comtype = c;
 }
