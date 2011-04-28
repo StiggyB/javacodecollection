@@ -200,16 +200,6 @@ public:
 private:
 
 	/**
-	 * same as isOutput(int dir);
-	 * -> needs testing
-	 */
-	bool isOutput2(int dir);
-	/**
-	 * same as isInput(int dir);
-	 * -> needs testing
-	 */
-	bool isInput2(int dir);
-	/**
 	 * Writes to the transfersystem.
 	 * \param dir an integer representing the port address
 	 * \param value an integer, the bits which should be written or deleted

@@ -85,13 +85,13 @@ HAL::HAL() {
 		std::cout << "error for IO Control" << std::endl;
 	}
 	controlBits = BIT_CNTRLS;
-	setPortToInput(BIT_CNTRLS);
 	out8(PORT_CNTRL,BIT_CNTRLS);
 	portA = read(PORT_A);
 	portB = read(PORT_B);
 	portC = read(PORT_C);
 	portIRE = read(PORT_IRE);
 	portIRQ = read(PORT_IRQ);
+	out8(PORT_C,0x0F);
 }
 
 HAL::~HAL() {
@@ -119,21 +119,6 @@ int HAL::setPortToOutput(int bits){
 	controlBits = controlBits  & (~bits);
 	out8(PORT_CNTRL, controlBits);
 	return 1;
-}
-
-
-bool HAL::isInput2(int dir){
-	return !isOutput2(dir);
-}
-
-bool HAL::isOutput2(int dir){
-	switch(dir){
-	case PORT_A:dir = BIT_PORT_A;break;
-	case PORT_B:dir = BIT_PORT_B;break;
-	case PORT_C:dir = BIT_PORT_C;break;
-	default:break;
-	}
-	return (controlBits & dir);
 }
 
 bool HAL::isOutput(int dir){
@@ -204,7 +189,9 @@ int HAL::write(int dir, int value, bool set){
 	*port = newVal;
 	//if(!set) std::cout<< "Write: port: "<< std::hex <<dir << " val="<< std::hex<< *port  << " newVal="<<std::hex<<newVal<< std::endl;
 	out8(dir,newVal);
-	if(reset){ setPortToInput(dir); }
+	if(reset){
+		std::cout << "reset ports!"<< std::endl;
+		setPortToInput(dir); }
 	return newVal;
 }
 
@@ -496,7 +483,7 @@ const struct sigevent * ISR(void *arg, int id) {
 	case INTERRUPT_D_PORT_B: val = in8(PORT_B);
 	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,val);// ;
 	return (event);break;
-	case INTERRUPT_D_PORT_C: val = in8(PORT_C);
+	case INTERRUPT_D_PORT_C_HIGH: val = in8(PORT_C);
 	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
 	return (event);break;
 	default: return (NULL);break;

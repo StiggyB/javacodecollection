@@ -132,7 +132,7 @@ void Sensor::shutdown() {
 }
 
 void Sensor::interrupt(int port, int val) {
-	cout << "S: cB:" << controlBits <<endl;
+	cout << "S: cB: " << hex << controlBits <<endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 		// CA = 1100 1010 ->

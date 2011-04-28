@@ -53,7 +53,6 @@ CoreController::CoreController():stopped(true) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	out8(PORT_CNTRL,0x8A);
 	resetAllOutPut();
 }
 
