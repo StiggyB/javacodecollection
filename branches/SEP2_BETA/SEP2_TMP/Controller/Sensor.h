@@ -9,6 +9,7 @@
 #include "../Tests/Test_Sensor.h"
 #include "../Thread/HAWThread.h"
 
+
 /**
  * Sensor
  *
@@ -25,7 +26,6 @@
  *
  * Inherits: HAWThread.h
  */
-//class CoreController;
 
 class Sensor : public thread::HAWThread{
 public:
@@ -41,8 +41,8 @@ protected:
 	virtual void shutdown();
 private:
 	CoreController *cc;
+
 #ifdef TEST_SEN
-	//cout << "ts" << endl;
 	Test_Sensor ts;
 #endif
 

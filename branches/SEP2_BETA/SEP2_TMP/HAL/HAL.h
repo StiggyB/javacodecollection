@@ -289,6 +289,7 @@ private:
 	 * Mutex to ensure thread-safety of HAL creation.
 	 */
 	static Mutex mutEx;
+
 };
 
 #endif /* HAL_H_ */

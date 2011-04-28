@@ -36,7 +36,7 @@
  * Inherits: Sensor.h
  */
 
-#include "../Controller/Sensor.h"
+//#include "../Controller/Sensor.h"
 #include "../Controller/CoreController.h"
 #include "../Thread/HAWThread.h"
 
