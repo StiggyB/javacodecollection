@@ -463,21 +463,23 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
-//TODO 0prio -- implement & test identifyHeight
+//TODO 0prio -- implement interrupt
 int HAL::identifyHeight(){
-	out8(HEIGHT_MEASURE,HEIGHT_START_CODE);
+	out8(HEIGHT_MEASURE,HEIGHT_START_CODE); //schreibe auf bit7 um interrupts zu aktivieren
 	//busy waiting bis bit7 1
-	while((HEIGHT_MEASURE & (1<<7)) == 0) { //Datenblatt auf interrupt prüfen statt busy waiting
+	//(*cc).join();
+	while(read(HEIGHT_MEASURE & (1<<7)) == 0) { //Datenblatt auf interrupt pruefen statt busy waiting
 		/*DAC busy waiting*/
 	}
-	int height = in8(HEIGHT_MEASURE);
-	// 4095 -0 / V10 - V0
+	int height = in8((A_IOBASE + 0x03));
+	height = ((height<<8) | (in8(HEIGHT_MEASURE)));
+
 	if((height <= PLANE_WP + tolerance_normal) && (height >= PLANE_WP - tolerance_normal)) {
-		//height = PLANE_WP;
+		height = PLANE_WP;
 	} else if ((height <= NORMAL_WP + tolerance_normal) && (height >= NORMAL_WP - tolerance_normal)) {
-		//height = NORMAL_WP;
+		height = NORMAL_WP;
 	} else if ((height <= POCKET_WP + tolerance_pocket) && (height >= POCKET_WP - tolerance_pocket)) {
-		//height = POCKET_WP;
+		height = POCKET_WP;
 	}
 
 	return height;

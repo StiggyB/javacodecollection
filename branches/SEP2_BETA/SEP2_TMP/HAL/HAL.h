@@ -77,7 +77,7 @@ enum ControlBits {
  * Height Measures
  */
 enum Height{
-	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x10)
+	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x50)
 };
 
 /*
