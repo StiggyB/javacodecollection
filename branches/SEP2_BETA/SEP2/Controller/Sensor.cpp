@@ -135,6 +135,8 @@ void Sensor::interrupt(int port, int val) {
 	//cout << "S: cB: " << hex << controlBits <<endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
+
+		//mutexPortB.lock();
 		// CA = 1100 1010 ->
 		//cout << "Sensor: pB: " << portB << endl;
 		if (!(val & BIT_WP_IN_HEIGHT)) {

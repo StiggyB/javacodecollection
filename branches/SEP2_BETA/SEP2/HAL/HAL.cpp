@@ -18,18 +18,6 @@
  *
  * Inherits: IHAL.h
  */
-//TODO HAL -> port variables threadsafe while in ISR? would say sure!
-
-/*
- * TODO Code Pruefung HAL:
-	- Funktion: int HAL::write(int dir, int value, bool set)
-  	  ist unübersichtlich und unleserlich
-  	  Verbesserungsvorschlag: Extract Method für switch-case und evt. mehr.
-  	  Steht nach wie vor zur Disskussion!
-  	  --> Noch diskutieren (Jan)
-  	- Zerstoerung der instance der HAL steht noch aus.
-  	  Stichwort: Meyers Singleton bzw. Phoenix Singleton (Meeting Do 14.04 8:15Uhr - Besprochen) -> DONE!
-*/
 
 #include "HAL.h"
 /**

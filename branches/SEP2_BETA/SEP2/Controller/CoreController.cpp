@@ -155,7 +155,7 @@ void CoreController::stopMachine(){
 	(*h).closeSwitch();
 	(*h).shine(RED);
 	stopped = true;
-	// TODO EXCEPTION HANDLen!!!
+	// TODO EXCEPTION HANDLEN!!!
 	//m.lock();
 	//EXCEPTION HANDLER end
 	/*cout << "CC: Stop Machine! ;)" <<endl;

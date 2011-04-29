@@ -7,8 +7,6 @@
 
 #include "StartThread.h"
 
-//TODO Korf fragen wegen dem Cast dort... obs die beste Loesung ist oder ob jeden ableiten besser waere...
-
 StartThread::StartThread(){
 	h = HAL::getInstance();
 	cc = CoreController::getInstance();
