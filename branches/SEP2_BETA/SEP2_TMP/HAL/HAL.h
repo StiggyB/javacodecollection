@@ -29,12 +29,18 @@
 /*
  * tolerance range plane and normal work piece
  */
-#define tolerance_normal 50
+#define TOLERANCE_NORMAL 50
 
 /*
  * tolerance range work piece with a pocket
  */
-#define tolerance_pocket 100
+#define TOLERANCE_POCKET 100
+
+/*
+ * 12Bit-Mask for the height measure
+ */
+#define HEIGHT_MASK 0xFFF
+
 /**
  * PORT A:
  */
@@ -77,7 +83,7 @@ enum ControlBits {
  * Height Measures
  */
 enum Height{
-	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x50)
+	HEIGHT_MEASURE_STATUS = (A_IOBASE + 0x00), HEIGHT_REGISTER_PART1 = (A_IOBASE + 0x02), HEIGHT_REGISTER_PART2 = (A_IOBASE + 0x03), HEIGHT_START_CODE = (0x10)
 };
 
 /*

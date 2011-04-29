@@ -205,16 +205,21 @@ void Test_Sensor::test_Operator_Included() {
 	bool success = false;
 	int height = 0;
 	int res = 0;
+	int cnt = 0;
 
 	cout << "\nTest_Sensor: work piece included test started" << endl;
+	(*cc).engineRight();
 	(*cc).shine(YELLOW);
 	while(1) {
-		cout << "measure" << endl;
+		//cout << "measure" << endl;
 		if (!(portB & BIT_WP_IN_HEIGHT) ) {
+			cnt++;
+			if(cnt < 50) {
 			height = (*cc).identifyHeight();
 			cout << "Height: " << height << endl;
-			printf("%d\n", height);
-			sleep(TIME);
+			printf("Counter: %d %d\n", cnt, height);
+			}
+			//sleep(TIME);
 		}
 	}
 		while(section1) {
@@ -397,7 +402,7 @@ bool Test_Sensor::test_height_sen_b2() {
 	height = (*cc).identifyHeight();
 	cout << "Height: " << height << endl;
 	//TODO 1prio -- test if it is the same in getHeight()!
-	if((height <= PLANE_WP_DEFAULT_HEIGHT + tolerance_normal) && (height >= PLANE_WP_DEFAULT_HEIGHT - tolerance_normal)) {
+	if((height <= PLANE_WP_DEFAULT_HEIGHT + TOLERANCE_NORMAL) && (height >= PLANE_WP_DEFAULT_HEIGHT - TOLERANCE_NORMAL)) {
 		success = true;
 	} else {
 		success = false;

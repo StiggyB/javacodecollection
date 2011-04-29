@@ -463,25 +463,23 @@ int HAL::getSetInterrupt(){
 	return read(PORT_IRE);
 }
 
-//TODO 0prio -- implement interrupt
+//TODO 0prio --
 int HAL::identifyHeight(){
-	out8(HEIGHT_MEASURE,HEIGHT_START_CODE); //schreibe auf bit7 um interrupts zu aktivieren
+	out8(HEIGHT_REGISTER_PART1, HEIGHT_START_CODE);
 	//busy waiting bis bit7 1
-	//(*cc).join();
-	while(read(HEIGHT_MEASURE & (1<<7)) == 0) { //Datenblatt auf interrupt pruefen statt busy waiting
+	while((in8(HEIGHT_MEASURE_STATUS) & (1<<7)) == 0) { //Max Durchlaufe einbauen
 		/*DAC busy waiting*/
 	}
-	int height = in8((A_IOBASE + 0x03));
-	height = ((height<<8) | (in8(HEIGHT_MEASURE)));
+	int height = in16((HEIGHT_REGISTER_PART1));
+	height &= HEIGHT_MASK;
 
-	if((height <= PLANE_WP + tolerance_normal) && (height >= PLANE_WP - tolerance_normal)) {
+	if((height <= PLANE_WP + TOLERANCE_NORMAL) && (height >= PLANE_WP - TOLERANCE_NORMAL)) {
 		height = PLANE_WP;
-	} else if ((height <= NORMAL_WP + tolerance_normal) && (height >= NORMAL_WP - tolerance_normal)) {
+	} else if ((height <= NORMAL_WP + TOLERANCE_NORMAL) && (height >= NORMAL_WP - TOLERANCE_NORMAL)) {
 		height = NORMAL_WP;
-	} else if ((height <= POCKET_WP + tolerance_pocket) && (height >= POCKET_WP - tolerance_pocket)) {
+	} else if ((height <= POCKET_WP + TOLERANCE_POCKET) && (height >= POCKET_WP - TOLERANCE_POCKET)) {
 		height = POCKET_WP;
 	}
-
 	return height;
 }
 
