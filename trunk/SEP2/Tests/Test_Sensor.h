@@ -51,7 +51,7 @@ enum portBState {
 };
 
 enum portCState {
-	BIT_START_PUSHED = 1, BIT_STOP_PUSHED = 0, BIT_RESET_PUSHED = 1, BIT_E_STOP_PUSHED = 0
+	BIT_START_PUSHED = (1<<4), BIT_STOP_PUSHED = (1<<5), BIT_RESET_PUSHED = (1<<6), BIT_E_STOP_PUSHED = 0, BIT_E_STOP_LOST = (1<<7)
 };
 
 enum SensorState {

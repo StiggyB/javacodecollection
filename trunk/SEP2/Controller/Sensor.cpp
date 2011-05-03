@@ -28,6 +28,7 @@ Sensor::Sensor():cnt(0) {
 		cc = CoreController::getInstance();
 	}
 #ifdef TEST_SEN
+		//new ts();
 		ts = Test_Sensor();
 #endif
 }
@@ -123,7 +124,6 @@ void Sensor::settingUpAndWaitingSensor(){
 
 #ifdef TEST_SEN
 		//read interrupt for testing
-		//new ts();
 		ts.test_sen(p, (*r_msg).pulse.value.sival_int);
 		//read register for testing
 #endif

@@ -42,6 +42,7 @@
 	int res = 0;
 	int height = 0;
 	int section = 0;
+	bool flag = true;
 
 Test_Sensor::Test_Sensor()
 :lastState(BIT_WP_OUT)
@@ -57,18 +58,15 @@ void Test_Sensor::shutdown() {
 
 }
 
-//could implement MsgReceive/Reply and communication stuff -- later!
 void Test_Sensor::execute(void*) {
 
 	//test_Software_Only();
-	cout << "Operator Test"	 << endl;
-	test_Operator_Included();
+	//test_Operator_Included();
 
 }
 
 void Test_Sensor::test_sen(int port, int value) {
 
-	(*cc).shine(YELLOW); //export in execute
 	switch(port) {
 	case INTERRUPT_D_PORT_B:
 		if(section == 0) {
@@ -76,85 +74,77 @@ void Test_Sensor::test_sen(int port, int value) {
 			if(!(value & BIT_WP_RUN_IN)) {
 				if(lastState != 0) {
 					success &= false;
-					cout << "false" <<endl;
 				}
+				(*cc).shine(YELLOW);
 				cout << "Section test1" <<  endl;
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
 				(*cc).engineRight();
+				res = (*cc).read(PORT_B);
 				lastState = BIT_WP_RUN_IN;
 			}
 			if(!(value & BIT_WP_IN_HEIGHT)) {
 				if(lastState != BIT_WP_RUN_IN) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(1, (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
 				height = (*cc).identifyHeight();
 				success &= assert_equals(2, height, PLANE_WP_DEFAULT_HEIGHT);
+				res = (*cc).read(PORT_B);
 				lastState = BIT_WP_IN_HEIGHT;
 			}
 
-			if (!(value & BIT_WP_IN_SWITCH)) {
+			if (!(value & BIT_WP_IN_SWITCH) && !(value & BIT_SWITCH_STATUS)) {
 				if(lastState != BIT_WP_IN_HEIGHT) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(3, (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 				success &= assert_equals(4, (res & BIT_WP_METAL), NO_METAL_STATE);
 				(*cc).openSwitch();
-				//res = (*cc).read(PORT_B);
-				//success &= assert_equals(5, (res & BIT_SWITCH_STATUS), SWITCH_OPEN_STATE);
 				lastState = BIT_WP_IN_SWITCH;
 			}
 
 			if (!(value & BIT_WP_OUTLET)) {
 				if(lastState != BIT_WP_IN_SWITCH) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(7, (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
 				(*cc).engineLeft();
-				lastState = BIT_WP_OUTLET;
 				section++;
+				lastState = BIT_WP_OUTLET;
 			}
 		}
 		else if(section == 1) {
 
-			if (!(value & BIT_WP_IN_SWITCH)) {
+			if (!(value & BIT_WP_IN_SWITCH) && (value & BIT_SWITCH_STATUS)) {
 				cout << "Section test2" <<  endl;
 				if(lastState != BIT_WP_OUTLET) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				lastState = BIT_WP_IN_SWITCH;
 				/*do nothing*/
 			}
-			if (!(value & BIT_WP_IN_HEIGHT)) {
+			if (!(value & BIT_WP_IN_HEIGHT)&& (value & BIT_SWITCH_STATUS)) {
 				if(lastState != BIT_WP_IN_SWITCH) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				(*cc).closeSwitch();
 				(*cc).engineRight();
-				cout << success << endl;
 				sleep(1);
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(5, (res & BIT_SWITCH_STATUS), SWITCH_CLOSED_STATE);
 				lastState = BIT_WP_IN_HEIGHT;
 			}
 			if (!(value & BIT_WP_IN_SLIDE)) {
-				if(lastState != BIT_WP_IN_SWITCH) {
+				if(lastState != BIT_WP_IN_HEIGHT) {
 					success &= false;
-					cout << "false" <<endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals(6, (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
 				(*cc).engineReset();
-				cout << success << endl;
 				test_isSuccessful(success);
 				lastState = BIT_WP_IN_SLIDE;
 				section--;
@@ -162,14 +152,14 @@ void Test_Sensor::test_sen(int port, int value) {
 		}
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
-		//TODO 0prio -- create a PORTC-Test with Operator
+		//TODO 0prio -- how to? only one test per push!
 		if (!(value & BIT_E_STOP)) {
 			res = (*cc).read(PORT_C);
-			success &= assert_equals(7, (res & BIT_E_STOP), BIT_E_STOP_PUSHED);
+			success &= assert_equals(7, (res & BIT_E_STOP), BIT_E_STOP_PUSHED); //implement test for BIT_E_STOP_LOST
 			(*cc).emergencyStop();
 			//Final test isSuccessful()
 			test_isSuccessful(success);
-		} else if (!(value & BIT_STOP)) {
+		} else if (!(value & BIT_STOP)) { //TODO 0prio -- 2 tests (push/lost button) -> only 1 test
 			res = (*cc).read(PORT_C);
 			success &= assert_equals(5, (res & BIT_STOP), BIT_STOP_PUSHED);
 			(*cc).stopMachine();
@@ -203,15 +193,21 @@ bool Test_Sensor::assert_equals(int sen_no, int actual, const int state) {
 		test_print(sen_no, actual, state);
 		return false;
 	} else {
-		//test_print(sen_no, actual, state);
+		test_print(sen_no, actual, state);
 		return true;
 	}
 	return false;
 }
 
 void Test_Sensor::test_print(int sen_no, int actual, const int state) {
-	cout << "TEST B(" << sen_no << ")" << " RESULT: " << actual << "=?" << state << endl;
+	//if(port == PORT_B) {
+		cout << "TEST B(" << sen_no << ")" << " RESULT: " << actual << "=?" << state << endl;
+	//} else if (port == PORT_C){
+	//	cout << "TEST C(" << sen_no << ")" << " RESULT: " << actual << "=?" << state << endl;
+	//}
 }
+
+
 
 //Only with Height print
 void Test_Sensor::test_Operator_Included() {
