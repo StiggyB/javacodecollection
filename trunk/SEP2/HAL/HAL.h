@@ -56,7 +56,7 @@ enum PortA{
  */
 enum PortB{
 	BIT_WP_OUT = 0, BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
-	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_WP_IN_SLIDE = (1<<6),BIT_WP_OUTLET = (1<<7)
+	BIT_WP_METAL = (1<<4),BIT_SWITCH_STATUS = (1<<5),BIT_WP_IN_SLIDE = (1<<6),BIT_WP_OUTLET = (1<<7)
 };
 
 /**
@@ -122,7 +122,7 @@ extern volatile int portA;
 /**
  * Port B: contains the byte of Port B
  */
-extern volatile int portB;
+extern volatile int value;
 /**
  * Port C: contains the byte of Port C
  */

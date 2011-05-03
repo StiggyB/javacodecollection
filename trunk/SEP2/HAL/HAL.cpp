@@ -31,7 +31,7 @@ volatile int portA;
 /**
  * copy of port B
  */
-volatile int portB;
+volatile int value;
 /**
  * copy of port C
  */
@@ -75,7 +75,7 @@ HAL::HAL() {
 	controlBits = BIT_CNTRLS;
 	out8(PORT_CNTRL,BIT_CNTRLS);
 	portA = read(PORT_A);
-	portB = read(PORT_B);
+	value = read(PORT_B);
 	portC = read(PORT_C);
 	portIRE = read(PORT_IRE);
 	portIRQ = read(PORT_IRQ);
@@ -146,7 +146,7 @@ int HAL::write(int dir, int value, bool set){
 	value = checkVal(dir,value, set);
 	int volatile *port = 0;
 	switch(dir){
-		case PORT_B: port = &portB;/* val = portB & value;*/ break;
+		case PORT_B: port = &value;/* val = portB & value;*/ break;
 		case PORT_C: port = &portC;/* val = portC & value;*/ break;
 		case PORT_CNTRL: port = &controlBits;/* val = controlBits & value;*/ break;
 		case INTERRUPT_SET_ADRESS_D: port = &portIRE;/* val = portIRE & value;*/ break;
@@ -209,7 +209,7 @@ int HAL::getValueFromAdress(int dir){
 	int value = 0x00;
 	switch (dir) {
 		case PORT_CNTRL: value = controlBits; break;
-		case PORT_B: value = portB; break;
+		case PORT_B: value = value; break;
 		case PORT_C: value = portC; break;
 		case PORT_IRE: value = portIRE;break;
 		case PORT_IRQ: value = portIRQ;break;
@@ -516,7 +516,7 @@ bool HAL::setValueOfPort(int port,int val){
 	switch(port){
 	case PORT_A: portA = val; break;
 	case PORT_C: portC = val; break;
-	case PORT_B: portB = val; break;
+	case PORT_B: value = val; break;
 	default: ret = false; break;
 	}
 	return ret;

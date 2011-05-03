@@ -16,6 +16,10 @@
  */
 #include "Sensor.h"
 
+/*
+ * Reason of (*cc).setValueOfPort(PORT_B,val); at the end of interrupt?
+ */
+
 Sensor::Sensor():cnt(0) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
@@ -113,7 +117,16 @@ void Sensor::settingUpAndWaitingSensor(){
 			//cout << "Sensor: do something else..." << endl;
 			p = INTERRUPT_D_PORT_C_HIGH;
 		}
+#ifndef TEST_SEN
 		interrupt(p,(*r_msg).pulse.value.sival_int);
+#endif
+
+#ifdef TEST_SEN
+		//read interrupt for testing
+		//new ts();
+		ts.test_sen(p, (*r_msg).pulse.value.sival_int);
+		//read register for testing
+#endif
 	}
 	if (!detachConnection(id,coid,SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
@@ -128,11 +141,7 @@ void Sensor::settingUpAndWaitingSensor(){
 	}
 	cleanUp(0,m,r_msg);
 	destroyChannel(chid);
-#ifdef TEST_SEN
-		//read interrupt for testing
-		ts.test_sen(p);
-		//read register for testing
-#endif
+
 }
 
 void Sensor::shutdown() {
@@ -156,14 +165,14 @@ void Sensor::interrupt(int port, int val) {
 		}
 
 		if (val & BIT_WP_IN_SWITCH) {
-			if (val & BIT_SWITCH_OPEN) {
+			if (val & BIT_SWITCH_STATUS) {
 				(*cc).closeSwitch();
 				cout << "Sensor: closes switch " << endl;
 			}
 		} else {
 			if (val & BIT_WP_METAL) {
 				//cout << " ist metall " << endl;
-				if (!(val & BIT_SWITCH_OPEN)) {
+				if (!(val & BIT_SWITCH_STATUS)) {
 					(*cc).openSwitch();
 					cout << "Sensor: opens switch " << endl;
 				}
