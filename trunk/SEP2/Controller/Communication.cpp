@@ -16,6 +16,7 @@
 
 volatile int Communication::serverChannelId = 0;
 
+
 Communication::Communication() : lst() {
 
 }

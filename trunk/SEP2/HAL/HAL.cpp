@@ -61,7 +61,7 @@ HAL* HAL::getInstance(){
 	if( !instance){
 		mutEx.lock();
 		if(!instance){
-			instance = new HAL;
+			instance = new HAL; //--?
 		}
 		mutEx.unlock();
 	}
@@ -520,4 +520,30 @@ bool HAL::setValueOfPort(int port,int val){
 	default: ret = false; break;
 	}
 	return ret;
+}
+
+//TODO 0prio --
+int HAL::identifyHeight(){
+	out8(HEIGHT_REGISTER_PART1, HEIGHT_START_CODE);
+	//busy waiting bis bit7 1
+	while((in8(HEIGHT_MEASURE_STATUS) & (1<<7)) == 0) { //Max Durchlaufe einbauen
+		/*DAC busy waiting*/
+	}
+
+	int height = in16((HEIGHT_REGISTER_PART1));
+	height &= HEIGHT_MASK;
+
+	if((height <= PLANE_WP + TOLERANCE_NORMAL) && (height >= PLANE_WP - TOLERANCE_NORMAL)) {
+		height = PLANE_WP;
+	} else if ((height <= NORMAL_WP + TOLERANCE_NORMAL) && (height >= NORMAL_WP - TOLERANCE_NORMAL)) {
+		height = NORMAL_WP;
+	} else if ((height <= POCKET_WP + TOLERANCE_POCKET) && (height >= POCKET_WP - TOLERANCE_POCKET)) {
+		height = POCKET_WP;
+	}
+	return height;
+}
+
+//TODO 1prio -- implement timer - test B(6)
+bool HAL::isSlideFull() {
+	return false;
 }

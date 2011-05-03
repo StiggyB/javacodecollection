@@ -14,6 +14,7 @@
  * Inherits: HAWThread.h
  */
 
+
 #include "InterruptController.h"
 
 Mutex InterruptController::singleton;
@@ -237,6 +238,12 @@ void InterruptController::handlePulseMessages() {
 			}
 			break;
 		}
+
+
+		//send a message to Sensor
+		//int j = pulse.code;
+		//sens.interrupt(j);
+		//cout << "InterruptController: pulse code: " << hex <<pulse.code << endl;
 	}
 }
 

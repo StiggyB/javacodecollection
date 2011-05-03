@@ -477,3 +477,17 @@ bool CoreController::setValueOfPort(int port, int val) {
 	}
 	return false;
 }
+
+int CoreController::identifyHeight(){
+	m.lock();
+	int ret = (*h).identifyHeight();
+	m.unlock();
+	return ret;
+}
+
+bool CoreController::isSlideFull() {
+	m.lock();
+	bool ret = (*h).isSlideFull();
+	m.unlock();
+	return ret;
+}

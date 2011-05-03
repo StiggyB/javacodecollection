@@ -71,6 +71,9 @@ public:
 	virtual bool deactivateInterrupt(int port);
 	virtual bool activateInterrupt(int port);
 	virtual bool setValueOfPort(int port,int val);
+	virtual int identifyHeight();
+	virtual bool isSlideFull();
+
 	/**
 	 * Performes an emergency stop.
 	 */

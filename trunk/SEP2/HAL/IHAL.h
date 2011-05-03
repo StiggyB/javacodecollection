@@ -216,6 +216,7 @@ public:
 	virtual bool shineLED(LEDS led)=0;
 	virtual bool setValueOfPort(int port,int val)=0;
 
+	virtual int identifyHeight()=0;
 	IHAL();
 	virtual ~IHAL();
 };

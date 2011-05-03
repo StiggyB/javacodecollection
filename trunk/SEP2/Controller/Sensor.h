@@ -3,9 +3,14 @@
 #define SENSOR_H_
 
 
-#include "../Thread/HAWThread.h"
 #include "Communication.h"
 #include "CoreController.h"
+
+#include "../Tests/test.h"
+#include "../Tests/Test_Sensor.h"
+#include "../Thread/HAWThread.h"
+
+
 /**
  * Sensor
  *
@@ -45,6 +50,11 @@ private:
 	 */
 	void settingUpAndWaitingSensor();
 	int cnt;
+
+#ifdef TEST_SEN
+	Test_Sensor ts;
+#endif
+
 };
 
 #endif /* SENSOR_H_ */

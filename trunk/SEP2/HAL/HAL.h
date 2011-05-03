@@ -26,6 +26,22 @@
  */
 #define A_IOBASE 0x320
 
+
+/*
+ * tolerance range plane and normal work piece
+ */
+#define TOLERANCE_NORMAL 50
+
+/*
+ * tolerance range work piece with a pocket
+ */
+#define TOLERANCE_POCKET 100
+
+/*
+ * 12Bit-Mask for the height measure
+ */
+#define HEIGHT_MASK 0xFFF
+
 /**
  * PORT A:
  */
@@ -38,10 +54,9 @@ enum PortA{
 /**
  * PORT B:
  */
-
 enum PortB{
-	BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
-	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_SLIDE_FULL = (1<<6),BIT_WP_OUTLET = (1<<7)
+	BIT_WP_OUT = 0, BIT_WP_RUN_IN = (1<<0),BIT_WP_IN_HEIGHT = (1<<1),BIT_HEIGHT_1 = (1<<2),BIT_WP_IN_SWITCH = (1<<3),
+	BIT_WP_METAL = (1<<4),BIT_SWITCH_OPEN = (1<<5),BIT_WP_IN_SLIDE = (1<<6),BIT_WP_OUTLET = (1<<7)
 };
 
 /**
@@ -69,7 +84,14 @@ enum ControlBits {
  * Height Measures
  */
 enum Height{
-	HEIGHT_MEASURE = (A_IOBASE + 0x02), HEIGHT_START_CODE = (0x10)
+	HEIGHT_MEASURE_STATUS = (A_IOBASE + 0x00), HEIGHT_REGISTER_PART1 = (A_IOBASE + 0x02), HEIGHT_REGISTER_PART2 = (A_IOBASE + 0x03), HEIGHT_START_CODE = (0x10)
+};
+
+/*
+ *
+ */
+enum WPHeight{
+	PLANE_WP = 2715 , NORMAL_WP = 2472, POCKET_WP = 3514
 };
 
 /**
@@ -195,6 +217,8 @@ public:
 	virtual bool addLED(LEDS led);
 	virtual bool shineLED(LEDS led);
 	virtual bool setValueOfPort(int port,int val);
+	virtual int identifyHeight();
+	virtual bool isSlideFull();
 
 private:
 
@@ -267,6 +291,7 @@ private:
 	 * Mutex to ensure thread-safety of HAL creation.
 	 */
 	static Mutex mutEx;
+
 };
 
 #endif /* HAL_H_ */

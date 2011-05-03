@@ -23,6 +23,9 @@ Sensor::Sensor():cnt(0) {
 	if (cc == NULL){
 		cc = CoreController::getInstance();
 	}
+#ifdef TEST_SEN
+		ts = Test_Sensor();
+#endif
 }
 
 Sensor::~Sensor() {
@@ -125,6 +128,11 @@ void Sensor::settingUpAndWaitingSensor(){
 	}
 	cleanUp(0,m,r_msg);
 	destroyChannel(chid);
+#ifdef TEST_SEN
+		//read interrupt for testing
+		ts.test_sen(p);
+		//read register for testing
+#endif
 }
 
 void Sensor::shutdown() {
@@ -162,7 +170,7 @@ void Sensor::interrupt(int port, int val) {
 				cout << "Sensor: ist Metall :D" << endl;
 			}
 		}
-		if (!(val & BIT_SLIDE_FULL)) {
+		if (!(val & BIT_WP_IN_SLIDE)) {
 			cnt++;
 			if(cnt == 4){
 				cnt = 0;
