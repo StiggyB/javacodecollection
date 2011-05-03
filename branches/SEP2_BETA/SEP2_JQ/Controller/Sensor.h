@@ -5,7 +5,7 @@
 
 #include "../Thread/HAWThread.h"
 #include "Communication.h"
-#include "CoreController.h"
+#include "../HAL/HALCore.h"
 /**
  * Sensor
  *
@@ -28,6 +28,7 @@ public:
 	/**
 	 * Deal with the Interrupt for given port.
 	 * \param port an integer representing the port where an interrupt occures.
+	 * \param val an integer representing the value of the interrupts.
 	 */
 	void interrupt(int port, int val);
 	Sensor();
@@ -39,11 +40,12 @@ private:
 	/**
 	 * Pointer to the Singleton Core Controller
 	 */
-	CoreController *cc;
+	HALCore *h;
 	/**
 	 *  Sets up the Communication to IC and waits for Messages from it.
 	 */
 	void settingUpAndWaitingSensor();
+	//DEBUG
 	int cnt;
 };
 

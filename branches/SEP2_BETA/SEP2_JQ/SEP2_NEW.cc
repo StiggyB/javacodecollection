@@ -14,8 +14,7 @@
 #include <iostream>
 #include "Controller/StartThread.h"
 #include "Controller/InterruptController.h"
-#include "Controller/CoreController.h"
-#include "HAL/HAL.h"
+#include "HAL/HALCore.h"
 
 void stopController();
 
@@ -68,7 +67,6 @@ int main(int argc, char *argv[]) {
  * stops all Controller
  */
 void stopController(){
-	CoreController::deleteInstance();
 	InterruptController::deleteInstance();
-	HAL::deleteInstance();
+	HALCore::deleteInstance();
 }

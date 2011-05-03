@@ -85,7 +85,7 @@ Inheritance diagram for Sensor:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a73a6c72b86aa9b63a19fad0e665c2611">interrupt</a> (int port)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#aee658a5cb6209d5dcbf71f1af35ed49c">interrupt</a> (int port, int val)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a342d6d11ef572c8cba92cb76fb1a294b">Sensor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#aee8c70e7ef05ce65e7ee33686b5d7db2">~Sensor</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
@@ -97,12 +97,13 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a7ccbc86c9e913fc0d35bcce7a92092a9">settingUpAndWaitingSensor</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a68e3fbea1ada47c9000827862e31a78a">cc</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l_core.html">HALCore</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a775a3fc614a5fa73295169677d18e4ca">h</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#af8a28d67a8e4e16e274cea460cecb8e1">cnt</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_sensor.html">Sensor</a></p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
-<p>Milestone 3: <a class="el" href="class_h_a_l.html">HAL</a> Sensorik</p>
+<p>Milestone 3: HAL Sensorik</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Class which deals with the interrupts.</p>
 <p>Inherits: <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
@@ -122,7 +123,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p><a class="el" href="class_sensor.html">Sensor</a></p>
 <p>SE2 (+ SY and PL) Project SoSe 2011</p>
-<p>Milestone 3: <a class="el" href="class_h_a_l.html">HAL</a> Sensorik</p>
+<p>Milestone 3: HAL Sensorik</p>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Class which deals with the interrupts.</p>
 <p>Inherits: <a class="el" href="_h_a_w_thread_8h.html">HAWThread.h</a> </p>
@@ -166,7 +167,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a73a6c72b86aa9b63a19fad0e665c2611"></a><!-- doxytag: member="Sensor::interrupt" ref="a73a6c72b86aa9b63a19fad0e665c2611" args="(int port)" -->
+<a class="anchor" id="aee658a5cb6209d5dcbf71f1af35ed49c"></a><!-- doxytag: member="Sensor::interrupt" ref="aee658a5cb6209d5dcbf71f1af35ed49c" args="(int port, int val)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -174,8 +175,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">void Sensor::interrupt </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>port</em></td><td>)</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -184,6 +195,7 @@ Private Attributes</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">port</td><td>an integer representing the port where an interrupt occures. </td></tr>
+    <tr><td class="paramname">val</td><td>an integer representing the value of the interrupts. </td></tr>
   </table>
   </dd>
 </dl>
@@ -227,12 +239,25 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a68e3fbea1ada47c9000827862e31a78a"></a><!-- doxytag: member="Sensor::cc" ref="a68e3fbea1ada47c9000827862e31a78a" args="" -->
+<a class="anchor" id="af8a28d67a8e4e16e274cea460cecb8e1"></a><!-- doxytag: member="Sensor::cnt" ref="af8a28d67a8e4e16e274cea460cecb8e1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_core_controller.html">CoreController</a>* <a class="el" href="class_sensor.html#a68e3fbea1ada47c9000827862e31a78a">Sensor::cc</a><code> [private]</code></td>
+          <td class="memname">int <a class="el" href="class_sensor.html#af8a28d67a8e4e16e274cea460cecb8e1">Sensor::cnt</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a775a3fc614a5fa73295169677d18e4ca"></a><!-- doxytag: member="Sensor::h" ref="a775a3fc614a5fa73295169677d18e4ca" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_h_a_l_core.html">HALCore</a>* <a class="el" href="class_sensor.html#a775a3fc614a5fa73295169677d18e4ca">Sensor::h</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -260,7 +285,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:07 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

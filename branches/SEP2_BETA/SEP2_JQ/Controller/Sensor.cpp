@@ -20,8 +20,8 @@ Sensor::Sensor():cnt(0) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
-	if (cc == NULL){
-		cc = CoreController::getInstance();
+	if (h == NULL){
+		h = HALCore::getInstance();
 	}
 }
 
@@ -48,6 +48,7 @@ void Sensor::settingUpAndWaitingSensor(){
 		unregisterChannel(SENSOR);
 		return;
 	}
+	//TODO: Messages zusammen kleistern
 	Message * m = (Message *) malloc(sizeof(Message));
 	Message * r_msg = (Message*) malloc(sizeof(Message));
 	if (r_msg == NULL) {
@@ -72,10 +73,8 @@ void Sensor::settingUpAndWaitingSensor(){
 		destroyChannel(chid);
 		return;
 	}
-	//cout << "Sensor: attached Connection" << endl;
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	buildMessage(m, chid, coid, startConnection, SENSOR);
-	//cout << "Sensor: message Build" << endl;
 	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Sensor: failed to send message to IC!");
 		unregisterChannel(SENSOR);
@@ -83,31 +82,23 @@ void Sensor::settingUpAndWaitingSensor(){
 		destroyChannel(chid);
 		return;
 	}//*/
-	//cout << "Sensor: message Send successful!" << endl;
 	if (-1 == (id = getChannelIdForObject(INTERRUPTCONTROLLER))) {
 		perror("Sensor: failed to get ChannelId!");
 		unregisterChannel(SENSOR);
 		cleanUp(coid,m,r_msg);
 		destroyChannel(chid);
 		return;
-	}
-	//cout << "Sensor: Channel id of IC: " << id << endl;#
+	}//TODO: Schleife ausgliedern
 	while (!isStopped()) {
-		//cout << "Sensor: waiting for Interrupt...on chid: "<< chid << " coid: " << coid << endl;
 		rcvid = MsgReceive(chid,r_msg, sizeof(Message), NULL);
-		//cout << "Sensor: received Message " << endl;
-		//cout << "Sensor: Message from IC: CHID=" <<(*r_msg).chid<<" COID="<< (*r_msg).coid<<endl;
 		coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 		buildMessage(m, (*r_msg).m.chid, coid, OK, SENSOR);
-		//cout << "IC: build message complete" << endl;
 		if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 			perror("Sensor: failed to send reply message to IC!");
 		}//*/
-		//cout << "Sensor: react="<<(*r_msg).ca << endl;
 		if ((*r_msg).m.ca == react) {
 			p = INTERRUPT_D_PORT_B;
 		} else {
-			//cout << "Sensor: do something else..." << endl;
 			p = INTERRUPT_D_PORT_C_HIGH;
 		}
 		interrupt(p,(*r_msg).pulse.value.sival_int);
@@ -132,31 +123,28 @@ void Sensor::shutdown() {
 }
 
 void Sensor::interrupt(int port, int val) {
-	//cout << "S: cB: " << hex << controlBits <<endl;
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
 
-		//mutexPortB.lock();
-		// CA = 1100 1010 ->
 		//cout << "Sensor: pB: " << portB << endl;
 		if (!(val & BIT_WP_IN_HEIGHT)) {
 			cout << "Sensor: WP_IN_H " << endl;
 		}
 		if (!(val & BIT_WP_RUN_IN)) {
-			(*cc).engineRight();
+			(*h).engineRight();
 			cout << "Sensor: BIT_WP_RUN_IN" << endl;
 		}
 
 		if (val & BIT_WP_IN_SWITCH) {
 			if (val & BIT_SWITCH_OPEN) {
-				(*cc).closeSwitch();
+				(*h).closeSwitch();
 				cout << "Sensor: closes switch " << endl;
 			}
 		} else {
 			if (val & BIT_WP_METAL) {
 				//cout << " ist metall " << endl;
 				if (!(val & BIT_SWITCH_OPEN)) {
-					(*cc).openSwitch();
+					(*h).openSwitch();
 					cout << "Sensor: opens switch " << endl;
 				}
 				cout << "Sensor: ist Metall :D" << endl;
@@ -166,37 +154,28 @@ void Sensor::interrupt(int port, int val) {
 			cnt++;
 			if(cnt == 4){
 				cnt = 0;
-				(*cc).shine(RED);
-				(*cc).stopMachine();
+				(*h).shine(RED);
+				(*h).stopMachine();
 			}
 
 		}
 		if (!(val & BIT_WP_OUTLET)) {
-			(*cc).engineReset();
+			(*h).engineReset();
 			cout << "Sensor: somethings coming out ;)" << endl;
 		}
-		(*cc).setValueOfPort(PORT_B,val);
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
-		/*cout << "Sensor: pC: " << val << endl;
-		cout << "1. " << (val & BIT_E_STOP) << endl;
-		cout << "1_2. " << (!(val & BIT_E_STOP)) << endl;
-		cout << "2. " << (val & BIT_STOP) << endl;
-		cout << "2_2. " << (!(val & BIT_STOP)) << endl;
-		cout << "3. " << (val & BIT_START) << endl;
-		cout << "4. " << (val & BIT_RESET) << endl;*/
 		if (!(val & BIT_E_STOP)) {
-			(*cc).emergencyStop();
+			(*h).emergencyStop();
 		} else if (!(val & BIT_STOP)) {
-			(*cc).stopMachine();
+			(*h).stopMachine();
 		} else if (val & BIT_START) {
 			cnt = 0;
-			(*cc).restart();
+			(*h).restart();
 		} else if (val & BIT_RESET) {
 			cnt = 0;
-			(*cc).resetAll();
+			(*h).resetAll();
 		}
-		(*cc).setValueOfPort(PORT_C,val);
 		break;
 	}
 }

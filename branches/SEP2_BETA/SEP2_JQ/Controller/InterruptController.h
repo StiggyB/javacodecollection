@@ -3,11 +3,10 @@
 #define INTERRUPTCONTROLLER_H_
 
 
-#include "../HAL/HAL.h"
+#include "../HAL/HALCore.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "Communication.h"
-#include "CoreController.h"
 
 /**
  * Interrupt Controller
@@ -81,13 +80,9 @@ private:
 	 */
 	static Mutex singleton;
 	/**
-	 * Direct connection to HAL.
+	 * Direct connection to HALCore.
 	 */
-	HAL *h;
-	/**
-	 * Pointer to the CoreController singleton
-	 */
-	CoreController *cc;
+	HALCore *h;
 	Message *msg;
 
 };

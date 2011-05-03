@@ -8,8 +8,7 @@
 #include "StartThread.h"
 
 StartThread::StartThread(){
-	h = HAL::getInstance();
-	cc = CoreController::getInstance();
+	h = HALCore::getInstance();
 	ic = InterruptController::getInstance();
 #ifdef TEST_M1
 	tm = Test_M1();
@@ -34,7 +33,7 @@ void StartThread::execute(void*) {
 		perror("ThreadCtl access failed\n");
 	}
 
-	(*cc).start(NULL);
+	(*h).start(NULL);
 	//sleep(3);
 	cout << "starting IC" <<endl;
 	(*ic).start(NULL);
@@ -87,12 +86,14 @@ void StartThread::execute(void*) {
 	}
 */
 	//sleep(40);
-	(*cc).join();
+	h->join();
 
 }
 
 void StartThread::stopProcess() {
-	(*cc).resetAllOutPut();
+	h->resetAllOutPut();
+	h->deleteInstance();
+	ic->deleteInstance();
 }
 
 void StartThread::shutdown(){

@@ -31,6 +31,10 @@ public:
 	 * Unlocks the Mutex.
 	 */
 	void unlock();
+	/**
+	 * Get an Pointer to the Mutex
+	 */
+	pthread_mutex_t* getMutex();
 private:
 	/**
 	 * Pthread-Mutex
@@ -38,6 +42,7 @@ private:
 	pthread_mutex_t mutex;
 	Mutex (const Mutex &);
 	Mutex& operator= (const Mutex&);
+
 };
 
 #endif /* MUTEX_H_ */

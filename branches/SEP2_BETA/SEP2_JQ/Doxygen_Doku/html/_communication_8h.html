@@ -68,19 +68,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;list&gt;</code><br/>
 <code>#include &lt;iostream&gt;</code><br/>
 <code>#include &lt;stdlib.h&gt;</code><br/>
-<code>#include &quot;<a class="el" href="_h_a_l_8h_source.html">HAL.h</a>&quot;</code><br/>
+<code>#include &quot;../HAL/HALCore.h&quot;</code><br/>
 </div>
 <p><a href="_communication_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage.html">message</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionmessage_1_1msg.html">message::msg</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmsg.html">msg</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionmessage.html">message</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication.html">Communication</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html">Communication::Communicator</a></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmessage.html">message</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_communication_8h.html#ae5051f6f612e6d4218717f733bc50667">Message</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmsg.html">msg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_communication_8h.html#a8615ac38deaceddc3160d761ba9ca674">Msg</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef union <a class="el" href="unionmessage.html">message</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_communication_8h.html#a024067018d1d604d3cd46605790407c8">Message</a></td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> { <br/>
@@ -111,12 +112,25 @@ Enumerations</h2></td></tr>
  }</td></tr>
 </table>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ae5051f6f612e6d4218717f733bc50667"></a><!-- doxytag: member="Communication.h::Message" ref="ae5051f6f612e6d4218717f733bc50667" args="" -->
+<a class="anchor" id="a024067018d1d604d3cd46605790407c8"></a><!-- doxytag: member="Communication.h::Message" ref="a024067018d1d604d3cd46605790407c8" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structmessage.html">message</a>  <a class="el" href="structmessage.html">Message</a></td>
+          <td class="memname">typedef union <a class="el" href="unionmessage.html">message</a>  <a class="el" href="unionmessage.html">Message</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8615ac38deaceddc3160d761ba9ca674"></a><!-- doxytag: member="Communication.h::Msg" ref="a8615ac38deaceddc3160d761ba9ca674" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structmsg.html">msg</a>  <a class="el" href="structmsg.html">Msg</a></td>
         </tr>
       </table>
 </div>
@@ -211,7 +225,7 @@ Enumerations</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:18 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:05 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

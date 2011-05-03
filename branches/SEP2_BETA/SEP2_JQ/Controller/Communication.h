@@ -5,7 +5,7 @@
 #include <list>
 #include <iostream>
 #include <stdlib.h>
-#include "HAL.h"
+#include "../HAL/HALCore.h"
 
 /**
  * All types of Communicators
@@ -153,6 +153,7 @@ public:
 	 * \param coid an integer specifying the ConnectID of the sender
 	 * \param activity is the message type, which tells us what should happen
 	 * \param c the Communicator which sends the message
+	 * \param val an integer representing the value of the register
 	 * \return bool, true if successful
 	 */
 	void buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c,int val);

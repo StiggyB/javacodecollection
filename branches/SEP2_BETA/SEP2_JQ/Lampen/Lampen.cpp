@@ -25,12 +25,12 @@ Lampen::Lampen() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	if(cc == NULL) cc = CoreController::getInstance();
+	if(h == NULL) h = HALCore::getInstance();
 	running = false;
 }
 
 Lampen::~Lampen() {
-	cc = NULL;
+	h = NULL;
 }
 
 void Lampen::execute(void*) {
@@ -49,9 +49,9 @@ void Lampen::shutdown() {
 void Lampen::flash(int time, Color color) {
 	running = true;
 	while(running){
-		(*cc).addLight(color);
+		(*h).addLight(color);
 		sleep(time);
-		(*cc).removeLight(color);
+		(*h).removeLight(color);
 		sleep(time);
 	}
 }
@@ -67,10 +67,10 @@ void Lampen::flash(int time, int duration, Color col) {
 	int elapsedTime = 0;
 		running = true;
 		while (running && elapsedTime < duration) {
-			(*cc).addLight(col);
+			(*h).addLight(col);
 			elapsedTime += time;
 			sleep(time);
-			(*cc).removeLight(col);
+			(*h).removeLight(col);
 			elapsedTime += time;
 			sleep(time);
 		}
@@ -82,7 +82,7 @@ void Lampen::flash(int time, int duration, Color col) {
  * \param col specifies the color of the light.
  */
 void Lampen::addLight(Color col) {
-	(*cc).addLight(col);
+	(*h).addLight(col);
 }
 
 /**
@@ -90,7 +90,7 @@ void Lampen::addLight(Color col) {
  * \param col specifies the color of the light.
  */
 void Lampen::removeLight(Color col) {
-	(*cc).removeLight(col);
+	(*h).removeLight(col);
 }
 
 /**
@@ -99,6 +99,5 @@ void Lampen::removeLight(Color col) {
  * \param col specifies the color of the light.
  */
 void Lampen::shine(Color col) {
-	(*cc).shine(col);
+	(*h).shine(col);
 }
-

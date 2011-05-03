@@ -2,7 +2,7 @@
 #define TEST_M1_H_
 
 #include "../Thread/HAWThread.h"
-#include "../Controller/CoreController.h"
+#include "../HAL/HALCore.h"
 /**
  * Testing Class for Milestone #1
  *
@@ -39,7 +39,7 @@ protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 private:
-	CoreController *cc;
+	HALCore *h;
 };
 
 #endif /* TEST_M1_H_ */

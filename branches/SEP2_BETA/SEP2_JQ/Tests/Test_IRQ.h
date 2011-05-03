@@ -3,7 +3,7 @@
 #define TEST_IRQ_H_
 
 #include "../Thread/HAWThread.h"
-#include "../Controller/CoreController.h"
+#include "../HAL/HALCore.h"
 
 /**
  * Testing Class for IRQ
@@ -27,7 +27,7 @@ protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 private:
-	CoreController *cc;
+	HALCore *h;
 };
 
 #endif /* TEST_IRQ_H_ */

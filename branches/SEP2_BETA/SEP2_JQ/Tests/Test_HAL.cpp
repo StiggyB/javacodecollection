@@ -52,7 +52,7 @@ Test_HAL::Test_HAL() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	cc = CoreController::getInstance();
+	h = HALCore::getInstance();
 }
 
 Test_HAL::~Test_HAL() {
@@ -70,110 +70,110 @@ void Test_HAL::execute(void*) {
 	// do tests
 	for (int count = 0; count < 1; count++) {
 		cout << "PORTs testen" << endl;
-		t = (*cc).isInput(PORT_A);
+		t = (*h).isInput(PORT_A);
 		cout << "PORT_A is Input? " << t << endl;
-		t = (*cc).isInput(PORT_B);
+		t = (*h).isInput(PORT_B);
 		cout << "PORT_B is Input? " << t << endl;
-		t = (*cc).isInput(PORT_C);
+		t = (*h).isInput(PORT_C);
 		cout << "PORT_C is Intput? " << t << endl;
-		t = (*cc).isOutput(PORT_A);
+		t = (*h).isOutput(PORT_A);
 		cout << "PORT_A is Output? " << t << endl;
-		t = (*cc).isOutput(PORT_B);
+		t = (*h).isOutput(PORT_B);
 		cout << "PORT_B is Output? " << t << endl;
-		t = (*cc).isOutput(PORT_C);
+		t = (*h).isOutput(PORT_C);
 		cout << "PORT_C is Output? " << t << endl;
 		sleep(time);
 
 		//HARDWARE TESTS
 
 		cout << "Engine RIGHT" << endl;
-		(*cc).engineRight();
+		(*h).engineRight();
 		sleep(time);
 
-		t = (*cc).engineStopped();
+		t = (*h).engineStopped();
 		cout << "Engine Stopped?" << t << endl;
 
 		cout << "ENGINE LEFT" << endl;
-		(*cc).engineLeft();
+		(*h).engineLeft();
 		sleep(time);
 
 		cout << "Engine RIGHT" << endl;
-		(*cc).engineStart(BIT_ENGINE_RIGHT);
+		(*h).engineStart(BIT_ENGINE_RIGHT);
 		sleep(time);
 
 		cout << "ENGINE LEFT" << endl;
-		(*cc).engineStart(BIT_ENGINE_LEFT);
+		(*h).engineStart(BIT_ENGINE_LEFT);
 		sleep(time);
 
 		cout << "+ENGINE SLOW" << endl;
-		(*cc).engineSlowSpeed();
+		(*h).engineSlowSpeed();
 		sleep(time);
 
 		cout << "-ENGINE SLOW" << endl;
-		(*cc).engineNormalSpeed();
+		(*h).engineNormalSpeed();
 		sleep(time);
 
 		cout << "+ENGINE SLOW" << endl;
-		(*cc).engineSpeed(true);
+		(*h).engineSpeed(true);
 		sleep(time);
 
 		cout << "-ENGINE SLOW" << endl;
-		(*cc).engineSpeed(false);
+		(*h).engineSpeed(false);
 		sleep(time);
 		cout << "ENGINE SLOW RIGHT" << endl;
-		(*cc).engineSlowSpeed(BIT_ENGINE_S_R);
+		(*h).engineSlowSpeed(BIT_ENGINE_S_R);
 		sleep(time);
 
 		cout << "ENGINE SLOW LEFT" << endl;
-		(*cc).engineSlowSpeed(BIT_ENGINE_S_L);
+		(*h).engineSlowSpeed(BIT_ENGINE_S_L);
 		sleep(time);
 
 		cout << "+ENGINE SLOW" << endl;
-		(*cc).engineSlowSpeed(BIT_ENGINE_SLOW);
+		(*h).engineSlowSpeed(BIT_ENGINE_SLOW);
 		sleep(time);
 
 		cout << "-ENGINE SLOW" << endl;
-		(*cc).engineSpeed(false);
+		(*h).engineSpeed(false);
 		sleep(time);
 
 		cout << "+ENGINE STOP" << endl;
-		(*cc).engineStop();
+		(*h).engineStop();
 		sleep(time);
 
 		cout << "-ENGINE STOP" << endl;
-		(*cc).engineContinue();
+		(*h).engineContinue();
 		sleep(time);
 
 		cout << "ENGINE S_L" << endl;
-		(*cc).engineSlowLeft();
+		(*h).engineSlowLeft();
 		sleep(time);
 
 		cout << "ENGINE S_R" << endl;
-		(*cc).engineSlowRight();
+		(*h).engineSlowRight();
 		sleep(time);
 
 		cout << "ENGINE RESET" << endl;
-		(*cc).engineReset();
+		(*h).engineReset();
 		sleep(time);
 
 		cout << "SWITCH ON" << endl;
-		(*cc).openSwitch();
+		(*h).openSwitch();
 		sleep(time);
 
 		cout << "SWITCH OFF" << endl;
-		(*cc).closeSwitch();
+		(*h).closeSwitch();
 		sleep(time);
 
 		cout << "SWITCH ON" << endl;
-		(*cc).setSwitchDirection(true);
+		(*h).setSwitchDirection(true);
 		sleep(time);
 
 		cout << "SWITCH OFF" << endl;
-		(*cc).setSwitchDirection(false);
+		(*h).setSwitchDirection(false);
 		sleep(time);
 
 		cout << "RESET" << endl;
-		(*cc).resetAllOutPut();
+		(*h).resetAllOutPut();
 		sleep(time);
 
 		cout << "LED - Port 3 activate" << endl;

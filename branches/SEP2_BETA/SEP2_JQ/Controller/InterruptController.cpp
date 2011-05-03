@@ -48,12 +48,11 @@ InterruptController::InterruptController() {
 	if(msg == NULL){
 		perror("IC: couldn't get space for ISR-Message!");
 	}
-	h = HAL::getInstance();
-	cc = CoreController::getInstance();
+	h = HALCore::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
-	int i = (*cc).getSetInterrupt();
+	int i = (*h).getSetInterrupt();
 	cout << "InterruptController: first_Interrupt 0x" << hex << i << endl;
 	activateInterrupts();
 }
@@ -64,22 +63,22 @@ InterruptController::~InterruptController() {
 
 
 void InterruptController::activateInterrupts() {
-	(*cc).deactivateInterrupt(PORT_A);
-	int i = (*cc).getSetInterrupt();
+	(*h).deactivateInterrupt(PORT_A);
+	int i = (*h).getSetInterrupt();
 	cout << "InterruptController: PortA_reset_Interrupt 0x" << hex << i << endl;
-	(*cc).deactivateInterrupt(PORT_B);
-	i = (*cc).getSetInterrupt();
+	(*h).deactivateInterrupt(PORT_B);
+	i = (*h).getSetInterrupt();
 	cout << "InterruptController: PortB_reset_Interrupt 0x" << hex << i << endl;
-	(*cc).deactivateInterrupt(PORT_C);
-	i = (*cc).getSetInterrupt();
+	(*h).deactivateInterrupt(PORT_C);
+	i = (*h).getSetInterrupt();
 	cout << "InterruptController: PortC_reset_Interrupt 0x" << hex << i << endl;
-	(*cc).activateInterrupt(PORT_B);
-	//i = (*cc).getSetInterrupt();
+	(*h).activateInterrupt(PORT_B);
+	//i = (*h).getSetInterrupt();
 	//cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
-	(*cc).activateInterrupt(PORT_C);
-	 i = (*cc).getSetInterrupt();
+	(*h).activateInterrupt(PORT_C);
+	 i = (*h).getSetInterrupt();
 	 cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;
-	 i = (*cc).getInterrupt();
+	 i = (*h).getInterrupt();
 	 cout << "IC: interrupts=" << i << endl;
 }
 
@@ -116,7 +115,7 @@ void InterruptController::connectToHAL() {
 		return;
 	}
 	cout << "InterruptController: Interrupt Attached to event with InterruptCoid="<< interruptCoid << endl;
-	int i = (*cc).getSetInterrupt();
+	int i = (*h).getSetInterrupt();
 	cout << "InterruptController: Interrupt 0x" << hex << i << " ready."<< endl;
 }
 
@@ -167,7 +166,7 @@ void InterruptController::handlePulseMessages() {
 	}
 	//Message r_msg;
 	//struct _pulse r_msg;
-	(*cc).addLight(GREEN);
+	(*h).addLight(GREEN);
 	while (!isStopped()){
 	//	cout << "InterruptController: waiting for Pulse on Channel " << chid <<endl;
 		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);

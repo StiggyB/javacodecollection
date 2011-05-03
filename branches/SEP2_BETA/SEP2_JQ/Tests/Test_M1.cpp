@@ -39,7 +39,7 @@ Test_M1::Test_M1() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	cc = CoreController::getInstance();
+	h = HALCore::getInstance();
 }
 
 Test_M1::~Test_M1() {
@@ -61,92 +61,92 @@ void Test_M1::execute(void*){
 	for (int count = 0; count < 1; count++) {
 		// add all lights
 		cout << "+rot" << endl;
-		(*cc).shine(RED);
+		(*h).shine(RED);
 		sleep(time);
 
 		cout << "+gelb" << endl;
-		(*cc).shine(YELLOW);
+		(*h).shine(YELLOW);
 		sleep(time);
 
 		cout << "+gruen" << endl;
-		(*cc).shine(GREEN);
+		(*h).shine(GREEN);
 		sleep(time);
 		//switches all lights off instantly
 		cout << "off" << endl;
-		(*cc).shine(OFF);
+		(*h).shine(OFF);
 		sleep(time);
 		//add all lights
 		cout << "+red" << endl;
-		(*cc).addLight(RED);
+		(*h).addLight(RED);
 		sleep(time);
 
 		cout << "+gelb" << endl;
-		(*cc).addLight(YELLOW);
+		(*h).addLight(YELLOW);
 		sleep(time);
 
 		cout << "+gruen" << endl;
-		(*cc).addLight(GREEN);
+		(*h).addLight(GREEN);
 		sleep(time);
 
 		//switch lights off
 		cout << "-red" << endl;
-		(*cc).removeLight(RED);
+		(*h).removeLight(RED);
 		sleep(time);
 
 		cout << "-gelb" << endl;
-		(*cc).removeLight(YELLOW);
+		(*h).removeLight(YELLOW);
 		sleep(time);
 
 		cout << "-gruen" << endl;
-		(*cc).removeLight(GREEN);
+		(*h).removeLight(GREEN);
 		sleep(time);
 
 		//HARDWARE TESTS
 
 		cout << "Engine RIGHT" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_RIGHT);
+		(*h).write(PORT_A, BIT_ENGINE_RIGHT);
 		sleep(time);
 
 		cout << "ENGINE LEFT" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_LEFT);
+		(*h).write(PORT_A, BIT_ENGINE_LEFT);
 		sleep(time);
 
 		cout << "+ENGINE SLOW" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_SLOW);
+		(*h).write(PORT_A, BIT_ENGINE_SLOW);
 		sleep(time);
 
 		cout << "-ENGINE SLOW" << endl;
-		(*cc).reset(PORT_A, BIT_ENGINE_SLOW);
+		(*h).reset(PORT_A, BIT_ENGINE_SLOW);
 		sleep(time);
 
 		cout << "+ENGINE STOP" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_STOP);
+		(*h).write(PORT_A, BIT_ENGINE_STOP);
 		sleep(time);
 
 		cout << "-ENGINE STOP" << endl;
-		(*cc).reset(PORT_A, BIT_ENGINE_STOP);
+		(*h).reset(PORT_A, BIT_ENGINE_STOP);
 		sleep(time);
 
 		cout << "ENGINE S_L" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_S_L);
+		(*h).write(PORT_A, BIT_ENGINE_S_L);
 		sleep(time);
 
 		cout << "ENGINE S_R" << endl;
-		(*cc).write(PORT_A, BIT_ENGINE_S_R);
+		(*h).write(PORT_A, BIT_ENGINE_S_R);
 		sleep(time);
 
 		cout << "SWITCH ON" << endl;
-		(*cc).write(PORT_A, BIT_SWITCH);
+		(*h).write(PORT_A, BIT_SWITCH);
 		sleep(time);
 
 		cout << "SWITCH OFF" << endl;
-		(*cc).reset(PORT_A, BIT_SWITCH);
+		(*h).reset(PORT_A, BIT_SWITCH);
 		sleep(time);
 
 		cout << "RESET" << endl;
-		(*cc).reset(PORT_A, 0xFF);
+		(*h).reset(PORT_A, 0xFF);
 		sleep(time);
-		(*cc).resetAllOutPut();
+		(*h).resetAllOutPut();
 	}
 	cout << "M1: closing..." << endl;
 }

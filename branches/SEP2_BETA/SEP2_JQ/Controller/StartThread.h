@@ -3,13 +3,13 @@
 #define STARTTHREAD_H_
 
 #include <stdlib.h>
+#include "../HAL/HALCore.h"
 #include "../Tests/test.h"
 #include "../Tests/Test_M1.h"
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_IRQ.h"
 #include "../Tests/Test_Serial.h"
 #include "Sensor.h"
-#include "CoreController.h"
 #include "InterruptController.h"
 
 class StartThread : public thread::HAWThread {
@@ -22,17 +22,14 @@ protected:
     virtual void shutdown();
 private:
     /**
-     * pointer to the CoreController
+     * pointer to the HAL
      */
-    CoreController *cc;
+    HALCore *h;
     /**
      * pointer to the InterruptController
      */
     InterruptController *ic;
-    /**
-     * pointer to the HAL
-     */
-    HAL *h;
+
 #ifdef TEST_M1
     Test_M1 tm;
 #endif

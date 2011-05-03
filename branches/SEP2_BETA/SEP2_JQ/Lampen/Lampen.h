@@ -3,9 +3,9 @@
 #define LAMPEN_H_
 
 #include <unistd.h>
+#include "../HAL/HALCore.h"
 #include "../Thread/HAWThread.h"
 #include "../Controller/Communication.h"
-#include "../Controller/CoreController.h"
 /**
  * Light Control
  *
@@ -20,7 +20,7 @@
  *
  * Inherits: HAWThread, Communication
  */
-class Lampen : public thread::HAWThread, Communication{
+class Lampen : public thread::HAWThread{
 public:
 	Lampen();
 	virtual ~Lampen();
@@ -61,7 +61,7 @@ private:
 	 * Bool to ensure the flashing of the Light.
 	 */
 	bool running;
-	CoreController *cc;
+	HALCore *h;
 };
 
 #endif /* LAMPEN_H_ */

@@ -67,7 +67,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00005"></a>00005 <span class="preprocessor">#include &lt;list&gt;</span>
 <a name="l00006"></a>00006 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;<a class="code" href="_h_a_l_8h.html">HAL.h</a>&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;../HAL/HALCore.h&quot;</span>
 <a name="l00009"></a>00009 
 <a name="l00013"></a><a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">00013</a> <span class="keyword">enum</span> <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>{
 <a name="l00014"></a><a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40ba6d497d39379053324114e5611323b558">00014</a>         <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40ba26325e446e2d6a22ca141f417538bfd0">INTERRUPTCONTROLLER</a>=(1), <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40ba6d497d39379053324114e5611323b558">SENSOR</a>=(2), <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40bad1585ba6029c0179c7f129fb078b77ba">LIGHTS</a>=(3), <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40ba8d402ec828bfd7a6c2ac392bb11b4799">ANLAGENSTEUERUNG</a>=(4),<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40ba9aadefa619a23b356107404ee8d055de">CORECONTROLLER</a>=(5)
@@ -77,76 +77,79 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00021"></a><a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561baca78dcb2e0580a44563f87bac7ba8256">00021</a>         <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba6f442d076e3c62b95ad53b7969ee098d">addToServer</a>=(4),<a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561bac5188db01988fd56dcb98a7dcc8122a9">removeFromServer</a>=(5),<a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561baccc4d7f017c5408c5ec49f00c18320ed">closeConnection</a>=(6),<a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561baca78dcb2e0580a44563f87bac7ba8256">startConnection</a>=(7),
 <a name="l00022"></a><a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561baa9b41e54abcede69f1271c51c64d5f09">00022</a>         <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba1b8291e7306e7c63ea9e3317c09479a7">getIDforCom</a>=(8), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba7c1744415ae0759ecf6673970dcdad99">react</a>=(9),<a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba8a4453667d2937399f4f6d8301a77581">reactC</a>=(0xa), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba25637eb7480e695b34b0647aac4fa180">information</a>=(0xb), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561ba2bc49ec37d6a5715dd23e85f1ff5bb59">OK</a> = (1), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561bafce972db17514f293ed6b4c841e29cf0">notAvailable</a> = (-2), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561baa9b41e54abcede69f1271c51c64d5f09">sendID</a> =(3), <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561bad606e435413ea0944dd00d49e901e4ed">error</a> = (-1)
 <a name="l00023"></a>00023 };
-<a name="l00027"></a><a class="code" href="structmessage.html">00027</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmessage.html">message</a>{
-<a name="l00028"></a><a class="code" href="structmessage.html#a95842c1863ac3ad02b5aae6c3a1c4a80">00028</a>         <span class="keywordtype">int</span> <a class="code" href="structmessage.html#a95842c1863ac3ad02b5aae6c3a1c4a80">chid</a>;
-<a name="l00029"></a><a class="code" href="structmessage.html#a79a5e60c5b9bcc307238f24cb10d5d21">00029</a>         <span class="keywordtype">int</span> <a class="code" href="structmessage.html#a79a5e60c5b9bcc307238f24cb10d5d21">coid</a>;
-<a name="l00030"></a><a class="code" href="structmessage.html#ae37fdd0cc39ba6bd097bd752bfd3f21e">00030</a>         <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> <a class="code" href="structmessage.html#ae37fdd0cc39ba6bd097bd752bfd3f21e">ca</a>;
-<a name="l00034"></a><a class="code" href="unionmessage_1_1msg.html">00034</a>         <span class="keyword">union </span><a class="code" href="unionmessage_1_1msg.html">msg</a>{
-<a name="l00035"></a><a class="code" href="unionmessage_1_1msg.html#ae9970945f683b17ae67b860b473ecf37">00035</a>                 <span class="keywordtype">int</span> <a class="code" href="unionmessage_1_1msg.html#ae9970945f683b17ae67b860b473ecf37">messwert</a>;
-<a name="l00036"></a><a class="code" href="unionmessage_1_1msg.html#ae6e494afe581949d2695656455a70276">00036</a>                 <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="unionmessage_1_1msg.html#ae6e494afe581949d2695656455a70276">comtype</a>;
-<a name="l00037"></a><a class="code" href="unionmessage_1_1msg.html#a114c07c3094da0e347d99f83d269571b">00037</a>                 <span class="keyword">struct </span>sigevent <a class="code" href="unionmessage_1_1msg.html#a114c07c3094da0e347d99f83d269571b">event</a>;
-<a name="l00038"></a>00038                 <span class="comment">//more can be added here!</span>
-<a name="l00039"></a>00039         } <a class="code" href="structmessage.html#ae513d577f8f61cfb1fafc69d56469204">Msg</a>;
-<a name="l00040"></a>00040 } <a class="code" href="_communication_8h.html#ae5051f6f612e6d4218717f733bc50667">Message</a>;
-<a name="l00041"></a>00041 
-<a name="l00056"></a><a class="code" href="class_communication.html">00056</a> <span class="keyword">class </span><a class="code" href="class_communication.html">Communication</a> {
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">public</span>:
-<a name="l00064"></a>00064         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#ad02703abb2259e85cd3e5a3e1f971cd0">getChannelIdForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00070"></a>00070         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a573ed5cd2a09645b3869e530ef43f3c9">getConnectIdForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00077"></a>00077         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ac39875d45c4eca6cd0de3acc2b68c8f6">requestChannelIDForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00085"></a>00085         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ad306c33c27b41cf28bf30d5176bb6712">addCommunicator</a>(<span class="keywordtype">int</span> ch, <span class="keywordtype">int</span> cod, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct);
-<a name="l00093"></a>00093         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#afe1e84e708135a54c3933eafda3405b0">removeCommunicator</a>(<span class="keywordtype">int</span> ch, <span class="keywordtype">int</span> cod,  <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct);
-<a name="l00098"></a>00098         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ab8bee166b34ab75a8659a73942fe60dd">setUpChannel</a>();
-<a name="l00105"></a>00105         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ad5b33ec110ddebcd06515254b43e262d">registerChannel</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00111"></a>00111         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#aacadde27914b530cf7fdcd709e7cbd49">destroyChannel</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);
-<a name="l00117"></a>00117         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a3f62397cd668355dca5e4de704df6afb">unregisterChannel</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00124"></a>00124         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a6cdfcc70a83166c72405d2f2a192abd3">attachConnection</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00132"></a>00132         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a78b99433d86597ec15fdd5c9f56a1929">detachConnection</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>,<span class="keywordtype">int</span> <a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>,<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00142"></a>00142         <span class="keywordtype">void</span> <a class="code" href="class_communication.html#a16749e337298ff29dcaa68d55840eb94">buildMessage</a>(<span class="keywordtype">void</span> *s, <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a>, <span class="keywordtype">int</span> coid, <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> activity,<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
-<a name="l00146"></a>00146         <span class="keywordtype">void</span> <a class="code" href="class_communication.html#aa8a8aefb61b1f43e6f8170335d294200">printList</a>();
-<a name="l00152"></a>00152         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a827b31cc1b982509c76fc2dadba669bc">cleanUp</a>(<span class="keywordtype">int</span> coid);
-<a name="l00160"></a>00160         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a827b31cc1b982509c76fc2dadba669bc">cleanUp</a>(<span class="keywordtype">int</span> coid, <a class="code" href="structmessage.html">Message</a> *m, <a class="code" href="structmessage.html">Message</a> *r);
-<a name="l00164"></a><a class="code" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">00164</a>         <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> <a class="code" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">serverChannelId</a>;
-<a name="l00165"></a>00165 
-<a name="l00166"></a>00166         <a class="code" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a>();
-<a name="l00167"></a>00167         <span class="keyword">virtual</span> <a class="code" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a>();
-<a name="l00168"></a>00168 <span class="keyword">private</span>:
-<a name="l00182"></a><a class="code" href="class_communication_1_1_communicator.html">00182</a>         <span class="keyword">class </span><a class="code" href="class_communication_1_1_communicator.html">Communicator</a> {
-<a name="l00183"></a>00183         <span class="keyword">public</span>:
-<a name="l00190"></a><a class="code" href="class_communication_1_1_communicator.html#a5ed82b53edb8756a18cb5263b240c8d8">00190</a>                 <a class="code" href="class_communication_1_1_communicator.html#a5ed82b53edb8756a18cb5263b240c8d8">Communicator</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <span class="keywordtype">int</span> cod, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c) {
-<a name="l00191"></a>00191                         chid = id;
-<a name="l00192"></a>00192                         coid = cod;
-<a name="l00193"></a>00193                         <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a> = c;
-<a name="l00194"></a>00194                 }
-<a name="l00195"></a><a class="code" href="class_communication_1_1_communicator.html#a4ed4a58a3e84f5cd24b5bd88ab32a749">00195</a>                 <a class="code" href="class_communication_1_1_communicator.html#a4ed4a58a3e84f5cd24b5bd88ab32a749">~Communicator</a>() {
-<a name="l00196"></a>00196                 }
-<a name="l00201"></a><a class="code" href="class_communication_1_1_communicator.html#a64613a206dbb6aefcbd909928de018bc">00201</a>                 <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="class_communication_1_1_communicator.html#a64613a206dbb6aefcbd909928de018bc">getCom</a>() {
-<a name="l00202"></a>00202                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a>;
-<a name="l00203"></a>00203                 }
-<a name="l00208"></a><a class="code" href="class_communication_1_1_communicator.html#af3924e05e6c92a03fc4b65e3d16ec535">00208</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#af3924e05e6c92a03fc4b65e3d16ec535">getChannelID</a>() {
-<a name="l00209"></a>00209                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">chid</a>;
+<a name="l00027"></a><a class="code" href="structmsg.html">00027</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmsg.html">msg</a>{
+<a name="l00028"></a><a class="code" href="structmsg.html#a220f758862de925b1b092417932ab471">00028</a>         <span class="keywordtype">int</span> <a class="code" href="structmsg.html#a220f758862de925b1b092417932ab471">chid</a>;
+<a name="l00029"></a><a class="code" href="structmsg.html#a9bd318a514d02ee6dafc817acd7f8c47">00029</a>         <span class="keywordtype">int</span> <a class="code" href="structmsg.html#a9bd318a514d02ee6dafc817acd7f8c47">coid</a>;
+<a name="l00030"></a><a class="code" href="structmsg.html#a8a4c52b97b9d18adc2b8af6767a2b25f">00030</a>         <span class="keywordtype">int</span> <a class="code" href="structmsg.html#a8a4c52b97b9d18adc2b8af6767a2b25f">wert</a>;
+<a name="l00031"></a><a class="code" href="structmsg.html#a064ae42b5efb47aa5033d6b31d166dad">00031</a>         <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> <a class="code" href="structmsg.html#a064ae42b5efb47aa5033d6b31d166dad">ca</a>;
+<a name="l00035"></a>00035         <span class="comment">//int messwert;</span>
+<a name="l00036"></a><a class="code" href="structmsg.html#abba1dc1024d9a7b79a68bc0637390e32">00036</a>         <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="structmsg.html#abba1dc1024d9a7b79a68bc0637390e32">comtype</a>;
+<a name="l00037"></a>00037 } <a class="code" href="_communication_8h.html#a8615ac38deaceddc3160d761ba9ca674">Msg</a>;
+<a name="l00038"></a>00038 
+<a name="l00039"></a><a class="code" href="unionmessage.html">00039</a> <span class="keyword">typedef</span> <span class="keyword">union </span><a class="code" href="unionmessage.html">message</a>{
+<a name="l00040"></a><a class="code" href="unionmessage.html#a1c37e9992a82db94e77688549ee3373b">00040</a>         <span class="keyword">struct </span>sigevent <a class="code" href="unionmessage.html#a1c37e9992a82db94e77688549ee3373b">event</a>;
+<a name="l00041"></a><a class="code" href="unionmessage.html#a89160acc7a4800aaa64e526809f01c41">00041</a>         <span class="keyword">struct </span>_pulse <a class="code" href="unionmessage.html#a89160acc7a4800aaa64e526809f01c41">pulse</a>;
+<a name="l00045"></a><a class="code" href="unionmessage.html#a7237a14d2437e7c23c8ff60f527aaa06">00045</a>         <a class="code" href="structmsg.html">Msg</a> <a class="code" href="unionmessage.html#a7237a14d2437e7c23c8ff60f527aaa06">m</a>;
+<a name="l00046"></a>00046 } <a class="code" href="_communication_8h.html#a024067018d1d604d3cd46605790407c8">Message</a>;
+<a name="l00047"></a>00047 
+<a name="l00062"></a><a class="code" href="class_communication.html">00062</a> <span class="keyword">class </span><a class="code" href="class_communication.html">Communication</a> {
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 <span class="keyword">public</span>:
+<a name="l00070"></a>00070         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#ad02703abb2259e85cd3e5a3e1f971cd0">getChannelIdForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00076"></a>00076         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a573ed5cd2a09645b3869e530ef43f3c9">getConnectIdForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00083"></a>00083         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ac39875d45c4eca6cd0de3acc2b68c8f6">requestChannelIDForObject</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00091"></a>00091         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ad306c33c27b41cf28bf30d5176bb6712">addCommunicator</a>(<span class="keywordtype">int</span> ch, <span class="keywordtype">int</span> cod, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct);
+<a name="l00099"></a>00099         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#afe1e84e708135a54c3933eafda3405b0">removeCommunicator</a>(<span class="keywordtype">int</span> ch, <span class="keywordtype">int</span> cod,  <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> ct);
+<a name="l00104"></a>00104         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ab8bee166b34ab75a8659a73942fe60dd">setUpChannel</a>();
+<a name="l00111"></a>00111         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#ad5b33ec110ddebcd06515254b43e262d">registerChannel</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00117"></a>00117         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#aacadde27914b530cf7fdcd709e7cbd49">destroyChannel</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);
+<a name="l00123"></a>00123         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a3f62397cd668355dca5e4de704df6afb">unregisterChannel</a>(<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00130"></a>00130         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a6cdfcc70a83166c72405d2f2a192abd3">attachConnection</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00138"></a>00138         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a78b99433d86597ec15fdd5c9f56a1929">detachConnection</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>,<span class="keywordtype">int</span> <a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>,<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00148"></a>00148         <span class="keywordtype">void</span> <a class="code" href="class_communication.html#a16749e337298ff29dcaa68d55840eb94">buildMessage</a>(<span class="keywordtype">void</span> *s, <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a>, <span class="keywordtype">int</span> coid, <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> activity,<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c);
+<a name="l00159"></a>00159         <span class="keywordtype">void</span> <a class="code" href="class_communication.html#a16749e337298ff29dcaa68d55840eb94">buildMessage</a>(<span class="keywordtype">void</span> *s, <span class="keywordtype">int</span> chid, <span class="keywordtype">int</span> coid, <a class="code" href="_communication_8h.html#a2ea0bb09adcce7f655e8f8ee8d30561b">MsgType</a> activity,<a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c,<span class="keywordtype">int</span> val);
+<a name="l00163"></a>00163         <span class="keywordtype">void</span> <a class="code" href="class_communication.html#aa8a8aefb61b1f43e6f8170335d294200">printList</a>();
+<a name="l00169"></a>00169         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a827b31cc1b982509c76fc2dadba669bc">cleanUp</a>(<span class="keywordtype">int</span> coid);
+<a name="l00177"></a>00177         <span class="keywordtype">bool</span> <a class="code" href="class_communication.html#a827b31cc1b982509c76fc2dadba669bc">cleanUp</a>(<span class="keywordtype">int</span> coid, <a class="code" href="unionmessage.html">Message</a> *m, <a class="code" href="unionmessage.html">Message</a> *r);
+<a name="l00181"></a><a class="code" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">00181</a>         <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> <a class="code" href="class_communication.html#ae9c5e1f3d2895c26b7b8bfa5466cbf2a">serverChannelId</a>;
+<a name="l00182"></a>00182         <a class="code" href="class_communication.html#a88aa7a2d2ac5202e2b8eef787d1a8689">Communication</a>();
+<a name="l00183"></a>00183         <span class="keyword">virtual</span> <a class="code" href="class_communication.html#a75ba08ce908d45251e28e4c1db94e6f4">~Communication</a>();
+<a name="l00184"></a>00184 <span class="keyword">private</span>:
+<a name="l00198"></a><a class="code" href="class_communication_1_1_communicator.html">00198</a>         <span class="keyword">class </span><a class="code" href="class_communication_1_1_communicator.html">Communicator</a> {
+<a name="l00199"></a>00199         <span class="keyword">public</span>:
+<a name="l00206"></a><a class="code" href="class_communication_1_1_communicator.html#a5ed82b53edb8756a18cb5263b240c8d8">00206</a>                 <a class="code" href="class_communication_1_1_communicator.html#a5ed82b53edb8756a18cb5263b240c8d8">Communicator</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <span class="keywordtype">int</span> cod, <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c) {
+<a name="l00207"></a>00207                         chid = id;
+<a name="l00208"></a>00208                         coid = cod;
+<a name="l00209"></a>00209                         <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a> = c;
 <a name="l00210"></a>00210                 }
-<a name="l00215"></a><a class="code" href="class_communication_1_1_communicator.html#abf847f1cb1bd7be28383a323fd2888f9">00215</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#abf847f1cb1bd7be28383a323fd2888f9">getConnectID</a>() {
-<a name="l00216"></a>00216                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">coid</a>;
-<a name="l00217"></a>00217                 }
-<a name="l00222"></a><a class="code" href="class_communication_1_1_communicator.html#a039b82002f60f087d1009b8ca3dda74a">00222</a>                 <span class="keywordtype">void</span> <a class="code" href="class_communication_1_1_communicator.html#a039b82002f60f087d1009b8ca3dda74a">setConnectID</a>(<span class="keywordtype">int</span> co) {
-<a name="l00223"></a>00223                         coid = co;
-<a name="l00224"></a>00224                 }
-<a name="l00225"></a>00225         <span class="keyword">private</span>:
-<a name="l00229"></a><a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">00229</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">chid</a>;
-<a name="l00233"></a><a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">00233</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">coid</a>;
-<a name="l00237"></a><a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">00237</a>                 <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a>;
-<a name="l00238"></a>00238         };
-<a name="l00239"></a>00239 
-<a name="l00243"></a><a class="code" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">00243</a>         std::list&lt;Communicator&gt; <a class="code" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">lst</a>;
-<a name="l00244"></a>00244 <span class="keyword">protected</span>:
-<a name="l00248"></a><a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">00248</a>         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a>, <a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>;
-<a name="l00249"></a>00249 <span class="keyword">public</span>:
-<a name="l00256"></a>00256         std::list&lt;Communicator&gt;::iterator <a class="code" href="class_communication.html#aaceffbf90ba93d40e9a8697cfa680bdf">getCommunicatorForObject</a>(<span class="keywordtype">int</span> ci,<span class="keywordtype">int</span> co);
-<a name="l00257"></a>00257 };
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259 <span class="preprocessor">#endif </span><span class="comment">/* COMMUNICATION_H_ */</span>
+<a name="l00211"></a><a class="code" href="class_communication_1_1_communicator.html#a4ed4a58a3e84f5cd24b5bd88ab32a749">00211</a>                 <a class="code" href="class_communication_1_1_communicator.html#a4ed4a58a3e84f5cd24b5bd88ab32a749">~Communicator</a>() {
+<a name="l00212"></a>00212                 }
+<a name="l00217"></a><a class="code" href="class_communication_1_1_communicator.html#a64613a206dbb6aefcbd909928de018bc">00217</a>                 <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="class_communication_1_1_communicator.html#a64613a206dbb6aefcbd909928de018bc">getCom</a>() {
+<a name="l00218"></a>00218                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a>;
+<a name="l00219"></a>00219                 }
+<a name="l00224"></a><a class="code" href="class_communication_1_1_communicator.html#af3924e05e6c92a03fc4b65e3d16ec535">00224</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#af3924e05e6c92a03fc4b65e3d16ec535">getChannelID</a>() {
+<a name="l00225"></a>00225                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">chid</a>;
+<a name="l00226"></a>00226                 }
+<a name="l00231"></a><a class="code" href="class_communication_1_1_communicator.html#abf847f1cb1bd7be28383a323fd2888f9">00231</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#abf847f1cb1bd7be28383a323fd2888f9">getConnectID</a>() {
+<a name="l00232"></a>00232                         <span class="keywordflow">return</span> <a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">coid</a>;
+<a name="l00233"></a>00233                 }
+<a name="l00238"></a><a class="code" href="class_communication_1_1_communicator.html#a039b82002f60f087d1009b8ca3dda74a">00238</a>                 <span class="keywordtype">void</span> <a class="code" href="class_communication_1_1_communicator.html#a039b82002f60f087d1009b8ca3dda74a">setConnectID</a>(<span class="keywordtype">int</span> co) {
+<a name="l00239"></a>00239                         coid = co;
+<a name="l00240"></a>00240                 }
+<a name="l00241"></a>00241         <span class="keyword">private</span>:
+<a name="l00245"></a><a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">00245</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">chid</a>;
+<a name="l00249"></a><a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">00249</a>                 <span class="keywordtype">int</span> <a class="code" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">coid</a>;
+<a name="l00253"></a><a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">00253</a>                 <a class="code" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> <a class="code" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a>;
+<a name="l00254"></a>00254         };
+<a name="l00255"></a>00255 
+<a name="l00259"></a><a class="code" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">00259</a>         std::list&lt;Communicator&gt; <a class="code" href="class_communication.html#a61cac84b7f4ee836ddec99e1dbd4f83c">lst</a>;
+<a name="l00260"></a>00260 <span class="keyword">protected</span>:
+<a name="l00264"></a><a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">00264</a>         <span class="keywordtype">int</span> <a class="code" href="class_communication.html#a0aeb08979d0227a64a089d3ed8612c3e">chid</a>, <a class="code" href="class_communication.html#acbcafcf22a0eb30681fc9081910366fd">coid</a>;
+<a name="l00265"></a>00265 <span class="keyword">public</span>:
+<a name="l00272"></a>00272         std::list&lt;Communicator&gt;::iterator <a class="code" href="class_communication.html#aaceffbf90ba93d40e9a8697cfa680bdf">getCommunicatorForObject</a>(<span class="keywordtype">int</span> ci,<span class="keywordtype">int</span> co);
+<a name="l00273"></a>00273 };
+<a name="l00274"></a>00274 
+<a name="l00275"></a>00275 <span class="preprocessor">#endif </span><span class="comment">/* COMMUNICATION_H_ */</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -163,7 +166,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:17 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:04 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

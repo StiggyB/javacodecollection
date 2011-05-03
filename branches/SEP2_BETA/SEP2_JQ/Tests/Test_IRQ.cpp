@@ -28,7 +28,7 @@ Test_IRQ::Test_IRQ() {
 	/**
 	 * gets a pointer to an instance of the CoreController
 	 */
-	cc = CoreController::getInstance();
+	h = HALCore::getInstance();
 }
 
 Test_IRQ::~Test_IRQ() {

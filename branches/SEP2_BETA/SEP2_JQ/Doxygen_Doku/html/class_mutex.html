@@ -78,6 +78,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutex.html#ac9e9182407f5f74892318607888e9be4">~Mutex</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutex.html#ad91be808bf0a60a16f10b897ec246d3a">lock</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutex.html#a546a5b797ba29959357586aa2b3740a8">unlock</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">pthread_mutex_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutex.html#a581657b0772e92b17137fc1ce60684a0">getMutex</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutex.html#a201127851a64538f2174186385fd5f0d">Mutex</a> (const <a class="el" href="class_mutex.html">Mutex</a> &amp;)</td></tr>
@@ -146,6 +147,23 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a581657b0772e92b17137fc1ce60684a0"></a><!-- doxytag: member="Mutex::getMutex" ref="a581657b0772e92b17137fc1ce60684a0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_mutex_t * Mutex::getMutex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Get an Pointer to the <a class="el" href="class_mutex.html">Mutex</a> </p>
+
+</div>
+</div>
 <a class="anchor" id="ad91be808bf0a60a16f10b897ec246d3a"></a><!-- doxytag: member="Mutex::lock" ref="ad91be808bf0a60a16f10b897ec246d3a" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +249,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:07 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
