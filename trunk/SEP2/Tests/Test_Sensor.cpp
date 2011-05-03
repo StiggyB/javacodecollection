@@ -35,6 +35,7 @@
 
 #include "Test_Sensor.h"
 
+//TODO 0prio -- test the includes in every class
 //TODO 2prio -- implement a routine for a teaching piece
 
 Test_Sensor::Test_Sensor()
