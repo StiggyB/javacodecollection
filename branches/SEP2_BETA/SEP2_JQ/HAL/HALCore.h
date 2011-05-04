@@ -132,7 +132,7 @@ enum Interrupts_D {
 };
 
 enum Function{
-	WRITE=1,RESET=2
+	WRITE=0,RESET=1
 };
 
 /**
@@ -426,12 +426,12 @@ protected:
 		int value1;
 		int value2;
 		bool value3;
-	} VAL;
+	} __attribute__((__packed__)) VAL;
 
 	typedef struct f {
 		FP func;
-		VAL v;
-	} Functions;
+		VAL* v;
+	} __attribute__((__packed__)) Functions;
 private:
 
 	/**

@@ -11,6 +11,7 @@
 #include "../Tests/Test_Serial.h"
 #include "Sensor.h"
 #include "InterruptController.h"
+#include "CommunicationServer.h"
 
 class StartThread : public thread::HAWThread {
 public:
@@ -30,6 +31,10 @@ private:
      */
     InterruptController *ic;
 
+    /**
+     * pointer to the CommunicationServer
+     */
+    CommunicationServer *cs;
 #ifdef TEST_M1
     Test_M1 tm;
 #endif

@@ -10,6 +10,7 @@
 StartThread::StartThread(){
 	h = HALCore::getInstance();
 	ic = InterruptController::getInstance();
+	cs = CommunicationServer::getInstance();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
@@ -32,15 +33,17 @@ void StartThread::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-
-	(*h).start(NULL);
+	//cs->start(NULL);
+	h->start(NULL);
 	//sleep(3);
 	cout << "starting IC" <<endl;
-	(*ic).start(NULL);
+	//ic->start(NULL);
 	//cout << "" << ic << endl;
 	cout << "IC started" <<endl;
-	Sensor s;
-	s.start(NULL);
+	//Sensor s;
+	//s.start(NULL);
+	h->resetAllOutPut();
+	h->write(PORT_B,0x01);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);
@@ -85,8 +88,8 @@ void StartThread::execute(void*) {
 		}
 	}
 */
-	//sleep(40);
-	h->join();
+	sleep(40);
+	//h->join();
 
 }
 

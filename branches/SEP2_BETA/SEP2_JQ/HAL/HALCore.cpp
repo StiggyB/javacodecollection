@@ -76,6 +76,7 @@ HALCore::HALCore() {
 	}
 	controlBits = BIT_CNTRLS;
 	out8(PORT_CNTRL,BIT_CNTRLS);
+	out8(INTERRUPT_SET_ADRESS_D,0xFF);
 	portA = read(PORT_A);
 	portB = read(PORT_B);
 	portC = read(PORT_C);
@@ -83,7 +84,7 @@ HALCore::HALCore() {
 	portIRQ = read(PORT_IRQ);
 	out8(PORT_C,0x0F);
 	setFPArray();
-	sem.init(0);
+	sem.init(1);
 }
 
 HALCore::~HALCore() {
@@ -108,13 +109,16 @@ void HALCore::execute(void*) {
 	}
 	addLED(LEDS_ON);
 	while (!isStopped()) {
+		std::cout << "HC waiting..." <<std::endl;
 		sem.wait();
 		if ((*it) != NULL) {
-			(*this.*((*(*it)).func))(&(*(*it)).v);
+			std::cout << "HC: do something from queue! " << (*(*it)).func <<std::endl;
+			(*this.*((*(*it)).func))((*(*it)).v);
 		}
 		free((*it));
 		lst.erase(it);
-		it++;
+		/*if(it != lst.end())*/ it++;
+		//else it = lst.begin();
 	}
 }
 
@@ -179,6 +183,7 @@ int HALCore::write(int dir, int value, bool set){
 		newVal = newVal | (tmp << i);
 	}
 	*port = newVal;
+	std::cout << "RealWrite: "<< newVal << " on Adr.: " << dir << std::endl;
 	out8(dir,newVal);
 	return newVal;
 }
@@ -339,6 +344,7 @@ void HALCore::resetAll() {
 }
 
 void HALCore::wakeup(){
+	std::cout << "HC has to wakeup!" <<std::endl;
 	sem.post();
 }
 
@@ -348,7 +354,7 @@ void HALCore::setFPArray(){
 }
 
 HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2){
-	return buildFunctions(f, val1, val2, false);
+	return buildFunctions(f, val1, val2, true);
 }
 
 HALCore::Functions * HALCore::buildFunctions(FP f, bool val3){
@@ -356,26 +362,32 @@ HALCore::Functions * HALCore::buildFunctions(FP f, bool val3){
 }
 
 HALCore::Functions * HALCore::buildFunctions(FP f, int val1){
-	return buildFunctions(f, val1, 0, false);
+	return buildFunctions(f, val1, 0, true);
 }
 
 HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2, bool val3){
 	Functions *ptrMyF = (Functions *) malloc(sizeof(Functions));
-	if(ptrMyF != NULL){
-		ptrMyF->func=funcArray[1];
-		ptrMyF->v.value1 = 0;
-		ptrMyF->v.value2 = 0;
-		ptrMyF->v.value3 = false;
+	VAL *va = (VAL*) malloc(sizeof(VAL));
+
+	if(ptrMyF != NULL && va != NULL){
+		ptrMyF->func=f;
+		ptrMyF->v = va;
+		va->value1 = val1;
+		va->value2 = val2;
+		va->value3 = true;
+		//std::cout << "Function Build: " << hex <<(func) << " " << hex << (p->v) << std::endl;
 	}
 	return ptrMyF;
 }
 
 void HALCore::write(void *ptr){
 	VAL* v =  (VAL *) ptr;
+	std::cout << "Write: " << ptr << " " << v->value1  << " "<< v->value2 << " " << v->value3 << std::endl;
 	write(v->value1, v->value2, v->value2);
 }
 void HALCore::reset(void *ptr){
 	VAL* v =  (VAL *) ptr;
+	std::cout << "Reset: " << ptr<< " " << v->value1  << " "<< v->value2 << " " << v->value3 << std::endl;
 	write(v->value1, v->value2, v->value2);
 }
 
@@ -389,12 +401,14 @@ void HALCore::setPortsTo(int cb){
 
 void HALCore::write(int dir, int value){
 	Functions * p = buildFunctions(funcArray[WRITE], dir, value, true);
+	//
 	lst.insert(lst.end(),p);
 	wakeup();
 }
 
 void HALCore::reset(int dir, int value){
 	Functions * p = buildFunctions(funcArray[RESET], dir, value, false);
+	//std::cout << "Function Build: " << hex <<(p->func) << " " << hex << (p->v) << std::endl;
 	lst.insert(lst.end(),p);
 	wakeup();
 }
