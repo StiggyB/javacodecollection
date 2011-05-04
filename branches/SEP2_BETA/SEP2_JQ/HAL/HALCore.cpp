@@ -182,6 +182,8 @@ int HALCore::write(int dir, int value, bool set){
 		}
 		newVal = newVal | (tmp << i);
 	}
+	// if(set) newVal = (value | (*port)) & 0xFF;
+	// else newVal = ((*port) & (~value)) & 0xFF;
 	*port = newVal;
 	std::cout << "RealWrite: "<< newVal << " on Adr.: " << dir << std::endl;
 	out8(dir,newVal);
