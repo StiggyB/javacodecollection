@@ -123,9 +123,7 @@ void Sensor::settingUpAndWaitingSensor(){
 #endif
 
 #ifdef TEST_SEN
-		//read interrupt for testing
-		ts.test_sen(p, (*r_msg).pulse.value.sival_int);
-		//read register for testing
+		ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
 #endif
 	}
 	if (!detachConnection(id,coid,SENSOR)) {
