@@ -37,7 +37,7 @@
 //TODO 2prio -- implement a routine for a teaching piece
 
 Test_Sensor::Test_Sensor()
-:lastState(BIT_WP_OUT), last_state_C(BIT_START_PUSHED),
+:last_state_B(BIT_WP_OUT), last_state_C(BIT_START_PUSHED),
  success(true), section(0), height(0), res(0)
 {
 	cc = CoreController::getInstance();
@@ -64,102 +64,116 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 		if(section == 0) {
 
 			if(!(value & BIT_WP_RUN_IN)) {
-				if(lastState != 0) {
+				if(last_state_B != 0) {
 					success &= false;
+					cout << "f0" << endl;
 				}
-				(*cc).shine(YELLOW);
+				cc->shine(YELLOW);
 				cout << "Section test1" <<  endl;
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(0)", (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
 				(*cc).engineRight();
-				res = (*cc).read(PORT_B);
-				lastState = BIT_WP_RUN_IN;
+				last_state_B = BIT_WP_RUN_IN;
 			}
 			if(!(value & BIT_WP_IN_HEIGHT)) {
-				if(lastState != BIT_WP_RUN_IN) {
+				if(last_state_B != BIT_WP_RUN_IN) {
 					success &= false;
+					cout << "f12" << endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
 				height = (*cc).identifyHeight();
 				success &= assert_equals("B(2)", height, PLANE_WP_DEFAULT_HEIGHT);
 				res = (*cc).read(PORT_B);
-				lastState = BIT_WP_IN_HEIGHT;
+				last_state_B = BIT_WP_IN_HEIGHT;
 			}
 
 			if (!(value & BIT_WP_IN_SWITCH) && !(value & BIT_SWITCH_STATUS)) {
-				if(lastState != BIT_WP_IN_HEIGHT) {
+				if(last_state_B != BIT_WP_IN_HEIGHT) {
 					success &= false;
+					cout << "f34" << endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 				success &= assert_equals("B(4)", (res & BIT_WP_METAL), NO_METAL_STATE);
 				(*cc).openSwitch();
-				lastState = BIT_WP_IN_SWITCH;
+				last_state_B = BIT_WP_IN_SWITCH;
 			}
 
 			if (!(value & BIT_WP_OUTLET)) {
-				if(lastState != BIT_WP_IN_SWITCH) {
+				cout << "B(7)" << endl;
+				if(last_state_B != BIT_WP_IN_SWITCH) {
 					success &= false;
+					cout << "f7" << endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
 				(*cc).engineLeft();
 				section++;
-				lastState = BIT_WP_OUTLET;
+				last_state_B = BIT_WP_OUTLET;
 			}
 		}
 		else if(section == 1) {
 
 			if (!(value & BIT_WP_IN_SWITCH) && (value & BIT_SWITCH_STATUS)) {
 				cout << "Section test2" <<  endl;
-				if(lastState != BIT_WP_OUTLET) {
+				if(last_state_B != BIT_WP_OUTLET) {
 					success &= false;
+					cout << "f43" << endl;
 				}
-				lastState = BIT_WP_IN_SWITCH;
+				last_state_B = BIT_WP_IN_SWITCH;
 				/*do nothing*/
 			}
 			if (!(value & BIT_WP_IN_HEIGHT)&& (value & BIT_SWITCH_STATUS)) {
-				if(lastState != BIT_WP_IN_SWITCH) {
+				if(last_state_B != BIT_WP_IN_SWITCH) {
 					success &= false;
+					cout << "f5" << endl;
 				}
 				(*cc).closeSwitch();
 				(*cc).engineRight();
 				sleep(1);
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_CLOSED_STATE);
-				lastState = BIT_WP_IN_HEIGHT;
+				last_state_B = BIT_WP_IN_HEIGHT;
 			}
 			if (!(value & BIT_WP_IN_SLIDE)) {
-				if(lastState != BIT_WP_IN_HEIGHT) {
+				if(last_state_B != BIT_WP_IN_HEIGHT) {
 					success &= false;
+					cout << "f6" << endl;
 				}
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(6)", (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
 				(*cc).engineReset();
 				test_isSuccessful(success);
-				lastState = BIT_WP_IN_SLIDE;
+				last_state_B = BIT_WP_OUT;
 				section--;
+				success = true;
+				cout << section << endl;
 			}
 		}
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
 		//TODO 0prio -- how to? only one test per push!
-		if (!(value & BIT_E_STOP)) {
+		if (!(value & BIT_E_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED) || (last_state_C == BIT_STOP_PUSHED))) {
 			res = (*cc).read(PORT_C);
-			success &= assert_equals("C(7)", (res & BIT_E_STOP), BIT_E_STOP_PUSHED); //implement test for BIT_E_STOP_LOST
+			success &= assert_equals("C(7)", (res & BIT_E_STOP)+1, BIT_E_STOP_PUSHED); //implement test for BIT_E_STOP_LOST
 			(*cc).emergencyStop();
 			last_state_C = BIT_E_STOP_PUSHED;
+			test_isSuccessful(success);
+			//success = true;
 			//Final test isSuccessful()
 		} else if (value & BIT_E_STOP && (last_state_C == BIT_E_STOP_PUSHED)) {
 			res = (*cc).read(PORT_C);
 			success &= assert_equals("C(7)", (res & BIT_E_STOP), BIT_E_STOP_LOST);
 			last_state_C = BIT_E_STOP_LOST;
 			test_isSuccessful(success);
-		} else if (!(value & BIT_STOP)) { //TODO 0prio -- 2 tests (push/lost button) -> only 1 test
+			success = true;
+
+		} else if (!(value & BIT_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED))) { //TODO 0prio -- 2 tests (push/lost button) -> only 1 test
 			res = (*cc).read(PORT_C);
 			success &= assert_equals("C(5)", (res & BIT_STOP), BIT_STOP_PUSHED);
 			(*cc).stopMachine();
+			last_state_C = BIT_STOP_PUSHED;
 		} else if (value & BIT_START) {
 			cout << "Please, push the Emergency Stop as a last" << endl;
 			res = (*cc).read(PORT_C);

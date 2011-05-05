@@ -27,10 +27,6 @@ Sensor::Sensor():cnt(0) {
 	if (cc == NULL){
 		cc = CoreController::getInstance();
 	}
-#ifdef TEST_SEN
-		//new ts();
-		ts = Test_Sensor();
-#endif
 }
 
 Sensor::~Sensor() {
