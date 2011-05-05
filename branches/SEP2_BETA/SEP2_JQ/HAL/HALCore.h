@@ -9,6 +9,9 @@
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "../Thread/Semaphor.h"
+#include "../Thread/Condition.h"
+
+#define CONDOR
 
 /**
  * Delete a bit
@@ -540,11 +543,20 @@ private:
 	 * List of function pointers which should worked up
 	 */
 	list<Functions *> lst;
+#ifdef CONDOR
+
+	Condition condvar;
+	Mutex mut;
+	Mutex changedMutex;
+	bool requested;
+
+#endif
+#ifdef SEMAP
 	/**
 	 * Semaphore to wakeup the thread
 	 */
 	Semaphor sem;
-
+#endif
 	Functions * buildFunctions(FP f, int val1, int val2);
 	Functions * buildFunctions(FP f, bool val3);
 	Functions * buildFunctions(FP f, int val1);

@@ -33,17 +33,13 @@ void StartThread::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	//cs->start(NULL);
+	cs->start(NULL);
 	h->start(NULL);
-	//sleep(3);
 	cout << "starting IC" <<endl;
-	//ic->start(NULL);
-	//cout << "" << ic << endl;
+	ic->start(NULL);
 	cout << "IC started" <<endl;
-	//Sensor s;
-	//s.start(NULL);
-	h->resetAllOutPut();
-	h->write(PORT_B,0x01);
+	Sensor s;
+	s.start(NULL);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);
@@ -94,9 +90,9 @@ void StartThread::execute(void*) {
 }
 
 void StartThread::stopProcess() {
-	h->resetAllOutPut();
-	h->deleteInstance();
-	ic->deleteInstance();
+	//h->resetAllOutPut();
+	//h->deleteInstance();
+	//ic->deleteInstance();
 }
 
 void StartThread::shutdown(){

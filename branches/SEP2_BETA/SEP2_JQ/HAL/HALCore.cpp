@@ -82,9 +82,16 @@ HALCore::HALCore() {
 	portC = read(PORT_C);
 	portIRE = read(PORT_IRE);
 	portIRQ = read(PORT_IRQ);
-	out8(PORT_C,0x0F);
+	//out8(PORT_C,0x0F);
 	setFPArray();
+#ifdef CONDOR
+	condvar.setMutex(&mut);
+	//mut;
+	requested=false;
+#endif
+#ifdef SEMAP
 	sem.init(1);
+#endif
 }
 
 HALCore::~HALCore() {
@@ -107,8 +114,9 @@ void HALCore::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	addLED(LEDS_ON);
+	//addLED(LEDS_ON);
 	while (!isStopped()) {
+#ifdef SEMAP
 		std::cout << "HC waiting..." <<std::endl;
 		sem.wait();
 		if ((*it) != NULL) {
@@ -119,6 +127,31 @@ void HALCore::execute(void*) {
 		lst.erase(it);
 		/*if(it != lst.end())*/ it++;
 		//else it = lst.begin();
+#endif
+#ifdef CONDOR
+		if(!lst.empty()){
+			if((*it) != NULL){
+				(*this.*((*(*it)).func))((*(*it)).v);
+			}
+			free((*it));
+			lst.erase(it);
+			it++;
+		}else{
+			changedMutex.lock();
+			if(!requested){
+				changedMutex.unlock();
+				mut.lock();
+				cout << "waiting" << endl;
+				condvar.wait();
+				mut.unlock();
+				changedMutex.lock();
+			}
+			requested = false;
+			changedMutex.unlock();
+		}
+#endif
+
+
 	}
 }
 
@@ -153,20 +186,20 @@ bool HALCore::isInput(int dir){
 }
 
 int HALCore::write(int dir, int value, bool set){
-	int val = getBitsToAdress(dir);
+	//int val = getBitsToAdress(dir);
 	value = checkVal(dir,value, set);
 	int volatile *port = 0;
 	switch(dir){
-		case PORT_B: port = &portB;/* val = portB & value;*/ break;
-		case PORT_C: port = &portC;/* val = portC & value;*/ break;
+		case PORT_B: port = &portB; /* val = portB & value;*/ break;
+		case PORT_C: port = &portC; /* val = portC & value;*/ break;
 		case PORT_CNTRL: port = &controlBits;/* val = controlBits & value;*/ break;
 		case INTERRUPT_SET_ADRESS_D: port = &portIRE;/* val = portIRE & value;*/ break;
 		case INTERRUPT_RESET_ADRESS_D: port = &portIRQ;/* val = portIRQ & value;*/ break;
-		default: port = &portA;/* val = portA & value;*/ break; //PORT_A
+		default: port = &portA; portA = read(PORT_A);/* val = portA & value;*/ break; //PORT_A
 	}
-	val = value;
+	//val = value;
 	int newVal = 0;
-	for (int i = 0; i < 8; i++) {
+	/*for (int i = 0; i < 8; i++) {
 		int tmp = ((value & (1 << i)) >> i);
 		int zahl = (((*port) & (1 << i)) >> i);
 		if (tmp != 0) {
@@ -182,10 +215,10 @@ int HALCore::write(int dir, int value, bool set){
 		}
 		newVal = newVal | (tmp << i);
 	}
-	// if(set) newVal = (value | (*port)) & 0xFF;
-	// else newVal = ((*port) & (~value)) & 0xFF;
+	*/ if(set) newVal = (value | (*port)) & 0xFF;
+	 else newVal = ((*port) & (~value)) & 0xFF;
 	*port = newVal;
-	std::cout << "RealWrite: "<< newVal << " on Adr.: " << dir << std::endl;
+	//std::cout << "RealWrite: " << std::hex << newVal << " on Adr.: "  << std::hex << dir << std::endl;
 	out8(dir,newVal);
 	return newVal;
 }
@@ -314,7 +347,7 @@ void HALCore::emergencyStop(){
 	closeSwitch();
 	engineReset();
 	shine(RED);
-	removeLED(START_LED);
+	shineLED(LEDS_OFF);
 	emstopped = true;
 	stopped = true;
 }
@@ -323,6 +356,7 @@ void HALCore::stopMachine(){
 	engineStop();
 	closeSwitch();
 	shine(RED);
+	shineLED(LEDS_OFF);
 	stopped = true;
 }
 
@@ -342,12 +376,20 @@ void HALCore::resetAll() {
 	closeSwitch();
 	engineReset();
 	shine(GREEN);
-	shineLED(LEDS_ON);
+	shineLED(LEDS_OFF);
 }
 
 void HALCore::wakeup(){
-	std::cout << "HC has to wakeup!" <<std::endl;
+	//std::cout << "HC has to wakeup!" <<std::endl;
+#ifdef CONDOR
+	changedMutex.lock();
+	requested = true;
+	changedMutex.unlock();
+	condvar.signal();
+#endif
+#ifdef SEMAP
 	sem.post();
+#endif
 }
 
 void HALCore::setFPArray(){
@@ -376,7 +418,7 @@ HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2, bool val3
 		ptrMyF->v = va;
 		va->value1 = val1;
 		va->value2 = val2;
-		va->value3 = true;
+		va->value3 = val3;
 		//std::cout << "Function Build: " << hex <<(func) << " " << hex << (p->v) << std::endl;
 	}
 	return ptrMyF;
@@ -384,13 +426,13 @@ HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2, bool val3
 
 void HALCore::write(void *ptr){
 	VAL* v =  (VAL *) ptr;
-	std::cout << "Write: " << ptr << " " << v->value1  << " "<< v->value2 << " " << v->value3 << std::endl;
-	write(v->value1, v->value2, v->value2);
+	//std::cout << "Write: " << ptr << " "  << std::hex << v->value1  << " " << std::hex << v->value2 << " "  << std::hex << v->value3 << std::endl;
+	write(v->value1, v->value2, v->value3);
 }
 void HALCore::reset(void *ptr){
 	VAL* v =  (VAL *) ptr;
-	std::cout << "Reset: " << ptr<< " " << v->value1  << " "<< v->value2 << " " << v->value3 << std::endl;
-	write(v->value1, v->value2, v->value2);
+	//std::cout << "Reset: " << ptr<< " "  << std::hex << v->value1  << " " << std::hex << v->value2 << " "  << std::hex << v->value3 << std::endl;
+	write(v->value1, v->value2, v->value3);
 }
 
 void HALCore::resetPortsDirection(){

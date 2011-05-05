@@ -167,14 +167,26 @@ void Sensor::interrupt(int port, int val) {
 	case INTERRUPT_D_PORT_C_HIGH:
 		if (!(val & BIT_E_STOP)) {
 			(*h).emergencyStop();
-		} else if (!(val & BIT_STOP)) {
-			(*h).stopMachine();
-		} else if (val & BIT_START) {
-			cnt = 0;
-			(*h).restart();
-		} else if (val & BIT_RESET) {
-			cnt = 0;
-			(*h).resetAll();
+		} else {
+			if (!(val & BIT_STOP)) {
+				(*h).stopMachine();
+			} else {
+				if (val & BIT_START) {
+					cnt = 0;
+					h->shineLED(START_LED);
+					(*h).restart();
+				} else {
+					h->removeLED(START_LED);
+
+					if (val & BIT_RESET) {
+						cnt = 0;
+						h->shineLED(RESET_LED);
+						(*h).resetAll();
+					} else {
+						h->removeLED(RESET_LED);
+					}
+				}
+			}
 		}
 		break;
 	}
