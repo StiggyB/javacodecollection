@@ -20,7 +20,6 @@
  *
  * Class which deals with the interrupts.
  *
- * Inherits: HAWThread.h
  */
 
 class Sensor : public thread::HAWThread, public Communication{
@@ -36,6 +35,9 @@ public:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+	void handlePulsMessage();
+	void handleNormalMessage();
+	void clean();
 private:
 	/**
 	 * Pointer to the Singleton Core Controller
@@ -44,9 +46,14 @@ private:
 	/**
 	 *  Sets up the Communication to IC and waits for Messages from it.
 	 */
-	void settingUpAndWaitingSensor();
+	bool settingUpSensor();
+	/**
+	 *  Sets up the Communication to IC and waits for Messages from it.
+	 */
+	void cleanUpSensor();
 	//DEBUG
 	int cnt;
+	int p,id,coid;
 };
 
 #endif /* SENSOR_H_ */

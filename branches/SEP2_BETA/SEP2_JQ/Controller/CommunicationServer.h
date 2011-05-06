@@ -32,29 +32,20 @@
  */
 class CommunicationServer : public thread::HAWThread, public Communication, public Singleton_T <CommunicationServer>{
 	friend class Singleton_T<CommunicationServer>;
-//public:
-	//static CommunicationServer* getInstance();
-    //static void deleteInstance();
 private:
 	CommunicationServer();
 	~CommunicationServer();
 	/**
-	 * for Singleton
-	 */
-	//CommunicationServer(const CommunicationServer&);
-	//CommunicationServer& operator=(const CommunicationServer&);
-	/**
-	 * Pointer for singleton CommunicationServer
-	 */
-	//static CommunicationServer* pInstance;
-	/**
-	 * Pointer for Mutex to keep singleton threadsafe
-	 */
-	//static Mutex singleton;
-	/**
 	 * Sets up the CommunicationServer as the Communication Server
 	 */
-	void serveAsCommunicationServer();
+	bool settingUpCommunicationServer();
+	/**
+	 * Handles incoming Messages.
+	 */
+	void handleMessage();
+	void handlePulsMessage(){};
+	void handleNormalMessage(){};
+	int id;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

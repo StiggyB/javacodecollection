@@ -11,7 +11,7 @@
  * All types of Communicators
  */
 enum CommunicatorType{
-	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),CORECONTROLLER=(5)
+	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),COMMUNICATIONCONTROLLER=(5),SERIAL=(6)
 };
 
 /**
@@ -29,10 +29,6 @@ typedef struct msg{
 	int coid;
 	int wert;
 	MsgType ca;
-	/**
-	 * the message which should be transmitted itself, like event for InterruptPulses
-	 */
-	//int messwert;
 	CommunicatorType comtype;
 } Msg;
 
@@ -176,7 +172,33 @@ public:
 	 */
 	bool cleanUp(int coid, Message *m, Message *r);
 	/**
-	 * CoreController ChannelID
+	 * allocates Space for the Messages
+	 * \return bool, true if successful
+	 */
+	bool allocMessages();
+	/**
+	 * Equivalent to setupChannel () and registerChannel()
+	 * \param c the Communicator which wants to be registered
+	 * \return bool, true if successful
+	 */
+	bool prepareCommunication(CommunicatorType c);
+	/**
+	 * Equivalent to attachConnection () and sending startConnection()
+	 * \param c the Communicator which you want to attach communication with
+	 * \return bool, true if successful
+	 */
+	bool connectWithCommunicator(int id, CommunicatorType c, CommunicatorType my);
+	/**
+	 * Sends an Puls Message to the specified target with given code and value.
+	 * The Target's ChannelID etc. must be known!
+	 * \param target whom should get the Pulse
+	 * \param code which should be delivered
+	 * \param value which should be delivered
+	 * \return bool, true if successful
+	 */
+	bool sendPulses(CommunicatorType target, int code, int value);
+	/**
+	 * CommunicationServer ChannelID
 	 */
 	static volatile int serverChannelId;
 	Communication();
@@ -261,7 +283,29 @@ protected:
 	/**
 	 * ChannelID and ConnectionID of this Communicator
 	 */
-	int chid, coid;
+	int chid, coid, rcvid;
+	/**
+	 * Message which can be send
+	 */
+	Message * m;
+	/**
+	 * Message where messages will be received
+	 */
+	Message * r_msg;
+	/**
+	 * handles all Messages received
+	 * if Puls -> handlePulsMessage will be called
+	 * if Normal -> handleNormalMessage will be called
+	 */
+	void handleMessage();
+	/**
+	 * handles all PulsMessages received
+	 */
+	virtual void handlePulsMessage()=0;
+	/**
+	 * handles all NormalMessages received
+	 */
+	virtual void handleNormalMessage()=0;
 public:
 	/**
 	 * Retrieves the Communicator with the given ChannelID and ConnectionID.

@@ -12,8 +12,8 @@
 #include "../Thread/Condition.h"
 #include "../Thread/Singleton_T.h"
 
-//#define CONDOR
-#define SEMAP
+#define CONDOR
+//#define SEMAP
 
 /**
  * Delete a bit

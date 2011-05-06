@@ -26,19 +26,6 @@
  */
 class InterruptController : public thread::HAWThread, public Communication, public Singleton_T<InterruptController> {
 	friend class Singleton_T<InterruptController>;
-//public:
-	/**
-	 * deletes the singleton Instance
-	 */
-	//static void deleteInstance();
-	/**
-	 * Gets an instance of the Interrupt Controller
-	 * \return reference to the Interrupt Controller singleton instance
-	 */
-	//static InterruptController* getInstance();
-
-	//InterruptController();
-	//virtual ~InterruptController();
 private:
 	/**
 	 * ID's for Interrupt, Channel and Connection.
@@ -49,12 +36,8 @@ private:
 	 */
 	struct _pulse pulse;
 	/**
-	 * Waits for PulseMessages from HAL, sending them to Sensor.
+	 * Activates all necessary interrupts.
 	 */
-	void handlePulseMessages();
-	/**
-		 * Activates all necessary interrupts.
-		 */
 	void activateInterrupts();
 	/**
 	 * Connects the InterruptController to the HAL and the ISR.
@@ -67,26 +50,19 @@ private:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
-
+	void handlePulsMessage();
+	void handleNormalMessage();
 private:
 	InterruptController();
 	virtual ~InterruptController();
 	InterruptController(const InterruptController&);
 	InterruptController& operator=(const InterruptController&);
 	/**
-	 * Pointer for singleton InterruptController
-	 */
-	//static InterruptController* pInstance;
-	/**
-	 * Pointer for singleton Mutex to ensure threadsafety InterruptController Instance
-	 */
-	//static Mutex singleton;
-	/**
 	 * Direct connection to HALCore.
 	 */
 	HALCore *h;
 	Message *msg;
-
+	int coid, id;
 };
 
 #endif /* INTERRUPTCONTROLLER_H_ */

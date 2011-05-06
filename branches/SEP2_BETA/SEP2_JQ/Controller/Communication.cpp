@@ -16,7 +16,7 @@
 
 volatile int Communication::serverChannelId = 0;
 
-Communication::Communication() : lst() {
+Communication::Communication() : lst(),rcvid(0) {
 
 }
 
@@ -26,9 +26,7 @@ Communication::~Communication() {
 
 int Communication::getChannelIdForObject(CommunicatorType c){
 	std::list<Communicator>::iterator it;
-	//std::cout << "List begin:" << std::endl;
 	for(it  = lst.begin(); it != lst.end();it++){
-		//std::cout << "Com: " << (*it).getCom() << " ChID: " <<  (*it).getChannelID() << " CoID: " <<  (*it).getConnectID() << std::endl;
 		if((*it).getCom() == c){
 			return (*it).getChannelID();
 		}
@@ -38,9 +36,7 @@ int Communication::getChannelIdForObject(CommunicatorType c){
 
 int Communication::getConnectIdForObject(CommunicatorType c){
 	std::list<Communicator>::iterator it;
-	//std::cout << "List begin:" << std::endl;
 	for(it  = lst.begin(); it != lst.end();it++){
-		//std::cout << "Com: " << (*it).getCom() << " ChID: " <<  (*it).getChannelID() << " CoID: " <<  (*it).getConnectID() << std::endl;
 		if((*it).getCom() == c){
 			return (*it).getConnectID();
 		}
@@ -307,4 +303,83 @@ void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,C
 	(*m).m.ca =  activity;
 	(*m).m.comtype = c;
 	(*m).m.wert = val;
+}
+
+bool Communication::allocMessages() {
+	m = (Message *) malloc(sizeof(Message));
+	r_msg = (Message*) malloc(sizeof(Message));
+	if (r_msg == NULL) {
+		perror("Communication: failed to get Space for Receive Message.");
+		return false;
+	}
+	if (m == NULL) {
+		perror("Communication: failed to get Space for Message.");
+		return false;
+	}
+	return true;
+}
+
+bool Communication::prepareCommunication(CommunicatorType c){
+	if (!setUpChannel()) {
+		perror("Communication: channel setup failed " + c );
+		return false;
+	} else {
+		cout << "Communication: channel setup successful " << chid << " for "<< c << endl;
+	}
+	if (!registerChannel(c)) {
+		perror("Communication: register channel failed" + c);
+		destroyChannel(chid);
+		return false;
+	} else {
+		cout << "Communication: register channel successful : " << c << endl;
+	}
+	return true;
+}
+
+void Communication::handleMessage() {
+	switch (rcvid) {
+	case 0:
+		handlePulsMessage();
+		break;
+	case -1:
+		perror("InterruptController: failed to get Message\n");
+		break;
+	default:
+		handleNormalMessage();
+		break;
+	}
+}
+
+bool Communication::connectWithCommunicator(int id,CommunicatorType c, CommunicatorType my){
+	id = getChannelIdForObject(c);
+	if (!attachConnection(id, c)) {
+		perror("Sensor: failed to AttachConnection!");
+		return false;
+	}
+	coid = getConnectIdForObject(c);
+	buildMessage(m, chid, coid, startConnection, my);
+	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
+		perror("Sensor: failed to send message to IC!");
+		return false;
+	}
+	if (-1 == (id = getChannelIdForObject(c))) {
+		perror("Sensor: failed to get ChannelId!");
+		return false;
+	}
+	return true;
+}
+
+bool Communication::sendPulses(CommunicatorType target, int code, int value){
+	int coid = 0;
+	if(-1 != (coid = getConnectIdForObject(target))){
+		if(-1 == MsgSendPulse(coid, 0,code,value)){
+			perror("Communication: Failed to send target a pulse!");
+			return false;
+		}
+		return true;
+	}
+	perror("Communication: Failed to getConnect Id for target object pulse!");
+	return false;
+
+
 }
