@@ -51,14 +51,14 @@ volatile int controlBits;
 /**
  * instance of HALCore
  */
-HALCore* HALCore::pInstance = NULL;
+//HALCore* HALCore::pInstance = NULL;
 /**
  * mutex to ensure that HALCore stays a singleton
  */
-Mutex HALCore::singleton;
-Mutex HALCore::mutEx;
+//Mutex HALCore::singleton;
+//Mutex HALCore::mutEx;
 
-
+/*
 HALCore* HALCore::getInstance(){
 	if( !pInstance){
 		singleton.lock();
@@ -68,7 +68,7 @@ HALCore* HALCore::getInstance(){
 		singleton.unlock();
 	}
 	return pInstance;
-}
+}*/
 
 HALCore::HALCore() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -90,14 +90,14 @@ HALCore::HALCore() {
 	requested=false;
 #endif
 #ifdef SEMAP
-	sem.init(1);
+	sem.init(0);
 #endif
 }
 
 HALCore::~HALCore() {
-	mutEx.~Mutex();
+	//mutEx.~Mutex();
 }
-
+/*
 void HALCore::deleteInstance(){
 	if( pInstance != NULL ){
 		singleton.lock();
@@ -108,7 +108,7 @@ void HALCore::deleteInstance(){
 		singleton.unlock();
 	}
 }
-
+*/
 void HALCore::execute(void*) {
 	list<Functions *>::iterator it = lst.begin();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -119,19 +119,22 @@ void HALCore::execute(void*) {
 #ifdef SEMAP
 		std::cout << "HC waiting..." <<std::endl;
 		sem.wait();
-		if ((*it) != NULL) {
+		if(!lst.empty()){
+			it = lst.begin();
+		//if ((*it) != NULL) {
 			std::cout << "HC: do something from queue! " << (*(*it)).func <<std::endl;
 			(*this.*((*(*it)).func))((*(*it)).v);
+		//}
+			free((*it));
+			it = lst.erase(it);
 		}
-		free((*it));
-		lst.erase(it);
-		/*if(it != lst.end())*/ it++;
+		/*if(it != lst.end())*/
 		//else it = lst.begin();
 #endif
 #ifdef CONDOR
 		if(!lst.empty()){
 			if((*it) != NULL){
-				(*this.*((*(*it)).func))((*(*it)).v);
+				(*this.*((*it)->func))((*it)->v);
 			}
 			free((*it));
 			lst.erase(it);

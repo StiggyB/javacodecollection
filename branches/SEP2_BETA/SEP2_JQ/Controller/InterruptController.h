@@ -6,6 +6,7 @@
 #include "../HAL/HALCore.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
+#include "../Thread/Singleton_T.h"
 #include "Communication.h"
 
 /**
@@ -23,17 +24,18 @@
  *
  * Inherits: HAWThread.h
  */
-class InterruptController : public thread::HAWThread, public Communication{//, public Singleton {
-public:
+class InterruptController : public thread::HAWThread, public Communication, public Singleton_T<InterruptController> {
+	friend class Singleton_T<InterruptController>;
+//public:
 	/**
 	 * deletes the singleton Instance
 	 */
-	static void deleteInstance();
+	//static void deleteInstance();
 	/**
 	 * Gets an instance of the Interrupt Controller
 	 * \return reference to the Interrupt Controller singleton instance
 	 */
-	static InterruptController* getInstance();
+	//static InterruptController* getInstance();
 
 	//InterruptController();
 	//virtual ~InterruptController();
@@ -74,11 +76,11 @@ private:
 	/**
 	 * Pointer for singleton InterruptController
 	 */
-	static InterruptController* pInstance;
+	//static InterruptController* pInstance;
 	/**
 	 * Pointer for singleton Mutex to ensure threadsafety InterruptController Instance
 	 */
-	static Mutex singleton;
+	//static Mutex singleton;
 	/**
 	 * Direct connection to HALCore.
 	 */

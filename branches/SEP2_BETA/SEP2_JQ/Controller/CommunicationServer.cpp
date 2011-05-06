@@ -19,7 +19,7 @@
 
 #include "CommunicationServer.h"
 
-Mutex CommunicationServer::singleton;
+/*Mutex CommunicationServer::singleton;
 
 CommunicationServer* CommunicationServer::pInstance = NULL;
 
@@ -44,12 +44,12 @@ void CommunicationServer::deleteInstance(){
 		singleton.unlock();
 	}
 }
-
+*/
 CommunicationServer::CommunicationServer(){
 }
 
 CommunicationServer::~CommunicationServer() {
-	singleton.~Mutex();
+	//singleton.~Mutex();
 }
 
 void CommunicationServer::serveAsCommunicationServer(){

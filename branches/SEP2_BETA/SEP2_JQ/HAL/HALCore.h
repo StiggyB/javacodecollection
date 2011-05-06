@@ -10,8 +10,10 @@
 #include "../Thread/HAWThread.h"
 #include "../Thread/Semaphor.h"
 #include "../Thread/Condition.h"
+#include "../Thread/Singleton_T.h"
 
-#define CONDOR
+//#define CONDOR
+#define SEMAP
 
 /**
  * Delete a bit
@@ -193,7 +195,8 @@ extern volatile int controlBits;
  *
  * Inherits: IHAL.h
  */
-class HALCore: public thread::HAWThread {
+class HALCore: public thread::HAWThread, public Singleton_T<HALCore>{
+	friend class Singleton_T<HALCore>;
 public:
 	/**
 	 * Reads from a port.
@@ -381,11 +384,11 @@ public:
 	 * returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (HAL)
 	 * \return a Pointer to HAL.
 	 */
-	static HALCore* getInstance();
+	//static HALCore* getInstance();
 	/**
 	 * deletes the Instance
 	 */
-	static void deleteInstance();
+	//static void deleteInstance();
 	/**
 	 * activates the light specified by color
 	 * \param color an integer, specifying the color.
@@ -510,15 +513,15 @@ private:
 	/**
 	 * Pointer for singleton HALCore
 	 */
-	static HALCore* pInstance;
+	//static HALCore* pInstance;
 	/**
 	 * Pointer for Mutex to keep singleton threadsafe
 	 */
-	static Mutex singleton;
+	//static Mutex singleton;
 	/**
 	 * Mutex to ensure threadsafety
 	 */
-	static Mutex mutEx;
+	//static Mutex mutEx;
 	/**
 	 * Stop pushed!
 	 */

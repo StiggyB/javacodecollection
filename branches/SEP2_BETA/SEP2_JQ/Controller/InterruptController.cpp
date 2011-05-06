@@ -16,7 +16,7 @@
 
 #include "InterruptController.h"
 
-Mutex InterruptController::singleton;
+/*Mutex InterruptController::singleton;
 
 InterruptController* InterruptController::pInstance = NULL;
 
@@ -40,7 +40,7 @@ void InterruptController::deleteInstance(){
 		}
 		singleton.unlock();
 	}
-}
+}*/
 
 
 InterruptController::InterruptController() {
