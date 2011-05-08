@@ -23,7 +23,7 @@ VFLAG_g=-gstabs+
 EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/HAL $(PROJECT_ROOT)/Lampen  \
 	$(PROJECT_ROOT)/Thread $(PROJECT_ROOT)/Tests  \
-	$(PROJECT_ROOT)/Serial
+	$(PROJECT_ROOT)/Serial $(PROJECT_ROOT)/FSM
 
 #===== LIBS - a space-separated list of library items to be included in the link.
 LIBS+=phrender ph cpt_terminal ioaccess

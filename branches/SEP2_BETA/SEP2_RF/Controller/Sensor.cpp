@@ -15,6 +15,7 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
+#include "../FSM/Machine.h"
 
 /*
  * Reason of (*cc).setValueOfPort(PORT_B,val); at the end of interrupt?
@@ -39,6 +40,14 @@ void Sensor::execute(void*) {
 
 void Sensor::settingUpAndWaitingSensor(){
 	int p = 0,id=0,coid=0,rcvid  = 0;
+
+	cout << "FSM Start" << endl;
+	sleep(2);
+	Machine fsm;
+	fsm.LS_B1();
+	fsm.LS_B3();
+	fsm.LS_B7();
+
 	if (!setUpChannel()) {
 		perror("Sensor: channel setup failed!");
 		return;
@@ -114,14 +123,17 @@ void Sensor::settingUpAndWaitingSensor(){
 			//cout << "Sensor: do something else..." << endl;
 			p = INTERRUPT_D_PORT_C_HIGH;
 		}
-#ifndef TEST_SEN
-		interrupt(p,(*r_msg).pulse.value.sival_int);
-#endif
+		#ifndef TEST_SEN
+				interrupt(p,(*r_msg).pulse.value.sival_int);
+		#endif
 
-#ifdef TEST_SEN
-		ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
-#endif
-	}
+		#ifdef TEST_SEN
+				ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
+		#endif
+		cout << "interrupt" << endl;
+
+	}//while
+
 	if (!detachConnection(id,coid,SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
 		unregisterChannel(SENSOR);
