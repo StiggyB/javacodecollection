@@ -11,10 +11,19 @@
 Machine::Machine() {
 	current = new Band1_aufgelegt;
 	printf("FSM is up\n");
+	cc = CoreController::getInstance();
 }
 
 Machine::~Machine() {
-	// TODO Auto-generated destructor stub
+
+}
+
+State::State(){
+	cc = CoreController::getInstance();
+}
+
+State::~State(){
+
 }
 
 void State::LS_B1(Machine *){ printf("LS_B1 standart function\n"); }
@@ -26,7 +35,7 @@ void State::exit(Machine *){ printf("exit standart function\n"); }
 
 void Band1_aufgelegt :: LS_B1(Machine * fsm){
 	cout << "Band1_aufgelegt: LS_B1 wurde ausgelöst" << endl;
-	fsm->setCurrent(new durchschleusen() );
+	fsm->setCurrent(new Band1_hoehenmessung() );
 }
 
 void Band1_aufgelegt :: entry(Machine * fsm){
@@ -39,7 +48,7 @@ void Band1_aufgelegt :: exit(Machine * fsm){
 
 void durchschleusen :: LS_B3(Machine * fsm){
 	cout << "durchschleusen: LS_B3 wurde ausgelöst" << endl;
-	fsm->setCurrent(new durchschleusen_bei_LS3() );
+	//fsm->setCurrent(new durchschleusen_bei_LS3() );
 }
 
 void durchschleusen :: entry(Machine * fsm){
@@ -50,9 +59,10 @@ void durchschleusen :: exit(Machine * fsm){
 	cout << "durchschleusen: exit" << endl;
 }
 
+//functions for durchschleusen_bei_LS3
 void durchschleusen_bei_LS3 :: LS_B7(Machine * fsm){
 	cout << "durchschleusen_bei_LS3: LS_B7 wurde ausgelöst" << endl;
-	(*fsm).setCurrent(new durchschleusen_bei_LS3() );
+	//(*fsm).setCurrent(new durchschleusen_bei_LS3() );
 }
 
 void durchschleusen_bei_LS3 :: entry(Machine * fsm){
@@ -63,8 +73,24 @@ void durchschleusen_bei_LS3 :: exit(Machine * fsm){
 	cout << "durchschleusen_bei_LS3: exit" << endl;
 }
 
+//functions for Band1_hoehenmessung
+void Band1_hoehenmessung :: entry(Machine * fsm){
+	cout << "Band1_hoehenmessung: entry" << endl;
+	int height = (*cc).identifyHeight();
+	cout << "höhe: " << height << endl;
+	if(height == NORMAL_WP){
+		cout << "gute Höhe!" << endl;
+	}
+}
+
+void Band1_hoehenmessung :: exit(Machine * fsm){
+	cout << "Band1_hoehenmessung: exit" << endl;
+}
+
+//functions for Machine
 void Machine::LS_B1(){
 	current->LS_B1(this);
+	(*cc).engineStop();
 }
 
 void Machine::LS_B3(){

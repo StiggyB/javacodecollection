@@ -8,6 +8,7 @@
 #ifndef MACHINE_H_
 #define MACHINE_H_
 
+#include "../Controller/CoreController.h"
 
 class Machine {
   class State *current;
@@ -21,18 +22,23 @@ class Machine {
 	void LS_B7();
 	void entry();
 	void exit();
+  private:
+	CoreController *cc;
 
 };
 
 class State
 {
   public:
+	State();
+	virtual ~State();
 	virtual void LS_B1(Machine *);
 	virtual void LS_B3(Machine *);
 	virtual void LS_B6(Machine *);
 	virtual void LS_B7(Machine *);
 	virtual void entry(Machine *);
 	virtual void exit(Machine *);
+	CoreController *cc;
 };
 
 
@@ -47,7 +53,8 @@ class Band1_aufgelegt : public State{
 
 class Band1_hoehenmessung : public State{
 	public:
-
+	void entry(Machine *);
+	void exit(Machine *);
 };
 
 class durchschleusen : public State{
