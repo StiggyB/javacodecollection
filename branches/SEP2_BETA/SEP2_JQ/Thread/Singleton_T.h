@@ -10,7 +10,6 @@
  *
  * implements the functionality for a threadsafe and erasable singleton pattern
  *
- *
  */
 
 #ifndef SINGLETON_T_H_

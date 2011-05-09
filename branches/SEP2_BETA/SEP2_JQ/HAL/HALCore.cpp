@@ -48,27 +48,6 @@ volatile int portIRQ;
  * copy of ControlBits
  */
 volatile int controlBits;
-/**
- * instance of HALCore
- */
-//HALCore* HALCore::pInstance = NULL;
-/**
- * mutex to ensure that HALCore stays a singleton
- */
-//Mutex HALCore::singleton;
-//Mutex HALCore::mutEx;
-
-/*
-HALCore* HALCore::getInstance(){
-	if( !pInstance){
-		singleton.lock();
-		if(!pInstance){
-			pInstance = new HALCore;
-		}
-		singleton.unlock();
-	}
-	return pInstance;
-}*/
 
 HALCore::HALCore() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -86,7 +65,6 @@ HALCore::HALCore() {
 	setFPArray();
 #ifdef CONDOR
 	condvar.setMutex(&mut);
-	//mut;
 	requested=false;
 #endif
 #ifdef SEMAP
@@ -97,24 +75,12 @@ HALCore::HALCore() {
 HALCore::~HALCore() {
 	//mutEx.~Mutex();
 }
-/*
-void HALCore::deleteInstance(){
-	if( pInstance != NULL ){
-		singleton.lock();
-		if( pInstance != NULL ){
-			delete pInstance;
-			pInstance = NULL;
-		}
-		singleton.unlock();
-	}
-}
-*/
+
 void HALCore::execute(void*) {
 	list<Functions *>::iterator it = lst.begin();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	//addLED(LEDS_ON);
 	while (!isStopped()) {
 #ifdef SEMAP
 		std::cout << "HC waiting..." <<std::endl;
@@ -189,7 +155,6 @@ bool HALCore::isInput(int dir){
 }
 
 int HALCore::write(int dir, int value, bool set){
-	//int val = getBitsToAdress(dir);
 	value = checkVal(dir,value, set);
 	int volatile *port = 0;
 	switch(dir){
@@ -200,26 +165,12 @@ int HALCore::write(int dir, int value, bool set){
 		case INTERRUPT_RESET_ADRESS_D: port = &portIRQ;/* val = portIRQ & value;*/ break;
 		default: port = &portA; portA = read(PORT_A);/* val = portA & value;*/ break; //PORT_A
 	}
-	//val = value;
 	int newVal = 0;
-	/*for (int i = 0; i < 8; i++) {
-		int tmp = ((value & (1 << i)) >> i);
-		int zahl = (((*port) & (1 << i)) >> i);
-		if (tmp != 0) {
-			if (set) {
-				if (tmp == 1 && zahl == 0) {
-					tmp = 1;
-				}
-			} else {
-				tmp = 0;
-			}
-		} else {
-			tmp = zahl;
-		}
-		newVal = newVal | (tmp << i);
+	if(set){
+		newVal = (value | (*port)) & 0xFF;
+	}else{
+		newVal = ((*port) & (~value)) & 0xFF;
 	}
-	*/ if(set) newVal = (value | (*port)) & 0xFF;
-	 else newVal = ((*port) & (~value)) & 0xFF;
 	*port = newVal;
 	//std::cout << "RealWrite: " << std::hex << newVal << " on Adr.: "  << std::hex << dir << std::endl;
 	out8(dir,newVal);
@@ -344,7 +295,7 @@ int HALCore::getSetInterrupt(){
 void HALCore::stopProcess(){
 
 }
-
+//TODO should stop all operations from queue!
 void HALCore::emergencyStop(){
 	engineStop();
 	closeSwitch();
@@ -354,7 +305,7 @@ void HALCore::emergencyStop(){
 	emstopped = true;
 	stopped = true;
 }
-
+//TODO should stop all operations from queue!
 void HALCore::stopMachine(){
 	engineStop();
 	closeSwitch();
@@ -362,7 +313,7 @@ void HALCore::stopMachine(){
 	shineLED(LEDS_OFF);
 	stopped = true;
 }
-
+//TODO should clear all operations from queue!
 void HALCore::restart() {
 	if (!emstopped) {
 		stopped = false;
@@ -371,7 +322,7 @@ void HALCore::restart() {
 		shine(GREEN);
 	}
 }
-
+//TODO should clear all operations from queue!
 void HALCore::resetAll() {
 	stopped = false;
 	emstopped = false;
