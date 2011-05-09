@@ -182,7 +182,7 @@ void Sensor::settingUpAndWaitingSensor(){
 
 
 		#ifndef TEST_SEN
-				//interrupt(p,(*r_msg).pulse.value.sival_int);
+				interrupt(p,(*r_msg).pulse.value.sival_int);
 		#endif
 
 		#ifdef TEST_SEN

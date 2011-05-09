@@ -3,7 +3,7 @@
 	<name>SEP2_NEW_BRANCH</name>
 	<comment></comment>
 	<projects>
-		<project>192.168.8.2</project>
+		<project>192.168.100.100</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
