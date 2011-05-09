@@ -44,8 +44,8 @@ void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
 
 	cout << "FSM Start" << endl;
-	//sleep(2);
-	Machine fsm;
+	Machine *fsm;
+	fsm = new Machine();
 
 
 
@@ -122,49 +122,46 @@ void Sensor::settingUpAndWaitingSensor(){
 		}
 		int val = (*r_msg).pulse.value.sival_int;
 
-
 		switch (port) {
 		case INTERRUPT_D_PORT_B:
-			if (!(val & BIT_WP_IN_HEIGHT)) {
+			if ( !((val>>1)&1) ) {
 				cout << "Sensor: WP_IN_H " << endl;
-				fsm.LS_B1();
+				//Machine fsm;
+				fsm->ls_b1();
 			}
-			if (!(val & BIT_WP_RUN_IN)) {
+			if ( !(val&1) ) {
 				(*cc).engineRight();
 				cout << "Sensor: BIT_WP_RUN_IN" << endl;
 			}
 
-			if (val & BIT_WP_IN_SWITCH) {
-				if (val & BIT_SWITCH_STATUS) {
-					(*cc).closeSwitch();
-					cout << "Sensor: closes switch " << endl;
-				}
-			} else {
-				if (val & BIT_WP_METAL) {
-					//cout << " ist metall " << endl;
-					if (!(val & BIT_SWITCH_STATUS)) {
-						(*cc).openSwitch();
-						cout << "Sensor: opens switch " << endl;
-					}
-					cout << "Sensor: ist Metall :D" << endl;
-				}
+			if( ((val>>3)&1) && ((val>>5)&1) ){
+				cout << "Sensor: wp_after_Switch" << endl;
+				fsm->wp_after_Switch();
 			}
-			if (!(val & BIT_WP_IN_SLIDE)) {
-				cnt++;
-				if(cnt == 4){
-					cnt = 0;
-					(*cc).shine(RED);
-					(*cc).stopMachine();
-				}
 
+			if ( !((val >> 3)&1) ) {
+					cout << "Sensor: BIT_WP_IN_SWITCH" << endl;
+					fsm->ls_b3();
 			}
+
+			if (val & BIT_WP_METAL) {
+					cout << " ist metall " << endl;
+			}
+
+			if ( !((val>>6)&1) ) {
+				cout << "was im Schacht" << endl;
+				fsm->ls_b6();
+			}
+
 			if (!(val & BIT_WP_OUTLET)) {
-				(*cc).engineReset();
-				cout << "Sensor: somethings coming out ;)" << endl;
+				//(*cc).engineReset();
+				cout << "Sensor: out" << endl;
+				fsm->ls_b7();
+				fsm = new Machine();
 			}
-			(*cc).setValueOfPort(PORT_B,val);
+
 			break;
-		case INTERRUPT_D_PORT_C_HIGH:
+		/*case INTERRUPT_D_PORT_C_HIGH:
 			if (!(val & BIT_E_STOP)) {
 				(*cc).emergencyStop();
 			} else if (!(val & BIT_STOP)) {
@@ -177,18 +174,18 @@ void Sensor::settingUpAndWaitingSensor(){
 				(*cc).resetAll();
 			}
 			(*cc).setValueOfPort(PORT_C,val);
-			break;
+			break;*/
 		}
 
 
 		#ifndef TEST_SEN
-				interrupt(p,(*r_msg).pulse.value.sival_int);
+				//interrupt(port,(*r_msg).pulse.value.sival_int);
 		#endif
 
 		#ifdef TEST_SEN
 				ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
 		#endif
-		cout << "interrupt" << endl;
+		//cout << "interrupt" << endl;
 
 	}//while
 
@@ -249,7 +246,7 @@ void Sensor::interrupt(int port, int val) {
 
 		}
 		if (!(val & BIT_WP_OUTLET)) {
-			(*cc).engineReset();
+			//(*cc).engineReset();
 			cout << "Sensor: somethings coming out ;)" << endl;
 		}
 		(*cc).setValueOfPort(PORT_B,val);

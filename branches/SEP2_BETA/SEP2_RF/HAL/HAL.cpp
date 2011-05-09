@@ -543,5 +543,5 @@ int HAL::identifyHeight(){
 
 //TODO 1prio -- implement timer - test B(6)
 bool HAL::isSlideFull() {
-	return false;
+	return ( !((in8(D_IOBASE+1)>>6)&1) );
 }

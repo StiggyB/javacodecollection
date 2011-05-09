@@ -16,12 +16,14 @@ class Machine {
 	Machine();
 	virtual ~Machine();
     void setCurrent(State *s);
-	void LS_B1();
-	void LS_B3();
-	void LS_B6();
-	void LS_B7();
+	void ls_b1();
+	void ls_b3();
+	void ls_b6();
+	void ls_b7();
+	void wp_after_Switch();
 	void entry();
 	void exit();
+	void errorState();
   private:
 	CoreController *cc;
 
@@ -32,12 +34,14 @@ class State
   public:
 	State();
 	virtual ~State();
-	virtual void LS_B1(Machine *);
-	virtual void LS_B3(Machine *);
-	virtual void LS_B6(Machine *);
-	virtual void LS_B7(Machine *);
+	virtual void ls_b1(Machine *);
+	virtual void ls_b3(Machine *);
+	virtual void ls_b6(Machine *);
+	virtual void ls_b7(Machine *);
 	virtual void entry(Machine *);
 	virtual void exit(Machine *);
+	virtual void wp_after_Switch(Machine *);
+	virtual void errorState(Machine *);
 	CoreController *cc;
 };
 
@@ -46,7 +50,7 @@ class State
 
 class Band1_aufgelegt : public State{
 	public:
-		void LS_B1(Machine *);
+		void ls_b1(Machine *);
 		void exit(Machine *);
 		void entry(Machine *);
 };
@@ -57,43 +61,65 @@ class Band1_hoehenmessung : public State{
 	void exit(Machine *);
 };
 
-class durchschleusen : public State{
+
+
+class ausschleusen : public State{
 	public:
-		void LS_B3(Machine *);
+		void ls_b3(Machine *);
 		void entry(Machine *);
 		void exit(Machine *);
 };
 
-class ausschleusen : public State{
-	public:
-		void LS_B3(Machine *);
-};
 
 class Weiche_zu : public State{
 	public:
-
-};
-
-class durchschleusen_bei_LS3 : public State{
-	public:
-		void LS_B7(Machine *);
+		void ls_b6(Machine *);
 		void entry(Machine *);
 		void exit(Machine *);
 };
 
 class WS_im_Schacht : public State{
 	public:
+	void entry(Machine *);
+	void exit(Machine *);
 
 };
 
 class pruef_schacht_voll : public State{
 	public:
+		void entry(Machine *);
+		void exit(Machine *);
+};
 
+class durchschleusen : public State{
+	public:
+		void ls_b3(Machine *);
+		void entry(Machine *);
+		void exit(Machine *);
+		void wp_after_Switch(Machine *);
+};
+
+class durchschleusen_bei_LS3 : public State{
+	public:
+		void ls_b7(Machine *);
+		void entry(Machine *);
+		void exit(Machine *);
 };
 
 class pruef_LS7 : public State{
 	public:
+		void entry(Machine *);
+		void exit(Machine *);
 
 };
+
+class ErrorState : public State{
+	public:
+		void entry(Machine *);
+		void exit(Machine *);
+
+};
+
+
 
 #endif /* MACHINE_H_ */
