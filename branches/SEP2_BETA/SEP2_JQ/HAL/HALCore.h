@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
-#include <list>
+#include <vector>
 #include "HWaccess.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
@@ -545,7 +545,7 @@ private:
 	/**
 	 * List of function pointers which should worked up
 	 */
-	list<Functions *> lst;
+	vector<Functions *> lst;
 #ifdef CONDOR
 
 	Condition condvar;

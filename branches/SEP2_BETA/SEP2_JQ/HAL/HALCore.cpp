@@ -73,16 +73,27 @@ HALCore::HALCore() {
 }
 
 HALCore::~HALCore() {
+
+#ifdef CONDOR
+	//condvar.signal();
+	condvar.~Condition();
+	mut.~Mutex();
+	changedMutex.~Mutex();
+#endif
+#ifdef SEMAP
+	sem.~Mutex();
+#endif
 	//mutEx.~Mutex();
 }
 
 void HALCore::execute(void*) {
-	list<Functions *>::iterator it = lst.begin();
+	vector<Functions *>::iterator it = lst.begin();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
 	while (!isStopped()) {
 #ifdef SEMAP
+		// OLD CODE!
 		std::cout << "HC waiting..." <<std::endl;
 		sem.wait();
 		if(!lst.empty()){
@@ -99,12 +110,14 @@ void HALCore::execute(void*) {
 #endif
 #ifdef CONDOR
 		if(!lst.empty()){
-			if((*it) != NULL){
-				(*this.*((*it)->func))((*it)->v);
-			}
-			free((*it));
+			it = lst.begin();
+			//if((*it) != NULL){
+			(*this.*((*it)->func))((*it)->v);
+			//}
+			free(((*it)->v));	// free VAL
+			free((*it));	// free struct of function
 			lst.erase(it);
-			it++;
+			//it++;
 		}else{
 			changedMutex.lock();
 			if(!requested){
