@@ -126,7 +126,7 @@ void Sensor::settingUpAndWaitingSensor(){
 		case INTERRUPT_D_PORT_B:
 			if ( !((val>>1)&1) ) {
 				cout << "Sensor: WP_IN_H " << endl;
-				//Machine fsm;
+				if((val & BIT_WP_OUTLET)) Machine fsm;
 				fsm->ls_b1();
 			}
 			if ( !(val&1) ) {

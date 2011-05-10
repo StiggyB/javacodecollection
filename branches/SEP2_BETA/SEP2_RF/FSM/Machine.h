@@ -24,6 +24,7 @@ class Machine {
 	void entry();
 	void exit();
 	void errorState();
+	bool isOnLS7;
   private:
 	CoreController *cc;
 

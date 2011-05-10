@@ -92,6 +92,7 @@ void durchschleusen::wp_after_Switch(Machine * fsm){
 void durchschleusen_bei_LS3 :: ls_b7(Machine * fsm){
 	cout << "durchschleusen_bei_LS3: LS_B7 wurde ausgelöst" << endl;
 	(*cc).engineStop();
+	fsm->isOnLS7 = true;
 	fsm->setCurrent(new pruef_LS7() );
 }
 void durchschleusen_bei_LS3 :: entry(Machine * fsm){
