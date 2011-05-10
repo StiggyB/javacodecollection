@@ -15,7 +15,7 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
-#include "../FSM/Machine.h"
+#include "../FSM/Machine1.h"
 #include <vector>
 
 
@@ -44,8 +44,8 @@ void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
 
 	cout << "FSM Start" << endl;
-	Machine *fsm;
-	fsm = new Machine();
+	Machine1 *fsm;
+	fsm = new Machine1();
 
 
 
@@ -126,12 +126,12 @@ void Sensor::settingUpAndWaitingSensor(){
 		case INTERRUPT_D_PORT_B:
 			if ( !((val>>1)&1) ) {
 				cout << "Sensor: WP_IN_H " << endl;
-				if((val & BIT_WP_OUTLET)) Machine fsm;
+				if((val & BIT_WP_OUTLET)) Machine1 fsm;
 				fsm->ls_b1();
 			}
 			if ( !(val&1) ) {
 				cout << "Sensor: BIT_WP_RUN_IN" << endl;
-				fsm = new Machine();
+				fsm = new Machine1();
 				(*cc).engineReset();
 				(*cc).engineRight();
 			}
@@ -159,7 +159,7 @@ void Sensor::settingUpAndWaitingSensor(){
 				//(*cc).engineReset();
 				cout << "Sensor: out" << endl;
 				fsm->ls_b7();
-				fsm = new Machine();
+				fsm = new Machine1();
 			}
 
 			break;
