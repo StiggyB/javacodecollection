@@ -130,14 +130,16 @@ void Sensor::settingUpAndWaitingSensor(){
 				fsm->ls_b1();
 			}
 			if ( !(val&1) ) {
-				(*cc).engineRight();
 				cout << "Sensor: BIT_WP_RUN_IN" << endl;
+				fsm = new Machine();
+				(*cc).engineReset();
+				(*cc).engineRight();
 			}
 
-			if( ((val>>3)&1) && ((val>>5)&1) ){
+			/*if( ((val>>3)&1) && ((val>>5)&1) ){
 				cout << "Sensor: wp_after_Switch" << endl;
 				fsm->wp_after_Switch();
-			}
+			}*/
 
 			if ( !((val >> 3)&1) ) {
 					cout << "Sensor: BIT_WP_IN_SWITCH" << endl;

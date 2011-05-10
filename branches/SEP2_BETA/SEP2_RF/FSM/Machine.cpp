@@ -10,6 +10,7 @@
 
 Machine::Machine() {
 	current = new Band1_aufgelegt;
+	current->entry(this);
 	printf("FSM is up\n");
 	cc = CoreController::getInstance();
 }
@@ -42,6 +43,7 @@ void Band1_aufgelegt :: ls_b1(Machine * fsm){
 }
 void Band1_aufgelegt :: entry(Machine * fsm){
 	cout << "Band1_aufgelegt: entry" << endl;
+	(*cc).shine(GREEN);
 }
 void Band1_aufgelegt :: exit(Machine * fsm){
 	cout << "Band1_aufgelegt: exit" << endl;
@@ -53,9 +55,9 @@ void Band1_hoehenmessung :: entry(Machine * fsm){
 	(*cc).engineStop();
 
 	cout << "Band1_hoehenmessung: entry" << endl;
-	int height = NORMAL_WP;//(*cc).identifyHeight();
+	int height = (*cc).identifyHeight();
 	cout << "höhe: " << height << endl;
-	if(height == NORMAL_WP){
+	if(height == NORMAL_WP || height == POCKET_WP){
 		cout << "gute Höhe!" << endl;
 		fsm->setCurrent( new durchschleusen() );
 	}
@@ -74,6 +76,7 @@ void Band1_hoehenmessung :: exit(Machine * fsm){
 void durchschleusen :: ls_b3(Machine * fsm){
 	cout << "durchschleusen: LS_B3 wurde ausgelöst" << endl;
 	(*cc).openSwitch();
+	fsm->setCurrent(new durchschleusen_bei_LS3() );
 }
 void durchschleusen :: entry(Machine * fsm){
 	cout << "durchschleusen: entry" << endl;
@@ -81,6 +84,8 @@ void durchschleusen :: entry(Machine * fsm){
 }
 void durchschleusen :: exit(Machine * fsm){
 	cout << "durchschleusen: exit" << endl;
+	sleep(1);
+	(*cc).closeSwitch();
 }
 void durchschleusen::wp_after_Switch(Machine * fsm){
 	(*cc).closeSwitch();
@@ -173,7 +178,6 @@ void ErrorState :: entry (Machine * fsm){
 }
 void ErrorState :: exit (Machine * fsm){
 	cout << "pruef_schacht_voll: errorState" << endl;
-	(*cc).addLight(RED);
 }
 
 //functions for Machine
