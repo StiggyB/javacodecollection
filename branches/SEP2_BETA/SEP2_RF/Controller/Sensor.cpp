@@ -15,8 +15,8 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
-//#include "../FSM/Machine1.h"
-#include "../FSM/Machine2.h"
+#include "../FSM/Machine1.h"
+//#include "../FSM/Machine2.h"
 #include <vector>
 
 
@@ -45,8 +45,8 @@ void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
 
 	cout << "FSM Start" << endl;
-	Machine2 *fsm;
-	fsm = new Machine2();
+	Machine1 *fsm;
+	fsm = new Machine1();
 	//fsm->setPocket();
 
 
@@ -146,7 +146,7 @@ void Sensor::settingUpAndWaitingSensor(){
 			if (!(val & BIT_WP_OUTLET)) {
 				cout << "Sensor: end of band" << endl;
 				fsm->ls_b7();
-				fsm = new Machine2();
+				fsm = new Machine1();
 				//fsm->setPocket();
 			}
 

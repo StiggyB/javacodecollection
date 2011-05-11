@@ -41,11 +41,11 @@ void State_M1::errorState(Machine1 *){ printf("errorState standard function\n");
 //functions for Start_M1
 void Start_M1 :: ls_b0(Machine1 * fsm){
 	cout << "Start_M1: LS_B0 wurde ausgelöst" << endl;
-	(*cc).shine(GREEN);
 	fsm->setCurrent(new Band1_aufgelegt() );
 }
 void Start_M1 :: entry(Machine1 * fsm){
 	cout << "Start_M1: entry" << endl;
+	(*cc).shine(GREEN);
 
 }
 void Start_M1 :: exit(Machine1 * fsm){

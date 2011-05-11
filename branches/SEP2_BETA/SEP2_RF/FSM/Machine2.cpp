@@ -46,6 +46,7 @@ void Start_M2 :: ls_b0(Machine2 * fsm){
 }
 void Start_M2 :: entry(Machine2 * fsm){
 	cout << "Start_M2: entry" << endl;
+	(*cc).shine(GREEN);
 }
 void Start_M2 :: exit(Machine2 * fsm){
 	cout << "Start_M2: exit" << endl;
@@ -134,6 +135,7 @@ void Ende_Band2 :: ls_b7(Machine2 * fsm){
 //functions for ausschleusen
 void ausschleusen_M2 :: entry(Machine2 * fsm){
 	cout << "ausschleusen: entry" << endl;
+	(*cc).shine(YELLOW);
 }
 void ausschleusen_M2 :: exit(Machine2 * fsm){
 	cout << "ausschleusen: exit" << endl;
