@@ -9,7 +9,7 @@
 #include "iostream.h"
 
 Machine1::Machine1() {
-	current = new Band1_aufgelegt;
+	current = new Start_M1;
 	current->entry(this);
 	printf("FSM Band1 is up\n");
 	cc = CoreController::getInstance();
@@ -27,6 +27,7 @@ State_M1::~State_M1(){
 
 }
 
+void State_M1::ls_b0(Machine1 *){ printf("ls_b0 standard function\n"); }
 void State_M1::ls_b1(Machine1 *){ printf("LS_B1 standard function\n"); }
 void State_M1::ls_b3(Machine1 *){ printf("LS_B3 standard function\n"); }
 void State_M1::ls_b6(Machine1 *){ printf("LS_B6 standard function\n"); }
@@ -36,6 +37,21 @@ void State_M1::exit(Machine1 *){ printf("exit standard function\n"); }
 void State_M1::wp_after_Switch(Machine1 *){ printf("wp_after_Switch standard function\n"); }
 void State_M1::errorState(Machine1 *){ printf("errorState standard function\n"); }
 
+
+//functions for Start_M1
+void Start_M1 :: ls_b0(Machine1 * fsm){
+	cout << "Start_M1: LS_B0 wurde ausgelöst" << endl;
+	(*cc).shine(GREEN);
+	fsm->setCurrent(new Band1_aufgelegt() );
+}
+void Start_M1 :: entry(Machine1 * fsm){
+	cout << "Start_M1: entry" << endl;
+
+}
+void Start_M1 :: exit(Machine1 * fsm){
+	cout << "Start_M1: exit" << endl;
+}
+
 //functions for Band1_aufgelegt
 void Band1_aufgelegt :: ls_b1(Machine1 * fsm){
 	cout << "Band1_aufgelegt: LS_B1 wurde ausgelöst" << endl;
@@ -43,7 +59,6 @@ void Band1_aufgelegt :: ls_b1(Machine1 * fsm){
 }
 void Band1_aufgelegt :: entry(Machine1 * fsm){
 	cout << "Band1_aufgelegt: entry" << endl;
-	(*cc).shine(GREEN);
 	(*cc).engineReset();
 	(*cc).engineRight();
 }
@@ -122,6 +137,7 @@ void pruef_LS7 :: exit(Machine1 * fsm){
 void ausschleusen :: ls_b3 (Machine1 * fsm){
 	cout << "ausschleusen: LS_B3" << endl;
 	(*cc).engineRight();
+	(*cc).shine(YELLOW);
 	fsm->setCurrent(new Weiche_zu() );
 }
 
@@ -183,6 +199,9 @@ void ErrorState :: exit (Machine1 * fsm){
 }
 
 //functions for Machine
+void Machine1::ls_b0(){
+	current->ls_b0(this);
+}
 void Machine1::ls_b1(){
 	current->ls_b1(this);
 }
