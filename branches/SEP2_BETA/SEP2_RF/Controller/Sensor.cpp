@@ -15,7 +15,8 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
-#include "../FSM/Machine1.h"
+//#include "../FSM/Machine1.h"
+#include "../FSM/Machine2.h"
 #include <vector>
 
 
@@ -44,8 +45,8 @@ void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
 
 	cout << "FSM Start" << endl;
-	Machine1 *fsm;
-	fsm = new Machine1();
+	Machine2 *fsm;
+
 
 
 
@@ -124,42 +125,25 @@ void Sensor::settingUpAndWaitingSensor(){
 
 		switch (port) {
 		case INTERRUPT_D_PORT_B:
+			if ( !(val&1) ) {
+				cout << "Sensor: in" << endl;
+				fsm = new Machine2();
+			}
 			if ( !((val>>1)&1) ) {
-				cout << "Sensor: WP_IN_H " << endl;
-				if((val & BIT_WP_OUTLET)) Machine1 fsm;
+				cout << "Sensor: in height measure " << endl;
 				fsm->ls_b1();
 			}
-			if ( !(val&1) ) {
-				cout << "Sensor: BIT_WP_RUN_IN" << endl;
-				fsm = new Machine1();
-				(*cc).engineReset();
-				(*cc).engineRight();
-			}
-
-			/*if( ((val>>3)&1) && ((val>>5)&1) ){
-				cout << "Sensor: wp_after_Switch" << endl;
-				fsm->wp_after_Switch();
-			}*/
-
 			if ( !((val >> 3)&1) ) {
-					cout << "Sensor: BIT_WP_IN_SWITCH" << endl;
+					cout << "Sensor: in metal measure" << endl;
 					fsm->ls_b3();
 			}
-
-			if (val & BIT_WP_METAL) {
-					cout << " ist metall " << endl;
-			}
-
 			if ( !((val>>6)&1) ) {
-				cout << "was im Schacht" << endl;
+				cout << "Sensor: in slide" << endl;
 				fsm->ls_b6();
 			}
-
 			if (!(val & BIT_WP_OUTLET)) {
-				//(*cc).engineReset();
-				cout << "Sensor: out" << endl;
+				cout << "Sensor: end of band" << endl;
 				fsm->ls_b7();
-				fsm = new Machine1();
 			}
 
 			break;

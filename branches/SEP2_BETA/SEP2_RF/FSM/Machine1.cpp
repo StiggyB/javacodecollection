@@ -11,7 +11,7 @@
 Machine1::Machine1() {
 	current = new Band1_aufgelegt;
 	current->entry(this);
-	printf("FSM is up\n");
+	printf("FSM Band1 is up\n");
 	cc = CoreController::getInstance();
 }
 
@@ -44,6 +44,8 @@ void Band1_aufgelegt :: ls_b1(Machine1 * fsm){
 void Band1_aufgelegt :: entry(Machine1 * fsm){
 	cout << "Band1_aufgelegt: entry" << endl;
 	(*cc).shine(GREEN);
+	(*cc).engineReset();
+	(*cc).engineRight();
 }
 void Band1_aufgelegt :: exit(Machine1 * fsm){
 	cout << "Band1_aufgelegt: exit" << endl;
@@ -57,7 +59,7 @@ void Band1_hoehenmessung :: entry(Machine1 * fsm){
 	cout << "Band1_hoehenmessung: entry" << endl;
 	int height = (*cc).identifyHeight();
 	cout << "höhe: " << height << endl;
-	if(height == NORMAL_WP || height == POCKET_WP){
+	if(height == NORMAL_WP || height == POCKET_WP ){
 		cout << "gute Höhe!" << endl;
 		fsm->setCurrent( new durchschleusen() );
 	}
