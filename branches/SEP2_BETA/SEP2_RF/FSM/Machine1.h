@@ -20,12 +20,14 @@ class Machine1 {
 	void ls_b1();
 	void ls_b3();
 	void ls_b6();
-	void ls_b7();
+	void ls_b7_in();
+	void ls_b7_out();
 	void wp_after_Switch();
 	void entry();
 	void exit();
 	void errorState();
 	bool isOnLS7;
+	bool engine_should_be_started;
   private:
 	CoreController *cc;
 
@@ -40,7 +42,8 @@ class State_M1
 	virtual void ls_b1(Machine1 *);
 	virtual void ls_b3(Machine1 *);
 	virtual void ls_b6(Machine1 *);
-	virtual void ls_b7(Machine1 *);
+	virtual void ls_b7_in(Machine1 *);
+	virtual void ls_b7_out(Machine1 *);
 	virtual void entry(Machine1 *);
 	virtual void exit(Machine1 *);
 	virtual void wp_after_Switch(Machine1 *);
@@ -108,7 +111,7 @@ class durchschleusen : public State_M1{
 
 class durchschleusen_bei_LS3 : public State_M1{
 	public:
-		void ls_b7(Machine1 *);
+		void ls_b7_in(Machine1 *);
 		void entry(Machine1 *);
 		void exit(Machine1 *);
 };
@@ -117,7 +120,7 @@ class pruef_LS7 : public State_M1{
 	public:
 		void entry(Machine1 *);
 		void exit(Machine1 *);
-
+		void ls_b7_out(Machine1 *);
 };
 
 class ErrorState : public State_M1{

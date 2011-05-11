@@ -16,7 +16,7 @@
  */
 #include "Sensor.h"
 #include "../FSM/Machine1.h"
-//#include "../FSM/Machine2.h"
+#include "../FSM/Machine2.h"
 #include <vector>
 
 
@@ -31,6 +31,7 @@ Sensor::Sensor():cnt(0) {
 	if (cc == NULL){
 		cc = CoreController::getInstance();
 	}
+	is_Band_has_wp_ls7 = false;
 }
 
 Sensor::~Sensor() {
@@ -43,11 +44,13 @@ void Sensor::execute(void*) {
 
 void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
-
+	int last_val = 0;
 	cout << "FSM Start" << endl;
-	Machine1 *fsm;
+	/*Machine1 *fsm;
 	fsm = new Machine1();
-	//fsm->setPocket();
+	//fsm->setPocket();*/
+	std::vector<Machine1*> wp_list;
+
 
 
 
@@ -129,25 +132,56 @@ void Sensor::settingUpAndWaitingSensor(){
 		case INTERRUPT_D_PORT_B:
 			if ( !(val&1) ) {
 				cout << "Sensor: in" << endl;
-				fsm->ls_b0();
+				int ls7blocked = 0;
+				for(unsigned int i=0; i<wp_list.size(); i++){
+					if (wp_list[i]->isOnLS7){
+						ls7blocked = 1;
+					}
+				}
+				if (ls7blocked == 0 ) wp_list.push_back(new Machine1);
+				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b0();
 			}
 			if ( !((val>>1)&1) ) {
 				cout << "Sensor: in height measure " << endl;
-				fsm->ls_b1();
+				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b1();
 			}
 			if ( !((val >> 3)&1) ) {
 					cout << "Sensor: in metal measure" << endl;
-					fsm->ls_b3();
+					for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b3();
 			}
 			if ( !((val>>6)&1) ) {
 				cout << "Sensor: in slide" << endl;
-				fsm->ls_b6();
+				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b6();
+				int active_state = 0;
+				for(unsigned int i=0; i<wp_list.size(); i++){
+					if (wp_list[i]->engine_should_be_started){
+						active_state = 1;
+					}
+				}
+				if (active_state == 1 ){
+					(*cc).engineReset();
+					(*cc).engineRight();
+				}
 			}
 			if (!(val & BIT_WP_OUTLET)) {
-				cout << "Sensor: end of band" << endl;
-				fsm->ls_b7();
-				fsm = new Machine1();
-				//fsm->setPocket();
+				cout << "Sensor: end of band in" << endl;
+				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_in();
+			}
+			if ((val & BIT_WP_OUTLET) && !(last_val & BIT_WP_OUTLET)) {
+				cout << "Sensor: end of band out" << endl;
+				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_out();
+
+				int active_state = 0;
+				for(unsigned int i=0; i<wp_list.size(); i++){
+					if (wp_list[i]->engine_should_be_started){
+						active_state = 1;
+					}
+				}
+				if (active_state == 1 ){
+					(*cc).engineReset();
+					(*cc).engineRight();
+				}
+
 			}
 
 			break;
@@ -179,7 +213,8 @@ void Sensor::settingUpAndWaitingSensor(){
 		#ifdef TEST_SEN
 				ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
 		#endif
-		//cout << "interrupt" << endl;
+
+		last_val = val;
 
 	}//while
 
@@ -260,4 +295,14 @@ void Sensor::interrupt(int port, int val) {
 		(*cc).setValueOfPort(PORT_C,val);
 		break;
 	}
+
+
+}
+
+bool Sensor::get_Band_has_wp_ls7(){
+ return is_Band_has_wp_ls7;
+}
+
+void Sensor::set_Band_has_wp_ls7(bool b){
+	is_Band_has_wp_ls7 = b;
 }

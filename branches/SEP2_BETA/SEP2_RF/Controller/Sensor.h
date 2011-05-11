@@ -9,6 +9,7 @@
 #include "../Tests/test.h"
 #include "../Tests/Test_Sensor.h"
 #include "../Thread/HAWThread.h"
+#include <vector>
 
 
 /**
@@ -37,6 +38,9 @@ public:
 	void interrupt(int port, int val);
 	Sensor();
 	virtual ~Sensor();
+	bool is_Band_has_wp_ls7;
+	bool get_Band_has_wp_ls7();
+	void set_Band_has_wp_ls7(bool);
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

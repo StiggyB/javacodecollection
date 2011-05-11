@@ -31,7 +31,8 @@ void State_M1::ls_b0(Machine1 *){ printf("ls_b0 standard function\n"); }
 void State_M1::ls_b1(Machine1 *){ printf("LS_B1 standard function\n"); }
 void State_M1::ls_b3(Machine1 *){ printf("LS_B3 standard function\n"); }
 void State_M1::ls_b6(Machine1 *){ printf("LS_B6 standard function\n"); }
-void State_M1::ls_b7(Machine1 *){ printf("LS_B7 standard function\n"); }
+void State_M1::ls_b7_in(Machine1 *){ printf("LS_B7_in standard function\n"); }
+void State_M1::ls_b7_out(Machine1 *){ printf("LS_B7_out standard function\n"); }
 void State_M1::entry(Machine1 *){ printf("entry standard function\n"); }
 void State_M1::exit(Machine1 *){ printf("exit standard function\n"); }
 void State_M1::wp_after_Switch(Machine1 *){ printf("wp_after_Switch standard function\n"); }
@@ -61,6 +62,7 @@ void Band1_aufgelegt :: entry(Machine1 * fsm){
 	cout << "Band1_aufgelegt: entry" << endl;
 	(*cc).engineReset();
 	(*cc).engineRight();
+	fsm->engine_should_be_started = 1;
 }
 void Band1_aufgelegt :: exit(Machine1 * fsm){
 	cout << "Band1_aufgelegt: exit" << endl;
@@ -70,6 +72,7 @@ void Band1_aufgelegt :: exit(Machine1 * fsm){
 //functions for Band1_hoehenmessung
 void Band1_hoehenmessung :: entry(Machine1 * fsm){
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 
 	cout << "Band1_hoehenmessung: entry" << endl;
 	int height = (*cc).identifyHeight();
@@ -86,6 +89,7 @@ void Band1_hoehenmessung :: exit(Machine1 * fsm){
 	cout << "Band1_hoehenmessung: exit" << endl;
 	(*cc).engineReset();
 	(*cc).engineRight();
+	fsm->engine_should_be_started = 1;
 }
 
 
@@ -111,9 +115,10 @@ void durchschleusen::wp_after_Switch(Machine1 * fsm){
 
 
 //functions for durchschleusen_bei_LS3
-void durchschleusen_bei_LS3 :: ls_b7(Machine1 * fsm){
+void durchschleusen_bei_LS3 :: ls_b7_in(Machine1 * fsm){
 	cout << "durchschleusen_bei_LS3: LS_B7 wurde ausgelöst" << endl;
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 	fsm->isOnLS7 = true;
 	fsm->setCurrent(new pruef_LS7() );
 }
@@ -131,12 +136,18 @@ void pruef_LS7 :: entry(Machine1 * fsm){
 void pruef_LS7 :: exit(Machine1 * fsm){
 	cout << "pruef_LS7: exit" << endl;
 }
+void pruef_LS7 :: ls_b7_out (Machine1 * fsm){
+	cout << "pruef_LS7: ls_b7 out" << endl;
+	fsm->isOnLS7 = 0;
+}
 
 
 //functions for ausschleusen
 void ausschleusen :: ls_b3 (Machine1 * fsm){
 	cout << "ausschleusen: LS_B3" << endl;
+	(*cc).engineReset();
 	(*cc).engineRight();
+	fsm->engine_should_be_started = 1;
 	(*cc).shine(YELLOW);
 	fsm->setCurrent(new Weiche_zu() );
 }
@@ -153,6 +164,7 @@ void ausschleusen :: exit (Machine1 * fsm){
 void Weiche_zu :: ls_b6 (Machine1 * fsm){
 	cout << "Weiche_zu: LS_B6" << endl;
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new WS_im_Schacht() );
 
 }
@@ -211,8 +223,11 @@ void Machine1::ls_b3(){
 void Machine1::ls_b6(){
 	current->ls_b6(this);
 }
-void Machine1::ls_b7(){
-	current->ls_b7(this);
+void Machine1::ls_b7_in(){
+	current->ls_b7_in(this);
+}
+void Machine1::ls_b7_out(){
+	current->ls_b7_out(this);
 }
 void Machine1::entry(){
 	current->entry(this);

@@ -10,6 +10,7 @@
 Machine2::Machine2() {
 	hasPocket = false;
 	isOnLS7 = false;
+	engine_should_be_started = false;
 	printf("FSM Band2 is up\n");
 	cc = CoreController::getInstance();
 	current = new Start_M2;
@@ -32,7 +33,8 @@ void State_M2::ls_b0(Machine2 *){ printf("LS_B1 standard function\n"); }
 void State_M2::ls_b1(Machine2 *){ printf("LS_B1 standard function\n"); }
 void State_M2::ls_b3(Machine2 *){ printf("LS_B3 standard function\n"); }
 void State_M2::ls_b6(Machine2 *){ printf("LS_B6 standard function\n"); }
-void State_M2::ls_b7(Machine2 *){ printf("LS_B7 standard function\n"); }
+void State_M2::ls_b7_in(Machine2 *){ printf("LS_B7_in standard function\n"); }
+void State_M2::ls_b7_out(Machine2 *){ printf("LS_B7_out standard function\n"); }
 void State_M2::entry(Machine2 *){ printf("entry standard function\n"); }
 void State_M2::exit(Machine2 *){ printf("exit standard function\n"); }
 void State_M2::errorState(Machine2 *){ printf("errorState standard function\n"); }
@@ -42,6 +44,7 @@ void Start_M2 :: ls_b0(Machine2 * fsm){
 	cout << "Start_M2: ls_b0" << endl;
 	(*cc).engineReset();
 	(*cc).engineRight();
+	fsm->engine_should_be_started = 1;
 	fsm->setCurrent(new Band_2_aufgelegt() );
 }
 void Start_M2 :: entry(Machine2 * fsm){
@@ -83,6 +86,7 @@ void Bei_LS1 :: ls_b3(Machine2 * fsm){
 void In_Metallmessung :: entry(Machine2 * fsm){
 	cout << "In_Metallmessung: entry" << endl;
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 	if( ( ((*cc).read(0x300+1)>>4)&1 ) == 1 && (fsm->hasPocket==1) ){
 		cout << "is Metall" << endl;
 		fsm->setCurrent(new durchschleusen_M2() );
@@ -99,6 +103,7 @@ void In_Metallmessung :: exit(Machine2 * fsm){
 	cout << "In_Metallmessung: exit" << endl;
 	(*cc).engineReset();
 	(*cc).engineRight();
+	fsm->engine_should_be_started = 1;
 }
 
 //functions for durchschleusen
@@ -112,8 +117,9 @@ void durchschleusen_M2 :: exit(Machine2 * fsm){
 	cout << "durchschleusen: exit" << endl;
 
 }
-void durchschleusen_M2 :: ls_b7(Machine2 * fsm){
-	cout << "durchschleusen: ls_b7" << endl;
+void durchschleusen_M2 :: ls_b7_in(Machine2 * fsm){
+	cout << "durchschleusen: ls_b7_in" << endl;
+	fsm->isOnLS7 = 1;
 	fsm->setCurrent(new Ende_Band2() );
 }
 
@@ -123,12 +129,14 @@ void durchschleusen_M2 :: ls_b7(Machine2 * fsm){
 void Ende_Band2 :: entry(Machine2 * fsm){
 	cout << "Ende_Band2: entry" << endl;
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 }
 void Ende_Band2 :: exit(Machine2 * fsm){
 	cout << "Ende_Band2: exit" << endl;
 }
-void Ende_Band2 :: ls_b7(Machine2 * fsm){
-	cout << "Ende_Band2: ls_b7" << endl;
+void Ende_Band2 :: ls_b7_out(Machine2 * fsm){
+	cout << "Ende_Band2: ls_b7_out" << endl;
+	fsm->isOnLS7 = 0;
 }
 
 
@@ -150,6 +158,7 @@ void ausschleusen_M2 :: ls_b6(Machine2 * fsm){
 void WS_im_Schacht_M2 :: entry(Machine2 * fsm){
 	cout << "WS_im_Schacht: entry" << endl;
 	(*cc).engineStop();
+	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new pruef_schacht_voll_M2() );
 }
 void WS_im_Schacht_M2 :: exit(Machine2 * fsm){
@@ -193,8 +202,11 @@ void Machine2::ls_b3(){
 void Machine2::ls_b6(){
 	current->ls_b6(this);
 }
-void Machine2::ls_b7(){
-	current->ls_b7(this);
+void Machine2::ls_b7_in(){
+	current->ls_b7_in(this);
+}
+void Machine2::ls_b7_out(){
+	current->ls_b7_out(this);
 }
 void Machine2::entry(){
 	current->entry(this);
