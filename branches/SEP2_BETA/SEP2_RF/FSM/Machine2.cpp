@@ -12,7 +12,7 @@ Machine2::Machine2() {
 	isOnLS7 = false;
 	printf("FSM Band2 is up\n");
 	cc = CoreController::getInstance();
-	current = new Band_2_aufgelegt;
+	current = new Start_M2;
 	current->entry(this);
 }
 
@@ -28,7 +28,7 @@ State_M2::~State_M2(){
 
 }
 
-
+void State_M2::ls_b0(Machine2 *){ printf("LS_B1 standard function\n"); }
 void State_M2::ls_b1(Machine2 *){ printf("LS_B1 standard function\n"); }
 void State_M2::ls_b3(Machine2 *){ printf("LS_B3 standard function\n"); }
 void State_M2::ls_b6(Machine2 *){ printf("LS_B6 standard function\n"); }
@@ -37,11 +37,23 @@ void State_M2::entry(Machine2 *){ printf("entry standard function\n"); }
 void State_M2::exit(Machine2 *){ printf("exit standard function\n"); }
 void State_M2::errorState(Machine2 *){ printf("errorState standard function\n"); }
 
+//functions for
+void Start_M2 :: ls_b0(Machine2 * fsm){
+	cout << "Start_M2: ls_b0" << endl;
+	(*cc).engineReset();
+	(*cc).engineRight();
+	fsm->setCurrent(new Band_2_aufgelegt() );
+}
+void Start_M2 :: entry(Machine2 * fsm){
+	cout << "Start_M2: entry" << endl;
+}
+void Start_M2 :: exit(Machine2 * fsm){
+	cout << "Start_M2: exit" << endl;
+}
+
 //functions for Band_2_aufgelegt
 void Band_2_aufgelegt :: entry(Machine2 * fsm){
 	cout << "Band_2_aufgelegt: entry" << endl;
-	(*cc).engineReset();
-	(*cc).engineRight();
 }
 void Band_2_aufgelegt :: exit(Machine2 * fsm){
 	cout << "Band_2_aufgelegt: exit" << endl;
@@ -128,44 +140,48 @@ void ausschleusen_M2 :: exit(Machine2 * fsm){
 }
 void ausschleusen_M2 :: ls_b6(Machine2 * fsm){
 	cout << "ausschleusen: ls_b3" << endl;
-	fsm->setCurrent(new WS_im_Schacht() );
+	fsm->setCurrent(new WS_im_Schacht_M2() );
 }
 
 
 //functions for WS_im_Schacht
-void WS_im_Schacht :: entry(Machine2 * fsm){
+void WS_im_Schacht_M2 :: entry(Machine2 * fsm){
 	cout << "WS_im_Schacht: entry" << endl;
-	fsm->setCurrent(new pruef_schacht_voll() );
+	(*cc).engineStop();
+	fsm->setCurrent(new pruef_schacht_voll_M2() );
 }
-void WS_im_Schacht :: exit(Machine2 * fsm){
+void WS_im_Schacht_M2 :: exit(Machine2 * fsm){
 	cout << "WS_im_Schacht: exit" << endl;
 }
 
 //functions for pruef_schacht_voll
-void pruef_schacht_voll :: entry(Machine2 * fsm){
+void pruef_schacht_voll_M2 :: entry(Machine2 * fsm){
 	cout << "pruef_schacht_voll: entry" << endl;
 
 	sleep(2);
 	if( (*cc).isSlideFull() ){
-		fsm->setCurrent( new ErrorState() );
+		fsm->setCurrent( new ErrorState_M2() );
 	}
 
 }
-void pruef_schacht_voll :: exit(Machine2 * fsm){
+void pruef_schacht_voll_M2 :: exit(Machine2 * fsm){
 	cout << "pruef_schacht_voll: exit" << endl;
 
 }
 
 //functions for ErrorState
-void ErrorState :: entry(Machine2 * fsm){
+void ErrorState_M2 :: entry(Machine2 * fsm){
 	cout << "ErrorState: entry" << endl;
 	(*cc).shine(RED);
 }
-void ErrorState :: exit(Machine2 * fsm){
+void ErrorState_M2 :: exit(Machine2 * fsm){
 	cout << "ErrorState: exit" << endl;
 }
 
 //functions for Machine
+void Machine2::ls_b0(){
+	current->ls_b0(this);
+}
 void Machine2::ls_b1(){
 	current->ls_b1(this);
 }
@@ -193,6 +209,7 @@ void Machine2::errorState(){
 	current->errorState(this);
 }
 void Machine2::setPocket(){
+	cout << "setPocket: has Pocket now" << endl;
 	hasPocket = true;
 }
 

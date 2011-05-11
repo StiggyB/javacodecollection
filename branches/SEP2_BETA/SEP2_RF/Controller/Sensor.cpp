@@ -46,7 +46,8 @@ void Sensor::settingUpAndWaitingSensor(){
 
 	cout << "FSM Start" << endl;
 	Machine2 *fsm;
-
+	fsm = new Machine2();
+	fsm->setPocket();
 
 
 
@@ -122,12 +123,13 @@ void Sensor::settingUpAndWaitingSensor(){
 			port = INTERRUPT_D_PORT_C_HIGH;
 		}
 		int val = (*r_msg).pulse.value.sival_int;
+		//cout << "Interrupt" << endl;
 
 		switch (port) {
 		case INTERRUPT_D_PORT_B:
 			if ( !(val&1) ) {
 				cout << "Sensor: in" << endl;
-				fsm = new Machine2();
+				fsm->ls_b0();
 			}
 			if ( !((val>>1)&1) ) {
 				cout << "Sensor: in height measure " << endl;
@@ -144,23 +146,28 @@ void Sensor::settingUpAndWaitingSensor(){
 			if (!(val & BIT_WP_OUTLET)) {
 				cout << "Sensor: end of band" << endl;
 				fsm->ls_b7();
+				fsm = new Machine2();
+				fsm->setPocket();
 			}
 
 			break;
-		/*case INTERRUPT_D_PORT_C_HIGH:
+		case INTERRUPT_D_PORT_C_HIGH:
 			if (!(val & BIT_E_STOP)) {
-				(*cc).emergencyStop();
+				//(*cc).emergencyStop();
 			} else if (!(val & BIT_STOP)) {
-				(*cc).stopMachine();
+				//(*cc).stopMachine();
 			} else if (val & BIT_START) {
-				cnt = 0;
-				(*cc).restart();
+				cout << "Sensor: Start Button" << endl;
+				fsm = new Machine2();
+				fsm->setPocket();
+				//cnt = 0;
+				//(*cc).restart();
 			} else if (val & BIT_RESET) {
-				cnt = 0;
-				(*cc).resetAll();
+				//cnt = 0;
+				//(*cc).resetAll();
 			}
-			(*cc).setValueOfPort(PORT_C,val);
-			break;*/
+			//(*cc).setValueOfPort(PORT_C,val);
+			break;
 		}
 
 

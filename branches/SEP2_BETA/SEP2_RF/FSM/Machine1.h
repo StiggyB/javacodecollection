@@ -16,6 +16,7 @@ class Machine1 {
 	Machine1();
 	virtual ~Machine1();
     void setCurrent(State_M1 *s);
+    void ls_b0();
 	void ls_b1();
 	void ls_b3();
 	void ls_b6();
@@ -35,6 +36,7 @@ class State_M1
   public:
 	State_M1();
 	virtual ~State_M1();
+	virtual void ls_b0(Machine2 *);
 	virtual void ls_b1(Machine1 *);
 	virtual void ls_b3(Machine1 *);
 	virtual void ls_b6(Machine1 *);
@@ -46,8 +48,12 @@ class State_M1
 	CoreController *cc;
 };
 
-
-
+class Start_M2 : public State_M2{
+	public:
+		void exit(Machine2 *);
+		void entry(Machine2 *);
+		void ls_b0(Machine2 *);
+};
 
 class Band1_aufgelegt : public State_M1{
 	public:

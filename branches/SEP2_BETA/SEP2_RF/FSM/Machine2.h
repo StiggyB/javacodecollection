@@ -18,6 +18,7 @@ class Machine2 {
 	Machine2();
 	virtual ~Machine2();
     void setCurrent(State_M2 *s);
+    void ls_b0();
 	void ls_b1();
 	void ls_b3();
 	void ls_b6();
@@ -38,6 +39,7 @@ class State_M2
   public:
 	State_M2();
 	virtual ~State_M2();
+	virtual void ls_b0(Machine2 *);
 	virtual void ls_b1(Machine2 *);
 	virtual void ls_b3(Machine2 *);
 	virtual void ls_b6(Machine2 *);
@@ -46,6 +48,12 @@ class State_M2
 	virtual void exit(Machine2 *);
 	virtual void errorState(Machine2 *);
 	CoreController *cc;
+};
+class Start_M2 : public State_M2{
+	public:
+		void exit(Machine2 *);
+		void entry(Machine2 *);
+		void ls_b0(Machine2 *);
 };
 
 class Band_2_aufgelegt : public State_M2{
@@ -98,20 +106,20 @@ class ausschleusen_M2 : public State_M2{
 };
 
 
-class WS_im_Schacht : public State_M2{
+class WS_im_Schacht_M2 : public State_M2{
 	public:
 	void entry(Machine2 *);
 	void exit(Machine2 *);
 
 };
 
-class pruef_schacht_voll : public State_M2{
+class pruef_schacht_voll_M2 : public State_M2{
 	public:
 		void entry(Machine2 *);
 		void exit(Machine2 *);
 };
 
-class ErrorState : public State_M2{
+class ErrorState_M2 : public State_M2{
 	public:
 		void entry(Machine2 *);
 		void exit(Machine2 *);
