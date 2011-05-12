@@ -342,7 +342,7 @@ void Communication::handleMessage() {
 		handlePulsMessage();
 		break;
 	case -1:
-		perror("InterruptController: failed to get Message\n");
+		perror("Communication: failed to get Message\n");
 		break;
 	default:
 		handleNormalMessage();
@@ -353,17 +353,17 @@ void Communication::handleMessage() {
 bool Communication::connectWithCommunicator(int id,CommunicatorType c, CommunicatorType my){
 	id = getChannelIdForObject(c);
 	if (!attachConnection(id, c)) {
-		perror("Sensor: failed to AttachConnection!");
+		perror("Communication: failed to AttachConnection!");
 		return false;
 	}
 	coid = getConnectIdForObject(c);
 	buildMessage(m, chid, coid, startConnection, my);
 	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-		perror("Sensor: failed to send message to IC!");
+		perror("Communication: failed to send message to IC!");
 		return false;
 	}
 	if (-1 == (id = getChannelIdForObject(c))) {
-		perror("Sensor: failed to get ChannelId!");
+		perror("Communication: failed to get ChannelId!");
 		return false;
 	}
 	return true;

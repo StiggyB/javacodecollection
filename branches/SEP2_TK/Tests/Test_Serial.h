@@ -5,6 +5,7 @@
 
 #include "../Thread/HAWThread.h"
 #include "../Serial/Serial.h"
+#include "Communication_DUMMY.h"
 
 /**
  * Testing Class for IRQ
@@ -20,16 +21,20 @@
  *
  * Inherits: thread::HAWThread
  */
-class Test_Serial : public thread::HAWThread, public Communication{
+class Test_Serial : public thread::HAWThread{
 public:
 	Test_Serial();
 	virtual ~Test_Serial();
+
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+
 private:
 	Serial *s_0;
 	Serial *s_1;
+	Communication_DUMMY *dummy;
+
 };
 
 #endif /* TEST_IRQ_H_ */

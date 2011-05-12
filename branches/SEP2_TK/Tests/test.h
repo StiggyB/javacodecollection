@@ -11,6 +11,6 @@
 //#define TEST_IRQ
 //#define TEST_M1
 //#define TEST_HAL
-//#define TEST_SER
+#define TEST_SER
 
 #endif /* TEST_H_ */

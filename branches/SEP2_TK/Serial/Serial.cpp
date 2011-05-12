@@ -20,7 +20,7 @@
 
 
 Serial::Serial(){
-	printf("Serial COnstructor!\n");
+	//printf("Serial COnstructor!\n");
 	ack = -1;
 	printf("Serial COnstructor - ack = 0\n");
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -102,22 +102,21 @@ Serial::~Serial() {
 
 
 void Serial::execute(void* data) {
-
-
-
+printf("start execute s_%i\n",comPort);
 	if (settingUpSerial()) {
-
 		int msg = -1;
-
+printf("setting up Serialexecute s_%i\n",comPort);
 		if (hasSettings) {
+printf("execute s_%i\n",comPort);
 			if(comPort == 1){/*TODO : muss noch auf BAND1 geändert werden*/
 				msg = 1337;
 
 				while(ack != 42){
 					send(&msg, sizeof(msg));
+					sleep(2);
 					receive(&ack, sizeof(ack));
 					if(ack == 1337)printf("ERROR: 2 DADDY's???\n");
-					sleep(1);
+
 				}//while
 
 				#ifdef DEBUG_SERIAL
@@ -126,12 +125,23 @@ void Serial::execute(void* data) {
 
 				msg = -1;
 				ack = -1;
+			}else if(comPort == 2){
+				while(msg != 1337){
+					while( receive(&msg, sizeof(msg)) == -2){
+						if(msg == 1337){
+							printf("You want to be my DADDY??? -----> OK\n");
+							ack = 42; send(&ack, sizeof(ack));
+						}else{
+							printf("Hey du hast noch kein OK das du mein Daddy bist\n");
+						}
+					}
+				}//while
+				msg = -1;
 			}//if
 
 
 
 			while (!isStopped()) {
-
 				while( receive(&msg, sizeof(msg)) == -2){
 					//send (&tmp,1);
 				}//while
@@ -139,22 +149,22 @@ void Serial::execute(void* data) {
 				switch(msg){
 					case -1 : break;
 					//sync message
-					case SYNC_SIGNAL: printf("get message SYNC_SIGNAL com %d \n",comPort);
+					case 0: printf("get message SYNC_SIGNAL com %d \n",comPort);
 							ack = 10; send(&ack,sizeof(ack));
 							break;
 					//message from Band 1 to Band 2
-					case POCKET_TOP: printf("get message POCKET_TOP com %d\n",comPort);
-							if(sendPulses(ANLAGENSTEUERUNG, comPort, msg)){
+					case 1: printf("get message POCKET_TOP com %d\n",comPort);
+//							if(sendPulses(TEST, comPort, msg)){
 								ack = 11; send(&ack,sizeof(ack));
-							}
+//							}
 							break;
-					case POCKET_BOTTOM: printf("get message POCKET_BOTTOM com %d \n", comPort);
-							if(sendPulses(ANLAGENSTEUERUNG, comPort, msg)){
+					case 2: printf("get message POCKET_BOTTOM com %d \n", comPort);
+							if(sendPulses(DUMMY, comPort, msg)){
 								ack = 12; send(&ack,sizeof(ack));
 							}
 							break;
-					case BAND2_FREE: printf("get message BAND2_FREE com %d \n",comPort);
-							if(sendPulses(ANLAGENSTEUERUNG, comPort, msg)){
+					case 3: printf("get message BAND2_FREE com %d \n",comPort);
+							if(sendPulses(DUMMY, comPort, msg)){
 								ack = 13; send(&ack,sizeof(ack));
 							}
 							break;
@@ -187,15 +197,17 @@ void Serial::execute(void* data) {
 }
 
 void Serial::shutdown() {
+	clean();
 	close(ser);
 }
 
 int Serial::send(void* data, int lenBytes) {
 	int cnt = 0;
 	int *p = (int*)(data);
+	printf("I send: %i von port: %i \n",*p,comPort);
 	int n = (int) write(ser, data, lenBytes);
 	if(n >= 0 ||*p < 10){
-		while(ack != *p && cnt <= 10){
+		while((ack != *p && cnt <= 10 && ack != 42)|| (ack == 42 && *p == 1337)){
 			delay(100);//delay in ms
 			cnt++;
 		}
@@ -232,9 +244,8 @@ int Serial::receive(void* data, int lenBytes) {
 }
 
 bool Serial::settingUpSerial(){
-
 	if (prepareCommunication(SERIAL)) {
-		if (!requestChannelIDForObject(ANLAGENSTEUERUNG)) {
+		if (!requestChannelIDForObject(DUMMY)) {
 			perror("SERIAL: request failed");
 			unregisterChannel(SERIAL);
 			return false;
@@ -244,10 +255,13 @@ bool Serial::settingUpSerial(){
 			clean();
 			return false;
 		}
-		if(!connectWithCommunicator(0,ANLAGENSTEUERUNG,SERIAL)){
+
+		if(!connectWithCommunicator(0,DUMMY,SERIAL)){
 			clean();
+			printf("connect commuicator failed\n");
 			return false;
 		}
+
 	}
 	return true;
 }
@@ -259,5 +273,5 @@ void Serial::clean(){
 }
 
 
-void Serial::handlePulsMessage(){std::cout << "Sensor: received a Puls, but doesn't know what to do with it" << std::endl;}
-void Serial::handleNormalMessage(){std::cout << "Sensor: received a Puls, but doesn't know what to do with it" << std::endl;}
+void Serial::handlePulsMessage(){std::cout << "Serial: received a handlePulsMessage, but doesn't know what to do with it" << std::endl;}
+void Serial::handleNormalMessage(){std::cout << "Serial: received a handleNormalMessage, but doesn't know what to do with it" << std::endl;}

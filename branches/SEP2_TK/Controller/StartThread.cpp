@@ -47,11 +47,10 @@ void StartThread::execute(void*) {
 
 #ifdef TEST_SER
 	cout << "starting SERIAL-Tests" << endl;
-	Serial ser;
-	ser.init(1,1,true);
+	//Test_Serial ser;
 	ser.start(NULL);
 	cout << "waiting for SERIAL-Tests" << endl;
-	//ser.join();
+	ser.join();
 #endif
 
 #ifdef TEST_HAL

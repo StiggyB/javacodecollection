@@ -13,10 +13,11 @@
 #include "../Thread/HAWThread.h"
 #include "Communication.h"
 
-#define SYNC_SIGNAL 0
-#define POCKET_TOP 1
-#define POCKET_BOTTOM 2
-#define BAND2_FREE 3
+
+enum msgType{
+	SYNC_SIGNAL=(0), POCKET_TOP=(1), POCKET_BOTTOM=(2), BAND2_FREE=(3),ACK_SYNC_SIGNAL=(10),ACK_POCKET_TOP=(11),ACK_POCKET_BOTTOM=(12),ACK_BAND2_FREE=(13)
+};
+
 
 #define DEBUG_SERIAL
 
