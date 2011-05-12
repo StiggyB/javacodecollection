@@ -142,6 +142,7 @@ printf("execute s_%i\n",comPort);
 
 
 			while (!isStopped()) {
+				printf("Serial: waiting to receive something... :D com port: %i\n",comPort);
 				while( receive(&msg, sizeof(msg)) == -2){
 					//send (&tmp,1);
 				}//while
@@ -206,8 +207,8 @@ int Serial::send(void* data, int lenBytes) {
 	int *p = (int*)(data);
 	printf("I send: %i von port: %i \n",*p,comPort);
 	int n = (int) write(ser, data, lenBytes);
-	if(n >= 0 ||*p < 10){
-		while((ack != *p && cnt <= 10 && ack != 42)|| (ack == 42 && *p == 1337)){
+	if(*p < 10 && n >= 0){
+		while(ack != *p && cnt <= 10){
 			delay(100);//delay in ms
 			cnt++;
 		}
@@ -224,6 +225,18 @@ int Serial::send(void* data, int lenBytes) {
 	}//if
 
 }
+/*
+sendExtern(){
+	send()
+	if(ack == good)
+}
+
+
+send(){
+
+}
+*/
+
 
 int Serial::receive(void* data, int lenBytes) {
 	//printf("Want to receive..\n");

@@ -37,10 +37,11 @@ void Test_Serial::execute(void*){
 		s_0->init(1,true);
 		s_1->init(2,true);
 
-		printf("star s_0\n");
-		s_0->start(NULL);
-		printf("star s_1\n");
+		printf("start s_1\n");
 		s_1->start(NULL);
+
+		printf("start s_0\n");
+		s_0->start(NULL);
 
 
 printf("start of TEST#######################################\n");
