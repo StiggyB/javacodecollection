@@ -423,3 +423,20 @@ void Communication::endCommunication(CommunicatorType mine){
 	}
 	cleanCommunication(mine);
 }
+
+int Communication::getCodeFromPulse(Message *ptr){
+	return ptr->pulse.code;
+}
+
+int Communication::getValueFromPulse(Message *ptr){
+	return ptr->pulse.value.sival_int;
+}
+
+
+int Communication::getCodeFromReceivePulse(){
+	return getCodeFromPulse(r_msg);
+}
+
+int Communication::getValueFromReceivePulse(){
+	return getValueFromPulse(r_msg);
+}

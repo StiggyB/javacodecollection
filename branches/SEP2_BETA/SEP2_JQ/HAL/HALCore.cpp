@@ -112,7 +112,7 @@ void HALCore::execute(void*) {
 		if(!lst.empty()){
 			it = lst.begin();
 			//if((*it) != NULL){
-			(*this.*((*it)->func))((*it)->v);
+			((*this).*((*it)->func))((*it)->v);
 			//}
 			free(((*it)->v));	// free VAL
 			free((*it));	// free struct of function
@@ -286,7 +286,14 @@ const struct sigevent * ISR(void *arg, int id) {
 	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,val);
 	return (event);break;
 	case INTERRUPT_D_PORT_C_HIGH: val = in8(PORT_C);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
+	if(!(val & BIT_E_STOP)){
+		out8(PORT_A,0x88); // rotes Licht + Stop
+		out8(PORT_C,0x00);
+		emstopped = true;
+		return (NULL);
+	}else{
+		SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
+	}
 	return (event);break;
 	default: return (NULL);break;
 	}
@@ -308,7 +315,7 @@ int HALCore::getSetInterrupt(){
 void HALCore::stopProcess(){
 
 }
-//TODO should stop all operations from queue!
+//TODO will be removed!
 void HALCore::emergencyStop(){
 	engineStop();
 	closeSwitch();
@@ -318,7 +325,7 @@ void HALCore::emergencyStop(){
 	emstopped = true;
 	stopped = true;
 }
-//TODO should stop all operations from queue!
+//TODO should stop all operations in queue!
 void HALCore::stopMachine(){
 	engineStop();
 	closeSwitch();

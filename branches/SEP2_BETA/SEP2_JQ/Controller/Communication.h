@@ -212,6 +212,28 @@ public:
 	 */
 	void endCommunication(CommunicatorType mine);
 	/**
+	 * retrieve the code from a Pulse Message
+	 * \param ptr a pointer to a Message containing a pulse.
+	 * \return the code of the Pulse Message
+	 */
+	int getCodeFromPulse(Message *ptr);
+	/**
+	 * retrieve the code from the receive Pulse Message
+	 * \return the code of the receive Pulse Message
+	 */
+	int getCodeFromReceivePulse();
+	/**
+	 * retrieve the value from a Pulse Message
+	 * \param ptr a pointer to a Message containing a pulse.
+	 * \return the value of the Pulse Message
+	 */
+	int getValueFromPulse(Message *ptr);
+	/**
+	 * retrieve the value from the receive Pulse Message
+	 * \return the value of the receive Pulse Message
+	 */
+	int getValueFromReceivePulse();
+	/**
 	 * CommunicationServer ChannelID
 	 */
 	static volatile int serverChannelId;
