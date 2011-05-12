@@ -47,8 +47,9 @@ void Lampen::shutdown() {
  */
 void Lampen::flash(int time, Color color) {
 	running = true;
+	cout << "Lampen: will flash..." << endl;
 	while(running){
-		(*cc).addLight(color);
+		(*cc).shine(color);
 		sleep(time);
 		(*cc).removeLight(color);
 		sleep(time);

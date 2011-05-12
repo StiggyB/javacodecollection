@@ -17,6 +17,7 @@
 #include "Sensor.h"
 #include "../FSM/Machine1.h"
 #include "../FSM/Machine2.h"
+#include "../Lampen/Lampen.h"
 #include <vector>
 
 
@@ -44,13 +45,12 @@ void Sensor::execute(void*) {
 
 void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
-	int last_val = 0;
-	cout << "FSM Start" << endl;
+	int last_val = 0xD3;//defines a standard state of register B
+	cout << "Sensor: Start" << endl;
 	/*Machine1 *fsm;
 	fsm = new Machine1();
 	//fsm->setPocket();*/
 	std::vector<Machine1*> wp_list;
-
 
 
 
@@ -144,10 +144,12 @@ void Sensor::settingUpAndWaitingSensor(){
 			if ( !((val>>1)&1) ) {
 				cout << "Sensor: in height measure " << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b1();
+
 			}
 			if ( !((val >> 3)&1) ) {
 					cout << "Sensor: in metal measure" << endl;
 					for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b3();
+
 			}
 			if ( !((val>>6)&1) ) {
 				cout << "Sensor: in slide" << endl;
@@ -162,10 +164,12 @@ void Sensor::settingUpAndWaitingSensor(){
 					(*cc).engineReset();
 					(*cc).engineRight();
 				}
+
 			}
 			if (!(val & BIT_WP_OUTLET)) {
 				cout << "Sensor: end of band in" << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_in();
+
 			}
 			if ((val & BIT_WP_OUTLET) && !(last_val & BIT_WP_OUTLET)) {
 				cout << "Sensor: end of band out" << endl;

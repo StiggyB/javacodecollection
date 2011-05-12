@@ -7,6 +7,7 @@
 
 #include "Machine1.h"
 #include "iostream.h"
+#include "../Lampen/Lampen.h"
 
 Machine1::Machine1() {
 	current = new Start_M1;
@@ -203,11 +204,24 @@ void pruef_schacht_voll :: exit (Machine1 * fsm){
 
 //functions for errorState
 void ErrorState :: entry (Machine1 * fsm){
-	cout << "pruef_schacht_voll: errorState" << endl;
-	(*cc).shine(RED);
+	cout << "ErrorState: entry" << endl;
+	//(*cc).shine(RED);
+	/*Lampen lamp;*/
+	//fsm->lamp.flash(1,RED);
+	/*while(1){
+		(*cc).shine(RED);
+		sleep(1);
+		(*cc).removeLight(RED);
+		sleep(1);
+	}*/
+}
+void ErrorState :: ls_b6 (Machine1 * fsm){
+	cout << "ErrorState: LS_B6" << endl;
+	//fsm->lamp.stop();
+
 }
 void ErrorState :: exit (Machine1 * fsm){
-	cout << "pruef_schacht_voll: errorState" << endl;
+	cout << "ErrorState: exit" << endl;
 }
 
 //functions for Machine
