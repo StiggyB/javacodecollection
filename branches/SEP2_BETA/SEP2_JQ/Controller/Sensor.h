@@ -4,8 +4,8 @@
 
 
 #include "../Thread/HAWThread.h"
-#include "Communication.h"
 #include "../HAL/HALCore.h"
+#include "Communication.h"
 /**
  * Sensor
  *
@@ -35,8 +35,8 @@ public:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
-	void handlePulsMessage();
-	void handleNormalMessage();
+	virtual void handlePulsMessage();
+	virtual void handleNormalMessage();
 	void clean();
 private:
 	/**

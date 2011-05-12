@@ -32,8 +32,8 @@ bool CommunicationServer::settingUpCommunicationServer(){
 		cout << "CommunicationServer: channel setup successful" << endl;
 	}
 	if (!allocMessages()) {
-		cleanUp(0, m, r_msg);
 		perror("CommunicationServer: failed to get Space for Message!");
+		cleanUp(0, m, r_msg);
 		destroyChannel(chid);
 		return false;
 	}
@@ -46,7 +46,6 @@ void CommunicationServer::execute(void*) {
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, m, sizeof(Message), NULL);
 			handleMessage();
-			MsgReply(rcvid, 0, m, sizeof(m));
 		}
 		cleanUp(0, m, NULL);
 		destroyChannel(chid);
@@ -54,8 +53,11 @@ void CommunicationServer::execute(void*) {
 		perror("CommunicationServer: SettingUp failed!");
 	}
 }
+void CommunicationServer::handlePulsMessage(){
+	std::cout << "CommunicationSeerver: received a Pulse Message but doesn't know what to do!"<<std::endl;
+}
 
-void CommunicationServer::handleMessage() {
+void CommunicationServer::handleNormalMessage() {
 	MsgType ca  = OK;
 	int id = m->m.chid;
 	switch (m->m.ca) {
@@ -76,8 +78,9 @@ void CommunicationServer::handleMessage() {
 		break;
 	}
 	buildMessage(m, id, m->m.coid, ca, COMMUNICATIONCONTROLLER);
+	MsgReply(rcvid, 0, m, sizeof(m));
 }
 
 void CommunicationServer::shutdown() {
-
+	cleanCommunication(COMMUNICATIONCONTROLLER);
 }

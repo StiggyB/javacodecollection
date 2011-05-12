@@ -11,7 +11,7 @@
  * All types of Communicators
  */
 enum CommunicatorType{
-	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),COMMUNICATIONCONTROLLER=(5),SERIAL=(6)
+	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),COMMUNICATIONCONTROLLER=(5),SERIAL=(6), NONE=(0)
 };
 
 /**
@@ -131,7 +131,7 @@ public:
 	 * \param c the Communicator which wants to be detached
 	 * \return bool, true if successful
 	 */
-	bool detachConnection(int id,int coid,CommunicatorType c);
+	bool detachConnection(int coid,CommunicatorType c);
 	/**
 	 * Builds a Message.
 	 * \param s an pointer to the Message, which should be build
@@ -185,9 +185,10 @@ public:
 	/**
 	 * Equivalent to attachConnection () and sending startConnection()
 	 * \param c the Communicator which you want to attach communication with
+	 * \param my the CommunicatorType of your own
 	 * \return bool, true if successful
 	 */
-	bool connectWithCommunicator(int id, CommunicatorType c, CommunicatorType my);
+	bool connectWithCommunicator(CommunicatorType c, CommunicatorType my);
 	/**
 	 * Sends an Puls Message to the specified target with given code and value.
 	 * The Target's ChannelID etc. must be known!
@@ -197,6 +198,19 @@ public:
 	 * \return bool, true if successful
 	 */
 	bool sendPulses(CommunicatorType target, int code, int value);
+	/**
+	 * Sets up a communicator device (allocate memory, register and acquire a needed communication path);
+	 * \return bool, true if successful
+	 */
+	bool settingUpCommunicatorDevice(CommunicatorType mine, CommunicatorType target);
+	/**
+	 * cleans up the Communication
+	 */
+	void cleanCommunication(CommunicatorType mine);
+	/**
+	 * ends the Communication and cleans up.
+	 */
+	void endCommunication(CommunicatorType mine);
 	/**
 	 * CommunicationServer ChannelID
 	 */

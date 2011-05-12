@@ -50,8 +50,8 @@ private:
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
-	void handlePulsMessage();
-	void handleNormalMessage();
+	virtual void handlePulsMessage();
+	virtual void handleNormalMessage();
 private:
 	InterruptController();
 	virtual ~InterruptController();

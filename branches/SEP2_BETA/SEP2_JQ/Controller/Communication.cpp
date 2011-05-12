@@ -253,7 +253,8 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 
 }
 
-bool Communication::detachConnection(int id,int coid,CommunicatorType c){
+bool Communication::detachConnection(int coid,CommunicatorType c){
+	int id = getChannelIdForObject(c);
 	Message * msg_s = (Message *) malloc(sizeof(Message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
@@ -342,7 +343,7 @@ void Communication::handleMessage() {
 		handlePulsMessage();
 		break;
 	case -1:
-		perror("InterruptController: failed to get Message\n");
+		perror("Communication: failed to get Message\n");
 		break;
 	default:
 		handleNormalMessage();
@@ -350,20 +351,20 @@ void Communication::handleMessage() {
 	}
 }
 
-bool Communication::connectWithCommunicator(int id,CommunicatorType c, CommunicatorType my){
-	id = getChannelIdForObject(c);
+bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType my){
+	int id = getChannelIdForObject(c);
 	if (!attachConnection(id, c)) {
-		perror("Sensor: failed to AttachConnection!");
+		perror("Communication: failed to AttachConnection!");
 		return false;
 	}
 	coid = getConnectIdForObject(c);
 	buildMessage(m, chid, coid, startConnection, my);
 	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-		perror("Sensor: failed to send message to IC!");
+		perror("Communication: failed to send message to IC!");
 		return false;
 	}
 	if (-1 == (id = getChannelIdForObject(c))) {
-		perror("Sensor: failed to get ChannelId!");
+		perror("Communication: failed to get ChannelId!");
 		return false;
 	}
 	return true;
@@ -380,6 +381,45 @@ bool Communication::sendPulses(CommunicatorType target, int code, int value){
 	}
 	perror("Communication: Failed to getConnect Id for target object pulse!");
 	return false;
+}
 
+bool Communication::settingUpCommunicatorDevice(CommunicatorType mine, CommunicatorType target){
+	if (prepareCommunication(mine)) {
+		if (target != NONE && !requestChannelIDForObject(target)) {
+			perror("Communicator: request failed");
+			unregisterChannel(mine);
+			return false;
+		}
+		if (!allocMessages()) {
+			perror("Communicator: alloc Messages failed");
+			cleanCommunication(mine);
+			return false;
+		}
+		if(target != NONE && !connectWithCommunicator(target,mine)){
+			perror("Communicator: connect with communicator failed");
+			cleanCommunication(mine);
+			return false;
+		}
+	}
+	return true;
+}
 
+void Communication::cleanCommunication(CommunicatorType mine){
+	if(mine != COMMUNICATIONCONTROLLER){
+		unregisterChannel(mine);
+	}
+	cleanUp(0, m, r_msg);
+	destroyChannel(chid);
+}
+
+void Communication::endCommunication(CommunicatorType mine){
+	if (!detachConnection(coid, mine)) {
+		perror("Communication: failed to detach Channel\n");
+		cleanCommunication(mine);
+		return;
+	}
+	if (!unregisterChannel(mine)) {
+		perror("Communication: unregister channel failed!");
+	}
+	cleanCommunication(mine);
 }

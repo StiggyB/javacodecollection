@@ -39,12 +39,8 @@ private:
 	 * Sets up the CommunicationServer as the Communication Server
 	 */
 	bool settingUpCommunicationServer();
-	/**
-	 * Handles incoming Messages.
-	 */
-	void handleMessage();
-	void handlePulsMessage(){};
-	void handleNormalMessage(){};
+	virtual void handlePulsMessage();
+	virtual void handleNormalMessage();
 	int id;
 protected:
     virtual void execute(void*);

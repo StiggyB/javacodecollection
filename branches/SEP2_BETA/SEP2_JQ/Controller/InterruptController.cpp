@@ -93,37 +93,26 @@ void InterruptController::connectToHAL() {
 
 void InterruptController::execute(void*) {
 	cout << "IC: now getting shit up!" << endl;
-
-	if(prepareCommunication(INTERRUPTCONTROLLER)){
+	if(settingUpCommunicatorDevice(INTERRUPTCONTROLLER,NONE)){
 		connectToHAL();
 		if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 			perror("error for IO Control\n");
 			return;
 		}
-		if (!allocMessages()) {
-			cleanUp(0, m, r_msg);
-			perror("IC: failed to get Space for Messages.");
-			return;
-		}
-
 		h->addLight(GREEN);
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
-
 		disconnectFromHAL();
-		if (!unregisterChannel(INTERRUPTCONTROLLER)) {
-			perror("IC: unregister channel failed");
-		}
-		destroyChannel(chid);
+		endCommunication(INTERRUPTCONTROLLER);
 	}
 }
 
 void InterruptController::handlePulsMessage() {
 	id = getChannelIdForObject(SENSOR);
 	coid = getConnectIdForObject(SENSOR);
-	// here can more Sensors be added
+	// some more Sensors can be added
 	if (id != -1 && coid != -1) {
 		if (r_msg->pulse.code == INTERRUPT_D_PORT_C_HIGH) {
 			buildMessage(m, id, coid, reactC, INTERRUPTCONTROLLER,

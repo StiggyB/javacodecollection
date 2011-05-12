@@ -30,12 +30,12 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	if (settingUpSensor()) {
+	if (settingUpCommunicatorDevice(SENSOR,INTERRUPTCONTROLLER)) {
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
-		cleanUpSensor();
+		endCommunication(SENSOR);
 	}else{
 		perror("Sensor: Setting Up failed!");
 	}
@@ -57,46 +57,6 @@ void Sensor::handleNormalMessage(){
 
 void Sensor::handlePulsMessage(){
 	std::cout << "Sensor: received a Puls, but doesn't know what to do with it" << std::endl;
-}
-
-bool Sensor::settingUpSensor(){
-
-	if (prepareCommunication(SENSOR)) {
-		if (!requestChannelIDForObject(INTERRUPTCONTROLLER)) {
-			perror("Sensor: request failed");
-			unregisterChannel(SENSOR);
-			return false;
-		}
-
-		if (!allocMessages()) {
-			clean();
-			return false;
-		}
-		if(!connectWithCommunicator(id,INTERRUPTCONTROLLER,SENSOR)){
-			clean();
-			return false;
-		}
-	}
-	return true;
-}
-void Sensor::clean(){
-	unregisterChannel(SENSOR);
-	cleanUp(0, m, r_msg);
-	destroyChannel(chid);
-}
-
-void Sensor::cleanUpSensor(){
-	if (!detachConnection(id, coid, SENSOR)) {
-		perror("Sensor: failed to detach Channel for Interrupt\n");
-		clean();
-		return;
-	}
-	if (!unregisterChannel(SENSOR)) {
-		perror("Sensor: register channel failed!");
-		cleanUp(coid, m, r_msg);
-	}
-	cleanUp(0, m, r_msg);
-	destroyChannel(chid);
 }
 
 void Sensor::shutdown() {
