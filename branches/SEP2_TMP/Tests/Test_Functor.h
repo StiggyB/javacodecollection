@@ -8,8 +8,7 @@
 #ifndef TEST_FUNCTOR_H_
 #define TEST_FUNCTOR_H_
 
-#include "Timer.h"
-#include "Functor.h"
+#include "../Functor/Functor.h"
 #include "../Controller/Sensor.h"
 #include "../Thread/HAWThread.h"
 

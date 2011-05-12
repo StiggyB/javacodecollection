@@ -29,11 +29,11 @@ void Test_Functor::test_function() {
 }
 
 void Test_Functor::test_functor() {
-	Functor<void , Sensor> cmd1(sen, &Sensor::shutdown());
-	cmd1();
+//	Functor<void , Sensor> cmd1(sen, &Sensor::shutdown());
+//	cmd1();
 }
 
 void Test_Functor::test_functor_triv() {
-	Functor<void, Test_Functor> cmd2(this, &Test_Functor::test_function);
-	cmd2();
+//	Functor<void, Test_Functor> cmd2(this, &Test_Functor::test_function);
+//	cmd2();
 }
