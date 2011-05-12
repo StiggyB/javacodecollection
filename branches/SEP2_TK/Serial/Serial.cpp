@@ -225,18 +225,6 @@ int Serial::send(void* data, int lenBytes) {
 	}//if
 
 }
-/*
-sendExtern(){
-	send()
-	if(ack == good)
-}
-
-
-send(){
-
-}
-*/
-
 
 int Serial::receive(void* data, int lenBytes) {
 	//printf("Want to receive..\n");

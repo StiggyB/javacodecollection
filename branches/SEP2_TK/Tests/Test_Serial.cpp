@@ -46,6 +46,27 @@ void Test_Serial::execute(void*){
 
 printf("start of TEST#######################################\n");
 		sleep(100);
+/*
+		while (!isStopped()) {
+			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+			handleMessage();
+		}
+		endCommunication(SENSOR);
+
+void Test_Serial::handlePulsMessage(){
+	CheckTest();
+}
+
+	CheckTest(){
+		switch(FALL){
+			case Test1:
+				FALL = Test2;
+			case Test2:
+
+		}
+	}
+*/
+
 //		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 1 gesendet \n") ;}else{printf("s_0 message 1 not cool \n");test_successful = false;}
 //
 //		sleep(5);
