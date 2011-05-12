@@ -139,7 +139,7 @@ void Sensor::settingUpAndWaitingSensor(){
 }
 
 void Sensor::shutdown() {
-
+	cout << "shut it" << endl;
 }
 
 void Sensor::interrupt(int port, int val) {

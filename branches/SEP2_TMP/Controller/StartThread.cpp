@@ -23,6 +23,9 @@ StartThread::StartThread(){
 #ifdef TEST_SER
 	//ser = Test_Serial();
 #endif
+#ifdef TEST_FUN
+	tf = Test_Functor();
+#endif
 }
 
 StartThread::~StartThread() {
@@ -69,6 +72,16 @@ void StartThread::execute(void*) {
 	cout << "waiting for M1-Tests" << endl;
 	tm.join();
 #endif
+
+#ifdef TEST_FUN
+	cout << "starting Functor-Test"	 << endl;
+	/*
+	tf.start(NULL);
+	cout << "waiting for Functor-Test" << endl;
+	tf.join();
+	 */
+#endif
+
 /*
 	sleep(4);
 	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);

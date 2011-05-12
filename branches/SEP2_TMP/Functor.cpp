@@ -3,27 +3,33 @@
  *
  *  Created on: 11.05.2011
  *      Author: Tell
+ *
+ *
+ *     Functor for member-function pointer.
  */
-
-template <typename R, class T>
-class Functor {
 
 	//TODO Callinterface old way to impl. a Functor?
 
-private:
 
-	Sensor sen;
+Functor<R, T>::Functor() {
 
-public:
+}
 
-	Functor();
+Functor<R, T>::~Functor() {
 
-	//TODO lookup what is necessary - state? / various params / ...
+}
 
-	R operator()() {
-		return (sen/*pointer on the calling class*/);
-	}
+Functor<R, T>::Functor(T& pMemObj, T objFuncp)
+:pMemObj(pMemObj), objFuncp(objFuncp) {
+}
 
-	R operator(/*Param p1*/);
+//TODO lookup what is necessary - state? / various params / ...
 
-};
+R Functor<R, T>::operator()() {
+	return ((*objFuncp).*pMemObj /*pointer on the calling class*/)();
+}
+
+R Functor<R, T>::operator()(/*Param p1*/) {
+
+}
+

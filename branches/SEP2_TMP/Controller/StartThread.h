@@ -8,6 +8,7 @@
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_IRQ.h"
 #include "../Tests/Test_Serial.h"
+#include "../Tests/Test_Functor.h"
 #include "Sensor.h"
 #include "CoreController.h"
 #include "InterruptController.h"
@@ -44,6 +45,9 @@ private:
 #endif
 #ifdef TEST_SER
     Test_Serial ser;
+#endif
+#ifdef TEST_FUN
+    Test_Functor tf;
 #endif
 };
 
