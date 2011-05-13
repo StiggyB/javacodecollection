@@ -87,7 +87,7 @@ void In_Metallmessung :: entry(Machine2 * fsm){
 	cout << "In_Metallmessung: entry" << endl;
 	(*cc).engineStop();
 	fsm->engine_should_be_started = 0;
-	if( ( ((*cc).read(0x300+1)>>4)&1 ) == 1 && (fsm->hasPocket==1) ){
+	if( ( ((*cc).read(0x300+1)>>4)&1 ) == 1 && (fsm->hasPocket==1) ){ //eigene funktion in der HAL!
 		cout << "is Metall" << endl;
 		fsm->setCurrent(new durchschleusen_M2() );
 	} else if( ( ((*cc).read(0x300+1)>>4)&1 ) == 0 && (fsm->hasPocket==0) ) {

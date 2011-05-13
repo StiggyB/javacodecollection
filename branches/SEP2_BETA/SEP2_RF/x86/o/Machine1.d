@@ -85,4 +85,9 @@ Machine1.o: \
  Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Controller/../HAL/IHAL.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Controller/../Thread/HAWThread.h \
  C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Controller/Communication.h
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Lampen/Error_State_Lamp.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Lampen/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Lampen/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Lampen/../Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/FSM/../Lampen/Lampen.h

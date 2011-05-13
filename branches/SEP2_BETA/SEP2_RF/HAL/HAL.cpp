@@ -478,8 +478,8 @@ const struct sigevent * ISR(void *arg, int id) {
 	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
 	return (event);break;
 	default:
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,iir,iir);
-	return (event);break;
+	//SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,iir,iir);
+	return NULL/*(event)*/;break;
 	}
 	return (NULL);//*/
 }

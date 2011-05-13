@@ -51,7 +51,7 @@ void Sensor::settingUpAndWaitingSensor(){
 	/*Machine1 *fsm;
 	fsm = new Machine1();
 	//fsm->setPocket();*/
-	std::vector<Machine1*> wp_list;
+	std::vector<Machine2*> wp_list;
 
 
 	//lamp.start(NULL);
@@ -141,7 +141,7 @@ void Sensor::settingUpAndWaitingSensor(){
 						ls7blocked = 1;
 					}
 				}
-				if (ls7blocked == 0 ) wp_list.push_back(new Machine1);
+				if (ls7blocked == 0 ) wp_list.push_back(new Machine2);
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b0();
 			}
 			if ( !((val>>1)&1) ) {

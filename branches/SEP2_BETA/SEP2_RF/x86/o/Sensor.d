@@ -94,4 +94,9 @@ Sensor.o: \
  C:/QNX650/target/qnx6/usr/include/cpp/vector \
  Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/Machine1.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/../Controller/CoreController.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/Machine2.h
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/../Lampen/Error_State_Lamp.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/../Lampen/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/../Lampen/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/../Lampen/../Controller/CoreController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../FSM/Machine2.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/Controller/../Lampen/Error_State_Lamp.h
