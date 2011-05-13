@@ -75,8 +75,8 @@ void InterruptController::activateInterrupts() {
 	i = (*cc).getSetInterrupt();
 	cout << "InterruptController: PortC_reset_Interrupt 0x" << hex << i << endl;
 	(*cc).activateInterrupt(PORT_B);
-	//i = (*cc).getSetInterrupt();
-	//cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
+	i = (*cc).getSetInterrupt();
+	cout << "InterruptController: PortB_write_Interrupt 0x" << hex << i << endl;
 	(*cc).activateInterrupt(PORT_C);
 	 i = (*cc).getSetInterrupt();
 	 cout << "InterruptController: PortC_write_Interrupt 0x" << hex << i << endl;

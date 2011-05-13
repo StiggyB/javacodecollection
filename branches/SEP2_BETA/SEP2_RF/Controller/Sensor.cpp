@@ -45,7 +45,8 @@ void Sensor::execute(void*) {
 
 void Sensor::settingUpAndWaitingSensor(){
 	int port = 0,id=0,coid=0,rcvid  = 0;
-	int last_val = 0xD3;//defines a standard state of register B
+	int last_Reg_State_B = 0xD3;//defines a standard state of register B
+	int last_Reg_State_C = 0x50;//defines a standard state of register C
 	cout << "Sensor: Start" << endl;
 	/*Machine1 *fsm;
 	fsm = new Machine1();
@@ -128,7 +129,7 @@ void Sensor::settingUpAndWaitingSensor(){
 			port = INTERRUPT_D_PORT_C_HIGH;
 		}
 		int val = (*r_msg).pulse.value.sival_int;
-		cout << "Interrupt" << endl;
+		//cout << "Interrupt " << "val:" << val << " port "  << (*r_msg).m.ca << endl;
 
 		switch (port) {
 		case INTERRUPT_D_PORT_B:
@@ -173,7 +174,7 @@ void Sensor::settingUpAndWaitingSensor(){
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_in();
 
 			}
-			if ((val & BIT_WP_OUTLET) && !(last_val & BIT_WP_OUTLET)) {
+			if ((val & BIT_WP_OUTLET) && !(last_Reg_State_B & BIT_WP_OUTLET)) {
 				cout << "Sensor: end of band out" << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_out();
 
@@ -189,12 +190,14 @@ void Sensor::settingUpAndWaitingSensor(){
 				}
 
 			}
-
+			last_Reg_State_B = val;
 			break;
 		case INTERRUPT_D_PORT_C_HIGH:
-			if (!(val & BIT_E_STOP)) {
+			if (!(val & BIT_E_STOP) && (last_Reg_State_C & BIT_E_STOP) ) {
 				//(*cc).emergencyStop();
-				cout << "Sensor: E-Stop Button" << endl;
+				cout << "Sensor: E-Stop Button in" << endl;
+			}else if ((val & BIT_E_STOP) && !(last_Reg_State_C & BIT_E_STOP) ){
+				cout << "Sensor: E-Stop Button out" << endl;
 			} else if (!(val & BIT_STOP)) {
 				//(*cc).stopMachine();
 				cout << "Sensor: stop Button" << endl;
@@ -207,7 +210,8 @@ void Sensor::settingUpAndWaitingSensor(){
 				//cnt = 0;
 				//(*cc).resetAll();
 			}
-			(*cc).setValueOfPort(PORT_C,val);
+			//(*cc).setValueOfPort(PORT_C,val);
+			last_Reg_State_C = val;
 			break;
 		}
 
@@ -220,7 +224,7 @@ void Sensor::settingUpAndWaitingSensor(){
 				ts.test_sen_interrupt(p, (*r_msg).pulse.value.sival_int);
 		#endif
 
-		last_val = val;
+
 
 	}//while
 
