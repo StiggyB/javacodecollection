@@ -176,6 +176,11 @@ extern volatile int portIRQ;
  */
 extern volatile int controlBits;
 
+/*
+ * Emergency Stop pushed!
+ */
+extern volatile bool emstopped;
+
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
  *
@@ -502,6 +507,11 @@ private:
 	 */
 	int getLEDCode(LEDS led);
 
+	/**
+	 * Returns if there is metal under the metal detector.
+	 * \return a bool, true if there is metal.
+	 */
+	bool isMetal();
 	HALCore();
 	~HALCore();
 	/**
@@ -526,10 +536,6 @@ private:
 	 * Stop pushed!
 	 */
 	bool stopped;
-	/*
-	 * Emergency Stop pushed!
-	 */
-	bool emstopped;
 	/**
 	 * Wakeup the thread
 	 */

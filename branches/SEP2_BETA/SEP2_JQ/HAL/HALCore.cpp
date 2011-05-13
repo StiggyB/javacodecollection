@@ -48,6 +48,10 @@ volatile int portIRQ;
  * copy of ControlBits
  */
 volatile int controlBits;
+/**
+ * emergency stop pushed
+ */
+volatile bool emstopped;
 
 HALCore::HALCore() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -589,3 +593,6 @@ void HALCore::deactivateInterrupt(int port){
 	write(INTERRUPT_SET_ADRESS_D,port);// low active !
 }
 
+bool HALCore::isMetal(){
+	return read(PORT_B) & BIT_WP_METAL;
+}
