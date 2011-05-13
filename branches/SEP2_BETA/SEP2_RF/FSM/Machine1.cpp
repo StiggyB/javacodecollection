@@ -8,6 +8,7 @@
 #include "Machine1.h"
 #include "iostream.h"
 #include "../Lampen/Lampen.h"
+#include "../Lampen/Error_State_Lamp.h"
 
 Machine1::Machine1() {
 	current = new Start_M1;
@@ -191,7 +192,7 @@ void WS_im_Schacht :: exit (Machine1 * fsm){
 //functions for pruef_schacht_voll
 void pruef_schacht_voll :: entry (Machine1 * fsm){
 	cout << "pruef_schacht_voll: entry" << endl;
-	sleep(2);
+	sleep(1);
 
 	if( (*cc).isSlideFull() ){
 		fsm->setCurrent( new ErrorState() );
@@ -205,19 +206,17 @@ void pruef_schacht_voll :: exit (Machine1 * fsm){
 //functions for errorState
 void ErrorState :: entry (Machine1 * fsm){
 	cout << "ErrorState: entry" << endl;
-	//(*cc).shine(RED);
-	/*Lampen lamp;*/
-	//fsm->lamp.flash(1,RED);
-	/*while(1){
-		(*cc).shine(RED);
+	fsm->lamp.fast_blink();
+	fsm->lamp.start(NULL);
+	while ( (*cc).isSlideFull() ){
 		sleep(1);
-		(*cc).removeLight(RED);
-		sleep(1);
-	}*/
+	}
+	fsm->lamp.slow_blink();
+
 }
 void ErrorState :: ls_b6 (Machine1 * fsm){
 	cout << "ErrorState: LS_B6" << endl;
-	//fsm->lamp.stop();
+	fsm->lamp.stop();
 
 }
 void ErrorState :: exit (Machine1 * fsm){

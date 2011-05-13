@@ -17,7 +17,7 @@
 #include "Sensor.h"
 #include "../FSM/Machine1.h"
 #include "../FSM/Machine2.h"
-#include "../Lampen/Lampen.h"
+#include "../Lampen/Error_State_Lamp.h"
 #include <vector>
 
 
@@ -52,6 +52,8 @@ void Sensor::settingUpAndWaitingSensor(){
 	//fsm->setPocket();*/
 	std::vector<Machine1*> wp_list;
 
+
+	//lamp.start(NULL);
 
 
 	if (!setUpChannel()) {

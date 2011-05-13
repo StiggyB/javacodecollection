@@ -9,7 +9,7 @@
 #define MACHINE_H_
 
 #include "../Controller/CoreController.h"
-#include "../Lampen/Lampen.h"
+#include "../Lampen/Error_State_Lamp.h"
 
 class Machine1 {
   class State_M1 *current;
@@ -29,7 +29,7 @@ class Machine1 {
 	void errorState();
 	bool isOnLS7;
 	bool engine_should_be_started;
-	Lampen lamp;
+	Error_State_Lamp lamp;
   private:
 	CoreController *cc;
 
