@@ -217,6 +217,7 @@ public:
 	virtual bool setValueOfPort(int port,int val)=0;
 
 	virtual int identifyHeight()=0;
+	virtual bool isMetal()=0;
 	IHAL();
 	virtual ~IHAL();
 };

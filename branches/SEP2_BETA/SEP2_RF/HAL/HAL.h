@@ -60,10 +60,25 @@ enum PortB{
 };
 
 /**
+ * PORT B Bits:
+ */
+enum PortB_Bit{
+	WP_RUN_IN = 0,WP_IN_HEIGHT = 1,WP_HEIGHT_STATUS = 2,WP_IN_SWITCH = 3,
+	WP_METAL = 4,WP_WITCH_STATUS = 5, WP_IN_SLIDE = 6, WP_OUTLET = 7
+};
+/**
  * PORT C:
  */
 enum PortC{
 	BIT_LED_START=(1<<0),BIT_LED_RESET=(1<<1),BIT_LED_Q1=(1<<2),BIT_LED_Q2=(1<<3),BIT_START=(1<<4),BIT_STOP=(1<<5),BIT_RESET=(1<<6),BIT_E_STOP=(1<<7),BIT_LEDS_ON=(0x0F)
+};
+
+/**
+ * PORT C Bits:
+ */
+enum PortC_Bit{
+	WP_LED_START=0, WP_LED_RESET=1, WP_LED_Q1=2, WP_LED_Q2=3,
+	WP_START=4, WP_STOP=5, WP_RESET=6, WP_E_STOP=7
 };
 
 /**
@@ -219,6 +234,7 @@ public:
 	virtual bool setValueOfPort(int port,int val);
 	virtual int identifyHeight();
 	virtual bool isSlideFull();
+	virtual bool isMetal();
 
 private:
 

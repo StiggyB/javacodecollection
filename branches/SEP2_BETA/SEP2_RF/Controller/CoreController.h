@@ -73,6 +73,7 @@ public:
 	virtual bool setValueOfPort(int port,int val);
 	virtual int identifyHeight();
 	virtual bool isSlideFull();
+	virtual bool isMetal();
 
 	/**
 	 * Performes an emergency stop.

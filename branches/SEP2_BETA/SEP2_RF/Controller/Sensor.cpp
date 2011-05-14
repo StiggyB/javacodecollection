@@ -15,8 +15,10 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
-#include "../FSM/Machine1.h"
-#include "../FSM/Machine2.h"
+#include "../FSM/Puck_FSM.h"
+#include "../Tests/Test_FSM.h"
+#include "../FSM/Puck_FSM_1.h"
+#include "../FSM/Puck_FSM_2.h"
 #include "../Lampen/Error_State_Lamp.h"
 #include <vector>
 
@@ -51,7 +53,9 @@ void Sensor::settingUpAndWaitingSensor(){
 	/*Machine1 *fsm;
 	fsm = new Machine1();
 	//fsm->setPocket();*/
-	std::vector<Machine2*> wp_list;
+	std::vector<Puck_FSM*> wp_list;
+	Test_FSM tests_fsm;
+	tests_fsm.init_tests();
 
 
 	//lamp.start(NULL);
@@ -130,31 +134,35 @@ void Sensor::settingUpAndWaitingSensor(){
 		}
 		int val = (*r_msg).pulse.value.sival_int;
 		//cout << "Interrupt " << "val:" << val << " port "  << (*r_msg).m.ca << endl;
+		tests_fsm.handleSignal(val, port);
 
-		switch (port) {
+		/*switch (port) {
 		case INTERRUPT_D_PORT_B:
-			if ( !(val&1) ) {
+			if ( !( (val>>WP_RUN_IN) &1) ) {
 				cout << "Sensor: in" << endl;
 				int ls7blocked = 0;
 				for(unsigned int i=0; i<wp_list.size(); i++){
-					if (wp_list[i]->isOnLS7){
+					if (wp_list[i]->pass_ls_b7){
 						ls7blocked = 1;
 					}
 				}
-				if (ls7blocked == 0 ) wp_list.push_back(new Machine2);
+				if (ls7blocked == 0 ) {
+					wp_list.push_back(new Puck_FSM_1);
+					wp_list[wp_list.size()-1]->hasPocket = 1;
+				}
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b0();
 			}
-			if ( !((val>>1)&1) ) {
+			if ( !((val>>WP_IN_HEIGHT)&1) ) {
 				cout << "Sensor: in height measure " << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b1();
 
 			}
-			if ( !((val >> 3)&1) ) {
+			if ( !((val >> WP_IN_SWITCH)&1) ) {
 					cout << "Sensor: in metal measure" << endl;
 					for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b3();
 
 			}
-			if ( !((val>>6)&1) ) {
+			if ( !((val>>WP_IN_SLIDE)&1) ) {
 				cout << "Sensor: in slide" << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b6();
 				int active_state = 0;
@@ -169,12 +177,12 @@ void Sensor::settingUpAndWaitingSensor(){
 				}
 
 			}
-			if (!(val & BIT_WP_OUTLET)) {
+			if (!(( val>>WP_OUTLET)&1 )) {
 				cout << "Sensor: end of band in" << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_in();
 
 			}
-			if ((val & BIT_WP_OUTLET) && !(last_Reg_State_B & BIT_WP_OUTLET)) {
+			if (( (val>>WP_OUTLET)&1 ) && !( (last_Reg_State_B>>WP_OUTLET)&1)) {
 				cout << "Sensor: end of band out" << endl;
 				for(unsigned int i=0; i<wp_list.size(); i++)	wp_list[i]->ls_b7_out();
 
@@ -193,27 +201,27 @@ void Sensor::settingUpAndWaitingSensor(){
 			last_Reg_State_B = val;
 			break;
 		case INTERRUPT_D_PORT_C_HIGH:
-			if (!(val & BIT_E_STOP) && (last_Reg_State_C & BIT_E_STOP) ) {
-				//(*cc).emergencyStop();
+			if (!((val>>WP_E_STOP)&1) && ((last_Reg_State_C>>WP_E_STOP)&1) ) {
 				cout << "Sensor: E-Stop Button in" << endl;
-			}else if ((val & BIT_E_STOP) && !(last_Reg_State_C & BIT_E_STOP) ){
+
+			}else if (((val>>WP_E_STOP)&1) && !((last_Reg_State_C>>WP_E_STOP)&1) ){
 				cout << "Sensor: E-Stop Button out" << endl;
-			} else if (!(val & BIT_STOP)) {
-				//(*cc).stopMachine();
+
+			} else if (!((val>>WP_STOP)&1)) {
 				cout << "Sensor: stop Button" << endl;
-			} else if (val & BIT_START) {
+
+			} else if ((val>>WP_START)&1) {
 				cout << "Sensor: Start Button" << endl;
-				//cnt = 0;
-				//(*cc).restart();
-			} else if (val & BIT_RESET) {
+
+			} else if ((val>>WP_RESET)&1) {
 				cout << "Sensor: Reset Button" << endl;
-				//cnt = 0;
-				//(*cc).resetAll();
+
 			}
 			//(*cc).setValueOfPort(PORT_C,val);
 			last_Reg_State_C = val;
 			break;
-		}
+		}*/
+
 
 
 		#ifndef TEST_SEN

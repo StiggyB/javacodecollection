@@ -547,3 +547,8 @@ int HAL::identifyHeight(){
 bool HAL::isSlideFull() {
 	return ( !((in8(D_IOBASE+1)>>6)&1) );
 }
+
+bool HAL::isMetal(){
+	return ( ((read(D_IOBASE+0x1)>>4)&1)==1 );
+
+}

@@ -491,3 +491,10 @@ bool CoreController::isSlideFull() {
 	m.unlock();
 	return ret;
 }
+
+bool CoreController::isMetal(){
+	m.lock();
+	bool ret = (*h).isMetal();
+	m.unlock();
+	return ret;
+}
