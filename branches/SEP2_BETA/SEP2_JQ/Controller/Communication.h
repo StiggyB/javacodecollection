@@ -126,12 +126,11 @@ public:
 	bool attachConnection(int id, CommunicatorType c);
 	/**
 	 * Detaches a connection to a Channel and informs the Target-Communicator.
-	 * \param id an integer specifying the ChannelID
 	 * \param coid an integer specifying the ConnectID
 	 * \param c the Communicator which wants to be detached
 	 * \return bool, true if successful
 	 */
-	bool detachConnection(int coid,CommunicatorType c);
+	bool detachConnection(int coid, CommunicatorType c);
 	/**
 	 * Builds a Message.
 	 * \param s an pointer to the Message, which should be build

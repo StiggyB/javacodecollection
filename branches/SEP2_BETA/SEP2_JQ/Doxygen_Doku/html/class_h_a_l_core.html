@@ -62,17 +62,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">HALCore Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="HALCore" --><!-- doxytag: inherits="thread::HAWThread" -->
+<!-- doxytag: class="HALCore" --><!-- doxytag: inherits="thread::HAWThread,Singleton_T&lt; HALCore &gt;" -->
 <p><code>#include &lt;<a class="el" href="_h_a_l_core_8h_source.html">HALCore.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for HALCore:</div>
@@ -80,7 +79,8 @@ Inheritance diagram for HALCore:</div>
  <div class="center">
   <img src="class_h_a_l_core.png" usemap="#HALCore_map" alt=""/>
   <map id="HALCore_map" name="HALCore_map">
-<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,123,24"/>
+<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,155,24"/>
+<area href="class_singleton___t.html" alt="Singleton_T&lt; HALCore &gt;" shape="rect" coords="165,0,320,24"/>
 </map>
  </div></div>
 
@@ -133,19 +133,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a5354eee3c7938de63bfedb8442744176">stopMachine</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ab88354aa32b8f593570a12d1d2db7b98">restart</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ab8bd8861c1df18ec4eeb2e04d3144f17">resetAll</a> ()</td></tr>
-<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_h_a_l_core.html">HALCore</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#aca6c7d6c3c8ebd8858e1f96b3245f855">getInstance</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a4c945294e9366c3e1e91bdff88e25d8a">deleteInstance</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-types"></a>
 Protected Types</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(HALCore::*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> )(void *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_h_a_l_core_1_1val.html">HALCore::val</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a350cae5bd719de9cb3cbcec0869fae6a">VAL</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ab84975ba8806ab1e198fa5ba2b3cc026">Functions</a></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a0ee715e16a2b1857cad66f6c8405d074">execute</a> (void *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a24f0eb5571eac89c17267974bb144fd8">shutdown</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="struct_h_a_l_core_1_1val.html">HALCore::val</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a139c2fb7d0eec292a9f67542ecf9b59e">__attribute__</a> ((__packed__)) VAL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a3fa2b997be19b93b0b8f82c2633d6a6b">__attribute__</a> ((__packed__)) Functions</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ad10ee3442000395c7e737d1f850a7ace">write</a> (int dir, int value, bool overwrite)</td></tr>
@@ -158,28 +154,29 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#aa5adfe488f08dec9670ad0b05655cf50">checkVal</a> (int dir, int value, bool set)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a07b5b6a27f2df7eb86ff0779fec8ebbb">getColorCode</a> (<a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a49d7ad19fa2a64c88079d15940109976">getLEDCode</a> (<a class="el" href="_h_a_l_core_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a> led)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a4727c99dc73a15a3b7ad99b0eabac21e">isMetal</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a06d7e8a2b8cedb43474a2aad65354526">HALCore</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a87d2347296dcf63cf963db28e2d996a0">~HALCore</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a557f1e6d4873a21f4560878dfdedacf9">HALCore</a> (const <a class="el" href="class_h_a_l_core.html">HALCore</a> &amp;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l_core.html">HALCore</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ae18cbddb2aa22c83a8db5ace13644e2b">operator=</a> (const <a class="el" href="class_h_a_l_core.html">HALCore</a> &amp;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ad7068af6a2e27acd81061d0259d63e4e">wakeup</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a0d7a8dba7cd7ed2ced191009db6483e8">setFPArray</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a85fda5fc0570c6fa3719d0d923cd11ab">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1, int val2)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a2a74d11537d02ad4c342af49e90b944f">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, bool val3)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a59018479f5225149b908f470753fa3be">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#aaff2fced3be0b2ca6365737af3811693">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1, int val2, bool val3)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Functions *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a85fda5fc0570c6fa3719d0d923cd11ab">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1, int val2)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Functions *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a2a74d11537d02ad4c342af49e90b944f">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, bool val3)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Functions *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a59018479f5225149b908f470753fa3be">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Functions *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#aaff2fced3be0b2ca6365737af3811693">buildFunctions</a> (<a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="struct_h_a_l_core_1_1f.html">f</a>, int val1, int val2, bool val3)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#ac7ba13d5a32b99bd82f41d71a38e8c61">stopped</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#adb82b1584d4778c72bcc159a11e66449">emstopped</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a4619129a025f1590fed9c72e2ebb0562">funcArray</a> [50]</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">list&lt; <a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a59980f1ac85de2c5bdaf207bad5e0986">lst</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_semaphor.html">Semaphor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a42e9b5afca995c01dc1fadbedfaae48d">sem</a></td></tr>
-<tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_h_a_l_core.html">HALCore</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a9c843c3feaca0bf7cdd15304f5b355ec">pInstance</a> = NULL</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#af6aa081497cf010b1b724d2bbb20f686">singleton</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a1ed040f0e8fa8cf855baf7e03d3f941a">mutEx</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a3911d746069bf0f6f96fea9d5212ca22">funcArray</a> [2]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">vector&lt; Functions * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a340cd24326460b8602145c6caf80f3a2">lst</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_condition.html">Condition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a60c66638a8ccc811563fba3eb4b7f4b1">condvar</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a0970d9644ad15f24a4acc5821ff2c1a2">mut</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a9dbb2363ae0afe9d8ef2041146349e5a">changedMutex</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a95eff35cd1c291977a1318b4158d422e">requested</a></td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_a_l_core.html#a981efca5ae1c277eb59fa849cbf8b689">Singleton_T&lt; HALCore &gt;</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Hardware Abstraction Layer for Aktorik and Sensorik.</p>
@@ -200,32 +197,6 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>functionpointer on <a class="el" href="class_h_a_l_core.html">HALCore</a> functions </p>
-
-</div>
-</div>
-<a class="anchor" id="ab84975ba8806ab1e198fa5ba2b3cc026"></a><!-- doxytag: member="HALCore::Functions" ref="ab84975ba8806ab1e198fa5ba2b3cc026" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::f</a>  <a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::Functions</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a350cae5bd719de9cb3cbcec0869fae6a"></a><!-- doxytag: member="HALCore::VAL" ref="a350cae5bd719de9cb3cbcec0869fae6a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_h_a_l_core_1_1val.html">HALCore::val</a>  <a class="el" href="struct_h_a_l_core_1_1val.html">HALCore::VAL</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
 
 </div>
 </div>
@@ -276,11 +247,45 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>for <a class="el" href="class_singleton.html">Singleton</a> </p>
+<p>for Singleton </p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a139c2fb7d0eec292a9f67542ecf9b59e"></a><!-- doxytag: member="HALCore::__attribute__" ref="a139c2fb7d0eec292a9f67542ecf9b59e" args="((__packed__)) VAL" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_h_a_l_core_1_1val.html">HALCore::val</a> HALCore::__attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(__packed__)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3fa2b997be19b93b0b8f82c2633d6a6b"></a><!-- doxytag: member="HALCore::__attribute__" ref="a3fa2b997be19b93b0b8f82c2633d6a6b" args="((__packed__)) Functions" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::f</a> HALCore::__attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(__packed__)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="adfc672d7f854662d93e1c2c9728b52d3"></a><!-- doxytag: member="HALCore::activateInterrupt" ref="adfc672d7f854662d93e1c2c9728b52d3" args="(int port)" -->
 <div class="memitem">
 <div class="memproto">
@@ -356,12 +361,51 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aaff2fced3be0b2ca6365737af3811693"></a><!-- doxytag: member="HALCore::buildFunctions" ref="aaff2fced3be0b2ca6365737af3811693" args="(FP f, int val1, int val2, bool val3)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HALCore::Functions * HALCore::buildFunctions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>val1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>val2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>val3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a85fda5fc0570c6fa3719d0d923cd11ab"></a><!-- doxytag: member="HALCore::buildFunctions" ref="a85fda5fc0570c6fa3719d0d923cd11ab" args="(FP f, int val1, int val2)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::Functions</a> * HALCore::buildFunctions </td>
+          <td class="memname">HALCore::Functions * HALCore::buildFunctions </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -394,7 +438,7 @@ Static Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::Functions</a> * HALCore::buildFunctions </td>
+          <td class="memname">HALCore::Functions * HALCore::buildFunctions </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -421,7 +465,7 @@ Static Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::Functions</a> * HALCore::buildFunctions </td>
+          <td class="memname">HALCore::Functions * HALCore::buildFunctions </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -431,45 +475,6 @@ Static Private Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>val1</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aaff2fced3be0b2ca6365737af3811693"></a><!-- doxytag: member="HALCore::buildFunctions" ref="aaff2fced3be0b2ca6365737af3811693" args="(FP f, int val1, int val2, bool val3)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::Functions</a> * HALCore::buildFunctions </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a>&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>val1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>val2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>val3</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -565,23 +570,6 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if action was successful, false if not. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a4c945294e9366c3e1e91bdff88e25d8a"></a><!-- doxytag: member="HALCore::deleteInstance" ref="a4c945294e9366c3e1e91bdff88e25d8a" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void HALCore::deleteInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>deletes the Instance </p>
 
 </div>
 </div>
@@ -927,24 +915,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aca6c7d6c3c8ebd8858e1f96b3245f855"></a><!-- doxytag: member="HALCore::getInstance" ref="aca6c7d6c3c8ebd8858e1f96b3245f855" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_h_a_l_core.html">HALCore</a> * HALCore::getInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>returns a Pointer to the threadsafe <a class="el" href="class_singleton.html">Singleton</a> Instance of the Hardware Abstraction Layer (HAL) </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>a Pointer to HAL. </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a20e857b1c1b8c8f74ce9969e7808064c"></a><!-- doxytag: member="HALCore::getInterrupt" ref="a20e857b1c1b8c8f74ce9969e7808064c" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -1053,6 +1023,24 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Input. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4727c99dc73a15a3b7ad99b0eabac21e"></a><!-- doxytag: member="HALCore::isMetal" ref="a4727c99dc73a15a3b7ad99b0eabac21e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool HALCore::isMetal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Returns if there is metal under the metal detector. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if there is metal. </dd></dl>
 
 </div>
 </div>
@@ -1466,7 +1454,8 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>activates the light specified by color </p>
+<p>returns a Pointer to the threadsafe Singleton Instance of the Hardware Abstraction Layer (HAL) </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a Pointer to HAL. deletes the Instance activates the light specified by color </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">color</td><td>an integer, specifying the color. </td></tr>
@@ -1596,39 +1585,20 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab9c4db0b2f4a0a027e3b28c3e1bb293a"></a><!-- doxytag: member="HALCore::write" ref="ab9c4db0b2f4a0a027e3b28c3e1bb293a" args="(int dir, int value)" -->
+<a class="anchor" id="aaf66dbfd316ee0893325775984b6d270"></a><!-- doxytag: member="HALCore::write" ref="aaf66dbfd316ee0893325775984b6d270" args="(void *ptr)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void HALCore::write </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>dir</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Writing to a port. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
-    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
 
 </div>
 </div>
@@ -1675,16 +1645,49 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aaf66dbfd316ee0893325775984b6d270"></a><!-- doxytag: member="HALCore::write" ref="aaf66dbfd316ee0893325775984b6d270" args="(void *ptr)" -->
+<a class="anchor" id="ab9c4db0b2f4a0a027e3b28c3e1bb293a"></a><!-- doxytag: member="HALCore::write" ref="ab9c4db0b2f4a0a027e3b28c3e1bb293a" args="(int dir, int value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void HALCore::write </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Writing to a port. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>an integer, specifying the port. </td></tr>
+    <tr><td class="paramname">value</td><td>an integer. The position, where the bits will be set to one. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the actual value of the port. </dd></dl>
+
+</div>
+</div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a981efca5ae1c277eb59fa849cbf8b689"></a><!-- doxytag: member="HALCore::Singleton_T&lt; HALCore &gt;" ref="a981efca5ae1c277eb59fa849cbf8b689" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="class_singleton___t.html">Singleton_T</a>&lt; <a class="el" href="class_h_a_l_core.html">HALCore</a> &gt;<code> [friend]</code></td>
         </tr>
       </table>
 </div>
@@ -1693,12 +1696,12 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="adb82b1584d4778c72bcc159a11e66449"></a><!-- doxytag: member="HALCore::emstopped" ref="adb82b1584d4778c72bcc159a11e66449" args="" -->
+<a class="anchor" id="a9dbb2363ae0afe9d8ef2041146349e5a"></a><!-- doxytag: member="HALCore::changedMutex" ref="a9dbb2363ae0afe9d8ef2041146349e5a" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_h_a_l_core.html#adb82b1584d4778c72bcc159a11e66449">HALCore::emstopped</a><code> [private]</code></td>
+          <td class="memname"><a class="el" href="class_mutex.html">Mutex</a> <a class="el" href="class_h_a_l_core.html#a9dbb2363ae0afe9d8ef2041146349e5a">HALCore::changedMutex</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -1706,12 +1709,25 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4619129a025f1590fed9c72e2ebb0562"></a><!-- doxytag: member="HALCore::funcArray" ref="a4619129a025f1590fed9c72e2ebb0562" args="[50]" -->
+<a class="anchor" id="a60c66638a8ccc811563fba3eb4b7f4b1"></a><!-- doxytag: member="HALCore::condvar" ref="a60c66638a8ccc811563fba3eb4b7f4b1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="class_h_a_l_core.html#a4619129a025f1590fed9c72e2ebb0562">HALCore::funcArray</a>[50]<code> [private]</code></td>
+          <td class="memname"><a class="el" href="class_condition.html">Condition</a> <a class="el" href="class_h_a_l_core.html#a60c66638a8ccc811563fba3eb4b7f4b1">HALCore::condvar</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3911d746069bf0f6f96fea9d5212ca22"></a><!-- doxytag: member="HALCore::funcArray" ref="a3911d746069bf0f6f96fea9d5212ca22" args="[2]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_h_a_l_core.html#aa93ab07beb9f77aea77e08808cc44e8c">FP</a> <a class="el" href="class_h_a_l_core.html#a3911d746069bf0f6f96fea9d5212ca22">HALCore::funcArray</a>[2]<code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -1720,12 +1736,12 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a59980f1ac85de2c5bdaf207bad5e0986"></a><!-- doxytag: member="HALCore::lst" ref="a59980f1ac85de2c5bdaf207bad5e0986" args="" -->
+<a class="anchor" id="a340cd24326460b8602145c6caf80f3a2"></a><!-- doxytag: member="HALCore::lst" ref="a340cd24326460b8602145c6caf80f3a2" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">list&lt;<a class="el" href="struct_h_a_l_core_1_1f.html">Functions</a> *&gt; <a class="el" href="class_h_a_l_core.html#a59980f1ac85de2c5bdaf207bad5e0986">HALCore::lst</a><code> [private]</code></td>
+          <td class="memname">vector&lt;Functions *&gt; <a class="el" href="class_h_a_l_core.html#a340cd24326460b8602145c6caf80f3a2">HALCore::lst</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -1734,61 +1750,29 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1ed040f0e8fa8cf855baf7e03d3f941a"></a><!-- doxytag: member="HALCore::mutEx" ref="a1ed040f0e8fa8cf855baf7e03d3f941a" args="" -->
+<a class="anchor" id="a0970d9644ad15f24a4acc5821ff2c1a2"></a><!-- doxytag: member="HALCore::mut" ref="a0970d9644ad15f24a4acc5821ff2c1a2" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_mutex.html">Mutex</a> <a class="el" href="class_h_a_l_core.html#a1ed040f0e8fa8cf855baf7e03d3f941a">HALCore::mutEx</a><code> [static, private]</code></td>
+          <td class="memname"><a class="el" href="class_mutex.html">Mutex</a> <a class="el" href="class_h_a_l_core.html#a0970d9644ad15f24a4acc5821ff2c1a2">HALCore::mut</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p><a class="el" href="class_mutex.html">Mutex</a> to ensure threadsafety </p>
 
 </div>
 </div>
-<a class="anchor" id="a9c843c3feaca0bf7cdd15304f5b355ec"></a><!-- doxytag: member="HALCore::pInstance" ref="a9c843c3feaca0bf7cdd15304f5b355ec" args="" -->
+<a class="anchor" id="a95eff35cd1c291977a1318b4158d422e"></a><!-- doxytag: member="HALCore::requested" ref="a95eff35cd1c291977a1318b4158d422e" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_h_a_l_core.html">HALCore</a> * <a class="el" href="class_h_a_l_core.html#a9c843c3feaca0bf7cdd15304f5b355ec">HALCore::pInstance</a> = NULL<code> [static, private]</code></td>
+          <td class="memname">bool <a class="el" href="class_h_a_l_core.html#a95eff35cd1c291977a1318b4158d422e">HALCore::requested</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Pointer for singleton <a class="el" href="class_h_a_l_core.html">HALCore</a></p>
-<p>instance of <a class="el" href="class_h_a_l_core.html">HALCore</a> </p>
-
-</div>
-</div>
-<a class="anchor" id="a42e9b5afca995c01dc1fadbedfaae48d"></a><!-- doxytag: member="HALCore::sem" ref="a42e9b5afca995c01dc1fadbedfaae48d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_semaphor.html">Semaphor</a> <a class="el" href="class_h_a_l_core.html#a42e9b5afca995c01dc1fadbedfaae48d">HALCore::sem</a><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Semaphore to wakeup the thread </p>
-
-</div>
-</div>
-<a class="anchor" id="af6aa081497cf010b1b724d2bbb20f686"></a><!-- doxytag: member="HALCore::singleton" ref="af6aa081497cf010b1b724d2bbb20f686" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_mutex.html">Mutex</a> <a class="el" href="class_h_a_l_core.html#af6aa081497cf010b1b724d2bbb20f686">HALCore::singleton</a><code> [static, private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Pointer for <a class="el" href="class_mutex.html">Mutex</a> to keep singleton threadsafe</p>
-<p>mutex to ensure that <a class="el" href="class_h_a_l_core.html">HALCore</a> stays a singleton </p>
 
 </div>
 </div>
@@ -1802,7 +1786,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Stop pushed! </p>
+<p>Pointer for singleton <a class="el" href="class_h_a_l_core.html">HALCore</a> Pointer for <a class="el" href="class_mutex.html">Mutex</a> to keep singleton threadsafe <a class="el" href="class_mutex.html">Mutex</a> to ensure threadsafety Stop pushed! </p>
 
 </div>
 </div>
@@ -1816,7 +1800,7 @@ Static Private Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -1825,7 +1809,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:06 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 17 2011 00:59:10 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

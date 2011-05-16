@@ -60,15 +60,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">CommunicationServer Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="CommunicationServer" --><!-- doxytag: inherits="thread::HAWThread,Communication" -->
+<!-- doxytag: class="CommunicationServer" --><!-- doxytag: inherits="thread::HAWThread,Communication,Singleton_T&lt; CommunicationServer &gt;" -->
 <p><code>#include &lt;<a class="el" href="_communication_server_8h_source.html">CommunicationServer.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CommunicationServer:</div>
@@ -76,17 +76,14 @@ Inheritance diagram for CommunicationServer:</div>
  <div class="center">
   <img src="class_communication_server.png" usemap="#CommunicationServer_map" alt=""/>
   <map id="CommunicationServer_map" name="CommunicationServer_map">
-<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,136,24"/>
-<area href="class_communication.html" alt="Communication" shape="rect" coords="146,0,282,24"/>
+<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,226,24"/>
+<area href="class_communication.html" alt="Communication" shape="rect" coords="236,0,462,24"/>
+<area href="class_singleton___t.html" alt="Singleton_T&lt; CommunicationServer &gt;" shape="rect" coords="472,0,698,24"/>
 </map>
  </div></div>
 
 <p><a href="class_communication_server-members.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_communication_server.html">CommunicationServer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#af44d8ddd08c310bead80c2e129b4bfe9">getInstance</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a8d772f4eff93ae34dd02d649ef5f16c5">deleteInstance</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a6e55ca76ea5d642267543c4696d41e6c">execute</a> (void *)</td></tr>
@@ -95,13 +92,15 @@ Protected Member Functions</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#ad7fbff31dc80f3ce2daffbb90d4a5ec4">CommunicationServer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#ad8e014b3737d8ff90967e778a48528f2">~CommunicationServer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a640c432582155c482870ab2e33ded44f">CommunicationServer</a> (const <a class="el" href="class_communication_server.html">CommunicationServer</a> &amp;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_communication_server.html">CommunicationServer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a8a626d9cad132f8afea2c76564069508">operator=</a> (const <a class="el" href="class_communication_server.html">CommunicationServer</a> &amp;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#afc85da4fb96f6023f3480c474d79ba5b">serveAsCommunicationServer</a> ()</td></tr>
-<tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_communication_server.html">CommunicationServer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a5f274c4e19b4735f072d9d159f195978">pInstance</a> = NULL</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a9faacf80a8d5e1380ba4761592e8ef55">singleton</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#ac929eef8a280d331f9cfba12eb1e6e2d">settingUpCommunicationServer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a1804b728f06dea88b06b650fedec4b94">handlePulsMessage</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#aaa017c1a9abbcf641ffcb2033caaa9ef">handleNormalMessage</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a85e34fdc7fe6eda97fcda5adee3e3434">id</a></td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_server.html#a952a55c9536ca893bc38ef8854ecfea5">Singleton_T&lt; CommunicationServer &gt;</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Core Controller</p>
@@ -124,6 +123,10 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+<p><a class="el" href="class_communication_server.html">CommunicationServer</a></p>
+<p>SE2 (+ SY and PL) Project SoSe 2011</p>
+<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
+<p>Other parts can get their necessary ChannelID's and register/unregister themself. </p>
 
 </div>
 </div>
@@ -143,41 +146,7 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a640c432582155c482870ab2e33ded44f"></a><!-- doxytag: member="CommunicationServer::CommunicationServer" ref="a640c432582155c482870ab2e33ded44f" args="(const CommunicationServer &amp;)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">CommunicationServer::CommunicationServer </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_communication_server.html">CommunicationServer</a> &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>for <a class="el" href="class_singleton.html">Singleton</a> </p>
-
-</div>
-</div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a8d772f4eff93ae34dd02d649ef5f16c5"></a><!-- doxytag: member="CommunicationServer::deleteInstance" ref="a8d772f4eff93ae34dd02d649ef5f16c5" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CommunicationServer::deleteInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a6e55ca76ea5d642267543c4696d41e6c"></a><!-- doxytag: member="CommunicationServer::execute" ref="a6e55ca76ea5d642267543c4696d41e6c" args="(void *)" -->
 <div class="memitem">
 <div class="memproto">
@@ -198,45 +167,50 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af44d8ddd08c310bead80c2e129b4bfe9"></a><!-- doxytag: member="CommunicationServer::getInstance" ref="af44d8ddd08c310bead80c2e129b4bfe9" args="()" -->
+<a class="anchor" id="aaa017c1a9abbcf641ffcb2033caaa9ef"></a><!-- doxytag: member="CommunicationServer::handleNormalMessage" ref="aaa017c1a9abbcf641ffcb2033caaa9ef" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_communication_server.html">CommunicationServer</a> * CommunicationServer::getInstance </td>
+          <td class="memname">void CommunicationServer::handleNormalMessage </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td><code> [static]</code></td>
+          <td><code> [private, virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>handles all NormalMessages received </p>
+
+<p>Implements <a class="el" href="class_communication.html#a78e6b52eb1215a094b39c59a7bc8e04f">Communication</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8a626d9cad132f8afea2c76564069508"></a><!-- doxytag: member="CommunicationServer::operator=" ref="a8a626d9cad132f8afea2c76564069508" args="(const CommunicationServer &amp;)" -->
+<a class="anchor" id="a1804b728f06dea88b06b650fedec4b94"></a><!-- doxytag: member="CommunicationServer::handlePulsMessage" ref="a1804b728f06dea88b06b650fedec4b94" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_communication_server.html">CommunicationServer</a>&amp; CommunicationServer::operator= </td>
+          <td class="memname">void CommunicationServer::handlePulsMessage </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_communication_server.html">CommunicationServer</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td><code> [private]</code></td>
+          <td><code> [private, virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>handles all PulsMessages received </p>
+
+<p>Implements <a class="el" href="class_communication.html#a39332cc79e0ff4caf570f056adcaee38">Communication</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="afc85da4fb96f6023f3480c474d79ba5b"></a><!-- doxytag: member="CommunicationServer::serveAsCommunicationServer" ref="afc85da4fb96f6023f3480c474d79ba5b" args="()" -->
+<a class="anchor" id="ac929eef8a280d331f9cfba12eb1e6e2d"></a><!-- doxytag: member="CommunicationServer::settingUpCommunicationServer" ref="ac929eef8a280d331f9cfba12eb1e6e2d" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void CommunicationServer::serveAsCommunicationServer </td>
+          <td class="memname">bool CommunicationServer::settingUpCommunicationServer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td><code> [private]</code></td>
@@ -267,36 +241,31 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a5f274c4e19b4735f072d9d159f195978"></a><!-- doxytag: member="CommunicationServer::pInstance" ref="a5f274c4e19b4735f072d9d159f195978" args="" -->
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a952a55c9536ca893bc38ef8854ecfea5"></a><!-- doxytag: member="CommunicationServer::Singleton_T&lt; CommunicationServer &gt;" ref="a952a55c9536ca893bc38ef8854ecfea5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_communication_server.html">CommunicationServer</a> * <a class="el" href="class_communication_server.html#a5f274c4e19b4735f072d9d159f195978">CommunicationServer::pInstance</a> = NULL<code> [static, private]</code></td>
+          <td class="memname">friend class <a class="el" href="class_singleton___t.html">Singleton_T</a>&lt; <a class="el" href="class_communication_server.html">CommunicationServer</a> &gt;<code> [friend]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Pointer for singleton <a class="el" href="class_communication_server.html">CommunicationServer</a> </p>
 
 </div>
 </div>
-<a class="anchor" id="a9faacf80a8d5e1380ba4761592e8ef55"></a><!-- doxytag: member="CommunicationServer::singleton" ref="a9faacf80a8d5e1380ba4761592e8ef55" args="" -->
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a85e34fdc7fe6eda97fcda5adee3e3434"></a><!-- doxytag: member="CommunicationServer::id" ref="a85e34fdc7fe6eda97fcda5adee3e3434" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_mutex.html">Mutex</a> <a class="el" href="class_communication_server.html#a9faacf80a8d5e1380ba4761592e8ef55">CommunicationServer::singleton</a><code> [static, private]</code></td>
+          <td class="memname">int <a class="el" href="class_communication_server.html#a85e34fdc7fe6eda97fcda5adee3e3434">CommunicationServer::id</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Pointer for <a class="el" href="class_mutex.html">Mutex</a> to keep singleton threadsafe</p>
-<p>Core Controller</p>
-<p>SE2 (+ SY and PL) Project SoSe 2011</p>
-<p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
-<p>Capsulates many functions for the direct in- and output from and to the Festo Transfersystem and with Interrupts using Pulse Messages. Implements Singleton-Pattern. Other parts can get their necessary ChannelID's and register/unregister themself. </p>
 
 </div>
 </div>
@@ -310,7 +279,7 @@ Static Private Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -319,7 +288,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:06 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 17 2011 00:59:10 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

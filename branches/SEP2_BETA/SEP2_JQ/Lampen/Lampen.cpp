@@ -23,10 +23,15 @@ Lampen::Lampen() {
 		std::cout << "Lampen: Error for IO Control" << std::endl;
 	}
 	/**
-	 * gets a pointer to an instance of the CoreController
+	 * Gets a pointer to an instance of the CoreController
 	 */
 	if(h == NULL) h = HALCore::getInstance();
 	running = false;
+	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
+		array[i].duration = -1;
+		array[i].period = -1;
+		array[i].time = -1;
+	}
 }
 
 Lampen::~Lampen() {
@@ -34,70 +39,128 @@ Lampen::~Lampen() {
 }
 
 void Lampen::execute(void*) {
-	//TODO
+	int time = 0;
+	int lights = 0;
+	while(!isStopped()){
+		mlight.lock();
+		lights = calcLights();
+		h->shine(lights);
+		time = calcTime();
+		mlight.unlock();
+		delay(time);
+	}
 }
 
 void Lampen::shutdown() {
-	cout << "Test beendet" << endl;
+
 }
 
-/**
- * Flashes a specified light until stopped.
- * \param time an integer, half of the flash period.
- * \param color Color of the Light which should flash.
- */
-void Lampen::flash(int time, Color color) {
-	running = true;
-	while(running){
-		(*h).addLight(color);
-		sleep(time);
-		(*h).removeLight(color);
-		sleep(time);
+void Lampen::flash(int period, Color color) {
+	mlight.lock();
+	addTime(color, period);
+	mlight.unlock();
+}
+
+void Lampen::flash(int period, int duration, Color col) {
+	mlight.lock();
+	addTime(col, period, duration);
+	mlight.unlock();
+}
+
+void Lampen::addLight(Color col) {
+	mlight.lock();
+	addTime(col,-1);
+	mlight.unlock();
+}
+
+void Lampen::removeLight(Color col) {
+	mlight.lock();
+	removeTime(col);
+	mlight.unlock();
+}
+
+void Lampen::shine(Color col) {
+	mlight.lock();
+	removeAllTime();
+	addTime(col,-1);
+	mlight.unlock();
+}
+
+int Lampen::getNextTime(){
+	int a = (array[0].time == -1? 1000 : array[0].time);
+	int b = (array[1].time == -1? 1000 : array[1].time);
+	int c = (array[2].time == -1? 1000 : array[2].time);
+	return getMin(a,b,c);
+}
+
+int Lampen::getMin(int a, int b, int c){
+	return (a < b)?(a < c ? a : (b < c ? b : c)):(b< c? b : c);
+}
+
+bool Lampen::isActiv(Color col){
+	return array[col].activ;
+}
+
+bool Lampen::hasTime(Color col, int time){
+	return array[col].time == time;
+}
+
+void Lampen::addTime(Color col, int period, int duration){
+	setTime(col,period,duration,true,true);
+}
+
+void Lampen::addTime(Color col,int period){
+	setTime(col,period,-1,true,true);
+}
+
+void Lampen::removeTime(Color col){
+	setTime(col,0,0,false,false);
+}
+
+void Lampen::setTime(Color col,int period,int duration, bool activity, bool status){
+	array[col].col = col;
+	array[col].time = period;
+	array[col].period = period;
+	array[col].duration = duration;
+	array[col].activ = activity;
+	array[col].on = status;
+}
+
+void Lampen::removeAllTime(){
+	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
+		removeTime((Color) i);
 	}
 }
 
-/**
- * Flashes a specified light until duration expired.
- * \param time an integer, half of the flash period.
- * \param duration an integer, specifies how long the light should flash
- * \param col Color of the Light which should flash.
- */
-void Lampen::flash(int time, int duration, Color col) {
-	if(time > 0 && duration > 0){
-	int elapsedTime = 0;
-		running = true;
-		while (running && elapsedTime < duration) {
-			(*h).addLight(col);
-			elapsedTime += time;
-			sleep(time);
-			(*h).removeLight(col);
-			elapsedTime += time;
-			sleep(time);
+int Lampen::calcLights(){
+	int lights = 0;
+	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
+		if(array[i].time == 0){
+			array[i].on = (array[i].on == 1)? 0 : 1 ;
+			array[i].time = array[i].period;
+		}
+		if(array[i].on){
+			lights |= array[i].col;
 		}
 	}
+	return lights;
 }
 
-/**
- * Adds a certain light.
- * \param col specifies the color of the light.
- */
-void Lampen::addLight(Color col) {
-	(*h).addLight(col);
-}
-
-/**
- * Removes a certain light.
- * \param col specifies the color of the light.
- */
-void Lampen::removeLight(Color col) {
-	(*h).removeLight(col);
-}
-
-/**
- * Adds a certain light.
- * Equals void Lampen::addLight(Color col);
- * \param col specifies the color of the light.
- */
-void Lampen::shine(Color col) {
-	(*h).shine(col);
+int Lampen::calcTime(){
+	int time = getNextTime();
+	time = ( (time > 1000 || time < 0 )? 1000 : time);
+	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
+		if(array[i].time != -1) array[i].time -= time; // only if not unlimited duration
+		if(array[i].duration != -1){ // only if not unlimited duration
+			if(array[i].duration == 0){ // duration exceeded... deactivate
+				array[i].activ = false;
+				array[i].on = false;
+				array[i].time = -1;
+				array[i].period = -1;
+			}else{
+				array[i].duration -= time;
+			}
+		}
+	}
+	return time;
 }

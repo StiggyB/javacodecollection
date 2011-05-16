@@ -70,11 +70,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;iostream&gt;</code><br/>
 <code>#include &lt;unistd.h&gt;</code><br/>
 <code>#include &lt;stdlib.h&gt;</code><br/>
-<code>#include &lt;list&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
 <code>#include &quot;<a class="el" href="_h_waccess_8h_source.html">HWaccess.h</a>&quot;</code><br/>
 <code>#include &quot;../Thread/Mutex.h&quot;</code><br/>
 <code>#include &quot;../Thread/HAWThread.h&quot;</code><br/>
 <code>#include &quot;../Thread/Semaphor.h&quot;</code><br/>
+<code>#include &quot;../Thread/Condition.h&quot;</code><br/>
+<code>#include &quot;../Thread/Singleton_T.h&quot;</code><br/>
 </div>
 <p><a href="_h_a_l_core_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -85,6 +87,7 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_a_l_core_1_1f.html">HALCore::f</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a0ba66a44ac162ade3bf7ab55be32d43f">CONDOR</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#acfff24a9bf2f97395b0b0d919a49e1b6">BIT_DELETE</a>&#160;&#160;&#160;(false)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a866ec7a0cb6212ddae348fa16d33ee63">BIT_SET</a>&#160;&#160;&#160;(true)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a43bae56ba813b69f37719556fa3eac30">D_IOBASE</a>&#160;&#160;&#160;0x300</td></tr>
@@ -184,8 +187,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="_h_a_l_core_8h.html#a95b2558b4504285562a8993aa805ca9ea6e3b4ece4c1cf331f510dd1c7da19b63">IIR_MASK_D</a> =  0xF
 <br/>
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618">Function</a> { <a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618a61aa7ff70b76bff0fda378cf61d6afbc">WRITE</a> = 1, 
-<a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618a589b7d94a3d91d145720e2fed0eb3a05">RESET</a> = 2
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618">Function</a> { <a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618a61aa7ff70b76bff0fda378cf61d6afbc">WRITE</a> = 0, 
+<a class="el" href="_h_a_l_core_8h.html#a5325b600735f88bd22254cb285d8b618a589b7d94a3d91d145720e2fed0eb3a05">RESET</a> = 1
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a11a878c40f4f0d7ef85a8dd109986fc2">PULSE_CODE</a> { <a class="el" href="_h_a_l_core_8h.html#a11a878c40f4f0d7ef85a8dd109986fc2a4ec82f0559004867b4c0b5519a6eba39">LICHTSCHRANKE</a>, 
 <a class="el" href="_h_a_l_core_8h.html#a11a878c40f4f0d7ef85a8dd109986fc2a38b9241136017b93ea2755a49cf0a000">HEIGHT</a>
@@ -201,6 +204,12 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#af61d79d2d7e9faee03b45bcc2926abc5">portIRE</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a2f27c0142fb575176be926cfb74d250f">portIRQ</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a105f0b87587741c2da630f3f27d33f55">controlBits</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a564f330dfe172f4c94e334147d9266c9">emstopped</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#abd81615ba26662ab5fd655d3396fe2bc">value1</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a888bdb4f90bf0fbaa4168ca1824d4cd9">value2</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a2c1ea7d82bddc58bd9318dc1b5a1db20">value3</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">FP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a48d57dd26a22172bb78c7c386bfb0fa6">func</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">VAL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_a_l_core_8h.html#a20ddc8c0f7d256819014a0caf26bf35d">v</a></td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="a0595f302d3148a4ce45ee1d895554a5c"></a><!-- doxytag: member="HALCore.h::A_IOBASE" ref="a0595f302d3148a4ce45ee1d895554a5c" args="" -->
@@ -242,6 +251,19 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Set a bit </p>
+
+</div>
+</div>
+<a class="anchor" id="a0ba66a44ac162ade3bf7ab55be32d43f"></a><!-- doxytag: member="HALCore.h::CONDOR" ref="a0ba66a44ac162ade3bf7ab55be32d43f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CONDOR</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -641,6 +663,33 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a564f330dfe172f4c94e334147d9266c9"></a><!-- doxytag: member="HALCore.h::emstopped" ref="a564f330dfe172f4c94e334147d9266c9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool <a class="el" href="_h_a_l_core_8h.html#a564f330dfe172f4c94e334147d9266c9">emstopped</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>emergency stop pushed </p>
+
+</div>
+</div>
+<a class="anchor" id="a48d57dd26a22172bb78c7c386bfb0fa6"></a><!-- doxytag: member="HALCore.h::func" ref="a48d57dd26a22172bb78c7c386bfb0fa6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FP <a class="el" href="_h_a_l_core_8h.html#a48d57dd26a22172bb78c7c386bfb0fa6">func</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2354219e21c170aa20018d98fe95fd34"></a><!-- doxytag: member="HALCore.h::portA" ref="a2354219e21c170aa20018d98fe95fd34" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -716,13 +765,65 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a20ddc8c0f7d256819014a0caf26bf35d"></a><!-- doxytag: member="HALCore.h::v" ref="a20ddc8c0f7d256819014a0caf26bf35d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VAL* <a class="el" href="_h_a_l_core_8h.html#a20ddc8c0f7d256819014a0caf26bf35d">v</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abd81615ba26662ab5fd655d3396fe2bc"></a><!-- doxytag: member="HALCore.h::value1" ref="abd81615ba26662ab5fd655d3396fe2bc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_h_a_l_core_8h.html#abd81615ba26662ab5fd655d3396fe2bc">value1</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a888bdb4f90bf0fbaa4168ca1824d4cd9"></a><!-- doxytag: member="HALCore.h::value2" ref="a888bdb4f90bf0fbaa4168ca1824d4cd9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_h_a_l_core_8h.html#a888bdb4f90bf0fbaa4168ca1824d4cd9">value2</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2c1ea7d82bddc58bd9318dc1b5a1db20"></a><!-- doxytag: member="HALCore.h::value3" ref="a2c1ea7d82bddc58bd9318dc1b5a1db20" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="_h_a_l_core_8h.html#a2c1ea7d82bddc58bd9318dc1b5a1db20">value3</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -731,7 +832,7 @@ Variables</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 3 2011 01:11:05 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue May 17 2011 00:59:10 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
