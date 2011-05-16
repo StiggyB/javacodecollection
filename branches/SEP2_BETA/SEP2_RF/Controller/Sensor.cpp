@@ -316,11 +316,3 @@ void Sensor::interrupt(int port, int val) {
 
 
 }
-
-bool Sensor::get_Band_has_wp_ls7(){
- return is_Band_has_wp_ls7;
-}
-
-void Sensor::set_Band_has_wp_ls7(bool b){
-	is_Band_has_wp_ls7 = b;
-}
