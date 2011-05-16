@@ -1,10 +1,19 @@
-/*
- * IPuck_FSM.cpp
+/**
+ * Puck_FSM
  *
- *  Created on: 13.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * interface for the finite state machine's
+ *
+ *
  */
-
 #include "Puck_FSM.h"
 
 Puck_FSM::Puck_FSM() {
@@ -12,7 +21,6 @@ Puck_FSM::Puck_FSM() {
 }
 
 Puck_FSM::~Puck_FSM() {
-	// TODO Auto-generated destructor stub
 }
 
 State::State(){

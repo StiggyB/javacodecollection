@@ -20,25 +20,25 @@ Puck_FSM_2::Puck_FSM_2() {
 }
 
 Puck_FSM_2::~Puck_FSM_2() {
-	// TODO Auto-generated destructor stub
+
 }
 
 
-//functions for
+//functions for FSM_2_start_state
 void FSM_2_start_state :: ls_b0(Puck_FSM * fsm){
-	cout << "Start_M2: ls_b0" << endl;
+	cout << "FSM_2_start_state: ls_b0" << endl;
 	fsm->setCurrent(new FSM_2_after_ls_b0() );
 }
 void FSM_2_start_state :: entry(Puck_FSM * fsm){
-	cout << "Start_M2: entry" << endl;
+	cout << "FSM_2_start_state: entry" << endl;
 }
 void FSM_2_start_state :: exit(Puck_FSM * fsm){
-	cout << "Start_M2: exit" << endl;
+	cout << "FSM_2_start_state: exit" << endl;
 }
 
 //functions for Band_2_aufgelegt
 void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
-	cout << "Band_2_aufgelegt: entry" << endl;
+	cout << "FSM_2_after_ls_b0: entry" << endl;
 	fsm->cc->shine(GREEN);
 	fsm->cc->engineReset();
 	fsm->cc->engineRight();
@@ -49,6 +49,7 @@ void FSM_2_after_ls_b0 :: exit(Puck_FSM * fsm){
 }
 void FSM_2_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 	cout << "Band_2_aufgelegt: ls_b1" << endl;
+	fsm->pass_ls_b1 = 1;
 	fsm->setCurrent(new FSM_2_after_ls_b1() );
 }
 
@@ -62,6 +63,7 @@ void FSM_2_after_ls_b1 :: exit(Puck_FSM * fsm){
 }
 void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
 	cout << "Bei_LS1: ls_b3" << endl;
+	fsm->pass_ls_b3 = 1;
 	fsm->setCurrent(new FSM_2_in_metal_measure() );
 }
 
@@ -76,10 +78,10 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 		cout << "is Metall" << endl;
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 	} else if( ( (fsm->cc->read(0x300+1)>>4)&1 ) == 0 && (fsm->hasPocket==0) ) {
-		cout << "is kein Metall, kein Loch" << endl;
+		cout << "no Metall, no pocket" << endl;
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 	} else {
-		cout << "is kein Metall, hat aber Loch" << endl;
+		cout << "Metall, but pocket" << endl;
 		fsm->setCurrent(new FSM_2_sort_out() );
 	}
 
@@ -127,32 +129,33 @@ void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
 
 //functions for ausschleusen
 void FSM_2_sort_out :: entry(Puck_FSM * fsm){
-	cout << "ausschleusen: entry" << endl;
+	cout << "FSM_2_sort_out: entry" << endl;
 	fsm->cc->shine(YELLOW);
 }
 void FSM_2_sort_out :: exit(Puck_FSM * fsm){
-	cout << "ausschleusen: exit" << endl;
+	cout << "FSM_2_sort_out: exit" << endl;
 }
 void FSM_2_sort_out :: ls_b6(Puck_FSM * fsm){
-	cout << "ausschleusen: ls_b3" << endl;
+	cout << "FSM_2_sort_out: ls_b3" << endl;
+	fsm->pass_ls_b6 = 1;
 	fsm->setCurrent(new FSM_2_in_slide() );
 }
 
 
 //functions for WS_im_Schacht
 void FSM_2_in_slide :: entry(Puck_FSM * fsm){
-	cout << "WS_im_Schacht: entry" << endl;
+	cout << "FSM_2_in_slide: entry" << endl;
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new FSM_2_check_slide() );
 }
 void FSM_2_in_slide :: exit(Puck_FSM * fsm){
-	cout << "WS_im_Schacht: exit" << endl;
+	cout << "FSM_2_in_slide: exit" << endl;
 }
 
 //functions for pruef_schacht_voll
 void FSM_2_check_slide :: entry(Puck_FSM * fsm){
-	cout << "pruef_schacht_voll: entry" << endl;
+	cout << "FSM_2_check_slide: entry" << endl;
 
 	sleep(2);
 	if( fsm->cc->isSlideFull() ){
@@ -161,13 +164,13 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 
 }
 void FSM_2_check_slide :: exit(Puck_FSM * fsm){
-	cout << "pruef_schacht_voll: exit" << endl;
+	cout << "FSM_2_check_slide: exit" << endl;
 
 }
 
 //functions for ErrorState
 void FSM_2_ErrorState :: entry(Puck_FSM * fsm){
-	cout << "ErrorState: entry" << endl;
+	cout << "FSM_2_ErrorState: entry" << endl;
 	fsm->cc->shine(RED);
 }
 void FSM_2_ErrorState :: exit(Puck_FSM * fsm){

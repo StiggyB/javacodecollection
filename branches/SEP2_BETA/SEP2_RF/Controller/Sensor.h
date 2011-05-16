@@ -39,8 +39,6 @@ public:
 	Sensor();
 	virtual ~Sensor();
 	bool is_Band_has_wp_ls7;
-	bool get_Band_has_wp_ls7();
-	void set_Band_has_wp_ls7(bool);
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

@@ -207,4 +207,5 @@ void FSM_1_ErrorState :: ls_b6 (Puck_FSM * fsm){
 }
 void FSM_1_ErrorState :: exit (Puck_FSM * fsm){
 	cout << "ErrorState: exit" << endl;
+	fsm->lamp.stop();
 }
