@@ -1,13 +1,25 @@
-/*
- * Machine.h
+/**
+ * Puck_FSM
  *
- *  Created on: 06.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *class for machine 2 - sort out WP with/without metal
+ *
+ *
  */
 
 #ifndef Puck_FSM_1_H_
 #define Puck_FSM_1_H_
 
+
+#define PUCK_FSM_1_DEBUG
 #include "../Controller/CoreController.h"
 #include "../Lampen/Error_State_Lamp.h"
 #include "Puck_FSM.h"
@@ -75,7 +87,6 @@ class FSM_1_correct_height : public State{
 		void ls_b3(Puck_FSM *);
 		void entry(Puck_FSM *);
 		void exit(Puck_FSM *);
-		void wp_after_Switch(Puck_FSM *);
 };
 
 class FSM_1_ls_b3_passed_forward : public State{

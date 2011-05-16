@@ -16,6 +16,8 @@
  */
 #include "Puck_FSM.h"
 
+
+//Methods for class Puck_FSM
 Puck_FSM::Puck_FSM() {
 	cc = CoreController::getInstance();
 }
@@ -23,13 +25,6 @@ Puck_FSM::Puck_FSM() {
 Puck_FSM::~Puck_FSM() {
 }
 
-State::State(){
-
-}
-
-State::~State(){
-
-}
 
 void Puck_FSM::ls_b0(){
 	current->ls_b0(this);
@@ -65,13 +60,65 @@ void Puck_FSM::errorState(){
 }
 
 
+//Methods for class State
+State::State(){
 
-void State::ls_b0(Puck_FSM *){ printf("ls_b0 standard function\n"); }
-void State::ls_b1(Puck_FSM *){ printf("LS_B1 standard function\n"); }
-void State::ls_b3(Puck_FSM *){ printf("LS_B3 standard function\n"); }
-void State::ls_b6(Puck_FSM *){ printf("LS_B6 standard function\n"); }
-void State::ls_b7_in(Puck_FSM *){ printf("LS_B7_in standard function\n"); }
-void State::ls_b7_out(Puck_FSM *){ printf("LS_B7_out standard function\n"); }
-void State::entry(Puck_FSM *){ printf("entry standard function\n"); }
-void State::exit(Puck_FSM *){ printf("exit standard function\n"); }
-void State::errorState(Puck_FSM *){ printf("errorState standard function\n"); }
+}
+
+State::~State(){
+
+}
+
+void State::ls_b0(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("ls_b0 standard function\n");
+	#endif
+}
+
+void State::ls_b1(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("LS_B1 standard function\n");
+	#endif
+}
+
+void State::ls_b3(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("LS_B3 standard function\n");
+	#endif
+}
+
+void State::ls_b6(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("LS_B6 standard function\n");
+	#endif
+}
+
+void State::ls_b7_in(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("LS_B7_in standard function\n");
+	#endif
+}
+
+void State::ls_b7_out(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("LS_B7_out standard function\n");
+	#endif
+}
+
+void State::entry(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("entry standard function\n");
+	#endif
+}
+
+void State::exit(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("exit standard function\n");
+	#endif
+}
+
+void State::errorState(Puck_FSM *){
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("errorState standard function\n");
+	#endif
+}

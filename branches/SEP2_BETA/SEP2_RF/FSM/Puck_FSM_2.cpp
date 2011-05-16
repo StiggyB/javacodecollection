@@ -1,8 +1,18 @@
-/*
- * Puck_FSM_2.cpp
+/**
+ * Puck_FSM
  *
- *  Created on: 13.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *class for machine 1 - sort out WP with correct/incorrect height
+ *
+ *
  */
 
 #include "Puck_FSM_2.h"
@@ -14,7 +24,9 @@
 Puck_FSM_2::Puck_FSM_2() {
 	current = new FSM_2_start_state;
 	current->entry(this);
+	#ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
+	#endif
 	cc = CoreController::getInstance();
 
 }
@@ -26,29 +38,41 @@ Puck_FSM_2::~Puck_FSM_2() {
 
 //functions for FSM_2_start_state
 void FSM_2_start_state :: ls_b0(Puck_FSM * fsm){
-	//cout << "FSM_2_start_state: ls_b0" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_start_state: ls_b0" << endl;
+	#endif
 	fsm->setCurrent(new FSM_2_after_ls_b0() );
 }
 void FSM_2_start_state :: entry(Puck_FSM * fsm){
-	//cout << "FSM_2_start_state: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_start_state: entry" << endl;
+	#endif
 }
 void FSM_2_start_state :: exit(Puck_FSM * fsm){
-	//cout << "FSM_2_start_state: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_start_state: exit" << endl;
+	#endif
 }
 
 //functions for Band_2_aufgelegt
 void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
-	//cout << "FSM_2_after_ls_b0: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_after_ls_b0: entry" << endl;
+	#endif
 	fsm->cc->shine(GREEN);
 	fsm->cc->engineReset();
 	fsm->cc->engineRight();
 	fsm->engine_should_be_started = 1;
 }
 void FSM_2_after_ls_b0 :: exit(Puck_FSM * fsm){
-	//cout << "Band_2_aufgelegt: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Band_2_aufgelegt: exit" << endl;
+	#endif
 }
 void FSM_2_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
-	//cout << "Band_2_aufgelegt: ls_b1" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Band_2_aufgelegt: ls_b1" << endl;
+	#endif
 	fsm->pass_ls_b1 = 1;
 	fsm->setCurrent(new FSM_2_after_ls_b1() );
 }
@@ -56,13 +80,19 @@ void FSM_2_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 
 //functions for Bei_LS1
 void FSM_2_after_ls_b1 :: entry(Puck_FSM * fsm){
-	//cout << "Bei_LS1: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Bei_LS1: entry" << endl;
+	#endif
 }
 void FSM_2_after_ls_b1 :: exit(Puck_FSM * fsm){
-	//cout << "Bei_LS1: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Bei_LS1: exit" << endl;
+	#endif
 }
 void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
-	//cout << "Bei_LS1: ls_b3" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Bei_LS1: ls_b3" << endl;
+	#endif
 	fsm->pass_ls_b3 = 1;
 	fsm->setCurrent(new FSM_2_in_metal_measure() );
 }
@@ -71,23 +101,35 @@ void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
 
 //functions for In_Metallmessung
 void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
-	//cout << "In_Metallmessung: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "In_Metallmessung: entry" << endl;
+	#endif
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
-	if( fsm->cc->isMetal() && ( fsm->hasPocket==1) ){ //eigene funktion in der HAL!
+	if( fsm->cc->isMetal() && ( fsm->hasPocket==1) ){
+	#ifdef PUCK_FSM_2_DEBUG
 		cout << "is Metall" << endl;
+	#endif
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
+
 	} else if( (fsm->cc->isMetal() == 0) && (fsm->hasPocket==0) ) {
-		cout << "no Metall, no pocket" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "no Metall, no pocket" << endl;
+	#endif
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
+
 	} else {
-		cout << "Metall, but pocket" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Metall, but pocket" << endl;
+	#endif
 		fsm->setCurrent(new FSM_2_sort_out() );
 	}
 
 }
 void FSM_2_in_metal_measure :: exit(Puck_FSM * fsm){
-	//ccout << "In_Metallmessung: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "In_Metallmessung: exit" << endl;
+	#endif
 	fsm->cc->engineReset();
 	fsm->cc->engineRight();
 	fsm->engine_should_be_started = 1;
@@ -95,17 +137,21 @@ void FSM_2_in_metal_measure :: exit(Puck_FSM * fsm){
 
 //functions for durchschleusen
 void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
-	//ccout << "durchschleusen: entry" << endl;
-	if (fsm->cc->openSwitch() ) cout << "Weiche auf Durchlass" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "durchschleusen: entry" << endl;
+	#endif
 	sleep(1);
 	fsm->cc->closeSwitch();
 }
 void FSM_2_after_metal_measure :: exit(Puck_FSM * fsm){
-	//ccout << "durchschleusen: exit" << endl;
-
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "durchschleusen: exit" << endl;
+	#endif
 }
 void FSM_2_after_metal_measure :: ls_b7_in(Puck_FSM * fsm){
-	//ccout << "durchschleusen: ls_b7_in" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "durchschleusen: ls_b7_in" << endl;
+	#endif
 	fsm->pass_ls_b7 = 1;
 	fsm->setCurrent(new FSM_2_end_state() );
 }
@@ -114,29 +160,42 @@ void FSM_2_after_metal_measure :: ls_b7_in(Puck_FSM * fsm){
 
 //functions for Ende_Band2
 void FSM_2_end_state :: entry(Puck_FSM * fsm){
-	//ccout << "Ende_Band2: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Ende_Band2: entry" << endl;
+	#endif
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 }
 void FSM_2_end_state :: exit(Puck_FSM * fsm){
-	//ccout << "Ende_Band2: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "Ende_Band2: exit" << endl;
+	#endif
 }
 void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
+	#ifdef PUCK_FSM_2_DEBUG
 	cout << "Ende_Band2: ls_b7_out" << endl;
+	#endif
+
 	fsm->pass_ls_b7 = 0;
 }
 
 
 //functions for ausschleusen
 void FSM_2_sort_out :: entry(Puck_FSM * fsm){
-	//ccout << "FSM_2_sort_out: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_sort_out: entry" << endl;
+	#endif
 	fsm->cc->shine(YELLOW);
 }
 void FSM_2_sort_out :: exit(Puck_FSM * fsm){
-	//cout << "FSM_2_sort_out: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_sort_out: exit" << endl;
+	#endif
 }
 void FSM_2_sort_out :: ls_b6(Puck_FSM * fsm){
-	//cout << "FSM_2_sort_out: ls_b3" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_sort_out: ls_b3" << endl;
+	#endif
 	fsm->pass_ls_b6 = 1;
 	fsm->setCurrent(new FSM_2_in_slide() );
 }
@@ -144,18 +203,24 @@ void FSM_2_sort_out :: ls_b6(Puck_FSM * fsm){
 
 //functions for WS_im_Schacht
 void FSM_2_in_slide :: entry(Puck_FSM * fsm){
-	//cout << "FSM_2_in_slide: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_in_slide: entry" << endl;
+	#endif
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new FSM_2_check_slide() );
 }
 void FSM_2_in_slide :: exit(Puck_FSM * fsm){
-	//cout << "FSM_2_in_slide: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_in_slide: exit" << endl;
+	#endif
 }
 
 //functions for pruef_schacht_voll
 void FSM_2_check_slide :: entry(Puck_FSM * fsm){
-	//cout << "FSM_2_check_slide: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_check_slide: entry" << endl;
+	#endif
 
 	sleep(2);
 	if( fsm->cc->isSlideFull() ){
@@ -164,16 +229,22 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 
 }
 void FSM_2_check_slide :: exit(Puck_FSM * fsm){
-	//cout << "FSM_2_check_slide: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_check_slide: exit" << endl;
+	#endif
 
 }
 
 //functions for ErrorState
 void FSM_2_ErrorState :: entry(Puck_FSM * fsm){
-	//cout << "FSM_2_ErrorState: entry" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_ErrorState: entry" << endl;
+	#endif
 	fsm->cc->shine(RED);
 }
 void FSM_2_ErrorState :: exit(Puck_FSM * fsm){
-	//cout << "ErrorState: exit" << endl;
+	#ifdef PUCK_FSM_2_DEBUG
+	cout << "ErrorState: exit" << endl;
+	#endif
 }
 

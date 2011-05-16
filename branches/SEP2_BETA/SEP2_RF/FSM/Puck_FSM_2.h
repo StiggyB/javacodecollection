@@ -1,16 +1,27 @@
-/*
- * Puck_FSM_2.h
+/**
+ * Puck_FSM
  *
- *  Created on: 13.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *class for machine 1 - sort out WP with correct/incorrect height
+ *
+ *
  */
-
 #ifndef PUCK_FSM_2_H_
 #define PUCK_FSM_2_H_
 
 #include "../Controller/CoreController.h"
 #include "../Lampen/Error_State_Lamp.h"
 #include "Puck_FSM.h"
+
+#define PUCK_FSM_2_DEBUG
 
 class Puck_FSM_2 : public Puck_FSM{
 public:
