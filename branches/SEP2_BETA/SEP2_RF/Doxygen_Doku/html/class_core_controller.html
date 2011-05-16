@@ -92,8 +92,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a7b6e0f566590606ee2015580a0150b52">read</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a30852fafbad04ca7dd451896c670433d">isInput</a> (int dir)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5e0d1ca70653a586975164adc90a7fb2">isOutput</a> (int dir)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a78701c0d1164aca53af91625d8b81392">write</a> (int dir, int value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a54262e61d79786005c1bbdb827df09b2">reset</a> (int dir, int value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a78701c0d1164aca53af91625d8b81392">write</a> (int dir, int <a class="el" href="_h_a_l_8h.html#aa3249d89858d18d480b35bd172183f49">value</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a54262e61d79786005c1bbdb827df09b2">reset</a> (int dir, int <a class="el" href="_h_a_l_8h.html#aa3249d89858d18d480b35bd172183f49">value</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a2127e5ed2f50fea4608c0061795b67ed">engineStart</a> (int direction)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ab196d1782337242cfce687e46d6151eb">openSwitch</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a79c64b1de936ecb192e37e90726532f8">closeSwitch</a> ()</td></tr>
@@ -116,7 +116,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a0a889e49fcc7b2b9ddbb4c8b5dc2b3d1">removeLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">addLight</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ac882561720204117871186694920ac03">shine</a> (<a class="el" href="_i_h_a_l_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ab8cd55d064eabdf472f8027f7046ab05">getHeight</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a93d3b894fa70e203c251a9d7069c487f">removeLED</a> (<a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a> led)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a8ed19d9976d8539e1397855398f9e9b3">addLED</a> (<a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a> led)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a7854e52e1438d5a822ae5b1be45fe481">shineLED</a> (<a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a> led)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a2a78587490c03dcc15e6feabc3506b30">deactivateInterrupt</a> (int port)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a11eec3ddd90a9a7305c9e370aa98ec9c">activateInterrupt</a> (int port)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a26f49cd23ca41b1bbbe1febc5acb5ce4">setValueOfPort</a> (int port, int val)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ad9cd1cbf8f31fe97d74dc2ecea2d7d93">identifyHeight</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ae6a8fe537c1d094e25f26a2fa0b102a5">isSlideFull</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5ceff482ecf31c891ef867bd64474de7">isMetal</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ad21c92c3c17ab6cf0f5ee1388439bca5">emergencyStop</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a5789327900cb0c98fb0605f020cd0634">stopMachine</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a44c97df99e3dd2b7cb6ac18d2f6bcddf">restart</a> ()</td></tr>
@@ -139,6 +147,8 @@ Private Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l.html">HAL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a8d6dd976362667c47a177c0e305964b0">h</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#a4cea288ac78fa0e046222503c17e29ce">stopped</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#accd215f37e41c4b61a54399e8add5ea7">emstopped</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_core_controller.html#ae1d9dfe452794375c400db4befe8a434">pInstance</a> = NULL</td></tr>
@@ -205,6 +215,60 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a11eec3ddd90a9a7305c9e370aa98ec9c"></a><!-- doxytag: member="CoreController::activateInterrupt" ref="a11eec3ddd90a9a7305c9e370aa98ec9c" args="(int port)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::activateInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>activates the Interrupt to a certain </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if action was successful, false if not. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#aa5ab6fdfc4c556fb413cd33becad89e5">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ed19d9976d8539e1397855398f9e9b3"></a><!-- doxytag: member="CoreController::addLED" ref="a8ed19d9976d8539e1397855398f9e9b3" args="(LEDS led)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::addLED </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a>&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Adds a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a07ee306c41f4830231d7e356faf53574">IHAL</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a6739526924613d23b8da0599ff75ca94"></a><!-- doxytag: member="CoreController::addLight" ref="a6739526924613d23b8da0599ff75ca94" args="(Color col)" -->
 <div class="memitem">
 <div class="memproto">
@@ -249,6 +313,33 @@ Static Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if switch is closed. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a68e872f54ee4855b2821787740dd91ba">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2a78587490c03dcc15e6feabc3506b30"></a><!-- doxytag: member="CoreController::deactivateInterrupt" ref="a2a78587490c03dcc15e6feabc3506b30" args="(int port)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::deactivateInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>deactivates the Interrupt to a certain port </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>an integer, specifying the Port. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true if action was successful, false if not. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a058d11790987a6ba003e9ad1933d4060">IHAL</a>.</p>
 
 </div>
 </div>
@@ -586,26 +677,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab8cd55d064eabdf472f8027f7046ab05"></a><!-- doxytag: member="CoreController::getHeight" ref="ab8cd55d064eabdf472f8027f7046ab05" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float CoreController::getHeight </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Calculates the value of a heightmeasurement. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>a float, the value of the heightmeasurement. </dd></dl>
-
-<p>Implements <a class="el" href="class_i_h_a_l.html#ace5862b979b2c6e41a165bdaf8e14828">IHAL</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a1b055b6eb0eb8d9c784f98ec62bfc6a5"></a><!-- doxytag: member="CoreController::getInstance" ref="a1b055b6eb0eb8d9c784f98ec62bfc6a5" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -662,6 +733,24 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad9cd1cbf8f31fe97d74dc2ecea2d7d93"></a><!-- doxytag: member="CoreController::identifyHeight" ref="ad9cd1cbf8f31fe97d74dc2ecea2d7d93" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CoreController::identifyHeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a5883b4b5900c368b57f378e7b8d829cd">IHAL</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a30852fafbad04ca7dd451896c670433d"></a><!-- doxytag: member="CoreController::isInput" ref="a30852fafbad04ca7dd451896c670433d" args="(int dir)" -->
 <div class="memitem">
 <div class="memproto">
@@ -689,6 +778,24 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5ceff482ecf31c891ef867bd64474de7"></a><!-- doxytag: member="CoreController::isMetal" ref="a5ceff482ecf31c891ef867bd64474de7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::isMetal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a20560e32aec2701eef986dcaa6145e16">IHAL</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a5e0d1ca70653a586975164adc90a7fb2"></a><!-- doxytag: member="CoreController::isOutput" ref="a5e0d1ca70653a586975164adc90a7fb2" args="(int dir)" -->
 <div class="memitem">
 <div class="memproto">
@@ -713,6 +820,22 @@ Static Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if port is set to Output. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a88b8848521a3797857faab86ff16d1a5">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae6a8fe537c1d094e25f26a2fa0b102a5"></a><!-- doxytag: member="CoreController::isSlideFull" ref="ae6a8fe537c1d094e25f26a2fa0b102a5" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::isSlideFull </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -777,6 +900,32 @@ Static Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the value read. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a907b79a7d865d3f3ddca38160927c60f">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a93d3b894fa70e203c251a9d7069c487f"></a><!-- doxytag: member="CoreController::removeLED" ref="a93d3b894fa70e203c251a9d7069c487f" args="(LEDS led)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::removeLED </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a>&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Removes a certain light. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#a51ecf22125dcd016683e180a07ac35b4">IHAL</a>.</p>
 
 </div>
 </div>
@@ -942,6 +1091,35 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a26f49cd23ca41b1bbbe1febc5acb5ce4"></a><!-- doxytag: member="CoreController::setValueOfPort" ref="a26f49cd23ca41b1bbbe1febc5acb5ce4" args="(int port, int val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::setValueOfPort </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#acb1a45e2544ce20522a8587f96693479">IHAL</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac882561720204117871186694920ac03"></a><!-- doxytag: member="CoreController::shine" ref="ac882561720204117871186694920ac03" args="(Color col)" -->
 <div class="memitem">
 <div class="memproto">
@@ -966,6 +1144,33 @@ Static Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
 
 <p>Implements <a class="el" href="class_i_h_a_l.html#a321aa701f6b50609814767071aa4abb1">IHAL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7854e52e1438d5a822ae5b1be45fe481"></a><!-- doxytag: member="CoreController::shineLED" ref="a7854e52e1438d5a822ae5b1be45fe481" args="(LEDS led)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoreController::shineLED </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_i_h_a_l_8h.html#ae975483a053cd084e7de7c30dc3f38b6">LEDS</a>&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Adds a certain light. Equals void <a class="el" href="class_core_controller.html#a6739526924613d23b8da0599ff75ca94">addLight(Color col)</a>; </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>specifies the color of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a bool, true action succeeded. </dd></dl>
+
+<p>Implements <a class="el" href="class_i_h_a_l.html#ac714707a64c5ae61be8f4cd35be34f2b">IHAL</a>.</p>
 
 </div>
 </div>
@@ -1060,6 +1265,19 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="accd215f37e41c4b61a54399e8add5ea7"></a><!-- doxytag: member="CoreController::emstopped" ref="accd215f37e41c4b61a54399e8add5ea7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_core_controller.html#accd215f37e41c4b61a54399e8add5ea7">CoreController::emstopped</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a8d6dd976362667c47a177c0e305964b0"></a><!-- doxytag: member="CoreController::h" ref="a8d6dd976362667c47a177c0e305964b0" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1120,6 +1338,20 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4cea288ac78fa0e046222503c17e29ce"></a><!-- doxytag: member="CoreController::stopped" ref="a4cea288ac78fa0e046222503c17e29ce" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_core_controller.html#a4cea288ac78fa0e046222503c17e29ce">CoreController::stopped</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Stop pushed! </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Controller/<a class="el" href="_core_controller_8h_source.html">CoreController.h</a></li>
 <li>Controller/<a class="el" href="_core_controller_8cpp.html">CoreController.cpp</a></li>
@@ -1139,7 +1371,7 @@ Static Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:18 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon May 16 2011 16:38:34 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

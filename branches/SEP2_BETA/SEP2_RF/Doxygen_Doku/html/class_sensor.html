@@ -61,6 +61,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
@@ -85,9 +86,12 @@ Inheritance diagram for Sensor:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a73a6c72b86aa9b63a19fad0e665c2611">interrupt</a> (int port)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#aee658a5cb6209d5dcbf71f1af35ed49c">interrupt</a> (int port, int val)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a342d6d11ef572c8cba92cb76fb1a294b">Sensor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#aee8c70e7ef05ce65e7ee33686b5d7db2">~Sensor</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#ae59cebe2e6534f0bb27e41af08c44927">is_Band_has_wp_ls7</a></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a040a9626da69446501058bf3b59035a5">execute</a> (void *)</td></tr>
@@ -98,6 +102,7 @@ Private Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_core_controller.html">CoreController</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#a68e3fbea1ada47c9000827862e31a78a">cc</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensor.html#af8a28d67a8e4e16e274cea460cecb8e1">cnt</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_sensor.html">Sensor</a></p>
@@ -166,7 +171,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a73a6c72b86aa9b63a19fad0e665c2611"></a><!-- doxytag: member="Sensor::interrupt" ref="a73a6c72b86aa9b63a19fad0e665c2611" args="(int port)" -->
+<a class="anchor" id="aee658a5cb6209d5dcbf71f1af35ed49c"></a><!-- doxytag: member="Sensor::interrupt" ref="aee658a5cb6209d5dcbf71f1af35ed49c" args="(int port, int val)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -174,8 +179,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">void Sensor::interrupt </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>port</em></td><td>)</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -241,6 +256,32 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af8a28d67a8e4e16e274cea460cecb8e1"></a><!-- doxytag: member="Sensor::cnt" ref="af8a28d67a8e4e16e274cea460cecb8e1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_sensor.html#af8a28d67a8e4e16e274cea460cecb8e1">Sensor::cnt</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae59cebe2e6534f0bb27e41af08c44927"></a><!-- doxytag: member="Sensor::is_Band_has_wp_ls7" ref="ae59cebe2e6534f0bb27e41af08c44927" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_sensor.html#ae59cebe2e6534f0bb27e41af08c44927">Sensor::is_Band_has_wp_ls7</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Controller/<a class="el" href="_sensor_8h_source.html">Sensor.h</a></li>
 <li>Controller/<a class="el" href="_sensor_8cpp.html">Sensor.cpp</a></li>
@@ -260,7 +301,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 27 2011 13:03:19 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon May 16 2011 16:38:34 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
