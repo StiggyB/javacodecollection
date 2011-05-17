@@ -2,7 +2,7 @@
 #ifndef INTERRUPTCONTROLLER_H_
 #define INTERRUPTCONTROLLER_H_
 
-
+#include "../HAL/Lampen.h"
 #include "../HAL/HALCore.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"

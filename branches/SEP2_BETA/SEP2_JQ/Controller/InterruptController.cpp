@@ -99,7 +99,9 @@ void InterruptController::execute(void*) {
 			perror("error for IO Control\n");
 			return;
 		}
-		h->addLight(GREEN);
+		Lampen *l = Lampen::getInstance();
+		l->addLight(GREEN);
+		// h->addLight(GREEN);
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();

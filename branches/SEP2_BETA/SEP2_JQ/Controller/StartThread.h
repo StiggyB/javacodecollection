@@ -4,11 +4,13 @@
 
 #include <stdlib.h>
 #include "../HAL/HALCore.h"
+#include "../HAL/Lampen.h"
 #include "../Tests/test.h"
 #include "../Tests/Test_M1.h"
 #include "../Tests/Test_HAL.h"
 #include "../Tests/Test_IRQ.h"
 #include "../Tests/Test_Serial.h"
+#include "../Tests/Test_Lights.h"
 #include "Sensor.h"
 #include "InterruptController.h"
 #include "CommunicationServer.h"
@@ -35,6 +37,10 @@ private:
      * pointer to the CommunicationServer
      */
     CommunicationServer *cs;
+    /**
+     * pointer to the Lampen
+     */
+    Lampen * l;
 #ifdef TEST_M1
     Test_M1 tm;
 #endif

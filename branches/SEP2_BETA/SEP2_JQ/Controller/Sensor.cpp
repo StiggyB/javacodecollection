@@ -23,6 +23,7 @@ Sensor::Sensor():cnt(0),p(0),id(0),coid(0){
 	if (h == NULL){
 		h = HALCore::getInstance();
 	}
+	l = Lampen::getInstance();
 }
 
 Sensor::~Sensor() {
@@ -91,7 +92,7 @@ void Sensor::interrupt(int port, int val) {
 			cnt++;
 			if(cnt == 4){
 				cnt = 0;
-				h->shine(RED);
+				l->shine(RED);
 				h->stopMachine();
 			}
 
@@ -103,14 +104,17 @@ void Sensor::interrupt(int port, int val) {
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
 		if (!(val & BIT_E_STOP)) {
+			l->shine(RED);
 			h->emergencyStop();
 		} else {
 			if (!(val & BIT_STOP)) {
+				l->shine(RED);
 				h->stopMachine();
 			} else {
 				if (val & BIT_START) {
 					cnt = 0;
 					h->shineLED(START_LED);
+					l->shine(GREEN);
 					h->restart();
 				} else {
 					h->removeLED(START_LED);

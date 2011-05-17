@@ -20,7 +20,8 @@
  *
  * Inherits: HAWThread, Communication
  */
-class Lampen : public thread::HAWThread{
+class Lampen : public thread::HAWThread, public Singleton_T<Lampen>{
+	friend class Singleton_T<Lampen>;
 public:
 	Lampen();
 	virtual ~Lampen();
@@ -171,6 +172,12 @@ private:
 	 * \param status the current status for the light, false for not flashed.
 	 */
 	void setTime(Color col,int period,int duration, bool activity, bool status);
+	/**
+	 * Gets the Bit to a specified color.
+	 * \param col is the Color which Bit you want to get.
+	 * \returns an integer, the bit of that color.
+	 */
+	int getBitToColor(Color col);
 };
 
 #endif /* LAMPEN_H_ */

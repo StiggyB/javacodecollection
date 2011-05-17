@@ -11,6 +11,7 @@ StartThread::StartThread(){
 	h = HALCore::getInstance();
 	ic = InterruptController::getInstance();
 	cs = CommunicationServer::getInstance();
+	l = Lampen::getInstance();
 #ifdef TEST_M1
 	tm = Test_M1();
 #endif
@@ -38,6 +39,8 @@ void StartThread::execute(void*) {
 	cout << "starting IC" <<endl;
 	ic->start(NULL);
 	cout << "IC started" <<endl;
+	l->start(NULL);
+	cout << "Lampen started" << endl;
 	Sensor s;
 	s.start(NULL);
 #ifdef TEST_IRQ
@@ -67,7 +70,15 @@ void StartThread::execute(void*) {
 	cout << "waiting for M1-Tests" << endl;
 	tm.join();
 #endif
-/*
+
+#ifdef TEST_LIGHT
+	Test_Lights tl;
+	cout << "starting Light-Tests" << endl;
+	tl.start(NULL);
+	cout << "waiting for Light-Tests" << endl;
+	tl.join();
+#endif
+	/*
 	sleep(4);
 	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
@@ -96,5 +107,9 @@ void StartThread::stopProcess() {
 }
 
 void StartThread::shutdown(){
-
+	l->deleteInstance();
+	cs->deleteInstance();
+	ic->deleteInstance();
+	h->resetAllOutPut();
+	h->deleteInstance();
 }

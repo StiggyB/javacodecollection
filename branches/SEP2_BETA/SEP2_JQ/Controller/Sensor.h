@@ -5,6 +5,7 @@
 
 #include "../Thread/HAWThread.h"
 #include "../HAL/HALCore.h"
+#include "../HAL/Lampen.h"
 #include "Communication.h"
 /**
  * Sensor
@@ -43,6 +44,10 @@ private:
 	 * Pointer to the Singleton Core Controller
 	 */
 	HALCore *h;
+	/**
+	 * pointer to Lampen
+	 */
+	Lampen *l;
 	/**
 	 *  Sets up the Communication to IC and waits for Messages from it.
 	 */

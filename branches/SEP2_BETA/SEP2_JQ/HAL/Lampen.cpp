@@ -28,9 +28,7 @@ Lampen::Lampen() {
 	if(h == NULL) h = HALCore::getInstance();
 	running = false;
 	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
-		array[i].duration = -1;
-		array[i].period = -1;
-		array[i].time = -1;
+		setTime((Color)i,-1,-1,false,false);
 	}
 }
 
@@ -44,8 +42,10 @@ void Lampen::execute(void*) {
 	while(!isStopped()){
 		mlight.lock();
 		lights = calcLights();
+		//cout << "Lampen: lights:" << lights << endl;
 		h->shine(lights);
 		time = calcTime();
+		//cout << "Lampen: time:" << time << endl;
 		mlight.unlock();
 		delay(time);
 	}
@@ -69,6 +69,7 @@ void Lampen::flash(int period, int duration, Color col) {
 
 void Lampen::addLight(Color col) {
 	mlight.lock();
+	//cout << "added light " << col << endl;
 	addTime(col,-1);
 	mlight.unlock();
 }
@@ -135,15 +136,33 @@ void Lampen::removeAllTime(){
 int Lampen::calcLights(){
 	int lights = 0;
 	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
-		if(array[i].time == 0){
+		if(array[i].time == 0 && array[i].activ){
 			array[i].on = (array[i].on == 1)? 0 : 1 ;
 			array[i].time = array[i].period;
 		}
 		if(array[i].on){
-			lights |= array[i].col;
+			lights |= getBitToColor(array[i].col);
 		}
 	}
 	return lights;
+}
+int Lampen::getBitToColor(Color col){
+	int color = 0;
+	switch(col){
+	case RED:
+		color = BIT_LIGHT_RED;
+		break;
+	case GREEN:
+		color = BIT_LIGHT_GREEN;
+		break;
+	case YELLOW:
+		color = BIT_LIGHT_YELLOW;
+		break;
+	default:
+		color = 0;
+		break;
+	}
+	return color;
 }
 
 int Lampen::calcTime(){

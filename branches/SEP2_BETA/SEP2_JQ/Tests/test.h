@@ -12,5 +12,6 @@
 //#define TEST_M1
 //#define TEST_HAL
 //#define TEST_SER
+//#define TEST_LIGHT
 
 #endif /* TEST_H_ */

@@ -127,7 +127,7 @@ void HALCore::execute(void*) {
 			if(!requested){
 				changedMutex.unlock();
 				mut.lock();
-				cout << "waiting" << endl;
+				//cout << "waiting" << endl;
 				condvar.wait();
 				mut.unlock();
 				changedMutex.lock();
@@ -294,10 +294,10 @@ const struct sigevent * ISR(void *arg, int id) {
 		out8(PORT_A,0x88); // rotes Licht + Stop
 		out8(PORT_C,0x00);
 		emstopped = true;
-		return (NULL);
-	}else{
-		SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
-	}
+	//	return (NULL);
+	}//else{
+	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
+	//}
 	return (event);break;
 	default: return (NULL);break;
 	}
@@ -324,7 +324,7 @@ void HALCore::emergencyStop(){
 	engineStop();
 	closeSwitch();
 	engineReset();
-	shine(RED);
+	//shine(RED);
 	shineLED(LEDS_OFF);
 	emstopped = true;
 	stopped = true;
@@ -333,7 +333,7 @@ void HALCore::emergencyStop(){
 void HALCore::stopMachine(){
 	engineStop();
 	closeSwitch();
-	shine(RED);
+	//shine(RED);
 	shineLED(LEDS_OFF);
 	stopped = true;
 }
@@ -343,7 +343,7 @@ void HALCore::restart() {
 		stopped = false;
 		cout << "CC: restart ;)" << endl;
 		engineContinue();
-		shine(GREEN);
+		//shine(GREEN);
 	}
 }
 //TODO should clear all operations from queue!
@@ -353,8 +353,8 @@ void HALCore::resetAll() {
 	cout << "CC: resetAll ;)" << endl;
 	closeSwitch();
 	engineReset();
-	shine(GREEN);
-	shineLED(LEDS_OFF);
+	//shine(GREEN);
+	//shineLED(LEDS_OFF);
 }
 
 void HALCore::wakeup(){
@@ -423,7 +423,6 @@ void HALCore::setPortsTo(int cb){
 
 void HALCore::write(int dir, int value){
 	Functions * p = buildFunctions(funcArray[WRITE], dir, value, true);
-	//
 	lst.insert(lst.end(),p);
 	wakeup();
 }
