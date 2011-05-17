@@ -54,7 +54,7 @@ void FSM_2_start_state :: exit(Puck_FSM * fsm){
 	#endif
 }
 
-//functions for Band_2_aufgelegt
+//functions for FSM_2_after_ls_b0
 void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b0: entry" << endl;
@@ -66,32 +66,32 @@ void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
 }
 void FSM_2_after_ls_b0 :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Band_2_aufgelegt: exit" << endl;
+	cout << "FSM_2_after_ls_b0: exit" << endl;
 	#endif
 }
 void FSM_2_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Band_2_aufgelegt: ls_b1" << endl;
+	cout << "FSM_2_after_ls_b0: ls_b1" << endl;
 	#endif
 	fsm->pass_ls_b1 = 1;
 	fsm->setCurrent(new FSM_2_after_ls_b1() );
 }
 
 
-//functions for Bei_LS1
+//functions for FSM_2_after_ls_b1
 void FSM_2_after_ls_b1 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Bei_LS1: entry" << endl;
+	cout << "FSM_2_after_ls_b1: entry" << endl;
 	#endif
 }
 void FSM_2_after_ls_b1 :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Bei_LS1: exit" << endl;
+	cout << "FSM_2_after_ls_b1: exit" << endl;
 	#endif
 }
 void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Bei_LS1: ls_b3" << endl;
+	cout << "FSM_2_after_ls_b1: ls_b3" << endl;
 	#endif
 	fsm->pass_ls_b3 = 1;
 	fsm->setCurrent(new FSM_2_in_metal_measure() );
@@ -99,58 +99,60 @@ void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
 
 
 
-//functions for In_Metallmessung
+//functions for FSM_2_in_metal_measure
 void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "In_Metallmessung: entry" << endl;
+	cout << "FSM_2_in_metal_measure: entry" << endl;
 	#endif
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 	if( fsm->cc->isMetal() && ( fsm->hasPocket==1) ){
-	#ifdef PUCK_FSM_2_DEBUG
-		cout << "is Metall" << endl;
-	#endif
+		#ifdef PUCK_FSM_2_DEBUG
+		cout << "is Metall and has pocket" << endl;
+		#endif
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 
 	} else if( (fsm->cc->isMetal() == 0) && (fsm->hasPocket==0) ) {
-	#ifdef PUCK_FSM_2_DEBUG
-	cout << "no Metall, no pocket" << endl;
-	#endif
+		#ifdef PUCK_FSM_2_DEBUG
+		cout << "no Metall, no pocket" << endl;
+		#endif
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 
 	} else {
-	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Metall, but pocket" << endl;
-	#endif
+		#ifdef PUCK_FSM_2_DEBUG
+		if( fsm->cc->isMetal() )cout << "fsm->cc->isMetal(): true";
+		if( fsm->hasPocket ) cout << "pocket" << endl;
+		#endif
 		fsm->setCurrent(new FSM_2_sort_out() );
 	}
 
 }
 void FSM_2_in_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "In_Metallmessung: exit" << endl;
+	cout << "FSM_2_in_metal_measure: exit" << endl;
 	#endif
 	fsm->cc->engineReset();
 	fsm->cc->engineRight();
 	fsm->engine_should_be_started = 1;
 }
 
-//functions for durchschleusen
+//functions for FSM_2_after_metal_measure
 void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "durchschleusen: entry" << endl;
+	cout << "FSM_2_after_metal_measure: entry" << endl;
 	#endif
+	fsm->cc->openSwitch();
 	sleep(1);
 	fsm->cc->closeSwitch();
 }
 void FSM_2_after_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "durchschleusen: exit" << endl;
+	cout << "FSM_2_after_metal_measure: exit" << endl;
 	#endif
 }
 void FSM_2_after_metal_measure :: ls_b7_in(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "durchschleusen: ls_b7_in" << endl;
+	cout << "FSM_2_after_metal_measure: ls_b7_in" << endl;
 	#endif
 	fsm->pass_ls_b7 = 1;
 	fsm->setCurrent(new FSM_2_end_state() );
@@ -158,17 +160,17 @@ void FSM_2_after_metal_measure :: ls_b7_in(Puck_FSM * fsm){
 
 
 
-//functions for Ende_Band2
+//functions for FSM_2_end_state
 void FSM_2_end_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Ende_Band2: entry" << endl;
+	cout << "FSM_2_end_state: entry" << endl;
 	#endif
 	fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 }
 void FSM_2_end_state :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Ende_Band2: exit" << endl;
+	cout << "FSM_2_end_state: exit" << endl;
 	#endif
 }
 void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){

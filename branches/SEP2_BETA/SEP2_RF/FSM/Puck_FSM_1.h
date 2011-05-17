@@ -19,7 +19,8 @@
 #define Puck_FSM_1_H_
 
 
-#define PUCK_FSM_1_DEBUG
+//#define PUCK_FSM_1_DEBUG
+
 #include "../Controller/CoreController.h"
 #include "../Lampen/Error_State_Lamp.h"
 #include "Puck_FSM.h"

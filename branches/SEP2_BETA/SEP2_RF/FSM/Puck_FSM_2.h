@@ -21,7 +21,7 @@
 #include "../Lampen/Error_State_Lamp.h"
 #include "Puck_FSM.h"
 
-#define PUCK_FSM_2_DEBUG
+//#define PUCK_FSM_2_DEBUG
 
 class Puck_FSM_2 : public Puck_FSM{
 public:

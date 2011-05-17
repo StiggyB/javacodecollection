@@ -28,6 +28,7 @@ public:
 	Puck_FSM actual_fsm;
 	CoreController *cc;
 	std::vector<Puck_FSM*> wp_list;
+	bool aWPendOfMachine;
 	int wp_list_index;
 	int last_Reg_State_B;
 	int last_Reg_State_C;

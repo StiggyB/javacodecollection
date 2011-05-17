@@ -26,14 +26,17 @@ Test_FSM::Test_FSM() {
 	cc = CoreController::getInstance();
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x50;
+	aWPendOfMachine = false;
 	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_1 );
 	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_2 );
 	wp_list[3]->hasPocket = 1;
 	wp_list[4]->hasPocket = 1;
 
 	wp_list_index = 0;
-	cout << "-----Modus 1: Machine One(sort out WP with wrong height)-----" << endl;
-	cout << "Test1: please put on a WP with pocket on LS_B0" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+	cout << "-----Modus 1: Machine One(sort out WP with small height)-----" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+	cout << "Test1: please put on a workpiece with pocket on LS_B0" << endl;
 }
 
 Test_FSM::~Test_FSM() {
@@ -52,7 +55,7 @@ void Test_FSM::handleSignal(int val, int port){
 			case INTERRUPT_D_PORT_B:
 				if ( !( (val>>WP_RUN_IN) &1) ) {
 					//cout << "Test_FSM: in" << endl;
-					wp_list[wp_list_index]->ls_b0();
+					if (!aWPendOfMachine) wp_list[wp_list_index]->ls_b0();
 				}
 				if ( !((val>>WP_IN_HEIGHT)&1) ) {
 					//cout << "Test_FSM: in height measure " << endl;
@@ -69,9 +72,12 @@ void Test_FSM::handleSignal(int val, int port){
 				if (!(( val>>WP_OUTLET)&1 )) {
 					//cout << "Test_FSM: end of band in" << endl;
 					wp_list[wp_list_index]->ls_b7_in();
+					aWPendOfMachine = true;
+
 				}
 				if (( (val>>WP_OUTLET)&1 ) && !( (last_Reg_State_B>>WP_OUTLET)&1)) {
 					//cout << "Test_FSM: end of band out" << endl;
+					aWPendOfMachine = false;
 
 				}
 				last_Reg_State_B = val;
@@ -100,46 +106,48 @@ void Test_FSM::handleSignal(int val, int port){
 			if(wp_list_index==0 && wp_list[wp_list_index]->pass_ls_b7){
 				cout << "Test 1 passed, wp should lie at end of machine" << endl;
 				wp_list_index++;
-				cout << "Test2: please take WP from machine and put on a WP without pocket and correct height on LS_B0" << endl;
+				cout << "Test2: please take workpiece from machine and put on a workpiece without pocket and normal height on LS_B0" << endl;
 
 			} else if(wp_list_index==0 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test 1 NOT passed, wp is not at end of machine" << endl;
+				cout << "Test1: NOT passed, workpiece is not at end of machine" << endl;
 
 			} else if(wp_list_index==1 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 2 passed, wp should lie at end of machine" << endl;
+				cout << "Test2: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
-				cout << "Test3: please take WP from machine and put on a WP with wrong height on LS_B0" << endl;
+				cout << "Test3: please take workpiece from machine and put on a workpiece with plane height on LS_B0" << endl;
 
 			} else if(wp_list_index==1 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test 2 NOT passed, wp is not at end of machine" << endl;
+				cout << "Test2: NOT passed, workpiece is not at end of machine" << endl;
 
 			} else if(wp_list_index==2 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test 3 passed, wp should lie in slide" << endl;
+				cout << "Test3: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
-				cout << "-----Modus 2: Machine TWO(sort out WP with Pocket and without Metal)-----" << endl;
-				cout << "Test4: please take WP from machine and put on a WP with Pocket and without metal on LS_B0" << endl;
+				cout << "--------------------------------------------------------------------------------" << endl;
+				cout << "-----Modus 2: Machine TWO(sort out workpiece with Pocket and without Metal)-----" << endl;
+				cout << "--------------------------------------------------------------------------------" << endl;
+				cout << "Test4: please take workpiece from machine and put on a workpiece with Pocket and without metal on LS_B0" << endl;
 
 			} else if(wp_list_index==2 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 3 NOT passed, wp is not in slide" << endl;
+				cout << "Test3: NOT passed, workpiece is not in slide" << endl;
 
 			} else if(wp_list_index==3 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test 4 passed, wp should lie in slide" << endl;
+				cout << "Test4: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
-				cout << "Test5: please take WP from machine and put on a WP with Pocket and metal on LS_B0" << endl;
+				cout << "Test5: please take workpiece from machine and put on a workpiece with Pocket and metal on LS_B0" << endl;
 
 			} else if(wp_list_index==3 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 4 NOT passed, wp is not in slide" << endl;
+				cout << "Test4: NOT passed, workpiece is not in slide" << endl;
 
 			} else if(wp_list_index==4 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 5 passed, wp should lie at end of machine" << endl;
+				cout << "Test5: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
-				cout << "Test6: please take WP from machine and put on a WP without Pocket and correct Height on LS_B0" << endl;
+				cout << "Test6: please take workpiece from machine and workpiece on a WP without Pocket and normal Height on LS_B0" << endl;
 
 			} else if(wp_list_index==4 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test 5 NOT passed, wp is not at end of machine" << endl;
+				cout << "Test5: NOT passed, wp is not at end of machine" << endl;
 
 			} else if(wp_list_index==5 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 6 passed, wp should lie at end of machine" << endl;
+				cout << "Test6: passed, wp should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "------------All Tests passed successful----------" << endl;
 
