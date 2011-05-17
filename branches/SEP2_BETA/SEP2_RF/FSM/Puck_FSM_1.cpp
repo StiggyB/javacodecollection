@@ -42,7 +42,7 @@ void FSM_1_start_state :: ls_b0(Puck_FSM * fsm){
 	cout << "Start_M1: LS_B0 wurde ausgelöst" << endl;
 	#endif
 
-	fsm->setCurrent(new FSM_1_after_ls_b0() );
+	fsm->setCurrent(new FSM_1_after_ls_b0());
 }
 void FSM_1_start_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG

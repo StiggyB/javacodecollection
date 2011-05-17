@@ -104,7 +104,7 @@ void Test_FSM::handleSignal(int val, int port){
 			}
 
 			if(wp_list_index==0 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test 1 passed, wp should lie at end of machine" << endl;
+				cout << "Test 1 passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "Test2: please take workpiece from machine and put on a workpiece without pocket and normal height on LS_B0" << endl;
 
@@ -144,15 +144,15 @@ void Test_FSM::handleSignal(int val, int port){
 				cout << "Test6: please take workpiece from machine and workpiece on a WP without Pocket and normal Height on LS_B0" << endl;
 
 			} else if(wp_list_index==4 && wp_list[wp_list_index]->pass_ls_b6){
-				cout << "Test5: NOT passed, wp is not at end of machine" << endl;
+				cout << "Test5: NOT passed, workpiece is not at end of machine" << endl;
 
 			} else if(wp_list_index==5 && wp_list[wp_list_index]->pass_ls_b7){
-				cout << "Test6: passed, wp should lie at end of machine" << endl;
+				cout << "Test6: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "------------All Tests passed successful----------" << endl;
 
 			} else if(wp_list_index==5 && wp_list[wp_list_index]->pass_ls_b6){
-							cout << "Test 6 NOT passed, wp is not at end of machine" << endl;
+							cout << "Test 6 NOT passed, workpiece is not at end of machine" << endl;
 			}
 
 

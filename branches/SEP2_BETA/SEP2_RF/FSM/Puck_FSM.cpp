@@ -52,6 +52,7 @@ void Puck_FSM::exit(){
 }
 void Puck_FSM::setCurrent(State *s){
 	current->exit(this);
+	delete current;
 	current = s;
     this->entry();
 }
