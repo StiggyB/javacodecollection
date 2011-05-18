@@ -11,11 +11,24 @@
 #include <termios.h>
 #include <sys/types.h>
 #include "../Thread/HAWThread.h"
-#include "Communication.h"
+#include "../Controller/Communication.h"
 
 
 enum msgType{
-	SYNC_SIGNAL=(0), POCKET_TOP=(1), POCKET_BOTTOM=(2), BAND2_FREE=(3),ACK_SYNC_SIGNAL=(10),ACK_POCKET_TOP=(11),ACK_POCKET_BOTTOM=(12),ACK_BAND2_FREE=(13)
+	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
+	POCKET=(1),ACK_POCKET=(101),
+	NO_POCKET=(2),ACK_NO_POCKET=(102),
+	REQUEST_FREE=(5),
+	BAND2_FREE=(15),
+	BAND2_OCCUPIED=(25),
+	PUK_ARRIVED=(6),
+	E_STOP_PUSHED=(7),
+	E_STOP_PULLED=(8),
+	STOP_BUTTON=(9),
+	START_BUTTON=(10),
+	RESET_BUTTON=(11),
+
+	INIT_SERIAL=(1337),ACK_INIT_SERIAL=(42)
 };
 
 
@@ -55,6 +68,7 @@ public:
 	 * \return an integer, 0 for okay, -1 for error.
 	 */
 	int send(void* data, int lenByte);
+
 protected:
 
 	void handlePulsMessage();
@@ -74,14 +88,13 @@ protected:
 	virtual void shutdown();
 	void clean();
 private:
-
 	/**
 	*  Sets up the Communication to IC and waits for Messages from it.
 	*/
 	bool settingUpSerial();
 
-	int ack;
-	int msg;
+	unsigned int ack;
+	unsigned int msg;
 	int ser;
 	int comPort;
 	int sender_receiver;

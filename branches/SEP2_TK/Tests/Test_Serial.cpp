@@ -17,21 +17,28 @@
 Test_Serial::Test_Serial() {
 	s_0 = new Serial();
 	s_1 = new Serial();
-	dummy = new Communication_DUMMY();
 }
 
 Test_Serial::~Test_Serial() {
 	s_0->~Serial();
 	s_1->~Serial();
-	dummy->~Communication_DUMMY();
-	delete dummy;
-	delete s_0;
-	delete s_1;
 }
 
 void Test_Serial::execute(void*){
 
-		dummy->start(NULL);
+
+	if (prepareCommunication(DUMMY)) {
+
+		if (!allocMessages()) {
+			clean();
+			return;
+		}
+
+	}else{
+		cout << "Test_Serial: prepareCommunication failed" << endl;
+		return;
+	}
+
 		int msg_test = 1;
 		bool test_successful = true;
 		s_0->init(1,true);
@@ -43,47 +50,50 @@ void Test_Serial::execute(void*){
 		printf("start s_0\n");
 		s_0->start(NULL);
 
+		//s_0->send(&msg_test, sizeof(msg_test));
 
-printf("start of TEST#######################################\n");
-		sleep(100);
-/*
-		while (!isStopped()) {
-			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-			handleMessage();
-		}
-		endCommunication(SENSOR);
+		sleep(3);
 
-void Test_Serial::handlePulsMessage(){
-	CheckTest();
-}
 
-	CheckTest(){
-		switch(FALL){
-			case Test1:
-				FALL = Test2;
-			case Test2:
+		printf("\n\n\n start of TEST 1 #######################################\n");
+		sleep(1);
+		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 1 gesendet \n") ;}else{printf("s_0 message 1 not cool \n");test_successful = false;}
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+					handleMessage();
+		sleep(5);
+		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 1 gesendet\n") ;}else{test_successful = false;}
 
-		}
-	}
-*/
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		std::cout << "rcvid: " <<rcvid<< std::endl;
+		handleMessage();
+							sleep(2);
 
-//		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 1 gesendet \n") ;}else{printf("s_0 message 1 not cool \n");test_successful = false;}
-//
-//		sleep(5);
-//		printf("sleep5 done\n") ;
-//		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 1 gesendet\n") ;}else{test_successful = false;}
-//		sleep(2);
-//		msg_test = 2;
-//		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 2 gesendet\n") ;}else{test_successful = false;}
-//		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 2 gesendet\n");}else{test_successful = false;}
-//		sleep(2);
-//		msg_test = 3;
-//		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 3 gesendet\n") ;}else{test_successful = false;}
-//		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 3 gesendet\n");}else{test_successful = false;}
-//		//s_0.stop();
-//		//s_1.stop();
-//		printf("Test bestanden: %i\n",test_successful);
-		sleep(600);
+
+		printf("\n\n\n start of TEST 2 #######################################\n");
+		msg_test = 2;
+		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 2 gesendet\n") ;}else{test_successful = false;}
+		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 2 gesendet\n");}else{test_successful = false;}
+		sleep(2);
+
+
+		printf("\n\n\n start of TEST 3 #######################################\n");
+		msg_test = 5;
+		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 3 gesendet\n") ;}else{test_successful = false;}
+		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 3 gesendet\n");}else{test_successful = false;}
+
+		sleep(5);
+		printf("\n\n\n###########################################");
+		printf("\nTest bestanden: %s\n\n\n",test_successful ? "true" : "false");
+
+		sleep(5);
+		s_0->stop();
+		sleep(1);
+		s_1->stop();
+		sleep(1);
+		delete s_0;
+		delete s_1;
+		sleep(10);
+
 
 }
 
@@ -93,4 +103,18 @@ void Test_Serial::shutdown(){
 }
 
 
+
+void Test_Serial::clean(){
+	unregisterChannel(DUMMY);
+	cleanUp(0, m, r_msg);
+	destroyChannel(chid);
+}
+
+void Test_Serial::handleNormalMessage(){
+	std::cout << "chid: " << r_msg->m.chid << " coid: " << r_msg->m.coid <<" Wert: " << r_msg->m.wert <<std::endl;
+}
+
+void Test_Serial::handlePulsMessage(){
+	std::cout << "Test_Serial: received a Puls, but doesn't know what to do with it" << std::endl;
+}
 

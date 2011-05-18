@@ -51,6 +51,7 @@ void StartThread::execute(void*) {
 	ser.start(NULL);
 	cout << "waiting for SERIAL-Tests" << endl;
 	ser.join();
+	cout << "SERIAL-Tests ended" << endl;
 #endif
 
 #ifdef TEST_HAL
