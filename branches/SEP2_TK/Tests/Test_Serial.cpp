@@ -26,19 +26,16 @@ Test_Serial::~Test_Serial() {
 
 void Test_Serial::execute(void*){
 
+	// FALLS NICHT AUSREICHT zum starten... 1 Serial mal ausbauen!
 
-	if (prepareCommunication(DUMMY)) {
-
-		if (!allocMessages()) {
-			clean();
-			return;
+	if (settingUpCommunicatorDevice(DUMMY,NONE)) {
+		while (!isStopped()) {
+			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+			cout << "T_S received something..."<<endl;
+			handleMessage();
 		}
-
-	}else{
-		cout << "Test_Serial: prepareCommunication failed" << endl;
-		return;
-	}
-
+		endCommunication(DUMMY);
+/*
 		int msg_test = 1;
 		bool test_successful = true;
 		s_0->init(1,true);
@@ -59,9 +56,9 @@ void Test_Serial::execute(void*){
 		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 		handleMessage();
 		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-					handleMessage();
-					rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-					handleMessage();
+		handleMessage();
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
 
 
 
@@ -112,7 +109,12 @@ void Test_Serial::execute(void*){
 		delete s_0;
 		delete s_1;
 		sleep(10);
+*/
 
+	}else{
+		cout << "Test_Serial: prepareCommunication failed" << endl;
+		return;
+	}
 
 }
 
@@ -122,12 +124,12 @@ void Test_Serial::shutdown(){
 }
 
 
-
+/*
 void Test_Serial::clean(){
 	unregisterChannel(DUMMY);
 	cleanUp(0, m, r_msg);
 	destroyChannel(chid);
-}
+}*/
 
 void Test_Serial::handleNormalMessage(){
 	std::cout << "chid: " << r_msg->m.chid << " coid: " << r_msg->m.coid <<" Wert: " << r_msg->m.wert <<std::endl;
