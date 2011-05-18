@@ -270,13 +270,13 @@ bool Serial::settingUpSerial(){
 //
 //	return true;
 }
-
+/*
 void Serial::clean(){
 	unregisterChannel(SERIAL);
 	cleanUp(0, m, r_msg);
 	destroyChannel(chid);
 }
-
+*/
 void Serial::handleNormalMessage(){
 	handleConnectionMessages(DUMMY);
 }
