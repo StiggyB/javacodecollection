@@ -341,6 +341,11 @@ protected:
 	 * handles all NormalMessages received
 	 */
 	virtual void handleNormalMessage()=0;
+	/**
+	 * handles add and close connection commands
+	 * \returns a boolean true, if did something.
+	 */
+	bool handleConnectionMessages(CommunicatorType c);
 public:
 	/**
 	 * Retrieves the Communicator with the given ChannelID and ConnectionID.

@@ -440,3 +440,29 @@ int Communication::getCodeFromReceivePulse(){
 int Communication::getValueFromReceivePulse(){
 	return getValueFromPulse(r_msg);
 }
+
+bool Communication::handleConnectionMessages(CommunicatorType c) {
+	if (r_msg->m.ca == startConnection) {
+		if (addCommunicator(r_msg->m.chid, r_msg->m.coid, r_msg->m.comtype)) {
+			buildMessage(m, r_msg->m.chid, r_msg->m.coid, OK, c);
+			if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
+				perror("Communication: failed to send reply message to Communicator!");
+			}
+			if ((coid = ConnectAttach(0, 0, r_msg->m.chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+				perror("Communication: failed to attach Channel to other Instance\n");
+			}
+			getCommunicatorForObject(r_msg->m.chid, r_msg->m.coid)->setConnectID(coid);
+		} else {
+			perror("Communication: failed to addCommunicator");
+		}
+	} else if (r_msg->m.ca == closeConnection) {
+		if (removeCommunicator(r_msg->m.chid, r_msg->m.coid, r_msg->m.comtype)) {
+			perror("Communication: remove Communicator.");
+		}
+	} else {
+		//cout << "Communication: message encountered, but not known..." << endl;
+		return false;
+	}
+	return true;
+}
+
