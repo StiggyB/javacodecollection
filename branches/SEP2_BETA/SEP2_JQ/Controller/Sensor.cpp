@@ -31,12 +31,12 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	if (settingUpCommunicatorDevice(SENSOR,INTERRUPTCONTROLLER)) {
+	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
-		endCommunication(SENSOR);
+		endCommunication();
 	}else{
 		perror("Sensor: Setting Up failed!");
 	}

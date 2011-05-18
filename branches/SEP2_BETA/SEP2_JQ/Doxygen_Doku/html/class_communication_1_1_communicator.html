@@ -77,17 +77,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a5ed82b53edb8756a18cb5263b240c8d8">Communicator</a> (int id, int cod, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#aec48bd443eda067495b3adc592eb6ea1">Communicator</a> (int id, int cod, int uni, <a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a> c)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a4ed4a58a3e84f5cd24b5bd88ab32a749">~Communicator</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a64613a206dbb6aefcbd909928de018bc">getCom</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#af3924e05e6c92a03fc4b65e3d16ec535">getChannelID</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#abf847f1cb1bd7be28383a323fd2888f9">getConnectID</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a039b82002f60f087d1009b8ca3dda74a">setConnectID</a> (int co)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a4de6d1bca835edae08a16d985e08fcb5">setConnectID</a> (int co)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a754fecad37abead59598a01d77c6e332">getUniqueID</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#aea62b3a515d50d6040163c2fd636fc5f">setUniqueID</a> (int uni)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a89128635b566725d3bede7484cd6b054">chid</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#ab1e3295c8ab8d9f4d185b065ca80cf9c">coid</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="_communication_8h.html#ae6d7f7bb65c1b438062950a1347be40b">CommunicatorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#a2216fca03cfe9ae5c3dcd773cfb067ce">cm</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_1_1_communicator.html#ac344fa65c1bab922666d2931c2f0b39d">uniqueID</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_communication_1_1_communicator.html">Communicator</a> (private class)</p>
@@ -95,7 +98,7 @@ Private Attributes</h2></td></tr>
 <p>Authors: Rico Flaegel, Tell Mueller-Pettenpohl, Torsten Krane, Jan Quenzel</p>
 <p>Capsules information about the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a> which uses Message Passing </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a5ed82b53edb8756a18cb5263b240c8d8"></a><!-- doxytag: member="Communication::Communicator::Communicator" ref="a5ed82b53edb8756a18cb5263b240c8d8" args="(int id, int cod, CommunicatorType c)" -->
+<a class="anchor" id="aec48bd443eda067495b3adc592eb6ea1"></a><!-- doxytag: member="Communication::Communicator::Communicator" ref="aec48bd443eda067495b3adc592eb6ea1" args="(int id, int cod, int uni, CommunicatorType c)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -110,6 +113,12 @@ Private Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>cod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>uni</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -208,12 +217,30 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a039b82002f60f087d1009b8ca3dda74a"></a><!-- doxytag: member="Communication::Communicator::setConnectID" ref="a039b82002f60f087d1009b8ca3dda74a" args="(int co)" -->
+<a class="anchor" id="a754fecad37abead59598a01d77c6e332"></a><!-- doxytag: member="Communication::Communicator::getUniqueID" ref="a754fecad37abead59598a01d77c6e332" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Communication::Communicator::setConnectID </td>
+          <td class="memname">int Communication::Communicator::getUniqueID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Get the UniqueID of the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the UniqueID </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4de6d1bca835edae08a16d985e08fcb5"></a><!-- doxytag: member="Communication::Communicator::setConnectID" ref="a4de6d1bca835edae08a16d985e08fcb5" args="(int co)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Communication::Communicator::setConnectID </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>co</em></td><td>)</td>
@@ -229,6 +256,25 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="aea62b3a515d50d6040163c2fd636fc5f"></a><!-- doxytag: member="Communication::Communicator::setUniqueID" ref="aea62b3a515d50d6040163c2fd636fc5f" args="(int uni)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Communication::Communicator::setUniqueID </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>uni</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Get the UniqueID of the <a class="el" href="class_communication_1_1_communicator.html">Communicator</a>. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the UniqueID </dd></dl>
 
 </div>
 </div>
@@ -275,6 +321,20 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac344fa65c1bab922666d2931c2f0b39d"></a><!-- doxytag: member="Communication::Communicator::uniqueID" ref="ac344fa65c1bab922666d2931c2f0b39d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_communication_1_1_communicator.html#ac344fa65c1bab922666d2931c2f0b39d">Communication::Communicator::uniqueID</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>unique identification number </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Controller/<a class="el" href="_communication_8h_source.html">Communication.h</a></li>
 </ul>
@@ -293,7 +353,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 17 2011 00:59:10 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu May 19 2011 01:56:40 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

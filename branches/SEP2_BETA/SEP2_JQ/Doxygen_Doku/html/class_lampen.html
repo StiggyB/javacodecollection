@@ -65,12 +65,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">Lampen Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="Lampen" --><!-- doxytag: inherits="thread::HAWThread" -->
+<!-- doxytag: class="Lampen" --><!-- doxytag: inherits="thread::HAWThread,Singleton_T&lt; Lampen &gt;" -->
 <p><code>#include &lt;<a class="el" href="_lampen_8h_source.html">Lampen.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Lampen:</div>
@@ -78,7 +79,8 @@ Inheritance diagram for Lampen:</div>
  <div class="center">
   <img src="class_lampen.png" usemap="#Lampen_map" alt=""/>
   <map id="Lampen_map" name="Lampen_map">
-<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,123,24"/>
+<area href="classthread_1_1_h_a_w_thread.html" alt="thread::HAWThread" shape="rect" coords="0,0,146,24"/>
+<area href="class_singleton___t.html" alt="Singleton_T&lt; Lampen &gt;" shape="rect" coords="156,0,302,24"/>
 </map>
  </div></div>
 
@@ -116,12 +118,16 @@ Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#a452d34211248aee0bfda541258ea5918">addTime</a> (<a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col, int period)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#af5d4319733be164dc376bf326d449f7f">addTime</a> (<a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col, int period, int duration)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#a4862cc3cf1a79e3e0972e92dd09f7649">setTime</a> (<a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col, int period, int duration, bool activity, bool status)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#aa4117363eef4b63e32d8ace0c988d83b">getBitToColor</a> (<a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> col)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#ab3364d94f37353d87a86595928d8b50e">running</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#a9b28a6fc475ba1d3442e02a7dc7a29d4">mlight</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_lampen_1_1lights.html">Lights</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#af7eb13cc5ae351bc58fa91b8a0091fd2">array</a> [3]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_h_a_l_core.html">HALCore</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#ade4e996230b62aaa37d1a4b5e754bd5e">h</a></td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lampen.html#a08d588a2f08b466d184b3abd3b54a3b3">Singleton_T&lt; Lampen &gt;</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Light Control</p>
@@ -421,6 +427,31 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa4117363eef4b63e32d8ace0c988d83b"></a><!-- doxytag: member="Lampen::getBitToColor" ref="aa4117363eef4b63e32d8ace0c988d83b" args="(Color col)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Lampen::getBitToColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_h_a_l_core_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>&#160;</td>
+          <td class="paramname"><em>col</em></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Gets the Bit to a specified color. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">col</td><td>is the Color which Bit you want to get. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>an integer, the bit of that color. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="afc7db9e08fb2f51e2702dea0cf511b68"></a><!-- doxytag: member="Lampen::getMin" ref="afc7db9e08fb2f51e2702dea0cf511b68" args="(int a, int b, int c)" -->
 <div class="memitem">
 <div class="memproto">
@@ -706,6 +737,20 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a08d588a2f08b466d184b3abd3b54a3b3"></a><!-- doxytag: member="Lampen::Singleton_T&lt; Lampen &gt;" ref="a08d588a2f08b466d184b3abd3b54a3b3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="class_singleton___t.html">Singleton_T</a>&lt; <a class="el" href="class_lampen.html">Lampen</a> &gt;<code> [friend]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="af7eb13cc5ae351bc58fa91b8a0091fd2"></a><!-- doxytag: member="Lampen::array" ref="af7eb13cc5ae351bc58fa91b8a0091fd2" args="[3]" -->
 <div class="memitem">
@@ -764,8 +809,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Lampen/<a class="el" href="_lampen_8h_source.html">Lampen.h</a></li>
-<li>Lampen/<a class="el" href="_lampen_8cpp.html">Lampen.cpp</a></li>
+<li>HAL/<a class="el" href="_lampen_8h_source.html">Lampen.h</a></li>
+<li>HAL/<a class="el" href="_lampen_8cpp.html">Lampen.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -782,7 +827,7 @@ Private Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 17 2011 00:59:11 for SEP2 by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu May 19 2011 01:56:40 for SEP2 by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

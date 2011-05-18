@@ -93,7 +93,7 @@ void InterruptController::connectToHAL() {
 
 void InterruptController::execute(void*) {
 	cout << "IC: now getting shit up!" << endl;
-	if(settingUpCommunicatorDevice(INTERRUPTCONTROLLER,NONE)){
+	if(settingUpCommunicatorDevice(NONE)){
 		connectToHAL();
 		if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 			perror("error for IO Control\n");
@@ -101,13 +101,12 @@ void InterruptController::execute(void*) {
 		}
 		Lampen *l = Lampen::getInstance();
 		l->addLight(GREEN);
-		// h->addLight(GREEN);
-		while (!isStopped()) {
+		while(!isStopped()){
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
 		disconnectFromHAL();
-		endCommunication(INTERRUPTCONTROLLER);
+		endCommunication();
 	}
 }
 
@@ -133,7 +132,7 @@ void InterruptController::handlePulsMessage() {
 }
 
 void InterruptController::handleNormalMessage() {
-	handleConnectionMessages(INTERRUPTCONTROLLER);
+	handleConnectionMessages();
 }
 
 void InterruptController::shutdown() {

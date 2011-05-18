@@ -57,19 +57,27 @@ typedef union message{
  */
 class Communication {
 
-public:
+protected:
 	/**
 	 * Get the ChannelID of the specified Communicator from the local list.
 	 * \param c the specified Communicator.
 	 * \return ChannelID
 	 */
 	int getChannelIdForObject(CommunicatorType c);
+	int getChannelIdForObject(CommunicatorType c, int number);
 	/**
 	 * Get the ConnectID of the specified Communicator from the local list.
 	 * \param c the specified Communicator.
 	 * \return ChannelID
 	 */
 	int getConnectIdForObject(CommunicatorType c);
+	int getConnectIdForObject(CommunicatorType c, int number);
+
+	int getUniqueIdForObject(CommunicatorType c);
+	int getUniqueIdForObject(CommunicatorType c, int number);
+
+	int getIdForObject(CommunicatorType c, int number,int mode);
+
 	/**
 	 * Gets the ChannelID of the specified Communicator from the CommunicatorServer (CoreController)
 	 * over a separate connection to the CommunicatorServer and adds it to the local list.
@@ -77,22 +85,24 @@ public:
 	 * \return if
 	 */
 	bool requestChannelIDForObject(CommunicatorType c);
+	bool requestChannelIDForObject(CommunicatorType c,int number);
+
 	/**
 	 * Adds a Communicator to the local list.
 	 * \param ch an integer, specifying the ChannelID.
-	 * \param cod  and integer, specifying the ConnectID.
+	 * \param cod an integer, specifying the ConnectID.
+	 * \param uni an integer, specifying the unique ID of the Communicator.
 	 * \param ct the type of the Communicator.
 	 * \return bool, true if successful
 	 */
-	bool addCommunicator(int ch, int cod, CommunicatorType ct);
+	bool addCommunicator(int ch, int cod, int uni, CommunicatorType ct);
+
 	/**
 	 * Removes a Communicator from the local list.
-	 * \param ch an integer, specifying the ChannelID.
-	 * \param cod  and integer, specifying the ConnectID.
-	 * \param ct the type of the Communicator.
+	 * \param uni an integer, specifying the unique ID of the Communicator.
 	 * \return bool, true if successful
 	 */
-	bool removeCommunicator(int ch, int cod,  CommunicatorType ct);
+	bool removeCommunicator(int uni);
 	/**
 	 * Creates a Channel for Message Passing
 	 * \return bool, true if successful
@@ -104,7 +114,7 @@ public:
 	 * \param c the Communicator which wants to be registered
 	 * \return bool, true if successful
 	 */
-	bool registerChannel(CommunicatorType c);
+	bool registerChannel(CommunicatorType c, int unique);
 	/**
 	 * Destroys a Channel for Message Passing
 	 * \param id and integer specifying the Channel which should be destroyed.
@@ -116,7 +126,7 @@ public:
 	 * \param c the Communicator which wants to be unregistered
 	 * \return bool, true if successful
 	 */
-	bool unregisterChannel(CommunicatorType c);
+	bool unregisterChannel(CommunicatorType c, int unique);
 	/**
 	 * Attaches a connection to a Channel and informs the Target-Communicator.
 	 * \param id an integer specifying the ChannelID
@@ -130,7 +140,7 @@ public:
 	 * \param c the Communicator which wants to be detached
 	 * \return bool, true if successful
 	 */
-	bool detachConnection(int coid, CommunicatorType c);
+	bool detachConnection(int coid, CommunicatorType c,int unique);
 	/**
 	 * Builds a Message.
 	 * \param s an pointer to the Message, which should be build
@@ -176,6 +186,11 @@ public:
 	 */
 	bool allocMessages();
 	/**
+	 * allocates Space for the Messages
+	 * \return bool, true if successful
+	 */
+	bool allocMessages(void ** msg, void ** rmsg);
+	/**
 	 * Equivalent to setupChannel () and registerChannel()
 	 * \param c the Communicator which wants to be registered
 	 * \return bool, true if successful
@@ -188,6 +203,7 @@ public:
 	 * \return bool, true if successful
 	 */
 	bool connectWithCommunicator(CommunicatorType c, CommunicatorType my);
+	bool connectWithCommunicator(CommunicatorType c, int number, CommunicatorType my);
 	/**
 	 * Sends an Puls Message to the specified target with given code and value.
 	 * The Target's ChannelID etc. must be known!
@@ -197,19 +213,20 @@ public:
 	 * \return bool, true if successful
 	 */
 	bool sendPulses(CommunicatorType target, int code, int value);
+	bool sendPulses(CommunicatorType target, int number, int code, int value);
 	/**
 	 * Sets up a communicator device (allocate memory, register and acquire a needed communication path);
 	 * \return bool, true if successful
 	 */
-	bool settingUpCommunicatorDevice(CommunicatorType mine, CommunicatorType target);
+	bool settingUpCommunicatorDevice(CommunicatorType target);
 	/**
 	 * cleans up the Communication
 	 */
-	void cleanCommunication(CommunicatorType mine);
+	void cleanCommunication();
 	/**
 	 * ends the Communication and cleans up.
 	 */
-	void endCommunication(CommunicatorType mine);
+	void endCommunication();
 	/**
 	 * retrieve the code from a Pulse Message
 	 * \param ptr a pointer to a Message containing a pulse.
@@ -232,10 +249,6 @@ public:
 	 * \return the value of the receive Pulse Message
 	 */
 	int getValueFromReceivePulse();
-	/**
-	 * CommunicationServer ChannelID
-	 */
-	static volatile int serverChannelId;
 	Communication();
 	virtual ~Communication();
 private:
@@ -260,10 +273,11 @@ private:
 		 * \param cod an integer, specifying the Connection ID
 		 * \param c type of the Communicator
 		 */
-		Communicator(int id, int cod, CommunicatorType c) {
+		Communicator(int id, int cod, int uni, CommunicatorType c) {
 			chid = id;
 			coid = cod;
 			cm = c;
+			uniqueID = uni;
 		}
 		~Communicator() {
 		}
@@ -292,8 +306,23 @@ private:
 		 * Sets the ConnectionID of the Communicator.
 		 * \param co an integer, the new Connection ID
 		 */
-		void setConnectID(int co) {
+		bool setConnectID(int co) {
 			coid = co;
+			return true;
+		}
+		/**
+		 * Get the UniqueID of the Communicator.
+		 * \return an integer, the UniqueID
+		 */
+		int getUniqueID() {
+			return uniqueID;
+		}
+		/**
+		 * Get the UniqueID of the Communicator.
+		 * \return an integer, the UniqueID
+		 */
+		void setUniqueID(int uni) {
+			uniqueID = uni;
 		}
 	private:
 		/**
@@ -308,8 +337,26 @@ private:
 		 * type of this Communicator
 		 */
 		CommunicatorType cm;
+		/**
+		 * unique identification number
+		 */
+		int uniqueID;
 	};
-
+	enum GET_MODES{
+	 CHANNEL=1, CONNECT=2, UNIQUE=3
+	};
+	/**
+	 * unique identification number
+	 */
+	static int uniqueIDCounter;
+	/**
+	 * unique identification number
+	 */
+	int uniqueID;
+	/**
+	 * own CommunicatorType
+	 */
+	CommunicatorType mine;
 	/**
 	 * List of all connected Communicators
 	 */
@@ -345,8 +392,15 @@ protected:
 	 * handles add and close connection commands
 	 * \returns a boolean true, if did something.
 	 */
-	bool handleConnectionMessages(CommunicatorType c);
+	bool handleConnectionMessages();
+	void getConnectionAttached();
+	bool regEditChannel(CommunicatorType c, int unique, MsgType m);
+	bool doInternalExchange(Message ** ptrM,Message ** ptrR,CommunicatorType c, int coid, int chid, int unique, MsgType m);
 public:
+	/**
+	 * CommunicationServer ChannelID
+	 */
+	static volatile int serverChannelId;
 	/**
 	 * Retrieves the Communicator with the given ChannelID and ConnectionID.
 	 * \param ci ChannelID of the searched Communicator
@@ -354,6 +408,7 @@ public:
 	 * \return iterator representing a pointer to a Communicator object or NULL
 	 */
 	std::list<Communicator>::iterator getCommunicatorForObject(int ci,int co);
+	std::list<Communicator>::iterator getCommunicatorForObject(int uni);
 };
 
 #endif /* COMMUNICATION_H_ */

@@ -62,10 +62,10 @@ void CommunicationServer::handleNormalMessage() {
 	int id = m->m.chid;
 	switch (m->m.ca) {
 	case addToServer:
-		addCommunicator(m->m.chid, m->m.coid, m->m.comtype);
+		addCommunicator(m->m.chid, m->m.coid, m->m.wert,m->m.comtype);
 		break;
 	case removeFromServer:
-		removeCommunicator(m->m.chid, m->m.coid, m->m.comtype);
+		removeCommunicator(m->m.wert);
 		break;
 	case getIDforCom:
 		if ((id = getChannelIdForObject(m->m.comtype)) == -1) {
@@ -82,5 +82,5 @@ void CommunicationServer::handleNormalMessage() {
 }
 
 void CommunicationServer::shutdown() {
-	cleanCommunication(COMMUNICATIONCONTROLLER);
+	cleanCommunication();
 }
