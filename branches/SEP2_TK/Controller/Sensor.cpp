@@ -72,7 +72,7 @@ bool Sensor::settingUpSensor(){
 			clean();
 			return false;
 		}
-		if(!connectWithCommunicator(id,INTERRUPTCONTROLLER,SENSOR)){
+		if(!connectWithCommunicator(INTERRUPTCONTROLLER,SENSOR)){
 			clean();
 			return false;
 		}
@@ -86,7 +86,7 @@ void Sensor::clean(){
 }
 
 void Sensor::cleanUpSensor(){
-	if (!detachConnection(id, coid, SENSOR)) {
+	if (!detachConnection( coid, SENSOR)) {
 		perror("Sensor: failed to detach Channel for Interrupt\n");
 		clean();
 		return;

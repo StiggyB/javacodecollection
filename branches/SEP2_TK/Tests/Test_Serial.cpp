@@ -54,12 +54,23 @@ void Test_Serial::execute(void*){
 
 		sleep(3);
 
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+					handleMessage();
+					rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+					handleMessage();
+
+
+
 
 		printf("\n\n\n start of TEST 1 #######################################\n");
 		sleep(1);
 		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 1 gesendet \n") ;}else{printf("s_0 message 1 not cool \n");test_successful = false;}
 		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-					handleMessage();
+		handleMessage();
 		sleep(5);
 		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 1 gesendet\n") ;}else{test_successful = false;}
 
@@ -72,14 +83,22 @@ void Test_Serial::execute(void*){
 		printf("\n\n\n start of TEST 2 #######################################\n");
 		msg_test = 2;
 		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 2 gesendet\n") ;}else{test_successful = false;}
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
 		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 2 gesendet\n");}else{test_successful = false;}
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
 		sleep(2);
 
 
 		printf("\n\n\n start of TEST 3 #######################################\n");
 		msg_test = 5;
-		if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 3 gesendet\n") ;}else{test_successful = false;}
+
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();if(s_0->send(&msg_test, sizeof(msg_test))== 0){printf("s_0 message 3 gesendet\n") ;}else{test_successful = false;}
 		if(s_1->send(&msg_test, sizeof(msg_test))== 0){printf("s_1 message 3 gesendet\n");}else{test_successful = false;}
+		rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+		handleMessage();
 
 		sleep(5);
 		printf("\n\n\n###########################################");

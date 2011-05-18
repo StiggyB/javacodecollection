@@ -102,8 +102,10 @@ void Serial::execute(void* data) {
 	ack = -1;
 	if (hasSettings) {
 
-		if (settingUpSerial()) {
 
+
+		if (settingUpSerial()) {
+cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 		while (!isStopped()) {
 
 //			printf(
@@ -128,53 +130,53 @@ void Serial::execute(void* data) {
 			//message from Band 1 to Band 2
 			case POCKET:
 				printf("<<<<<----- Serial: POCKET an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case NO_POCKET:
 				printf("<<<<<----- Serial: NO_POCKET an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case REQUEST_FREE:
 				printf("<<<<<----- Serial: REQUEST an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 
 
 			//message from Band 2 to Band 1
 			case BAND2_FREE:
 				printf("<<<<<----- Serial: BAND2_FREE an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case BAND2_OCCUPIED:
 				printf("<<<<<----- Serial: BAND2_OCCUPIED an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case PUK_ARRIVED:
 				printf("<<<<<----- Serial: PUK_ARRIVED an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 
 
 			//BUTTONS
 			case E_STOP_PUSHED:
 				printf("<<<<<----- Serial: E_STOP_PUSHED an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case E_STOP_PULLED:
 				printf("<<<<<----- Serial: E_STOP_PULLED an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case STOP_BUTTON:
 				printf("<<<<<----- Serial: STOP an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case START_BUTTON:
 				printf("<<<<<----- Serial: START an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 			case RESET_BUTTON:
 				printf("<<<<<----- Serial: RESET an PORT: %d\n", comPort);
-				sendPulses(SENSOR, comPort, msg);
+				sendPulses(DUMMY, comPort, msg);
 				break;
 
 
@@ -244,23 +246,29 @@ int Serial::receive(void* data, int lenBytes) {
 
 bool Serial::settingUpSerial(){
 
-	if (prepareCommunication(SERIAL)) {
-		if (!requestChannelIDForObject(DUMMY)) {
-			perror("Sensor: request failed");
-			unregisterChannel(SERIAL);
-			return false;
-		}
+	return settingUpCommunicatorDevice(SERIAL, DUMMY);
 
-		if (!allocMessages()) {
-			clean();
-			return false;
-		}
-		if(!connectWithCommunicator(0,DUMMY,SERIAL)){
-			clean();
-			return false;
-		}
-	}
-	return true;
+//	if (prepareCommunication(SERIAL)) {
+//		if (!requestChannelIDForObject(DUMMY)) {
+//			perror("Sensor: request failed");
+//			unregisterChannel(SERIAL);
+//			return false;
+//		}
+//
+//		if (!allocMessages()) {
+//			clean();
+//			return false;
+//		}
+//		if(!connectWithCommunicator(DUMMY,SERIAL)){
+//			clean();
+//			return false;
+//		}
+//
+//
+//		cout <<"blubber\n\n\n\n-------------------------\n"<<endl;
+//	}
+//
+//	return true;
 }
 
 void Serial::clean(){
@@ -270,7 +278,7 @@ void Serial::clean(){
 }
 
 void Serial::handleNormalMessage(){
-	std::cout << "Serial: received a Puls, but doesn't know what to do with it" << std::endl;
+	handleConnectionMessages(DUMMY);
 }
 
 void Serial::handlePulsMessage(){
