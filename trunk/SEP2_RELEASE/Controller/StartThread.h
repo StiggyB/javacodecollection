@@ -11,6 +11,7 @@
 #include "../Tests/Test_IRQ.h"
 #include "../Tests/Test_Serial.h"
 #include "../Tests/Test_Lights.h"
+#include "../Tests/Test_Functor.h"
 #include "Sensor.h"
 #include "InterruptController.h"
 #include "CommunicationServer.h"
@@ -61,6 +62,9 @@ private:
 #endif
 #ifdef TEST_FSM
     Test_FSM tests_fsm;
+#endif
+#ifdef TEST_FUN
+    Test_Functor tf;
 #endif
 };
 

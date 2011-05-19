@@ -15,8 +15,11 @@ Test_Functor::~Test_Functor() {
 }
 
 void Test_Functor::execute(void*) {
+	test_Functor_Without_Param();
+	test_Functor_With_Param();
+	test_FunctorMaker_Without_Param();
+	test_FunctorMaker_With_Param();
 }
-
 void Test_Functor::shutdown() {
 
 }

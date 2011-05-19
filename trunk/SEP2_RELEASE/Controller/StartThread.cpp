@@ -79,6 +79,12 @@ void StartThread::execute(void*) {
 	cout << "waiting for FSM-Tests" << endl;
 	tests_fsm.join();
 #endif
+#ifdef TEST_FUN
+	cout << "starting Functor-Test"	 << endl;
+	tf.start(NULL);
+	cout << "waiting for Functor-Test" << endl;
+	tf.join();
+#endif
 	/*
 	sleep(4);
 	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
