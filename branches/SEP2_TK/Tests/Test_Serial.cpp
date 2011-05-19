@@ -18,6 +18,7 @@ Test_Serial::Test_Serial() {
 	msg_test=1;
 	s_0 = new Serial();
 	s_1 = new Serial();
+	mine = TESTER;
 }
 
 Test_Serial::~Test_Serial() {
@@ -29,7 +30,7 @@ void Test_Serial::execute(void*){
 	int i = 0;
 	// FALLS NICHT AUSREICHT zum starten... 1 Serial mal ausbauen!
 
-	if (settingUpCommunicatorDevice(TESTER,NONE)) {
+	if (settingUpCommunicatorDevice(NONE)) {
 		printf("TS: chid: %d coid: %d\n",chid,coid);
 		s_0->init(1,true);
 		s_1->init(2,true);
@@ -52,7 +53,7 @@ void Test_Serial::execute(void*){
 			}
 		}
 		cout << "ending test serial..." <<endl;
-		endCommunication(TESTER);
+		endCommunication();
 /*
 		int msg_test = 1;
 		bool test_successful = true;
@@ -151,7 +152,7 @@ void Test_Serial::clean(){
 
 void Test_Serial::handleNormalMessage(){
 	std::cout << "chid: " << r_msg->m.chid << " coid: " << r_msg->m.coid <<" Wert: " << r_msg->m.wert <<std::endl;
-	if(!handleConnectionMessage(TESTER)){
+	if(!handleConnectionMessage()){
 		cout << "Test_Serial: can't handle Message"<<endl;
 	}
 }

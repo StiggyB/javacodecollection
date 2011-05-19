@@ -29,6 +29,7 @@ Serial::Serial() {
 	#else
 	receiver = ANLAGENSTEUERUNG;
 	#endif
+	mine = SERIAL;
 }
 
 void Serial::init(int numComPort, bool debug) {
@@ -107,7 +108,7 @@ void Serial::execute(void* data) {
 	ack = -1;
 	if (hasSettings) {
 
-		if (settingUpCommunicatorDevice(SERIAL, receiver)) {
+		if (settingUpCommunicatorDevice(receiver)) {
 cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 		while (!isStopped()) {
 
@@ -251,7 +252,7 @@ int Serial::receive(void* data, int lenBytes) {
 }
 
 void Serial::handleNormalMessage(){
-	if(!handleConnectionMessage(SERIAL)){
+	if(!handleConnectionMessage()){
 		cout << "Test_Serial: can't handle Message"<<endl;
 	}
 }
