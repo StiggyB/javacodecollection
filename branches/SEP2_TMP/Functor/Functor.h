@@ -1,33 +1,42 @@
 /*
- * Functor.h
+ * FunctorSimple.h
  *
- *  Created on: 11.05.2011
+ *  Created on: 12.05.2011
  *      Author: Tell
  */
 
-#ifndef FUNCTOR_H_
-#define FUNCTOR_H_
+#ifndef FUNCTORSIMPLE_H_
+#define FUNCTORSIMPLE_H_
 
 #include "CallInterface.h"
 
-template <typename R, class T >
-class Functor : public call::CallInterface {
+template<typename T, typename R, typename P>
+class Functor : public CallInterface<T, R, P>
+{
+
 public:
 	//Type definition: pointer to a member- function
-	typedef void (T:: *pMemFunc)();
-
-	CallInterface* FunctorMaker(T& pMemObj, void (T::*objFuncp)());
-	virtual void callback();
-	Functor(T& pMemObj, pMemFunc objFuncp);
-	~Functor();
-	R operator()();
-	R operator()(int i/*Param p1*/);
+	typedef R(T:: *pMemFunc)(P);
 
 private:
+	T* pMemObj_;
+	pMemFunc objFuncp_;
 
-	pMemFunc objFuncp;
-	T& pMemObj;
+public:
+	Functor(T* pMemObj, R(T:: *objFuncp)(P))
+	:pMemObj_(pMemObj), objFuncp_(objFuncp)
+	{
+	}
+
+	R operator()(P param) {
+		return (*pMemObj_.*objFuncp_)(param);
+	}
+
+	R call(P param) {
+		return (*pMemObj_.*objFuncp_)(param);
+	}
+
 };
 
 
-#endif /* FUNCTOR_H_ */
+#endif /* FUNCTORSIMPLE_H_ */

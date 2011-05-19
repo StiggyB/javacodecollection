@@ -1,21 +1,21 @@
 /*
- * CallInterface.h
+ * IFunctor.h
  *
- *  Created on: 12.05.2011
+ *  Created on: 17.05.2011
  *      Author: Tell
  */
 
-#ifndef CALLINTERFACE_H_
-#define CALLINTERFACE_H_
+#ifndef IFUNCTOR_H_
+#define IFUNCTOR_H_
 
-namespace call {
-
+template <typename T, typename R, typename P>
 class CallInterface {
+
 public:
-	CallInterface();
-	~CallInterface();
-	virtual void callback() = 0;
-};
+
+	virtual R operator()(P param) = 0;
+	virtual R call(P param) = 0;
+
 };
 
-#endif /* CALLINTERFACE_H_ */
+#endif /* IFUNCTOR_H_ */
