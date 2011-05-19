@@ -15,6 +15,7 @@
 #include "Test_Serial.h"
 
 Test_Serial::Test_Serial() {
+	msg_test=1;
 	s_0 = new Serial();
 	s_1 = new Serial();
 }
@@ -29,7 +30,20 @@ void Test_Serial::execute(void*){
 	// FALLS NICHT AUSREICHT zum starten... 1 Serial mal ausbauen!
 
 	if (settingUpCommunicatorDevice(DUMMY,NONE)) {
+
+		s_0->init(1,true);
+		s_1->init(2,true);
+
+		printf("start s_1\n");
+		s_1->start(NULL);
+
+		printf("start s_0\n");
+		s_0->start(NULL);
+
+
+		s_0->send(&msg_test, sizeof(msg_test));
 		while (!isStopped()) {
+			cout << "T_S received something???"<<endl;
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			cout << "T_S received something..."<<endl;
 			handleMessage();
@@ -133,9 +147,76 @@ void Test_Serial::clean(){
 
 void Test_Serial::handleNormalMessage(){
 	std::cout << "chid: " << r_msg->m.chid << " coid: " << r_msg->m.coid <<" Wert: " << r_msg->m.wert <<std::endl;
+	if(!handleConnectionMessages(DUMMY)){
+		cout << "Test_Serial: can not handle Message"<<endl;
+	}
+
+
+
+
 }
 
 void Test_Serial::handlePulsMessage(){
-	std::cout << "Test_Serial: received a Puls, but doesn't know what to do with it" << std::endl;
+	std::cout<<"Test_Serial: handlePulsMessage enter"<<endl;
+	switch(r_msg->pulse.value.sival_int){
+	case SYNC_SIGNAL:
+					printf("<<<<<----- Serial: SYNC_SIGNAL :\n");
+					break;
+
+
+				//message from Band 1 to Band 2
+				case POCKET:
+					printf("<<<<<----- Serial: POCKET an PORT\n");
+					break;
+				case NO_POCKET:
+					printf("<<<<<----- Serial: NO_POCKET an PORT:\n");
+					break;
+				case REQUEST_FREE:
+					printf("<<<<<----- Serial: REQUEST an PORT\n");
+					break;
+
+
+				//message from Band 2 to Band 1
+				case BAND2_FREE:
+					printf("<<<<<----- Serial: BAND2_FREE an PORT\n");
+					break;
+				case BAND2_OCCUPIED:
+					printf("<<<<<----- Serial: BAND2_OCCUPIED an PORT: \n" );
+					break;
+				case PUK_ARRIVED:
+					printf("<<<<<----- Serial: PUK_ARRIVED an PORT: \n");
+					break;
+
+
+				//BUTTONS
+				case E_STOP_PUSHED:
+					printf("<<<<<----- Serial: E_STOP_PUSHED an PORT: \n");
+					break;
+				case E_STOP_PULLED:
+					printf("<<<<<----- Serial: E_STOP_PULLED an PORT: \n");
+					break;
+				case STOP_BUTTON:
+					printf("<<<<<----- Serial: STOP an PORT: \n");
+					break;
+				case START_BUTTON:
+					printf("<<<<<----- Serial: START an PORT: \n");
+					break;
+				case RESET_BUTTON:
+					printf("<<<<<----- Serial: RESET an PORT: \n");
+					break;
+
+
+
+					// init message
+				case INIT_SERIAL:
+					printf("<<<<<----- You want to be my DADDY??? -----> OK\n");
+					break;
+				case ACK_INIT_SERIAL:
+					printf("<<<<<----- Serial: ACK_INIT_SERIAL an PORT: \n");
+					break;
+				default:
+					std::cout<<"ERROR: unknown info com" << endl;
+					break;
+				}//switch
 }
 

@@ -102,8 +102,6 @@ void Serial::execute(void* data) {
 	ack = -1;
 	if (hasSettings) {
 
-
-
 		if (settingUpSerial()) {
 cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 		while (!isStopped()) {
@@ -130,7 +128,10 @@ cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 			//message from Band 1 to Band 2
 			case POCKET:
 				printf("<<<<<----- Serial: POCKET an PORT: %d\n", comPort);
-				sendPulses(DUMMY, comPort, msg);
+				printList();
+				cout<< "return value: " << sendPulses(DUMMY, comPort, msg)<<endl;
+				printf("<<<<<----- Serial: POCKET an PORT: %d done\n", comPort);
+
 				break;
 			case NO_POCKET:
 				printf("<<<<<----- Serial: NO_POCKET an PORT: %d\n", comPort);

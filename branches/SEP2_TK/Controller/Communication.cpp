@@ -212,7 +212,7 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		perror("Communication: failed to attach Channel for Interrupt\n");
 		return false;
 	}
-	//std::cout << "Com_attachConnection done" << std::endl;
+	std::cout << "Com_attachConnection done for: " << c << std::endl;
 	Message * msg_s = (Message *) malloc(sizeof(Message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
@@ -242,7 +242,7 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		cleanUp(coid,msg_s,r_msg);
 		return false;
 	}
-	std::cout << "Com_attachConnection Msg was OK" << std::endl;
+	std::cout << "Com_attachConnection Msg was OK, coid: "<<coid << std::endl;
 	cleanUp(0,msg_s,r_msg);
 	std::list<Communicator>::iterator it = getCommunicatorForObject(id,0);
 	if(it == NULL){
@@ -353,26 +353,26 @@ void Communication::handleMessage() {
 }
 
 bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType my){
-	cout <<"0connectWithCommunicator-------------------------\n"<<endl;
+	//cout <<"0 connectWithCommunicator TYPE " << c << " my: "<< my <<endl;
 	int id = getChannelIdForObject(c);
+	//cout <<"1 connectWithCommunicator TYPE " << c << " my: "<< my <<endl;
 	if (!attachConnection(id, c)) {
 		perror("Communication: failed to AttachConnection!");
 		return false;
 	}
-	cout <<"1connectWithCommunicator-------------------------\n"<<endl;
+	//cout <<"2 connectWithCommunicator TYPE " << c << " my: "<< my <<endl;
 	coid = getConnectIdForObject(c);
 	buildMessage(m, chid, coid, startConnection, my);
 	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Communication: failed to send message to IC!");
 		return false;
 	}
-	cout <<"2send connectWithCommunicator-------------------------\n"<<endl;
+	//cout <<"3 connectWithCommunicator TYPE " << c << " my: "<< my <<endl;
 	if (-1 == (id = getChannelIdForObject(c))) {
 		perror("Communication: failed to get ChannelId!");
 		return false;
 	}
 
-	cout <<"hjsdjshdjsj blubber\n\n\n\n-------------------------\n"<<endl;
 	return true;
 }
 
@@ -383,6 +383,7 @@ bool Communication::sendPulses(CommunicatorType target, int code, int value){
 			perror("Communication: Failed to send target a pulse!");
 			return false;
 		}
+		cout << "sendPuls: " << coid << endl;
 		return true;
 	}
 	perror("Communication: Failed to getConnect Id for target object pulse!");
@@ -390,8 +391,11 @@ bool Communication::sendPulses(CommunicatorType target, int code, int value){
 }
 
 bool Communication::settingUpCommunicatorDevice(CommunicatorType mine, CommunicatorType target){
+
+	cout<<"Communicator mine: "<< mine<<" target: " << target << " aaa 0 settingUpCommunicatorDevice OKAY"<<endl;
 	if (prepareCommunication(mine)) {
 
+		cout<<"Communicator mine: "<< mine<<" target: " << target << " aaa 1 settingUpCommunicatorDevice OKAY"<<endl;
 		if (target != NONE && !requestChannelIDForObject(target)) {
 			perror("Communicator: request failed");
 			unregisterChannel(mine);
@@ -410,7 +414,7 @@ bool Communication::settingUpCommunicatorDevice(CommunicatorType mine, Communica
 			return false;
 		}
 	}
-	cout<<"last settingUpCommunicatorDevice OKAY"<<endl;
+	cout<<"Communicator mine: "<< mine<<" target: " << target << " last settingUpCommunicatorDevice OKAY"<<endl;
 	return true;
 }
 
@@ -453,18 +457,18 @@ int Communication::getValueFromReceivePulse(){
 
 bool Communication::handleConnectionMessages(CommunicatorType c) {
 	if (r_msg->m.ca == startConnection) {
-		cout <<"0 handleConnectionMessages-------------------------\n"<<endl;
+		//cout <<"0 handleConnectionMessages-------------------------\n"<<endl;
 		if (addCommunicator(r_msg->m.chid, r_msg->m.coid, r_msg->m.comtype)) {
 			buildMessage(m, r_msg->m.chid, r_msg->m.coid, OK, c);
-			cout <<"1 handleConnectionMessages-------------------------\n"<<endl;
+			//cout <<"1 handleConnectionMessages-------------------------\n"<<endl;
 			if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
 				perror("Communication: failed to send reply message to Communicator!");
 			}
-			cout <<"2 handleConnectionMessages-------------------------\n"<<endl;
+			//cout <<"2 handleConnectionMessages-------------------------\n"<<endl;
 			if ((coid = ConnectAttach(0, 0, r_msg->m.chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 				perror("Communication: failed to attach Channel to other Instance\n");
 			}
-			cout <<"3 handleConnectionMessages-------------------------\n"<<endl;
+			//cout <<"3 handleConnectionMessages-------------------------\n"<<endl;
 			getCommunicatorForObject(r_msg->m.chid, r_msg->m.coid)->setConnectID(coid);
 		} else {
 			perror("Communication: failed to addCommunicator");
@@ -474,10 +478,10 @@ bool Communication::handleConnectionMessages(CommunicatorType c) {
 			perror("Communication: remove Communicator.");
 		}
 	} else {
-		cout << "Communication: message encountered, but not known..." << endl;
+		//cout << "Communication: message encountered, but not known..." << endl;
 		return false;
 	}
-	cout <<"gut handleConnectionMessages-------------------------\n"<<endl;
+	//cout <<"gut handleConnectionMessages-------------------------\n"<<endl;
 	return true;
 }
 

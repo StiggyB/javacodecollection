@@ -36,6 +36,8 @@ protected:
 private:
 	Serial *s_0;
 	Serial *s_1;
+	int msg_test;
+	bool test_successful;
 };
 
 #endif /* TEST_IRQ_H_ */
