@@ -373,7 +373,7 @@ bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType
 bool Communication::sendPulses(CommunicatorType target, int code, int value){
 	int coid = 0;
 	if(-1 != (coid = getConnectIdForObject(target))){
-		if(-1 == MsgSendPulse(coid, 0,code,value)){
+		if(-1 == MsgSendPulse(coid, PULSE_MIN_PRIO, code, value)){
 			perror("Communication: Failed to send target a pulse!");
 			return false;
 		}

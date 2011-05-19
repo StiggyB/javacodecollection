@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "../HAL/HALCore.h"
 
+#define PULSE_MIN_PRIO 1
 /**
  * All types of Communicators
  */
