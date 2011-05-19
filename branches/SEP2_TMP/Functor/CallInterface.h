@@ -1,8 +1,17 @@
-/*
- * IFunctor.h
+/**
+ * Interface for the Functor Pattern.
  *
- *  Created on: 17.05.2011
- *      Author: Tell
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Encapsulates functions for the Functor Pattern.
+ * These functions provide a generic Callback with
+ * dynamic Objecttype, Returntype and Parametertype.
+ *
  */
 
 #ifndef IFUNCTOR_H_
@@ -13,7 +22,18 @@ class CallInterface {
 
 public:
 
+	/**
+	 * Provides a dynamic choose of Functionpointers.
+	 * \param a generic P, represents the parameter.
+	 * \return a generic R, represents the returnvalue.
+	 */
 	virtual R operator()(P param) = 0;
+
+	/**
+	 * Provides a dynamic choose of Functionpointers.
+	 * \param a generic P, represents the parameter.
+	 * \return a generic R, represents the returnvalue.
+	 */
 	virtual R call(P param) = 0;
 
 };
