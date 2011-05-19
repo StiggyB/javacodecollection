@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "../HAL/HALCore.h"
 
+#define PULSE_MIN_PRIO 1
 /**
  * All types of Communicators
  */
@@ -354,14 +355,14 @@ private:
 	 */
 	int uniqueID;
 	/**
-	 * own CommunicatorType
-	 */
-	CommunicatorType mine;
-	/**
 	 * List of all connected Communicators
 	 */
 	std::list<Communicator> lst;
 protected:
+	/**
+	 * own CommunicatorType
+	 */
+	CommunicatorType mine;
 	/**
 	 * ChannelID and ConnectionID of this Communicator
 	 */
@@ -392,7 +393,7 @@ protected:
 	 * handles add and close connection commands
 	 * \returns a boolean true, if did something.
 	 */
-	bool handleConnectionMessages();
+	bool handleConnectionMessage();
 	void getConnectionAttached();
 	bool regEditChannel(CommunicatorType c, int unique, MsgType m);
 	bool doInternalExchange(Message ** ptrM,Message ** ptrR,CommunicatorType c, int coid, int chid, int unique, MsgType m);

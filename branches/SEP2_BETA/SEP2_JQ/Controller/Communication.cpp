@@ -158,11 +158,11 @@ void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,C
 
 void Communication::buildMessage(void *s, int chid, int coid, MsgType activity,CommunicatorType c, int val){
 	Message *m =  (Message*) s;
-	(*m).m.chid = chid;
-	(*m).m.coid = coid;
-	(*m).m.ca =  activity;
-	(*m).m.comtype = c;
-	(*m).m.wert = val;
+	m->m.chid = chid;
+	m->m.coid = coid;
+	m->m.ca =  activity;
+	m->m.comtype = c;
+	m->m.wert = val;
 }
 
 bool Communication::allocMessages() {
@@ -248,7 +248,7 @@ bool Communication::sendPulses(CommunicatorType target, int code, int value){
 bool Communication::sendPulses(CommunicatorType target, int number, int code, int value){
 	int coid = 0;
 	if(-1 != (coid = getConnectIdForObject(target,number))){
-		if(-1 == MsgSendPulse(coid, 0,code,value)){
+		if(-1 == MsgSendPulse(coid, PULSE_MIN_PRIO, code, value)){
 			perror("Communication: Failed to send target a pulse!");
 			return false;
 		}
@@ -316,7 +316,7 @@ int Communication::getValueFromReceivePulse(){
 	return getValueFromPulse(r_msg);
 }
 
-bool Communication::handleConnectionMessages() {
+bool Communication::handleConnectionMessage() {
 	if (r_msg->m.ca == startConnection) {
 		getConnectionAttached();
 	} else if (r_msg->m.ca == closeConnection) {
@@ -324,7 +324,6 @@ bool Communication::handleConnectionMessages() {
 			perror("Communication: remove Communicator.");
 		}
 	} else {
-		//cout << "Communication: message encountered, but not known..." << endl;
 		return false;
 	}
 	return true;
@@ -385,19 +384,16 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		return false;
 	}
 	buildMessage(msg_s,id, coid, startConnection, c,uniqueID);
-	//std::cout << "Com_attachConnection got Space 4 Receive Message" << std::endl;
 	if (-1 == MsgSend(coid, msg_s, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Communication: failed to send Message to server.");
 		cleanUp(coid,msg_s,r_msg);
 		return false;
 	}
-	//std::cout << "Com_attachConnection got answer!" << std::endl;
 	if (r_msg->m.ca != OK) {
 		perror("Communication: no OK from Receiver! ");
 		cleanUp(coid,msg_s,r_msg);
 		return false;
 	}
-	//std::cout << "Com_attachConnection Msg was OK" << std::endl;
 	cleanUp(0,msg_s,r_msg);
 	std::list<Communicator>::iterator it = getCommunicatorForObject(id,0);
 	return (it == NULL ? false : (*it).setConnectID(coid));
@@ -428,19 +424,19 @@ bool Communication::unregisterChannel(CommunicatorType c, int unique) {
 	return regEditChannel(c,unique,removeFromServer);
 }
 bool Communication::regEditChannel(CommunicatorType c, int unique, MsgType m){
-	Message ** msg_s=NULL, **r_msg=NULL;
+	Message * msg_s, *r_msg;
 	int coid = ConnectAttach(0, 0, serverChannelId, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
 		perror("Communication: failed to attach channel\n");
 		cleanUp(coid);
 		return false;
 	}
-	if(!doInternalExchange(msg_s,r_msg,c, coid, chid, unique, m)){
+	if(!doInternalExchange(&msg_s,&r_msg,c, coid, chid, unique, m)){
 		perror("Communication: failed to do internal exchange\n");
 		cleanUp(coid);
 		return false;
 	}
-	cleanUp(coid, *msg_s, *r_msg);
+	cleanUp(coid, msg_s, r_msg);
 	return true;
 }
 
@@ -452,7 +448,7 @@ bool Communication::doInternalExchange(Message ** ptrM,Message ** ptrR,
 		cleanUp(coid, msg_s, r_msg);
 		return false;
 	}
-	(*ptrM) = msg_s; (*ptrR) = r_msg;
+	(*ptrM) = msg_s;(*ptrR) = r_msg;
 	buildMessage(msg_s, chid, coid, m, c, unique);
 	if (-1 == MsgSend(coid, msg_s, sizeof(Message), r_msg, sizeof(Message))) {
 		perror("Communication: failed to send Message to server,");

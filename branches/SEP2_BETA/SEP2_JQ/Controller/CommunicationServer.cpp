@@ -17,7 +17,7 @@
 
 
 CommunicationServer::CommunicationServer(): id(0){
-
+	mine = COMMUNICATIONCONTROLLER;
 }
 
 CommunicationServer::~CommunicationServer() {

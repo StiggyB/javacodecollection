@@ -28,6 +28,7 @@ InterruptController::InterruptController() {
 	int i = h->getSetInterrupt();
 	cout << "InterruptController: first_Interrupt 0x" << hex << i << endl;
 	activateInterrupts();
+	mine = INTERRUPTCONTROLLER;
 }
 
 InterruptController::~InterruptController() {
@@ -99,8 +100,7 @@ void InterruptController::execute(void*) {
 			perror("error for IO Control\n");
 			return;
 		}
-		Lampen *l = Lampen::getInstance();
-		l->addLight(GREEN);
+		Lampen::getInstance()->addLight(GREEN);
 		while(!isStopped()){
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
@@ -132,7 +132,9 @@ void InterruptController::handlePulsMessage() {
 }
 
 void InterruptController::handleNormalMessage() {
-	handleConnectionMessages();
+	if(!handleConnectionMessage()){
+		cout << "InterruptController: unknown command in message encountered\n" << endl;
+	}
 }
 
 void InterruptController::shutdown() {

@@ -24,6 +24,7 @@ Sensor::Sensor():cnt(0),p(0),id(0),coid(0){
 		h = HALCore::getInstance();
 	}
 	l = Lampen::getInstance();
+	mine = SENSOR;
 }
 
 Sensor::~Sensor() {
