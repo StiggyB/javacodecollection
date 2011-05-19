@@ -209,10 +209,10 @@ bool Communication::cleanUp(int coid,Message *m,Message *r){
 bool Communication::attachConnection(int id, CommunicatorType c){
 	coid = ConnectAttach(0, 0, id, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
-		perror("Communication: failed to attach Channel for Interrupt\n");
+		perror("Communication: failed to attach Channel\n");
 		return false;
 	}
-	std::cout << "Com_attachConnection done for: " << c << std::endl;
+	std::cout << "Com_attachConnection done for: " << c << " on: " << id <<std::endl;
 	Message * msg_s = (Message *) malloc(sizeof(Message));
 	if (msg_s == NULL) {
 		perror("Communication: failed to get Space for Message.");
@@ -379,7 +379,8 @@ bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType
 bool Communication::sendPulses(CommunicatorType target, int code, int value){
 	int coid = 0;
 	if(-1 != (coid = getConnectIdForObject(target))){
-		if(-1 == MsgSendPulse(coid, 0,code,value)){
+		//cout << "Com:sendPulses Target: "<< target <<" code: "<<code <<" coid: " << coid << " value: " << value<< endl;
+		if(-1 == MsgSendPulse(coid, PULSE_MIN_PRIO,code,value)){
 			perror("Communication: Failed to send target a pulse!");
 			return false;
 		}
