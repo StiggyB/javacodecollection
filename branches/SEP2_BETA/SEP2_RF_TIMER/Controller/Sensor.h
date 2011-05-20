@@ -12,6 +12,7 @@
 #include "../Tests/Test_FSM.h"
 #include "../Thread/HAWThread.h"
 #include "../HAL/HALCore.h"
+#include "../Timer/Timer.h"
 #include <vector>
 
 

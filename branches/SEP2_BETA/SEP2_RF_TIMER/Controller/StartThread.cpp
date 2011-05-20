@@ -6,6 +6,7 @@
  */
 
 #include "StartThread.h"
+#include "../Timer/Timer.h"
 
 StartThread::StartThread(){
 	h = HALCore::getInstance();
@@ -38,11 +39,10 @@ void StartThread::execute(void*) {
 
 #ifdef TEST_SER
 	cout << "starting SERIAL-Tests" << endl;
-	Serial ser;
-	ser.init(1,1,true);
 	ser.start(NULL);
 	cout << "waiting for SERIAL-Tests" << endl;
-	//ser.join();
+	ser.join();
+	cout << "SERIAL-Tests ended" << endl;
 #endif
 
 #ifdef TEST_HAL
@@ -85,6 +85,12 @@ void StartThread::execute(void*) {
 	cout << "waiting for Functor-Test" << endl;
 	tf.join();
 #endif
+	sleep(1);
+	Timer timer;
+	/*timer.start(NULL);
+	sleep(1);
+	timer.addTimerFunction();*/
+
 	/*
 	sleep(4);
 	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);

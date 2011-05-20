@@ -15,6 +15,7 @@
 #include "Sensor.h"
 #include "InterruptController.h"
 #include "CommunicationServer.h"
+#include "../Timer/Timer.h"
 
 class StartThread : public thread::HAWThread {
 public:

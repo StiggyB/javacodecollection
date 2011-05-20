@@ -30,6 +30,7 @@ Sensor::Sensor():cnt(0) {
 	}
 	l = Lampen::getInstance();
 	is_Band_has_wp_ls7 = false;
+	mine = SENSOR;
 }
 
 Sensor::~Sensor() {
@@ -37,13 +38,13 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	if (settingUpCommunicatorDevice(SENSOR,INTERRUPTCONTROLLER)) {
+	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		initPucks();
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
-		endCommunication(SENSOR);
+		endCommunication();
 	}else{
 		perror("Sensor: Setting Up failed!");
 	}

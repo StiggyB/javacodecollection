@@ -28,6 +28,7 @@ InterruptController::InterruptController() {
 	int i = h->getSetInterrupt();
 	cout << "InterruptController: first_Interrupt 0x" << hex << i << endl;
 	activateInterrupts();
+	mine = INTERRUPTCONTROLLER;
 }
 
 InterruptController::~InterruptController() {
@@ -93,7 +94,7 @@ void InterruptController::connectToHAL() {
 
 void InterruptController::execute(void*) {
 	cout << "IC: now getting shit up!" << endl;
-	if(settingUpCommunicatorDevice(INTERRUPTCONTROLLER,NONE)){
+	if(settingUpCommunicatorDevice(NONE)){
 		connectToHAL();
 		if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 			perror("error for IO Control\n");
@@ -107,7 +108,7 @@ void InterruptController::execute(void*) {
 			handleMessage();
 		}
 		disconnectFromHAL();
-		endCommunication(INTERRUPTCONTROLLER);
+		endCommunication();
 	}
 }
 
@@ -133,26 +134,8 @@ void InterruptController::handlePulsMessage() {
 }
 
 void InterruptController::handleNormalMessage() {
-	if (r_msg->m.ca == startConnection) {
-		if (addCommunicator(r_msg->m.chid, r_msg->m.coid, r_msg->m.comtype)) {
-			buildMessage(m, r_msg->m.chid, r_msg->m.coid, OK,
-					INTERRUPTCONTROLLER);
-			if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
-				perror("InterruptController: failed to send reply message to Communicator!");
-			}
-			if ((coid = ConnectAttach(0, 0, r_msg->m.chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
-				perror("InterruptController: failed to attach Channel to other Instance\n");
-			}
-			getCommunicatorForObject(r_msg->m.chid, r_msg->m.coid)->setConnectID(coid);
-		} else {
-			perror("IC: failed to addCommunicator");
-		}
-	} else if (r_msg->m.ca == closeConnection) {
-		if (removeCommunicator(r_msg->m.chid, r_msg->m.coid, r_msg->m.comtype)) {
-			perror("IC: remove Communicator.");
-		}
-	} else {
-		cout << "IC: message encountered, but not known..." << endl;
+	if(!handleConnectionMessage()){
+		printf("InterruptController: unknown command in message encountered\n");
 	}
 }
 

@@ -2,6 +2,7 @@
 #ifndef SERIAL_H_
 #define SERIAL_H_
 
+
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -10,6 +11,28 @@
 #include <termios.h>
 #include <sys/types.h>
 #include "../Thread/HAWThread.h"
+#include "../Controller/Communication.h"
+#include "../Tests/test.h"
+
+enum msgType{
+	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
+	POCKET=(1),ACK_POCKET=(101),
+	NO_POCKET=(2),ACK_NO_POCKET=(102),
+	REQUEST_FREE=(5),
+	BAND2_FREE=(15),
+	BAND2_OCCUPIED=(25),
+	PUK_ARRIVED=(6),
+	E_STOP_PUSHED=(7),
+	E_STOP_PULLED=(8),
+	STOP_BUTTON=(9),
+	START_BUTTON=(10),
+	RESET_BUTTON=(11),
+	INIT_SERIAL=(1337),
+	ACK_INIT_SERIAL=(42)
+};
+
+
+#define DEBUG_SERIAL
 
 /**
  * Interface for the Serial Connection
@@ -27,21 +50,17 @@
  * Two threads with the same modus won't work.
  *
  */
-class Serial : public thread::HAWThread{
+class Serial : public thread::HAWThread, public Communication{
 public:
 	/**
 	 * Constructor with integrated initialization.
-	 */
-	Serial();
-	~Serial();
-	/**
-	 * Initialization of Serial Port.
 	 * \param numComPort an integer, specifying the Com Port.
-	 * \param modi an integer, 0 for send SYN, get ACK; 1 for get SYN, send ACK
 	 * \param debug a bool, indicates debugging mode.
 	 */
-	void init(int numComPort, int modi, bool debug);
-protected:
+	//Serial(int numComPort, bool debug);
+	Serial();
+	~Serial();
+	void init(int numComPort, bool debug);
 	/**
 	 * Writes on Com Port.
 	 * \param data a void pointer, contains the data which will be send.
@@ -49,6 +68,11 @@ protected:
 	 * \return an integer, 0 for okay, -1 for error.
 	 */
 	int send(void* data, int lenByte);
+
+protected:
+
+	void handlePulsMessage();
+	void handleNormalMessage();
 	/**
 	 * Reads from Com Port.
 	 * \param data a void pointer, contains the data container to store incoming data.
@@ -62,13 +86,16 @@ protected:
 	 */
 	virtual void execute(void* data);
 	virtual void shutdown();
-
+	void clean();
 private:
+	unsigned int ack;
+	unsigned int msg;
 	int ser;
 	int comPort;
 	int sender_receiver;
 	int cnt;
 	bool hasSettings;
+	CommunicatorType receiver;
 };
 
 #endif /* SERIAL_H_ */

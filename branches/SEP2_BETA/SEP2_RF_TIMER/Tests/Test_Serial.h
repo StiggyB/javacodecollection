@@ -1,9 +1,11 @@
 
 #ifndef TEST_SERIAL_H_
 #define TEST_SERIAL_H_
+#define DEBUG_SERIAL
 
 #include "../Thread/HAWThread.h"
 #include "../Serial/Serial.h"
+#include "../Controller/Communication.h"
 
 /**
  * Testing Class for IRQ
@@ -19,15 +21,23 @@
  *
  * Inherits: thread::HAWThread
  */
-class Test_Serial : public thread::HAWThread{
+class Test_Serial : public thread::HAWThread, public Communication{
 public:
 	Test_Serial();
 	virtual ~Test_Serial();
+
+	void handlePulsMessage();
+	void handleNormalMessage();
+
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
+	void clean();
 private:
-
+	Serial *s_0;
+	Serial *s_1;
+	int msg_test;
+	bool test_successful;
 };
 
 #endif /* TEST_IRQ_H_ */

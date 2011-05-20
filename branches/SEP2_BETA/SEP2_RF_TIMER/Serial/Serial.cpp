@@ -1,4 +1,3 @@
-
 /**
  * Interface for the Serial Connection
  *
@@ -18,49 +17,52 @@
 
 #include "Serial.h"
 
-Serial::Serial(){
+Serial::Serial() {
+	//printf("Serial COnstructor!\n");
+	ack = -1;
+	printf("Serial COnstructor - ack = 0\n");
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
-			perror("ThreadCtl access failed\n");
-		}
+		perror("ThreadCtl access failed\n");
+	}
+	#ifdef TEST_SER
+	receiver = TESTER;
+	#else
+	receiver = ANLAGENSTEUERUNG;
+	#endif
+	mine = SERIAL;
 }
 
-void Serial::init(int numComPort, int modi, bool debug) {
+void Serial::init(int numComPort, bool debug) {
+	printf("init Serial\n");
 	hasSettings = false;
 	cnt = 0;
 	struct termios termSettings;
 	comPort = numComPort;
 
-	if (modi == 0 or modi == 1) { //send SYN, get ACK OR get SYN, send ACK
-		sender_receiver = modi;
-	} else {
-		if (debug) {
-			printf("thread-modus not in range, only 0 or 1");
-		}
-		//return -1;
-	} //if
-
 	switch (numComPort) {
 	case 1:
-		ser = open("/dev/ser1", O_RDWR);
+		ser = open("/dev/ser1", O_RDWR );
 		break;
 	case 2:
-		ser = open("/dev/ser2", O_RDWR);
+		ser = open("/dev/ser2", O_RDWR );
 		break;
-		//default: if (debug){ printf("com-port %i not in rage!\n",numComPort); } return -1;
+	default:
+#ifdef DEBUG_SERIAL
+		printf("com-port %i not in range!\n", numComPort);
+#endif
+		break;
 	}//switch
 
+#ifdef DEBUG_SERIAL
 	if (ser == -1) {
-		if (debug) {
-			printf("Error serial port %i init\n", numComPort);
-			fflush(stdout);
-		}
-		//return -1;
+		printf("Error serial port %i init\n", numComPort);
+		fflush(stdout);
 	} else {
-		if (debug) {
-			printf("serial port %i open\n", numComPort);
-			fflush(stdout);
-		}
+		printf("serial port %i open\n", numComPort);
+		fflush(stdout);
 	}
+#endif
+
 	tcflush(ser, TCIOFLUSH );
 
 	sleep(1);
@@ -69,13 +71,13 @@ void Serial::init(int numComPort, int modi, bool debug) {
 	tcgetattr(ser, &termSettings);
 
 	/* set baudrate */
-	cfsetispeed(&termSettings, B9600);
-	cfsetospeed(&termSettings, B9600);
-	if (debug) {
-		printf("Input Baut Rate: %d\t Output Baut Rate: %d\n",
-				termSettings.c_ispeed, termSettings.c_ospeed);
-		fflush(stdout);
-	}//if
+	cfsetispeed(&termSettings, _TIOS_B9600);
+	cfsetospeed(&termSettings, _TIOS_B9600);
+#ifdef DEBUG_SERIAL
+	printf("Input Baut Rate: %d\t Output Baut Rate: %d\n",
+			termSettings.c_ispeed, termSettings.c_ospeed);
+	fflush(stdout);
+#endif
 
 	/* 8 data, 1 stop, no paity */
 	termSettings.c_cflag &= ~CSIZE;
@@ -86,13 +88,14 @@ void Serial::init(int numComPort, int modi, bool debug) {
 	termSettings.c_cflag |= CLOCAL;
 
 	tcsetattr(ser, TCSANOW, &termSettings);
-	if (debug) {
-		printf("c Flag: %d\n", termSettings.c_cflag);
-		printf("fp zu com-port: %i\n", ser);
-		fflush(stdout);
-	}//if
+#ifdef DEBUG_SERIAL
+	printf("c Flag: %d\n", termSettings.c_cflag);
+	printf("fp zu com-port: %i\n", ser);
+	fflush(stdout);
+#endif
 
 	hasSettings = true;
+
 }
 
 Serial::~Serial() {
@@ -100,48 +103,113 @@ Serial::~Serial() {
 }
 
 void Serial::execute(void* data) {
-	char msg1[10];
-	char msg2[10];
-	char msg_rec[10];
 
+	msg = -1;
+	ack = -1;
 	if (hasSettings) {
+
+		if (settingUpCommunicatorDevice(receiver)) {
+cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 		while (!isStopped()) {
 
-			switch (sender_receiver) {
-			case 0:
-				printf("ser = %d\n",ser);
-				sprintf(msg1, "ACK%6d", cnt++);
-				send(msg1, 10); // send SYN, get ACK
-				//printf("msg1=%s\n",msg1);
-				//printf("SYN send\n");
-				//printf("wait for ACK\n");
-				while (receive(msg_rec, 10) == -2);
-				printf("%s\n", msg_rec);
-				msg_rec[0]= '\0';
-				//printf("cnt = %i\n",cnt);
-				fflush(stdout);
-				sleep(1);
+//			printf(
+//					"Serial: waiting to receive something... :D com port: %i msg: %d\n",
+//					comPort, msg);
+			while (receive(&msg, sizeof(msg)) == -2) {
+				//printf("recive nothing: %d port %d\n", msg,comPort);
+			}//while
+
+//			printf("MSG: %x port: %d\n", msg, comPort);
+
+			switch (msg) {
+			case -1:
 				break;
 
-			case 1: //get SYN, send ACK
-				//printf("ser = %d\n",ser);
-				//printf("----wait for SYN\n");
-				while (receive(msg_rec, 10) == -2)
-					;
-				printf("----%s\n", msg_rec);
-				sprintf(msg2, "SYN%6d", cnt++);
-				//printf("msg2=%s\n",msg2);
-				send(msg2, 10);
-				//printf("----ACK send\n");
-				//printf("cnt = %i\n",cnt);
-				fflush(stdout);
-				sleep(1);
+				//sync message
+			case SYNC_SIGNAL:
+				printf("<<<<<----- Serial: SYNC_SIGNAL an PORT: %d\n", comPort);
+				break;
+
+
+			//message from Band 1 to Band 2
+			case POCKET:
+				printf("<<<<<----- Serial: POCKET an PORT: %d\n", comPort);
+				printList();
+				cout<< "return value: " << sendPulses(receiver, comPort, msg)<<endl;
+				printf("<<<<<----- Serial: POCKET an PORT: %d done\n", comPort);
+
+				break;
+			case NO_POCKET:
+				printf("<<<<<----- Serial: NO_POCKET an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case REQUEST_FREE:
+				printf("<<<<<----- Serial: REQUEST an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+
+
+			//message from Band 2 to Band 1
+			case BAND2_FREE:
+				printf("<<<<<----- Serial: BAND2_FREE an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case BAND2_OCCUPIED:
+				printf("<<<<<----- Serial: BAND2_OCCUPIED an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case PUK_ARRIVED:
+				printf("<<<<<----- Serial: PUK_ARRIVED an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+
+
+			//BUTTONS
+			case E_STOP_PUSHED:
+				printf("<<<<<----- Serial: E_STOP_PUSHED an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case E_STOP_PULLED:
+				printf("<<<<<----- Serial: E_STOP_PULLED an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case STOP_BUTTON:
+				printf("<<<<<----- Serial: STOP an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case START_BUTTON:
+				printf("<<<<<----- Serial: START an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+			case RESET_BUTTON:
+				printf("<<<<<----- Serial: RESET an PORT: %d\n", comPort);
+				sendPulses(receiver, comPort, msg);
+				break;
+
+
+
+				// init message
+			case INIT_SERIAL:
+				printf("<<<<<----- You want to be my DADDY??? -----> OK\n");
+				break;
+			case ACK_INIT_SERIAL:
+				printf("<<<<<----- Serial: ACK_INIT_SERIAL an PORT: %d\n", comPort);
+				break;
+			default:
+				printf("ERROR: unknown info com %d msg: %d\n", comPort, msg);
 				break;
 			}//switch
+
+			msg = -1;
 		}//while
+		}else{
+			perror("Serial: Setting Up failed!");
+		}
 	} else {
-		printf("com-port %i not initiated\n");
+		perror("Serial: com-port %i not initiated\n");
 	}//if
+
+
 }
 
 void Serial::shutdown() {
@@ -149,20 +217,29 @@ void Serial::shutdown() {
 }
 
 int Serial::send(void* data, int lenBytes) {
+
+	unsigned int *p = (unsigned int*) (data);
 	int n = (int) write(ser, data, lenBytes);
+	printf("----->>>>>send: port %i DATA: %d \n", comPort,*p) ;
+
+
 	if (n < 0) {
 		printf("Write failed for com-port %i\n", comPort);
 		return -1;
 	} else {
 		return 0;
 	}//if
-
+	cout << "hello! :P" << endl;
+	return 0;
 }
 
 int Serial::receive(void* data, int lenBytes) {
-	int n = readcond(ser, data, lenBytes, 10, 0, 10);
+	//printf("Want to receive..\n");
+	int n = readcond(ser, data, lenBytes, 0, 0, 10);
+	//printf("n=%i on Com %d",n, comPort);
+
 	if (n <= 0) {
-		if (errno == EAGAIN || n==0) {
+		if (errno == EAGAIN || n == 0) {
 			//printf ("EAGAIN com-port %i\n", comPort );
 			return -2; // assume that command generated no response
 		} else {
@@ -174,3 +251,12 @@ int Serial::receive(void* data, int lenBytes) {
 	}//if// return 0;
 }
 
+void Serial::handleNormalMessage(){
+	if(!handleConnectionMessage()){
+		cout << "Test_Serial: can't handle Message"<<endl;
+	}
+}
+
+void Serial::handlePulsMessage(){
+	std::cout << "Serial: received a Puls, but doesn't know what to do with it" << std::endl;
+}
