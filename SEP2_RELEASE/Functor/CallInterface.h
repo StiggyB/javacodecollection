@@ -10,7 +10,7 @@
  *
  * Encapsulates functions for the Functor Pattern.
  * These functions provide a generic Callback with
- * dynamic Objecttype, Returntype and Parametertype.
+ * dynamic object type, return type and parameter type.
  *
  */
 
