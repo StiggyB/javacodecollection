@@ -224,7 +224,6 @@ bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType
 
 bool Communication::connectWithCommunicator(CommunicatorType c, int number, CommunicatorType my){
 	int id = getChannelIdForObject(c,number);
-	printf("hello Timer!\n");
 	if (!attachConnection(id, c)) {
 		perror("Communication: failed to AttachConnection!");
 		return false;
