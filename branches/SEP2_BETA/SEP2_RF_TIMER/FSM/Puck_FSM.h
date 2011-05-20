@@ -21,7 +21,7 @@
 #include "../HAL/HALCore.h"
 #include "../HAL/Lampen.h"
 
-//#define PUCK_FSM_STATE_DEBUG
+#define PUCK_FSM_STATE_DEBUG
 
 class Puck_FSM {
 public:

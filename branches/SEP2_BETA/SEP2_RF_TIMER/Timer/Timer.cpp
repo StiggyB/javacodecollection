@@ -20,8 +20,17 @@ Timer::~Timer() {
 bool Timer::addTimerFunction(){
 	//funcp->call(NULL);
 	//std::cout << "operation executed" << std::endl;
-	sendPulses(TIMER, 0, 0);
+	//int coid_sen = 0;//getConnectIdForObject(SENSOR);
 
+	if(sendPulses(TIMER, 0, 0)){
+		std::cout << "Timer: Pulse was sent" << std::endl;
+	}
+
+	/*if(-1 == MsgSendPulse(coid_sen, PULSE_MIN_PRIO, (1 << 1), 0)){
+				perror("Communication: Failed to send target a pulse!");
+				return false;
+			}
+/*
 		timer_t             timerid;
 	    struct sigevent     event;
 	    struct itimerspec   timer;
@@ -35,11 +44,12 @@ bool Timer::addTimerFunction(){
 	    timer.it_interval.tv_sec = 1;
 	    timer.it_interval.tv_nsec = 0;
 	    timer_settime (timerid, 0, &timer, NULL);
-
+*/
 	    return true;
 }
 
 void Timer::execute(void*) {
+	std::cout << "Start Timer" << std::endl;
 	std::cout << "Start Timer" << std::endl;
 	//while (!isStopped()) {
 
@@ -50,21 +60,21 @@ void Timer::execute(void*) {
 		//addTimerFunction(func1);
 
 		if (settingUpCommunicatorDevice(receiver)) {
+			std::cout << "Timer coid:" << coid << "Timer chid:" << chid << std::endl;
 			while (!isStopped()) {
 				rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-				std::cout << "blaa" << std::endl;
-				//handleMessage();
+				handleMessage();
 			}
-			endCommunication(SENSOR);
 		}else{
-			perror("Sensor: Setting Up failed!");
+			perror("Timer: Setting Up failed!");
+			endCommunication();
 		}
 
 	//}
 }
 
 void Timer::handleNormalMessage(){
-
+	std::cout << "Sensor: received a message, but doesn't know what to do with it" << std::endl;
 }
 
 

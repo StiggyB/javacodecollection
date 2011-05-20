@@ -77,7 +77,7 @@ void StartThread::execute(void*) {
 	s.testFSM(&tests_fsm);
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
-	tests_fsm.join();
+	//tests_fsm.join();
 #endif
 #ifdef TEST_FUN
 	cout << "starting Functor-Test"	 << endl;
@@ -87,9 +87,9 @@ void StartThread::execute(void*) {
 #endif
 	sleep(1);
 	Timer timer;
-	/*timer.start(NULL);
+	timer.start(NULL);
 	sleep(1);
-	timer.addTimerFunction();*/
+	timer.addTimerFunction();
 
 	/*
 	sleep(4);

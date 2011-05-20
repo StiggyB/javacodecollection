@@ -42,6 +42,7 @@ void Sensor::execute(void*) {
 		initPucks();
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+			std::cout << "Sensor: Interrupt" << std::endl;
 			handleMessage();
 		}
 		endCommunication();
