@@ -89,7 +89,7 @@ void StartThread::execute(void*) {
 	Timer timer;
 	timer.start(NULL);
 	sleep(1);
-	timer.addTimerFunction();
+	timer.addTimerFunction(NULL, 0);
 
 	/*
 	sleep(4);

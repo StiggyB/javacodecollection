@@ -18,12 +18,14 @@
 #include "../FSM/Puck_FSM_1.h"
 #include "../FSM/Puck_FSM_2.h"
 #include "../Tests/Test_Functions.h"
+#include "../HAL/HALCore.h"
 
 class Timer : public thread::HAWThread, public Communication{
 public:
 	Timer();
 	virtual ~Timer();
-	bool addTimerFunction( );//CallInterface<Puck_FSM, void, void*>*
+	bool addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
+	bool addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int timer );
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

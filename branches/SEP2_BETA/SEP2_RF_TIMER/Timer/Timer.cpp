@@ -17,12 +17,12 @@ Timer::~Timer() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Timer::addTimerFunction(){
+bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int timer){
 	//funcp->call(NULL);
 	//std::cout << "operation executed" << std::endl;
 	//int coid_sen = 0;//getConnectIdForObject(SENSOR);
 
-	if(sendPulses(TIMER, 0, 0)){
+	/*if(sendPulses(TIMER, 0, 0)){
 		std::cout << "Timer: Pulse was sent" << std::endl;
 	}
 
@@ -30,10 +30,10 @@ bool Timer::addTimerFunction(){
 				perror("Communication: Failed to send target a pulse!");
 				return false;
 			}
-/*
+*/
 		timer_t             timerid;
 	    struct sigevent     event;
-	    struct itimerspec   timer;
+	    struct timerspec   timer;
 
 	    SIGEV_PULSE_INIT (&event, coid, SIGEV_PULSE_PRIO_INHERIT, 10, 0);
 	    // Erzeuge den Timer
@@ -41,16 +41,16 @@ bool Timer::addTimerFunction(){
 	    // Setup und Start eines periodischen Timers
 	    timer.it_value.tv_sec = 1;
 	    timer.it_value.tv_nsec = 0;
-	    timer.it_interval.tv_sec = 1;
+	    timer.it_interval.tv_sec = 5;
 	    timer.it_interval.tv_nsec = 0;
 	    timer_settime (timerid, 0, &timer, NULL);
-*/
+
 	    return true;
 }
 
 void Timer::execute(void*) {
 	std::cout << "Start Timer" << std::endl;
-	std::cout << "Start Timer" << std::endl;
+
 	//while (!isStopped()) {
 
 		/*Puck_FSM_1 fsm1;
