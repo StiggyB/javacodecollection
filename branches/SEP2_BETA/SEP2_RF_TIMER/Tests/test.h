@@ -14,7 +14,8 @@
 //#define TEST_SER
 //#define TEST_LIGHT
 //#define TEST_SEN
-#define TEST_FSM
+//#define TEST_FSM
 //#define TEST_FUN
+#define TEST_TIMER
 
 #endif /* TEST_H_ */

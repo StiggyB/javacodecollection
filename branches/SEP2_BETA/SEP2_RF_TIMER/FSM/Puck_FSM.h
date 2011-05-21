@@ -39,11 +39,11 @@ public:
 	/**
 	 * first light barrier was passed
 	 */
-	void ls_b0();
+	void ls_b0(void*);
 	/**
 	 * second light barrier (for height measure) was passed
 	 */
-	void ls_b1();
+	void ls_b1(void*);
 	/**
 	 * third light barrier (for metal measure) was passed
 	 */

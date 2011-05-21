@@ -85,11 +85,14 @@ void StartThread::execute(void*) {
 	cout << "waiting for Functor-Test" << endl;
 	tf.join();
 #endif
-	sleep(1);
-	Timer timer;
+#ifdef TEST_TIMER
+	cout << "starting Timer-Test"	 << endl;
 	timer.start(NULL);
-	sleep(1);
-	timer.addTimerFunction(NULL, 0);
+	timer_test.setTimer(&timer);
+	timer_test.start(NULL);
+	cout << "waiting for Timer-Test" << endl;
+	timer_test.join();
+#endif
 
 	/*
 	sleep(4);

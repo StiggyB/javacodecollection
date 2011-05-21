@@ -64,11 +64,11 @@ void Test_FSM::handleSignal(int val, int port){
 			case INTERRUPT_D_PORT_B:
 				if ( !( (val>>WP_RUN_IN) &1) ) {
 					//cout << "Test_FSM: in" << endl;
-					if (!aWPendOfMachine) wp_list[wp_list_index]->ls_b0();
+					if (!aWPendOfMachine) wp_list[wp_list_index]->ls_b0(NULL);
 				}
 				if ( !((val>>WP_IN_HEIGHT)&1) ) {
 					//cout << "Test_FSM: in height measure " << endl;
-					wp_list[wp_list_index]->ls_b1();
+					wp_list[wp_list_index]->ls_b1(NULL);
 				}
 				if ( !((val >> WP_IN_SWITCH)&1) ) {
 					//cout << "Test_FSM: in metal measure" << endl;

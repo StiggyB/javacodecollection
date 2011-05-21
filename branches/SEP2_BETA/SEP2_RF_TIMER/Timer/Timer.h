@@ -19,6 +19,8 @@
 #include "../FSM/Puck_FSM_2.h"
 #include "../Tests/Test_Functions.h"
 #include "../HAL/HALCore.h"
+#include <vector>
+#include <algorithm>
 
 class Timer : public thread::HAWThread, public Communication{
 public:
@@ -33,6 +35,16 @@ protected:
 	virtual void handleNormalMessage();
 	void clean();
 	CommunicatorType receiver;
+private:
+	std::vector< struct idTOfunction > funcp_list;
+	CallInterface<Puck_FSM, void, void*>* test_funcp;
+	struct idTOfunction find_function(int id);
+	int id_index;
+};
+
+struct idTOfunction{
+	int id;
+	CallInterface<Puck_FSM, void, void*>* funcp;
 };
 
 #endif /* TIMER_H_ */

@@ -27,10 +27,10 @@ Puck_FSM::~Puck_FSM() {
 }
 
 
-void Puck_FSM::ls_b0(){
+void Puck_FSM::ls_b0(void*){
 	current->ls_b0(this);
 }
-void Puck_FSM::ls_b1(){
+void Puck_FSM::ls_b1(void*){
 	current->ls_b1(this);
 }
 void Puck_FSM::ls_b3(){
