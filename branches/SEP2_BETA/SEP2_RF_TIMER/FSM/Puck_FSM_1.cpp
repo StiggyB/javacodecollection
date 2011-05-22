@@ -109,7 +109,7 @@ void FSM_1_correct_height :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "durchschleusen: LS_B3 wurde ausgelöst" << endl;
 	#endif
-	fsm->cc->openSwitch();
+	fsm->cc->openSwitch(NULL);
 	fsm->setCurrent(new FSM_1_ls_b3_passed_forward() );
 }
 void FSM_1_correct_height :: entry(Puck_FSM * fsm){

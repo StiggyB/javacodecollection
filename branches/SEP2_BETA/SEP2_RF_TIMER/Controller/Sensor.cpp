@@ -110,7 +110,7 @@ void Sensor::interrupt(int port, int val) {
 		} else {
 			if (val & BIT_WP_METAL) {
 				if (!(val & BIT_SWITCH_STATUS)) {			
-					h->openSwitch();
+					h->openSwitch(NULL);
 					cout << "Sensor: opens switch " << endl;
 				}
 				cout << "Sensor: ist Metall :D" << endl;

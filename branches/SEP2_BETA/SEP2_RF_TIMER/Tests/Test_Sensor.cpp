@@ -96,7 +96,7 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 				success &= assert_equals("B(4)", (res & BIT_WP_METAL), NO_METAL_STATE);
-				(*cc).openSwitch();
+				(*cc).openSwitch(NULL);
 				last_state_B = BIT_WP_IN_SWITCH;
 			}
 
@@ -277,7 +277,7 @@ void Test_Sensor::test_sen_polling(int port, int value) {
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(4)", (res & BIT_WP_METAL), IS_METAL_STATE);
-				(*cc).openSwitch();
+				(*cc).openSwitch(NULL);
 				sleep(TIME);
 				res = (*cc).read(PORT_B);
 				success = assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_OPEN_STATE);
@@ -395,7 +395,7 @@ bool Test_Sensor::test_sen_b3() {
 	res = (*cc).read(PORT_B);
 	success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 	test_induct_sen_b4();
-	(*cc).openSwitch();
+	(*cc).openSwitch(NULL);
 	sleep(TIME);
 	test_mag_sen_b5();
 	sleep(TIME);

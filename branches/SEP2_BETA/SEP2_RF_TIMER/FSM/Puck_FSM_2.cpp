@@ -137,7 +137,7 @@ void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_metal_measure: entry" << endl;
 	#endif
-	fsm->cc->openSwitch();
+	fsm->cc->openSwitch(NULL);
 	sleep(1);
 	fsm->cc->closeSwitch();
 }

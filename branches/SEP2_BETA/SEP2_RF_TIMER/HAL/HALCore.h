@@ -291,7 +291,7 @@ public:
 	 * Opens the Switch.
 	 * \return a bool, true if switch is open.
 	 */
-	void openSwitch();
+	void openSwitch(void*);
 	/**
 	 * Closes the Switch.
 	 * \return a bool, true if switch is closed.

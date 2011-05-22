@@ -6,6 +6,8 @@
 #include "../Thread/HAWThread.h"
 #include "../Serial/Serial.h"
 #include "../Controller/Communication.h"
+#include "../HAL/HALCore.h"
+
 
 /**
  * Testing Class for IRQ

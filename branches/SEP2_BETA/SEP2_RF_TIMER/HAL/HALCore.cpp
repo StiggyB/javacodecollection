@@ -445,7 +445,7 @@ void HALCore::engineStart(int direction) {
 		}
 	}
 }
-void HALCore::openSwitch(){
+void HALCore::openSwitch(void*){
 	setSwitchDirection(BIT_SET);
 }
 void HALCore::closeSwitch(){

@@ -22,6 +22,10 @@
 #include <vector>
 #include <algorithm>
 
+enum Pulse_code_timer {
+	PUCK_FSM=(0), HALCORE=(1)
+};
+
 class Timer : public thread::HAWThread, public Communication{
 public:
 	Timer();
@@ -36,15 +40,24 @@ protected:
 	void clean();
 	CommunicatorType receiver;
 private:
-	std::vector< struct idTOfunction > funcp_list;
+	std::vector< struct idTOfunction> funcp_list_fsm;
 	CallInterface<Puck_FSM, void, void*>* test_funcp;
-	struct idTOfunction find_function(int id);
-	int id_index;
+	struct idTOfunction find_function(unsigned int id);
+	int getnextid();
+};
+
+union Functionpointer{
+	CallInterface<Puck_FSM, void, void*>* funcp_fsm;
+	CallInterface<HALCore, void, void*>* funcp_hal;
 };
 
 struct idTOfunction{
 	int id;
-	CallInterface<Puck_FSM, void, void*>* funcp;
+	int type;
+	Functionpointer funcp;
 };
+
+
+
 
 #endif /* TIMER_H_ */
