@@ -21,26 +21,31 @@ void Test_Timer::shutdown(){
 }
 
 void Test_Timer::execute(void*){
+	usleep(100000);
 	Puck_FSM_1 test_fsm;
 	CallInterface<Puck_FSM, void, void*>* test_func_1 =
-			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::ls_b1);
+			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::openswitch);
 
 	HALCore *test_halcore = HALCore::getInstance();;
 		CallInterface<HALCore, void, void*>* test_func_2 =
-				FunctorMaker<HALCore, void, void*>::makeFunctor(test_halcore, &HALCore::openSwitch);
+				FunctorMaker<HALCore, void, void*>::makeFunctor(test_halcore, &HALCore::closeSwitch);
 
-	timer->addTimerFunction(test_func_2,7000);
+	//timer->testTimer();
+	timer->addTimerFunction(test_func_1,3000);
 
-	/*struct timeval time_val;
+
+	/*timer->addTimerFunction(test_func_1,1000);
+	struct timeval time_val;
 	struct timezone time_zone;
 
 	gettimeofday( &time_val, &time_zone);
-	std::cout << "Time_val::" << time_val.tv_usec << std::endl;
+	std::cout << "Time_val::" << time_val.tv_usec << std::endl;*/
 
 	timer->addTimerFunction(test_func_1,1000);
 	timer->addTimerFunction(test_func_1,999);
 	timer->addTimerFunction(test_func_1,998);
-	timer->addTimerFunction(test_func_1,1600);*/
+	timer->addTimerFunction(test_func_1,1600);
+
 
 	while(!isStopped()){}
 }

@@ -15,7 +15,28 @@ Timer::Timer() {
 Timer::~Timer() {
 	// TODO Auto-generated destructor stub
 }
-/*
+void Timer::testTimer(){
+	timer_t             timerid;
+    struct sigevent     event;
+    struct itimerspec   timer;
+
+	timer.it_value.tv_sec = 2;
+
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PUCK_FSM, 22 );
+
+	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
+		perror( "Timer: cannot create OS-Timer");
+		return ;
+	}//if
+
+
+	if( timer_settime (timerid, 0, &timer, NULL) == -1){
+		perror( "Timer: cannot set OS-Timer");
+		return ;
+	}//if
+
+}
+
 bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int ms){
 	timer_t             timerid;
     struct sigevent     event;
@@ -66,12 +87,12 @@ bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int m
 
 
 	if( timer_settime (timerid, 0, &timer, NULL) == -1){
-		perror( "Timer: cannot create OS-Timer");
+		perror( "Timer: cannot set OS-Timer");
 		return false;
 	}//if
 
 	return true;
-}*/
+}
 
 bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms){
 	timer_t             timerid;
@@ -93,8 +114,8 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms
     	perror( "Timer: parameter ms not in range (0 <= ms <= 10000)!");
     }//if
 
-	timer.it_value.tv_sec = 3;
-	timer.it_value.tv_nsec = 0;
+	timer.it_value.tv_sec = sec;
+	timer.it_value.tv_nsec = nano_sec;
 
     //std::cout << "davor: size of list::::" << funcp_list.size() << std::endl;
     std::cout << "Timer: nextid: " << getnextid() << std::endl;
@@ -105,7 +126,7 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms
 
     new_element.funcp.funcp_hal = funcp;
     new_element.id = getnextid();
-    new_element.type = HALCORE;
+    new_element.type = PUCK_FSM;
     funcp_list_fsm.push_back( new_element );
 
     //std::cout << "danach: size of list::::" << funcp_list.size() << std::endl;
@@ -116,13 +137,12 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms
 	//retval = timer_create (CLOCK_REALTIME, &event, &timerid);
 	//std::cout << "retval: " << retval << std::endl;
 
-	;
 	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
 		perror( "Timer: cannot create OS-Timer");
 		return false;
 	}//if
 
-	;
+
 	if( timer_settime (timerid, 0, &timer, NULL) == -1){
 		perror( "Timer: cannot set OS-Timer");
 		return false;

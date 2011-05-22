@@ -296,7 +296,7 @@ public:
 	 * Closes the Switch.
 	 * \return a bool, true if switch is closed.
 	 */
-	void closeSwitch();
+	void closeSwitch(void*);
 	/**
 	 * Sets the Switch to open or closed.
 	 * \param dir a bool,

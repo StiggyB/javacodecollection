@@ -322,7 +322,7 @@ void HALCore::stopProcess(){
 //TODO will be removed!
 void HALCore::emergencyStop(){
 	engineStop();
-	closeSwitch();
+	closeSwitch(NULL);
 	engineReset();
 	//shine(RED);
 	shineLED(LEDS_OFF);
@@ -332,7 +332,7 @@ void HALCore::emergencyStop(){
 //TODO should stop all operations in queue!
 void HALCore::stopMachine(){
 	engineStop();
-	closeSwitch();
+	closeSwitch(NULL);
 	//shine(RED);
 	shineLED(LEDS_OFF);
 	stopped = true;
@@ -351,7 +351,7 @@ void HALCore::resetAll() {
 	stopped = false;
 	emstopped = false;
 	cout << "CC: resetAll ;)" << endl;
-	closeSwitch();
+	closeSwitch(NULL);
 	engineReset();
 	//shine(GREEN);
 	//shineLED(LEDS_OFF);
@@ -448,7 +448,7 @@ void HALCore::engineStart(int direction) {
 void HALCore::openSwitch(void*){
 	setSwitchDirection(BIT_SET);
 }
-void HALCore::closeSwitch(){
+void HALCore::closeSwitch(void*){
 	setSwitchDirection(BIT_DELETE);
 }
 void HALCore::setSwitchDirection(bool dir){

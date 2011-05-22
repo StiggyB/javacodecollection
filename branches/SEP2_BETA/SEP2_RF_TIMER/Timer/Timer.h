@@ -32,6 +32,7 @@ public:
 	virtual ~Timer();
 	bool addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
 	bool addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int timer );
+	void testTimer();
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

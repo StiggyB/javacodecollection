@@ -104,7 +104,7 @@ void Sensor::interrupt(int port, int val) {
 		}
 		if (val & BIT_WP_IN_SWITCH) {
 			if (val & BIT_SWITCH_STATUS) {
-				h->closeSwitch();
+				h->closeSwitch(NULL);
 				cout << "Sensor: closes switch " << endl;
 			}
 		} else {

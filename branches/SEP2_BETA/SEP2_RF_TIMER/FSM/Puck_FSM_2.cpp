@@ -139,7 +139,7 @@ void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
 	#endif
 	fsm->cc->openSwitch(NULL);
 	sleep(1);
-	fsm->cc->closeSwitch();
+	fsm->cc->closeSwitch(NULL);
 }
 void FSM_2_after_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG

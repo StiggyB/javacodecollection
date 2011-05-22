@@ -129,7 +129,7 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f5" << endl;
 				}
-				(*cc).closeSwitch();
+				(*cc).closeSwitch(NULL);
 				(*cc).engineRight();
 				sleep(1);
 				res = (*cc).read(PORT_B);
@@ -318,7 +318,7 @@ void Test_Sensor::test_sen_polling(int port, int value) {
 			if (!(value & BIT_WP_IN_HEIGHT) && next_test) {
 				cout << "Section test2" <<  endl;
 				next_test = !next_test;
-				(*cc).closeSwitch();
+				(*cc).closeSwitch(NULL);
 				sleep(TIME);
 				res = (*cc).read(PORT_B);
 				success &= assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_CLOSED_STATE);

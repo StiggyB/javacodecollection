@@ -161,7 +161,7 @@ void Test_HAL::execute(void*) {
 		sleep(time);
 
 		cout << "SWITCH OFF" << endl;
-		(*h).closeSwitch();
+		(*h).closeSwitch(NULL);
 		sleep(time);
 
 		cout << "SWITCH ON" << endl;

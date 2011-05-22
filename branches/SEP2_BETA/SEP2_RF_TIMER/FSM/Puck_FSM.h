@@ -73,6 +73,10 @@ public:
 	 */
 	void errorState();
 	/**
+	 * general error state
+	 */
+	void openswitch(void*);
+	/**
 	 * is true, if wp has passed first light barrier
 	 */
 	bool pass_ls_b1;

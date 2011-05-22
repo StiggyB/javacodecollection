@@ -28,7 +28,7 @@ void StartThread::execute(void*) {
 	cout << "starting IC" <<endl;
 	ic->start(NULL);
 	cout << "IC started" <<endl;
-	l->start(NULL);
+	//l->start(NULL);
 	cout << "Lampen started" << endl;
 	Sensor s;
 	s.start(NULL);

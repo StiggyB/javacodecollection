@@ -123,7 +123,7 @@ void FSM_1_correct_height :: exit(Puck_FSM * fsm){
 	cout << "durchschleusen: exit" << endl;
 	#endif
 	sleep(1);
-	fsm->cc->closeSwitch();
+	fsm->cc->closeSwitch(NULL);
 }
 
 
@@ -276,3 +276,4 @@ void FSM_1_ErrorState :: exit (Puck_FSM * fsm){
 	fsm->lamp->removeLight(RED);
 	//fsm->lamp.stop();
 }
+

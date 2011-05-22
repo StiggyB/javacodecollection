@@ -26,6 +26,9 @@ Puck_FSM::Puck_FSM() {
 Puck_FSM::~Puck_FSM() {
 }
 
+void Puck_FSM::openswitch(void*){
+	cc->openSwitch(NULL);
+}
 
 void Puck_FSM::ls_b0(void*){
 	current->ls_b0(this);
