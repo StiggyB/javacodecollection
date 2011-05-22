@@ -1,8 +1,18 @@
-/*
- * Timer.cpp
+/**
+ * Timer
  *
- *  Created on: 19.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 5: OS-Timer
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *this class will provide the functionality to execute functions in x milliseconds for Puck_fsm and HALCore objects
+ *
+ *
  */
 
 #include "Timer.h"
@@ -12,17 +22,28 @@ Timer::Timer() {
 	receiver = TIMER;
 }
 
+
 Timer::~Timer() {
 	// TODO Auto-generated destructor stub
 }
+
+
 void Timer::testTimer(){
 	timer_t             timerid;
     struct sigevent     event;
     struct itimerspec   timer;
+    struct idTOfunction new_element;
 
 	timer.it_value.tv_sec = 2;
+	timer.it_value.tv_nsec = 300;
 
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PUCK_FSM, 22 );
+    new_element.id = getnextid();
+    new_element.type = PUCK_FSM;
+
+    //struct idTOfunction new_element_copy = new_element;
+    //funcp_list_fsm.push_back(new_element_copy);
+
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, 0, new_element.id );
 
 	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
 		perror( "Timer: cannot create OS-Timer");
@@ -36,119 +57,70 @@ void Timer::testTimer(){
 	}//if
 
 }
+
+
+bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
+	timer_t             timerid;
+    struct sigevent     event;
+    struct itimerspec   timer;
+    int nano_sec = 0;
+    int sec = 0;
+
+    if( calculateTime(ms, &sec, &nano_sec) == -1 ){
+    	perror( "Timer: cannot calculate seconds and nano seconds");
+    	return false;
+    }//if
+	timer.it_value.tv_sec = sec;
+	timer.it_value.tv_nsec = nano_sec;
+
+
+    if( (new_element.id = getnextid()) == -1){
+    	return false;
+    }//if
+    new_element.type = PUCK_FSM;
+
+    struct idTOfunction new_element_copy = new_element;
+    funcp_list_fsm.push_back(new_element_copy);
+
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
+
+
+	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
+		perror( "Timer: cannot create OS-Timer");
+		return false;
+	}//if
+
+
+	if( timer_settime (timerid, 0, &timer, NULL) == -1){
+		perror( "Timer: cannot set OS-Timer");
+		return false;
+	}//if
+
+	return true;
+}
+
 
 bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int ms){
-	timer_t             timerid;
-    struct sigevent     event;
-    struct itimerspec   timer;
     struct idTOfunction new_element;
-    int nano_sec = 0;
-    int sec = 0;
-    volatile int retval = -1;
-
-    if(ms <= 10000){
-    	if(ms >= 1000){
-    		sec = ms/1000;
-    		nano_sec = (ms-(sec*1000))*1000*1000;
-    	}else{
-    		nano_sec = ms*1000*1000;
-    	}//if
+    new_element.type = PUCK_FSM;
+    new_element.funcp.funcp_fsm = funcp;
+    if(addTimerFunction(new_element, ms)){
+    	return true;
     } else {
-    	perror( "Timer: parameter ms not in range (0 <= ms <= 10000)!");
-    }//if
-
-	timer.it_value.tv_sec = sec;
-	timer.it_value.tv_nsec = nano_sec;
-
-    //std::cout << "davor: size of list::::" << funcp_list.size() << std::endl;
-    std::cout << "Timer: nextid: " << getnextid() << std::endl;
-
-    if(getnextid() == -1){
     	return false;
     }//if
-
-    new_element.funcp.funcp_fsm = funcp;
-    new_element.id = getnextid();
-    new_element.type = PUCK_FSM;
-    funcp_list_fsm.push_back( new_element );
-
-    //std::cout << "danach: size of list::::" << funcp_list.size() << std::endl;
-    //std::cout << "danach: Timer: nextid: " << getnextid() << std::endl;
-
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PUCK_FSM, new_element.id );
-
-	//retval = timer_create (CLOCK_REALTIME, &event, &timerid);
-	//std::cout << "retval: " << retval << std::endl;
-
-	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
-		perror( "Timer: cannot create OS-Timer");
-		return false;
-	}//if
-
-
-	if( timer_settime (timerid, 0, &timer, NULL) == -1){
-		perror( "Timer: cannot set OS-Timer");
-		return false;
-	}//if
-
-	return true;
 }
 
+
 bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms){
-	timer_t             timerid;
-    struct sigevent     event;
-    struct itimerspec   timer;
     struct idTOfunction new_element;
-    int nano_sec = 0;
-    int sec = 0;
-    volatile int retval = -1;
-
-    if(ms <= 10000){
-    	if(ms >= 1000){
-    		sec = ms/1000;
-    		nano_sec = (ms-(sec*1000))*1000*1000;
-    	}else{
-    		nano_sec = ms*1000*1000;
-    	}//if
+    new_element.type = HALCORE;
+    new_element.funcp.funcp_hal = funcp;
+    if( addTimerFunction(new_element, ms) ){
+    	return true;
     } else {
-    	perror( "Timer: parameter ms not in range (0 <= ms <= 10000)!");
-    }//if
-
-	timer.it_value.tv_sec = sec;
-	timer.it_value.tv_nsec = nano_sec;
-
-    //std::cout << "davor: size of list::::" << funcp_list.size() << std::endl;
-    std::cout << "Timer: nextid: " << getnextid() << std::endl;
-
-    if(getnextid() == -1){
     	return false;
     }//if
-
-    new_element.funcp.funcp_hal = funcp;
-    new_element.id = getnextid();
-    new_element.type = PUCK_FSM;
-    funcp_list_fsm.push_back( new_element );
-
-    //std::cout << "danach: size of list::::" << funcp_list.size() << std::endl;
-    //std::cout << "danach: Timer: nextid: " << getnextid() << std::endl;
-
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, HALCORE, new_element.id );
-
-	//retval = timer_create (CLOCK_REALTIME, &event, &timerid);
-	//std::cout << "retval: " << retval << std::endl;
-
-	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
-		perror( "Timer: cannot create OS-Timer");
-		return false;
-	}//if
-
-
-	if( timer_settime (timerid, 0, &timer, NULL) == -1){
-		perror( "Timer: cannot set OS-Timer");
-		return false;
-	}//if
-
-	return true;
 }
 
 
@@ -160,12 +132,14 @@ void Timer::execute(void*) {
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handlePulsMessage();
-		}
+			this->stop();
+		}//while
 	}else{
 		perror("Timer: Setting Up failed!");
 		endCommunication();
-	}
+	}//if
 }
+
 
 void Timer::handleNormalMessage(){
 	std::cout << "Timer: received a message, but doesn't know what to do with it" << std::endl;
@@ -175,7 +149,6 @@ void Timer::handleNormalMessage(){
 void Timer::handlePulsMessage(){
 	std::cout << "Timer: received a Puls" << std::endl;
 	//std::cout << "value:" << val << " code:" << code << std::endl;
-	//std::cout << "size of list::::" << funcp_list.size() << std::endl;
 	struct idTOfunction temp;
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
@@ -186,18 +159,17 @@ void Timer::handlePulsMessage(){
 			break;
 		default:
 			perror("Timer: unknown type for functionpointer!");
-		}
+		}//if
 	} else {
 		perror( "Timer: got pulseMesage for a not known Timer?!");
-	}
-
-
-	//funcp_list[0]->call(NULL);
+	}//if
 }
+
 
 void Timer::shutdown() {
 
 }
+
 
 struct idTOfunction Timer::find_function(unsigned int id){
 	struct idTOfunction result;
@@ -214,6 +186,7 @@ struct idTOfunction Timer::find_function(unsigned int id){
 	}//for
 	return result;
 }
+
 
 int Timer::getnextid(){
 	unsigned int id = 0;
@@ -235,8 +208,25 @@ int Timer::getnextid(){
 		} else {
 			return id;
 		}//if
-	}//while
 
+	}//while
 	return  -1;
 }
 
+
+int Timer::calculateTime(int ms, int *s, int *ns){
+    if(ms <= 10000){
+    	if(ms >= 1000){
+    		(*s) = ms/1000;
+    		(*ns) = (ms-( (*s)*1000))*1000*1000;
+    	}else{
+    		(*ns) = ms*1000*1000;
+    	}//if
+    } else {
+    	perror( "Timer: parameter ms not in range (0 <= ms <= 10000)!");
+    	return -1;
+    }//if
+
+    //std::cout << "Timer s:" << (*s) << " Timer ns:" << (*ns) << std::endl;
+    return 0;
+}

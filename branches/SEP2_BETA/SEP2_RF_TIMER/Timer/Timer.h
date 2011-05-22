@@ -1,10 +1,19 @@
-/*
- * Timer.h
+/**
+ * Timer
  *
- *  Created on: 19.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 5: OS-Timer
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *this class will provide the functionality to execute functions in x milliseconds for Puck_fsm and HALCore objects
+ *
+ *
  */
-
 #ifndef TIMER_H_
 #define TIMER_H_
 
@@ -14,13 +23,9 @@
 #include "Communication.h"
 #include "../Thread/HAWThread.h"
 #include "../FSM/Puck_FSM.h"
-#include "../Tests/Test_FSM.h"
 #include "../FSM/Puck_FSM_1.h"
-#include "../FSM/Puck_FSM_2.h"
-#include "../Tests/Test_Functions.h"
 #include "../HAL/HALCore.h"
 #include <vector>
-#include <algorithm>
 
 enum Pulse_code_timer {
 	PUCK_FSM=(0), HALCORE=(1)
@@ -38,12 +43,13 @@ protected:
 	virtual void shutdown();
 	virtual void handlePulsMessage();
 	virtual void handleNormalMessage();
-	void clean();
 	CommunicatorType receiver;
 private:
 	std::vector< struct idTOfunction> funcp_list_fsm;
 	CallInterface<Puck_FSM, void, void*>* test_funcp;
 	struct idTOfunction find_function(unsigned int id);
+	bool addTimerFunction(struct idTOfunction new_element, int ms);
+	int calculateTime(int ms, int *s, int *ns);
 	int getnextid();
 };
 

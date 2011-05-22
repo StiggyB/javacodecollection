@@ -1,8 +1,18 @@
-/*
- * Test_Timer.h
+/**
+ * Test_Timer
  *
- *  Created on: 20.05.2011
- *      Author: User
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 5: OS-Timer
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *this class will test the functions from Timer.h
+ *
+ *
  */
 
 #ifndef TEST_TIMER_H_

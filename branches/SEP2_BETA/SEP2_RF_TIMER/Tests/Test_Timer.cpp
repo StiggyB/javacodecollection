@@ -1,8 +1,18 @@
-/*
- * Test_Timer.cpp
+/**
+ * Test_Timer
  *
- *  Created on: 20.05.2011
- *      Author: User
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 5: OS-Timer
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *this class will test the functions from Timer.h
+ *
+ *
  */
 
 #include "Test_Timer.h"
@@ -47,5 +57,6 @@ void Test_Timer::execute(void*){
 	timer->addTimerFunction(test_func_1,1600);
 
 
-	while(!isStopped()){}
+	sleep(11);
+	//timer->stop();
 }
