@@ -45,6 +45,8 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
+	s->init(1, true);
+	s->start(NULL);
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		initPucks();
 		while (!isStopped()) {
@@ -128,7 +130,7 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_in();
 			}
-			//			s->send();
+			s->send(POCKET, 4);
 		}
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;

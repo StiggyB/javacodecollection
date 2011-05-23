@@ -31,6 +31,32 @@ enum msgType{
 	ACK_INIT_SERIAL=(42)
 };
 
+//enum msgType {
+//
+//	/* Machine Info */
+//	REQUEST_FREE,
+//	REQUEST_FREE_ACK,
+//	MACHINE2_FREE,
+//	MACHINE2_FREE_ACK,
+//	/* Puck Info */
+//	PUCK_ARRIVED,
+//	POCKET,
+//	ACK_POCKET,
+//	NO_POCKET,
+//	ACK_NO_POCKET,
+//	/* Port C */
+//	E_STOP_PUSHED,
+//	E_STOP_PULLED,
+//	STOP_BUTTON,
+//	START_BUTTON,
+//	RESET_BUTTON,
+//	/* Serial communication */
+//	INIT_SERIAL,
+//	SYNC_SIGNAL,
+//	ACK_SYNC_SIGNAL,
+//	ACK_INIT_SERIAL
+//};
+
 
 #define DEBUG_SERIAL
 
@@ -67,7 +93,7 @@ public:
 	 * \param lenByte an integer, the lengths of the data in bytes.
 	 * \return an integer, 0 for okay, -1 for error.
 	 */
-	int send(void* data, int lenByte);
+	int send(int data, int lenByte);
 
 protected:
 

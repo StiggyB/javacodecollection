@@ -27,7 +27,7 @@ Serial::Serial() {
 	#ifdef TEST_SER
 	receiver = TESTER;
 	#else
-	receiver = ANLAGENSTEUERUNG;
+	receiver = SENSOR;
 	#endif
 	mine = SERIAL;
 }
@@ -216,10 +216,10 @@ void Serial::shutdown() {
 	close(ser);
 }
 
-int Serial::send(void* data, int lenBytes) {
+int Serial::send(int data, int lenBytes) {
 
-	unsigned int *p = (unsigned int*) (data);
-	int n = (int) write(ser, data, lenBytes);
+	unsigned int *p = (unsigned int*) (&data);
+	int n = (int) write(ser, &data, lenBytes);
 	printf("----->>>>>send: port %i DATA: %d \n", comPort,*p) ;
 
 
