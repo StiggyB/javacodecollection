@@ -57,6 +57,7 @@ private:
     int cnt;
     int last_Reg_State_B;
     int last_Reg_State_C;
+    void delete_unnecessary_wp();
     void starts_engine_if_nessecary();
 
 	void initPucks();

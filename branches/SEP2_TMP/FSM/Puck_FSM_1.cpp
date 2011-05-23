@@ -164,7 +164,7 @@ void FSM_1_end_state :: ls_b7_out (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "pruef_LS7: ls_b7 out" << endl;
 	#endif
-	fsm->pass_ls_b7 = 0;
+	fsm->pass_ls_b7 = true;
 }
 
 
