@@ -17,7 +17,7 @@
 #include <vector>
 
 enum Signal {
-	INCOMMING=0, IN_HEIGHT=1, IN_METAL = 2, IN_SLIDE=3, AT_END = 4
+	INCOMMING, IN_HEIGHT, IN_METAL, IN_SLIDE, AT_END
 };
 
 class Test_FSM : public thread::HAWThread{

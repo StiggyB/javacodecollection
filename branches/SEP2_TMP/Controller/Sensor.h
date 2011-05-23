@@ -6,6 +6,7 @@
 #include "../Thread/HAWThread.h"
 #include "../HAL/HALCore.h"
 #include "../HAL/Lampen.h"
+#include "../Serial/Serial.h"
 #include "Communication.h"
 #include "../Tests/test.h"
 #include "../Tests/Test_Sensor.h"
@@ -31,52 +32,33 @@
  *
  */
 
+#define PUCK_FSM_1
+//#define PUCK_FSM_2
+
 class Sensor : public thread::HAWThread, public Communication{
 public:
-	/**
-	 * Deal with the Interrupt for given port.
-	 * \param port an integer representing the port where an interrupt occures.
-	 * \param val an integer representing the value of the interrupts.
-	 */
-	void interrupt(int port, int val);
-	Sensor();
-	virtual ~Sensor();
-	bool is_Band_has_wp_ls7;
-
-#ifdef TEST_SEN
-	Test_Sensor *ts;
-	void testSen(Test_Sensor *t){ ts = t;}
-#endif
-#ifdef TEST_FSM
-	Test_FSM *tests_fsm;
-	void testFSM(Test_FSM *t){ tests_fsm = t;}
-#endif
-
+    void interrupt(int port, int val);
+    Sensor();
+    virtual ~Sensor();
+    bool is_Band_has_wp_ls7;
 protected:
-	virtual void execute(void*);
-	virtual void shutdown();
-	virtual void handlePulsMessage();
-	virtual void handleNormalMessage();
-	void clean();
+    virtual void execute(void*);
+    virtual void shutdown();
+    virtual void handlePulsMessage();
+    virtual void handleNormalMessage();
+    void clean();
 private:
-	/**
-	 * Pointer to the Singleton Core Controller
-	 */
-	HALCore *h;
-	/**
-	 * pointer to Lampen
-	 */
-	Lampen *l;
-	/**
-	 *  Sets up the Communication to IC and waits for Messages from it.
-	 */
-	bool settingUpSensor();
-	/**
-	 *  Sets up the Communication to IC and waits for Messages from it.
-	 */
-	void cleanUpSensor();
-	//DEBUG
-	int cnt;
+    HALCore *h;
+    Lampen *l;
+    Serial *s;
+    std::vector<Puck_FSM*> wp_list;
+    bool settingUpSensor();
+    void cleanUpSensor();
+    int cnt;
+    int last_Reg_State_B;
+    int last_Reg_State_C;
+    void starts_engine_if_nessecary();
+
 	void initPucks();
 
 };

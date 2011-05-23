@@ -27,8 +27,8 @@ void StartThread::execute(void*) {
 	cout << "starting IC" <<endl;
 	ic->start(NULL);
 	cout << "IC started" <<endl;
-	l->start(NULL);
-	cout << "Lampen started" << endl;
+//	l->start(NULL);
+//	cout << "Lampen started" << endl;
 	Sensor s;
 	s.start(NULL);
 #ifdef TEST_IRQ
@@ -101,8 +101,8 @@ void StartThread::execute(void*) {
 		}
 	}
 */
-	sleep(40);
-	//h->join();
+	//sleep(40);
+	s.join();
 
 }
 

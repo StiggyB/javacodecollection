@@ -35,7 +35,7 @@
 /*
  * tolerance range plane and normal work piece
  */
-#define TOLERANCE_NORMAL 50
+#define TOLERANCE_NORMAL 75
 
 /*
  * tolerance range work piece with a pocket
@@ -79,8 +79,6 @@ enum PortB {
 	BIT_WP_IN_SLIDE = (1 << 6),
 	BIT_WP_OUTLET = (1 << 7)
 };
-//BIT_SWITCH_OPEN -> BIT_SWITCH_STATUS
-//BIT_SLIDE_FULL -> BIT_WP_IN_SLIDE
 
 /**
  * PORT B Bits:

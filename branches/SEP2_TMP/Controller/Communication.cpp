@@ -228,17 +228,15 @@ bool Communication::connectWithCommunicator(CommunicatorType c, int number, Comm
 		perror("Communication: failed to AttachConnection!");
 		return false;
 	}
-	if(c != my){
-		if (-1 == (id = getChannelIdForObject(c,number))) {
-			perror("Communication: failed to get ChannelId!");
-			return false;
-		}
-		coid = getConnectIdForObject(c,number);
-		buildMessage(m, id, coid, startConnection, my,uniqueID);
-		if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-			perror("Communication: failed to send message to IC!");
-			return false;
-		}
+	coid = getConnectIdForObject(c,number);
+	buildMessage(m, chid, coid, startConnection, my,uniqueID);
+	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
+		perror("Communication: failed to send message to IC!");
+		return false;
+	}
+	if (-1 == (id = getChannelIdForObject(c,number))) {
+		perror("Communication: failed to get ChannelId!");
+		return false;
 	}
 	return true;
 }
@@ -380,25 +378,23 @@ bool Communication::attachConnection(int id, CommunicatorType c){
 		perror("Communication: failed to attach Channel for Interrupt\n");
 		return false;
 	}
-	if(c != mine){
-		Message * msg_s, * r_msg;
-		if(!allocMessages((void**)&msg_s,(void**)&r_msg)){
-			ConnectDetach(coid);
-			return false;
-		}
-		buildMessage(msg_s,id, coid, startConnection, c,uniqueID);
-		if (-1 == MsgSend(coid, msg_s, sizeof(Message), r_msg, sizeof(Message))) {
-			perror("Communication: failed to send Message to server.");
-			cleanUp(coid,msg_s,r_msg);
-			return false;
-		}
-		if (r_msg->m.ca != OK) {
-			perror("Communication: no OK from Receiver! ");
-			cleanUp(coid,msg_s,r_msg);
-			return false;
-		}
-		cleanUp(0,msg_s,r_msg);
+	Message * msg_s, * r_msg;
+	if(!allocMessages((void**)&msg_s,(void**)&r_msg)){
+		ConnectDetach(coid);
+		return false;
 	}
+	buildMessage(msg_s,id, coid, startConnection, c,uniqueID);
+	if (-1 == MsgSend(coid, msg_s, sizeof(Message), r_msg, sizeof(Message))) {
+		perror("Communication: failed to send Message to server.");
+		cleanUp(coid,msg_s,r_msg);
+		return false;
+	}
+	if (r_msg->m.ca != OK) {
+		perror("Communication: no OK from Receiver! ");
+		cleanUp(coid,msg_s,r_msg);
+		return false;
+	}
+	cleanUp(0,msg_s,r_msg);
 	std::list<Communicator>::iterator it = getCommunicatorForObject(id,0);
 	return (it == NULL ? false : (*it).setConnectID(coid));
 }

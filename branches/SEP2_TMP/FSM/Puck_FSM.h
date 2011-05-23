@@ -103,7 +103,7 @@ public:
 	/**
 	 * Instance for HW control
 	 */
-	HALCore *cc;
+	HALCore *hc;
 
 };
 

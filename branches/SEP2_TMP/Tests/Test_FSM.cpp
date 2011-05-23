@@ -72,7 +72,7 @@ void Test_FSM::handleSignal(int val, int port){
 				}
 				if ( !((val >> WP_IN_SWITCH)&1) ) {
 					//cout << "Test_FSM: in metal measure" << endl;
-						wp_list[wp_list_index]->ls_b3();
+					wp_list[wp_list_index]->ls_b3();
 				}
 				if ( !((val>>WP_IN_SLIDE)&1) ) {
 					//cout << "Test_FSM: in slide" << endl;

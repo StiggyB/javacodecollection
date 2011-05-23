@@ -23,7 +23,7 @@ Puck_FSM_1::Puck_FSM_1() {
 	#ifdef PUCK_FSM_1_DEBUG
 	printf("FSM Band1 is up\n");
 	#endif
-	cc = HALCore::getInstance();
+	hc = HALCore::getInstance();
 }
 
 Puck_FSM_1::~Puck_FSM_1() {
@@ -64,9 +64,9 @@ void FSM_1_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "Band1_aufgelegt: entry" << endl;
 	#endif
-	fsm->cc->engineContinue();
-	fsm->cc->engineRight();
-	fsm->cc->shine(GREEN);
+	fsm->hc->engineContinue();
+	fsm->hc->engineRight();
+	fsm->hc->shine(GREEN);
 	fsm->engine_should_be_started = 1;
 }
 void FSM_1_after_ls_b0 :: exit(Puck_FSM * fsm){
@@ -79,8 +79,9 @@ void FSM_1_after_ls_b0 :: exit(Puck_FSM * fsm){
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure :: entry(Puck_FSM * fsm){
 	//fsm->cc->engineStop();
-	fsm->engine_should_be_started = 0;
-	int height = fsm->cc->identifyHeight();
+	//fsm->engine_should_be_started = 0;
+	//fsm->hc->engineStop();
+	int height = fsm->hc->identifyHeight();
 
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "Band1_hoehenmessung: entry" << endl;
@@ -98,9 +99,9 @@ void FSM_1_height_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "Band1_hoehenmessung: exit" << endl;
 	#endif
-	//fsm->cc->engineReset();
-	fsm->cc->engineRight();
-	fsm->engine_should_be_started = 1;
+	//fsm->hc->engineContinue();
+//	fsm->hc->engineRight();
+	//fsm->engine_should_be_started = 1;
 }
 
 
@@ -109,7 +110,7 @@ void FSM_1_correct_height :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "durchschleusen: LS_B3 wurde ausgelöst" << endl;
 	#endif
-	fsm->cc->openSwitch();
+	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_forward() );
 }
 void FSM_1_correct_height :: entry(Puck_FSM * fsm){
@@ -123,7 +124,7 @@ void FSM_1_correct_height :: exit(Puck_FSM * fsm){
 	cout << "durchschleusen: exit" << endl;
 	#endif
 	sleep(1);
-	fsm->cc->closeSwitch();
+	fsm->hc->closeSwitch();
 }
 
 
@@ -132,7 +133,7 @@ void FSM_1_ls_b3_passed_forward :: ls_b7_in(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "durchschleusen_bei_LS3: LS_B7 wurde ausgelöst" << endl;
 	#endif
-	fsm->cc->engineStop();
+	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->pass_ls_b7 = true;
 	fsm->setCurrent(new FSM_1_end_state() );
@@ -172,10 +173,10 @@ void FSM_1_sort_out :: ls_b3 (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "ausschleusen: LS_B3" << endl;
 	#endif
-	fsm->cc->engineReset();
-	fsm->cc->engineRight();
+	fsm->hc->engineReset();
+	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
-	fsm->cc->shine(YELLOW);
+	fsm->hc->shine(YELLOW);
 	fsm->setCurrent(new FSM_1_ls_b3_passed() );
 }
 
@@ -196,7 +197,7 @@ void FSM_1_ls_b3_passed :: ls_b6 (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "Weiche_zu: LS_B6" << endl;
 	#endif
-	fsm->cc->engineStop();
+	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new FSM_1_wp_in_slide() );
 	fsm->pass_ls_b6 = 1;
@@ -236,7 +237,7 @@ void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 	#endif
 	sleep(1);
 
-	if( fsm->cc->isSlideFull() ){
+	if( fsm->hc->isSlideFull() ){
 		fsm->setCurrent( new FSM_1_ErrorState() );
 	}
 }
@@ -255,7 +256,7 @@ void FSM_1_ErrorState :: entry (Puck_FSM * fsm){
 	fsm->lamp->flash(500,RED);
 	//fsm->lamp.fast_blink();
 	//fsm->lamp.start(NULL);
-	while ( fsm->cc->isSlideFull() ){
+	while ( fsm->hc->isSlideFull() ){
 		sleep(1);
 	}
 	fsm->lamp->flash(1000,RED);

@@ -19,7 +19,7 @@
 
 //Methods for class Puck_FSM
 Puck_FSM::Puck_FSM() {
-	cc = HALCore::getInstance();
+	hc = HALCore::getInstance();
 	lamp = Lampen::getInstance();
 }
 

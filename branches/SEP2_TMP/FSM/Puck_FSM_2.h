@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *class for machine 1 - sort out WP with correct/incorrect height
+ * class for machine 1 - sort out WP with correct/incorrect height
  *
  *
  */

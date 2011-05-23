@@ -23,7 +23,7 @@ Puck_FSM_2::Puck_FSM_2() {
 	#ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
 	#endif
-	cc = HALCore::getInstance();
+	hc = HALCore::getInstance();
 
 }
 
@@ -55,9 +55,9 @@ void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b0: entry" << endl;
 	#endif
-	fsm->cc->engineContinue();
-	fsm->cc->engineRight();
-	fsm->cc->shine(GREEN);
+	fsm->hc->engineContinue();
+	fsm->hc->engineRight();
+	fsm->hc->shine(GREEN);
 	fsm->engine_should_be_started = 1;
 }
 void FSM_2_after_ls_b0 :: exit(Puck_FSM * fsm){
@@ -102,13 +102,13 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 	#endif
 	//fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
-	if( fsm->cc->isMetal() && ( fsm->hasPocket==1) ){
+	if( fsm->hc->isMetal() && ( fsm->hasPocket==1) ){
 		#ifdef PUCK_FSM_2_DEBUG
 		cout << "is Metall and has pocket" << endl;
 		#endif
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 
-	} else if( (fsm->cc->isMetal() == 0) && (fsm->hasPocket==0) ) {
+	} else if( (fsm->hc->isMetal() == 0) && (fsm->hasPocket==0) ) {
 		#ifdef PUCK_FSM_2_DEBUG
 		cout << "no Metall, no pocket" << endl;
 		#endif
@@ -116,7 +116,7 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 
 	} else {
 		#ifdef PUCK_FSM_2_DEBUG
-		if( fsm->cc->isMetal() )cout << "fsm->cc->isMetal(): true";
+		if( fsm->hc->isMetal() )cout << "fsm->cc->isMetal(): true";
 		if( fsm->hasPocket ) cout << "pocket" << endl;
 		#endif
 		fsm->setCurrent(new FSM_2_sort_out() );
@@ -127,8 +127,8 @@ void FSM_2_in_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_in_metal_measure: exit" << endl;
 	#endif
-	fsm->cc->engineContinue();
-	fsm->cc->engineRight();
+	fsm->hc->engineContinue();
+	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
 }
 
@@ -137,9 +137,9 @@ void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_metal_measure: entry" << endl;
 	#endif
-	fsm->cc->openSwitch();
+	fsm->hc->openSwitch();
 	sleep(1);
-	fsm->cc->closeSwitch();
+	fsm->hc->closeSwitch();
 }
 void FSM_2_after_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
@@ -161,7 +161,7 @@ void FSM_2_end_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_end_state: entry" << endl;
 	#endif
-	fsm->cc->engineStop();
+	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 }
 void FSM_2_end_state :: exit(Puck_FSM * fsm){
@@ -183,7 +183,7 @@ void FSM_2_sort_out :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_sort_out: entry" << endl;
 	#endif
-	fsm->cc->shine(YELLOW);
+	fsm->hc->shine(YELLOW);
 }
 void FSM_2_sort_out :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
@@ -204,7 +204,7 @@ void FSM_2_in_slide :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_in_slide: entry" << endl;
 	#endif
-	fsm->cc->engineStop();
+	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new FSM_2_check_slide() );
 }
@@ -221,7 +221,7 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 	#endif
 
 	sleep(2);
-	if( fsm->cc->isSlideFull() ){
+	if( fsm->hc->isSlideFull() ){
 		fsm->setCurrent( new FSM_2_ErrorState() );
 	}
 
@@ -238,7 +238,7 @@ void FSM_2_ErrorState :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_ErrorState: entry" << endl;
 	#endif
-	fsm->cc->shine(RED);
+	fsm->hc->shine(RED);
 }
 void FSM_2_ErrorState :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG

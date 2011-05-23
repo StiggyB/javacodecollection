@@ -29,6 +29,12 @@ Sensor::Sensor():cnt(0) {
 		h = HALCore::getInstance();
 	}
 	l = Lampen::getInstance();
+	s = new Serial();
+	/**
+	 * Initialize with start values
+	 */
+	last_Reg_State_B = 0xD3;
+	last_Reg_State_C = 0x50;
 	is_Band_has_wp_ls7 = false;
 	mine = SENSOR;
 }
@@ -44,6 +50,7 @@ void Sensor::execute(void*) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
+
 		endCommunication();
 	}else{
 		perror("Sensor: Setting Up failed!");
@@ -57,8 +64,8 @@ void Sensor::initPucks(){
 	/*Machine1 *fsm;
 	fsm = new Machine1();
 	//fsm->setPocket();*/
-	std::vector<Puck_FSM*> wp_list;
 }
+
 
 void Sensor::handleNormalMessage(){
 	int port = 0;
@@ -72,7 +79,89 @@ void Sensor::handleNormalMessage(){
 	} else {
 		port = INTERRUPT_D_PORT_C_HIGH;
 	}
+	int val = (*r_msg).pulse.value.sival_int;
+
+#ifdef PUCK_FSM_1
+
+	switch (port) {
+	case INTERRUPT_D_PORT_B:
+		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
+			cout << "Sensor: in" << endl;
+			int ls7blocked = 0;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				if (wp_list[i]->pass_ls_b7) {
+					ls7blocked = 1;
+				}
+			}
+			if (ls7blocked == 0) {
+				wp_list.push_back(new Puck_FSM_1);
+				wp_list[wp_list.size() - 1]->hasPocket = 0;
+			}
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b0();
+			}
+		}
+		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT) & 1)) {
+			cout << "Sensor: in height measure " << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b1();
+			}
+		}
+		if (!((val >> WP_IN_SWITCH) & 1) && ((last_Reg_State_B >> WP_IN_SWITCH) & 1)) {
+			cout << "Sensor: in metal measure" << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b3();
+			}
+		}
+		if (!((val >> WP_IN_SLIDE) & 1) && ((last_Reg_State_B >> WP_IN_SLIDE) & 1)) {
+			cout << "Sensor: in slide" << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b6();
+			}
+			starts_engine_if_nessecary();
+		}
+		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
+			cout << "Sensor: end of band in" << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b7_in();
+			}
+//			s->send();
+		}
+		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
+			cout << "Sensor: end of band out" << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b7_out();
+			}
+			starts_engine_if_nessecary();
+}
+		last_Reg_State_B = val;
+		break;
+	case INTERRUPT_D_PORT_C_HIGH:
+		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
+			cout << "Sensor: E-Stop Button in" << endl;
+
+		} else if (((val >> WP_E_STOP) & 1)
+				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
+			cout << "Sensor: E-Stop Button out" << endl;
+
+		} else if (!((val >> WP_STOP) & 1)) {
+			cout << "Sensor: stop Button" << endl;
+
+		} else if ((val >> WP_START) & 1) {
+			cout << "Sensor: Start Button" << endl;
+
+		} else if ((val >> WP_RESET) & 1) {
+			cout << "Sensor: Reset Button" << endl;
+
+		}
+		last_Reg_State_C = val;
+		break;
+	}
+#endif
+
+
 	#ifdef TEST_FSM
+	cout << "TEST_FSM" << endl;
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
 	#endif
 	#ifdef TEST_SEN
@@ -83,6 +172,20 @@ void Sensor::handleNormalMessage(){
 	#endif
 }
 
+void Sensor::starts_engine_if_nessecary()
+{
+    int active_state = 0;
+    for(unsigned int i = 0;i < wp_list.size();i++){
+        if(wp_list[i]->engine_should_be_started){
+        	cout << "PUCK FOUND" << endl;
+            active_state = 1;
+        }
+    }
+    if(active_state == 1){
+        h->engineContinue();
+        h->engineRight();
+    }
+}
 void Sensor::handlePulsMessage(){
 	std::cout << "Sensor: received a Puls, but doesn't know what to do with it" << std::endl;
 }
