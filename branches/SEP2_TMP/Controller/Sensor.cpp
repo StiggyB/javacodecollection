@@ -72,7 +72,7 @@ void Sensor::initPucks() {
 void Sensor::handleNormalMessage() {
 	int port = 0;
 #ifdef PUCK_FSM_2
-	bool request = false;
+	static bool request = false;
 #endif
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	buildMessage(m, r_msg->m.chid, coid, OK, SENSOR);
@@ -152,6 +152,7 @@ void Sensor::handleNormalMessage() {
 			}
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
+			cout << "Sensor: request:" << request << endl;
 			if(request == true) {
 				cout << "Sensor: request true, seriel message will be send" << endl;
 				h->engineContinue();
@@ -210,7 +211,7 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: REQUEST_FREE" << endl;
 			if(wp_list.size() > 0) {
 				request = true;
-				cout << "request, but wp is on machine" << endl;
+				cout << "request, but wp is on machine" << request << endl;
 			} else {
 				s->send(MACHINE2_FREE, sizeof(msgType));
 				h->engineContinue();
