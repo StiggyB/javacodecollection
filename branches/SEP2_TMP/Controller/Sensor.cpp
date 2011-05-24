@@ -251,6 +251,7 @@ void Sensor::delete_unnecessary_wp() {
 			wp_list.erase(wp_list.begin() + i);
 		}
 	}
+	cout << "********** COUNT OF WP´S: " << wp_list.size() << endl;
 }
 
 void Sensor::starts_engine_if_nessecary() {
@@ -261,6 +262,7 @@ void Sensor::starts_engine_if_nessecary() {
 			active_state = 1;
 		}
 	}
+	cout << "********** COUNT OF WP´S: " << wp_list.size() << endl;
 	if (active_state == 1) {
 		h->engineContinue();
 		h->engineRight();

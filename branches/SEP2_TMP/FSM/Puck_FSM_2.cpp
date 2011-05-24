@@ -219,10 +219,10 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 	cout << "FSM_2_check_slide: entry" << endl;
 	#endif
 
-	sleep(2);
-	if( fsm->hc->isSlideFull() ){
-		fsm->setCurrent( new FSM_2_ErrorState() );
-	}
+//	sleep(2);
+//	if( fsm->hc->isSlideFull() ){
+//		fsm->setCurrent( new FSM_2_ErrorState() );
+//	}
 
 }
 void FSM_2_check_slide :: exit(Puck_FSM * fsm){

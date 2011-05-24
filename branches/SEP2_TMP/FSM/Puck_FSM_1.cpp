@@ -238,11 +238,11 @@ void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "pruef_schacht_voll: entry" << endl;
 	#endif
-	sleep(1);
+//	sleep(1);
 
-	if( fsm->hc->isSlideFull() ){
-		fsm->setCurrent( new FSM_1_ErrorState() );
-	}
+//	if( fsm->hc->isSlideFull() ){
+//		fsm->setCurrent( new FSM_1_ErrorState() );
+//	}
 }
 void FSM_1_check_slide :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
