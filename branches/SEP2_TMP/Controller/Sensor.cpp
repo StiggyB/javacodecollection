@@ -153,6 +153,7 @@ void Sensor::handleNormalMessage() {
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
 			if(request == true) {
+				cout << "Sensor: request true, seriel message will be send" << endl;
 				h->engineContinue();
 				s->send(MACHINE2_FREE, sizeof(msgType));
 				h->engineContinue();
@@ -213,6 +214,7 @@ void Sensor::handleNormalMessage() {
 			} else {
 				s->send(MACHINE2_FREE, sizeof(msgType));
 				h->engineContinue();
+				h->engineRight();
 			}
 		} else if (val == POCKET) {
 			cout << "Sensor: POCKET" << endl;
