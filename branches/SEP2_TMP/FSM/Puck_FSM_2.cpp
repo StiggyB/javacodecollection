@@ -116,7 +116,7 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 
 	} else {
 		#ifdef PUCK_FSM_2_DEBUG
-		if( fsm->hc->isMetal() )cout << "fsm->cc->isMetal(): true";
+		if( fsm->hc->isMetal() )cout << "isMetal" << endl;
 		if( fsm->hasPocket ) cout << "pocket" << endl;
 		#endif
 		fsm->setCurrent(new FSM_2_sort_out() );
@@ -174,7 +174,6 @@ void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
 	cout << "Ende_Band2: ls_b7_out" << endl;
 	#endif
 
-	fsm->pass_ls_b7 = 0;
 }
 
 
