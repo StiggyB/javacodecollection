@@ -105,7 +105,7 @@ void Sensor::handleNormalMessage() {
 				wp_list.push_back(new Puck_FSM_2);
 				s->send(PUCK_ARRIVED, sizeof(msgType));
 #endif
-				wp_list[wp_list.size() - 1]->hasPocket = 0;
+				cout << "FSM CREATED" << endl;
 			}
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b0();
@@ -152,6 +152,9 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_out();
 			}
+#ifdef PUCK_FSM_1
+
+#endif
 
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
@@ -192,10 +195,9 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
 			h->engineStop();
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if (wp_list[i]->pass_ls_b7) {
+				if (wp_list[i]->out_of_FSM_1) {
 					s->send(wp_list[i]->hasPocket ? POCKET : NO_POCKET,
 							sizeof(msgType));
-
 				}
 				wp_list[i]->ls_b7_out();
 			}
@@ -246,7 +248,7 @@ void Sensor::handleNormalMessage() {
 
 void Sensor::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < wp_list.size(); i++) {
-		if (wp_list[i]->pass_ls_b7 || wp_list[i]->pass_ls_b6) {
+		if (wp_list[i]->out_of_FSM_1 || wp_list[i]->pass_ls_b6) {
 			cout << "deleted" << endl;
 			wp_list.erase(wp_list.begin() + i);
 		}

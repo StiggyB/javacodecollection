@@ -89,6 +89,10 @@ public:
 	 */
 	bool pass_ls_b7;
 	/**
+	 * is true, if wp has gone out of FSM_1
+	 */
+	bool out_of_FSM_1;
+	/**
 	 * is true, if wp need transport for finite state input
 	 */
 	bool engine_should_be_started;
