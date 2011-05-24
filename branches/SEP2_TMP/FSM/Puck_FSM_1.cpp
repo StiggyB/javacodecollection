@@ -89,11 +89,14 @@ void FSM_1_height_measure :: entry(Puck_FSM * fsm){
 	#endif
 
 	if(height == NORMAL_WP || height == POCKET_WP ){
+		if(height == POCKET_WP){
+			fsm->hasPocket = 1;
+		}//if
 		fsm->setCurrent( new FSM_1_correct_height() );
 	}
 	else{
 		fsm->setCurrent( new FSM_1_sort_out() );
-	}
+	}//if
 }
 void FSM_1_height_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG

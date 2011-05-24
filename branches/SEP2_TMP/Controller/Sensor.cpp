@@ -205,6 +205,7 @@ void Sensor::handleNormalMessage() {
 #endif
 #ifdef PUCK_FSM_2
 		if(val == REQUEST_FREE) {
+			h->engineContinue();
 			cout << "Sensor: REQUEST_FREE" << endl;
 			if(wp_list.size() > 0) {
 				request = true;
