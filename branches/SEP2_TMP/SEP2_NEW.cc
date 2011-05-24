@@ -23,7 +23,13 @@ void stopController();
  */
 
 int main(int argc, char *argv[]) {
-	std::cout << "Welcome to the QNX Momentics IDE" << std::endl;
+#ifdef PUCK_FSM_1
+	std::cout << "####################PUCK_FSM_1####################" << std::endl;
+#endif
+#ifdef PUCK_FSM_2
+	std::cout << "####################PUCK_FSM_2####################" << std::endl;
+#endif
+
 	atexit(stopController);
 	/**
 	 *if simulation is wanted, than you'll get it ;)
