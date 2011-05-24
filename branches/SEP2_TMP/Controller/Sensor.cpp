@@ -37,6 +37,7 @@ Sensor::Sensor() :
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x50;
 	is_Band_has_wp_ls7 = false;
+	request = false;
 	mine = SENSOR;
 }
 
@@ -71,9 +72,6 @@ void Sensor::initPucks() {
 
 void Sensor::handleNormalMessage() {
 	int port = 0;
-#ifdef PUCK_FSM_2
-	static bool request = false;
-#endif
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	buildMessage(m, r_msg->m.chid, coid, OK, SENSOR);
 	if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
@@ -134,6 +132,10 @@ void Sensor::handleNormalMessage() {
 				wp_list[i]->ls_b6();
 			}
 			delete_unnecessary_wp();
+#ifdef PUCK_FSM_2
+			cout << "Sensor: request:" << request << endl;
+			puck_fsm2_outgoing();
+#endif
 			starts_engine_if_nessecary();
 		}
 		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
@@ -150,16 +152,11 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_out();
 			}
+
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
 			cout << "Sensor: request:" << request << endl;
-			if(request == true) {
-				cout << "Sensor: request true, seriel message will be send" << endl;
-				h->engineContinue();
-				s->send(MACHINE2_FREE, sizeof(msgType));
-				h->engineContinue();
-				request = false;
-			}
+			puck_fsm2_outgoing();
 #endif
 			starts_engine_if_nessecary();
 		}
@@ -267,6 +264,16 @@ void Sensor::starts_engine_if_nessecary() {
 	if (active_state == 1) {
 		h->engineContinue();
 		h->engineRight();
+	}
+}
+
+void Sensor::puck_fsm2_outgoing() {
+	if (request == true) {
+		cout << "Sensor: request true, seriel message will be send" << endl;
+		h->engineContinue();
+		s->send(MACHINE2_FREE, sizeof(msgType));
+		h->engineContinue();
+		request = false;
 	}
 }
 

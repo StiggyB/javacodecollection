@@ -32,8 +32,8 @@
  *
  */
 
-//#define PUCK_FSM_1
-#define PUCK_FSM_2
+#define PUCK_FSM_1
+//#define PUCK_FSM_2
 
 class Sensor : public thread::HAWThread, public Communication{
 public:
@@ -52,11 +52,13 @@ private:
     Lampen *l;
     Serial *s;
     std::vector<Puck_FSM*> wp_list;
+	bool request;
     bool settingUpSensor();
     void cleanUpSensor();
     int cnt;
     int last_Reg_State_B;
     int last_Reg_State_C;
+    void puck_fsm2_outgoing();
     void delete_unnecessary_wp();
     void starts_engine_if_nessecary();
 

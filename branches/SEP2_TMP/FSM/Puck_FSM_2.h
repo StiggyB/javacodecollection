@@ -17,12 +17,11 @@
 #ifndef PUCK_FSM_2_H_
 #define PUCK_FSM_2_H_
 
-
 #include "Puck_FSM.h"
 #include "../HAL/HALCore.h"
 #include "iostream.h"
 
-#define PUCK_FSM_2_DEBUG
+//#define PUCK_FSM_2_DEBUG
 
 class Puck_FSM_2 : public Puck_FSM{
 public:

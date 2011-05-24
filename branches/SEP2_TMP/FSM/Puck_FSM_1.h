@@ -21,7 +21,7 @@
 #include "Puck_FSM.h"
 #include "iostream.h"
 
-#define PUCK_FSM_1_DEBUG
+//#define PUCK_FSM_1_DEBUG
 
 class Puck_FSM_1 : public Puck_FSM {
   public:
