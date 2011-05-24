@@ -209,9 +209,10 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: REQUEST_FREE" << endl;
 			if(wp_list.size() > 0) {
 				request = true;
-				h->engineContinue();
+				cout << "request, but wp is on machine" << endl;
 			} else {
 				s->send(MACHINE2_FREE, sizeof(msgType));
+				h->engineContinue();
 			}
 		} else if (val == POCKET) {
 			cout << "Sensor: POCKET" << endl;
