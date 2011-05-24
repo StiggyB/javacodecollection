@@ -44,7 +44,7 @@ void FSM_1_start_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "Start_M1: entry" << endl;
 	#endif
-
+	fsm->engine_should_be_started = true;
 }
 void FSM_1_start_state :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG

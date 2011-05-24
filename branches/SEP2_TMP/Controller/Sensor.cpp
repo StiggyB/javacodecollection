@@ -97,7 +97,6 @@ void Sensor::handleNormalMessage() {
 					ls7blocked = 1;
 				}
 			}
-			if (ls7blocked == 0) {
 #ifdef PUCK_FSM_1
 				wp_list.push_back(new Puck_FSM_1);
 #endif
@@ -106,9 +105,10 @@ void Sensor::handleNormalMessage() {
 				s->send(PUCK_ARRIVED, sizeof(msgType));
 #endif
 				cout << "FSM CREATED" << endl;
-			}
-			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b0();
+			if (ls7blocked == 0) {
+				for (unsigned int i = 0; i < wp_list.size(); i++) {
+					wp_list[i]->ls_b0();
+				}
 			}
 		}
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
