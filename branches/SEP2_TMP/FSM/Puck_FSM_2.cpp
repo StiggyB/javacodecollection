@@ -173,7 +173,7 @@ void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "Ende_Band2: ls_b7_out" << endl;
 	#endif
-
+	fsm->out_of_FSM_1 = true;
 }
 
 
