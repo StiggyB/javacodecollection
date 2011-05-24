@@ -17,7 +17,7 @@
 #define FUNCTORMAKER_H_
 #include "CallInterface.h"
 
-template<typename T,typename R, typename P>
+template<typename T,typename R/*, typename P*/>
 class FunctorMaker {
 
 public:
@@ -31,8 +31,8 @@ public:
 	 * 	type T with param P and return type R.
 	 * \return Function pointer from type CallInterface<T, R, P>.
 	 */
-	static CallInterface<T, R, P>* makeFunctor(T* pMemObj, R(T:: *objFuncp)(P)) {
-		return new Functor<T, R, P>(pMemObj, objFuncp);
+	static CallInterface<T, R/*, P*/>* makeFunctor(T* pMemObj, R(T:: *objFuncp)(/*P*/)) {
+		return new Functor<T, R/*, P*/>(pMemObj, objFuncp);
 	}
 };
 

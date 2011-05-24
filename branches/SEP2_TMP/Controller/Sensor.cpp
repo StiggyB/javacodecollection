@@ -71,6 +71,7 @@ void Sensor::initPucks() {
 
 void Sensor::handleNormalMessage() {
 	int port = 0;
+	bool request = false;
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	buildMessage(m, r_msg->m.chid, coid, OK, SENSOR);
 	if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
@@ -78,12 +79,13 @@ void Sensor::handleNormalMessage() {
 	}
 	if (r_msg->m.ca == react) {
 		port = INTERRUPT_D_PORT_B;
-	} else {
+	} else if (r_msg->m.ca == reactC) {
 		port = INTERRUPT_D_PORT_C_HIGH;
+	} else if (r_msg->m.ca == reactSerial) {
+		port = INTERRUPT_D_SERIAL;
 	}
-	int val = (*r_msg).pulse.value.sival_int;
 
-#ifdef PUCK_FSM_1
+	int val = (*r_msg).pulse.value.sival_int;
 
 	switch (port) {
 	case INTERRUPT_D_PORT_B:
@@ -96,7 +98,12 @@ void Sensor::handleNormalMessage() {
 				}
 			}
 			if (ls7blocked == 0) {
+#ifdef PUCK_FSM_1
 				wp_list.push_back(new Puck_FSM_1);
+#endif
+#ifdef PUCK_FSM_2
+				wp_list.push_back(new Puck_FSM_2);
+#endif
 				wp_list[wp_list.size() - 1]->hasPocket = 0;
 			}
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
@@ -123,6 +130,7 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b6();
 			}
+			delete_unnecessary_wp();
 			starts_engine_if_nessecary();
 		}
 		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
@@ -130,14 +138,22 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_in();
 			}
+#ifdef PUCK_FSM_1
 			s->send(POCKET, 4);
+#endif
 		}
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_out();
 			}
+#ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
+			if(request == true) {
+				s->send(MACHINE2_FREE, sizeof(MACHINE2_FREE));
+				request = false;
+			}
+#endif
 			starts_engine_if_nessecary();
 		}
 		last_Reg_State_B = val;
@@ -162,9 +178,34 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_C = val;
 		break;
-	}
-#endif
+	case INTERRUPT_D_SERIAL:
 
+#ifdef PUCK_FSM_1
+		if (val == MACHINE2_FREE) {
+			h->engineContinue();
+		} else if (val == PUCK_ARRIVED) {
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				if(wp_list[i]->pass_ls_b7) {
+					s->send(wp_list[i]->hasPocket ? POCKET : NO_POCKET, sizeof(POCKET));
+					cout << "***************************" << sizeof(msgType) << endl;
+				}
+				wp_list[i]->ls_b7_out();
+			}
+			delete_unnecessary_wp();
+			starts_engine_if_nessecary();
+		}
+#endif
+#ifdef PUCK_FSM_2
+		if(val == REQUEST_FREE) {
+			if(wp_list.size() > 0) {
+				request = true;
+			} else {
+				s->send(MACHINE2_FREE, sizeof(MACHINE2_FREE));
+			}
+		}
+
+#endif
+	}
 #ifdef TEST_FSM
 	cout << "TEST_FSM" << endl;
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
@@ -179,7 +220,7 @@ void Sensor::handleNormalMessage() {
 
 void Sensor::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < wp_list.size(); i++) {
-		if (wp_list[i]->pass_ls_b7) {
+		if (wp_list[i]->pass_ls_b7 || wp_list[i]->pass_ls_b6) {
 			cout << "deleted" << endl;
 			wp_list.erase(wp_list.begin() + i);
 		}

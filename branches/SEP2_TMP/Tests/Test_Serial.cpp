@@ -176,13 +176,13 @@ void Test_Serial::handlePulsMessage(){
 		break;
 
 		//message from Band 2 to Band 1
-	case BAND2_FREE:
+	case MACHINE2_FREE:
 		printf("<<<<<----- Serial: BAND2_FREE an PORT\n");
 		break;
-	case BAND2_OCCUPIED:
-		printf("<<<<<----- Serial: BAND2_OCCUPIED an PORT: \n");
-		break;
-	case PUK_ARRIVED:
+//	case BAND2_OCCUPIED:
+//		printf("<<<<<----- Serial: BAND2_OCCUPIED an PORT: \n");
+//		break;
+	case PUCK_ARRIVED:
 		printf("<<<<<----- Serial: PUK_ARRIVED an PORT: \n");
 		break;
 

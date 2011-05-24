@@ -18,9 +18,20 @@ enum CommunicatorType{
 /**
  * All Types of Messages
  */
-enum MsgType{
-	addToServer=(4),removeFromServer=(5),closeConnection=(6),startConnection=(7),
-	getIDforCom=(8), react=(9),reactC=(0xa), information=(0xb), OK = (1), notAvailable = (-2), sendID =(3), error = (-1)
+enum MsgType {
+	addToServer = (4),
+	removeFromServer = (5),
+	closeConnection = (6),
+	startConnection = (7),
+	getIDforCom = (8),
+	react = (9),
+	reactC = (0xa),
+	reactSerial = (0xc),
+	information = (0xb),
+	OK = (1),
+	notAvailable = (-2),
+	sendID = (3),
+	error = (-1)
 };
 /**
  * Message structure containing information about the Sender and what he wants from the Receiver

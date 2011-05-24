@@ -20,6 +20,10 @@ void Test_Functions::test(const char* text) {
 	cout << text << endl;
 }
 
+int Test_Functions::test1() {
+	return 1;
+}
+
 void Test_Functions::test2() {
 	cout << "test" << endl;
 }

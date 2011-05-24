@@ -14,48 +14,48 @@
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
 
-enum msgType{
-	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
-	POCKET=(1),ACK_POCKET=(101),
-	NO_POCKET=(2),ACK_NO_POCKET=(102),
-	REQUEST_FREE=(5),
-	BAND2_FREE=(15),
-	BAND2_OCCUPIED=(25),
-	PUK_ARRIVED=(6),
-	E_STOP_PUSHED=(7),
-	E_STOP_PULLED=(8),
-	STOP_BUTTON=(9),
-	START_BUTTON=(10),
-	RESET_BUTTON=(11),
-	INIT_SERIAL=(1337),
-	ACK_INIT_SERIAL=(42)
-};
-
-//enum msgType {
-//
-//	/* Machine Info */
-//	REQUEST_FREE,
-//	REQUEST_FREE_ACK,
-//	MACHINE2_FREE,
-//	MACHINE2_FREE_ACK,
-//	/* Puck Info */
-//	PUCK_ARRIVED,
-//	POCKET,
-//	ACK_POCKET,
-//	NO_POCKET,
-//	ACK_NO_POCKET,
-//	/* Port C */
-//	E_STOP_PUSHED,
-//	E_STOP_PULLED,
-//	STOP_BUTTON,
-//	START_BUTTON,
-//	RESET_BUTTON,
-//	/* Serial communication */
-//	INIT_SERIAL,
-//	SYNC_SIGNAL,
-//	ACK_SYNC_SIGNAL,
-//	ACK_INIT_SERIAL
+//enum msgType{
+//	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
+//	POCKET=(1),ACK_POCKET=(101),
+//	NO_POCKET=(2),ACK_NO_POCKET=(102),
+//	REQUEST_FREE=(5),
+//	BAND2_FREE=(15),
+//	BAND2_OCCUPIED=(25),
+//	PUK_ARRIVED=(6),
+//	E_STOP_PUSHED=(7),
+//	E_STOP_PULLED=(8),
+//	STOP_BUTTON=(9),
+//	START_BUTTON=(10),
+//	RESET_BUTTON=(11),
+//	INIT_SERIAL=(1337),
+//	ACK_INIT_SERIAL=(42)
 //};
+
+enum msgType {
+
+	/* Machine Info */
+	REQUEST_FREE,
+	REQUEST_FREE_ACK,
+	MACHINE2_FREE,
+	MACHINE2_FREE_ACK,
+	/* Puck Info */
+	PUCK_ARRIVED,
+	POCKET,
+	ACK_POCKET,
+	NO_POCKET,
+	ACK_NO_POCKET,
+	/* Port C */
+	E_STOP_PUSHED,
+	E_STOP_PULLED,
+	STOP_BUTTON,
+	START_BUTTON,
+	RESET_BUTTON,
+	/* Serial communication */
+	INIT_SERIAL,
+	SYNC_SIGNAL,
+	ACK_SYNC_SIGNAL,
+	ACK_INIT_SERIAL
+};
 
 
 #define DEBUG_SERIAL

@@ -20,6 +20,7 @@
 class Test_Functions {
 public:
 	void test(const char* text);
+	int test1();
 	void test2();
 	int test3(void* val);
 	int test4(int a);

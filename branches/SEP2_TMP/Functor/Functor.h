@@ -18,15 +18,15 @@
 
 #include "CallInterface.h"
 
-template<typename T, typename R, typename P>
-class Functor : public CallInterface<T, R, P>
+template<typename T, typename R/*, typename P*/>
+class Functor : public CallInterface<T, R/*, P*/>
 {
 
 public:
 	/**
 	 * Type definition: pMemFunc is a pointer to a member- function.
 	 */
-	typedef R(T:: *pMemFunc)(P);
+	typedef R(T:: *pMemFunc)(/*P*/);
 
 private:
 	/**
@@ -47,17 +47,17 @@ public:
 	 * \param objFuncp is a function pointer from
 	 * 	type T with param P and return type R.
 	 */
-	Functor(T* pMemObj, R(T:: *objFuncp)(P))
+	Functor(T* pMemObj, R(T:: *objFuncp)(/*P*/))
 	:pMemObj_(pMemObj), objFuncp_(objFuncp)
 	{
 	}
 
-	R operator()(P param) {
-		return (*pMemObj_.*objFuncp_)(param);
+	R operator()(/*P param*/) {
+		return (*pMemObj_.*objFuncp_)(/*param*/);
 	}
 
-	R call(P param) {
-		return (*pMemObj_.*objFuncp_)(param);
+	R call(/*P param*/) {
+		return (*pMemObj_.*objFuncp_)(/*param*/);
 	}
 
 };
