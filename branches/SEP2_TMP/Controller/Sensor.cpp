@@ -71,7 +71,9 @@ void Sensor::initPucks() {
 
 void Sensor::handleNormalMessage() {
 	int port = 0;
+#ifdef PUCK_FSM_2
 	bool request = false;
+#endif
 	coid = getConnectIdForObject(INTERRUPTCONTROLLER);
 	buildMessage(m, r_msg->m.chid, coid, OK, SENSOR);
 	if (-1 == MsgReply(rcvid, 0, m, sizeof(Message))) {
@@ -103,6 +105,7 @@ void Sensor::handleNormalMessage() {
 #endif
 #ifdef PUCK_FSM_2
 				wp_list.push_back(new Puck_FSM_2);
+				s->send(PUCK_ARRIVED, sizeof(msgType));
 #endif
 				wp_list[wp_list.size() - 1]->hasPocket = 0;
 			}
@@ -139,7 +142,7 @@ void Sensor::handleNormalMessage() {
 				wp_list[i]->ls_b7_in();
 			}
 #ifdef PUCK_FSM_1
-			s->send(POCKET, 4);
+			s->send(REQUEST_FREE, 4);
 #endif
 		}
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
@@ -150,7 +153,7 @@ void Sensor::handleNormalMessage() {
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
 			if(request == true) {
-				s->send(MACHINE2_FREE, sizeof(MACHINE2_FREE));
+				s->send(MACHINE2_FREE, sizeof(msgType));
 				request = false;
 			}
 #endif
@@ -184,10 +187,13 @@ void Sensor::handleNormalMessage() {
 		if (val == MACHINE2_FREE) {
 			h->engineContinue();
 		} else if (val == PUCK_ARRIVED) {
+			cout << "Sensor: PUCK_ARRIVED" << endl;
+			h->engineStop();
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->pass_ls_b7) {
-					s->send(wp_list[i]->hasPocket ? POCKET : NO_POCKET, sizeof(POCKET));
-					cout << "***************************" << sizeof(msgType) << endl;
+				if (wp_list[i]->pass_ls_b7) {
+					s->send(wp_list[i]->hasPocket ? POCKET : NO_POCKET,
+							sizeof(msgType));
+
 				}
 				wp_list[i]->ls_b7_out();
 			}
@@ -200,7 +206,19 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0) {
 				request = true;
 			} else {
-				s->send(MACHINE2_FREE, sizeof(MACHINE2_FREE));
+				s->send(MACHINE2_FREE, sizeof(msgType));
+			}
+		} else if (val == POCKET) {
+			if(wp_list.size() > 1) {
+				perror("SENSOR: Machine2 has more than 1 work pieces");
+			} else {
+				wp_list[0]->hasPocket = true;
+			}
+		} else if(val == NO_POCKET) {
+			if(wp_list.size() > 1) {
+				perror("SENSOR: Machine2 has more than 1 work pieces");
+			} else {
+				wp_list[0]->hasPocket = false;
 			}
 		}
 
