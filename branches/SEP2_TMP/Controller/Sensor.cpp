@@ -153,6 +153,7 @@ void Sensor::handleNormalMessage() {
 #ifdef PUCK_FSM_2
 			delete_unnecessary_wp();
 			if(request == true) {
+				h->engineContinue();
 				s->send(MACHINE2_FREE, sizeof(msgType));
 				request = false;
 			}
@@ -186,6 +187,7 @@ void Sensor::handleNormalMessage() {
 #ifdef PUCK_FSM_1
 		if (val == MACHINE2_FREE) {
 			h->engineContinue();
+			cout << "Sensor: MACHINE2_FREE" << endl;
 		} else if (val == PUCK_ARRIVED) {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
 			h->engineStop();
@@ -203,18 +205,21 @@ void Sensor::handleNormalMessage() {
 #endif
 #ifdef PUCK_FSM_2
 		if(val == REQUEST_FREE) {
+			cout << "Sensor: REQUEST_FREE" << endl;
 			if(wp_list.size() > 0) {
 				request = true;
 			} else {
 				s->send(MACHINE2_FREE, sizeof(msgType));
 			}
 		} else if (val == POCKET) {
+			cout << "Sensor: POCKET" << endl;
 			if(wp_list.size() > 1) {
 				perror("SENSOR: Machine2 has more than 1 work pieces");
 			} else {
 				wp_list[0]->hasPocket = true;
 			}
 		} else if(val == NO_POCKET) {
+			cout << "Sensor: NO_POCKET" << endl;
 			if(wp_list.size() > 1) {
 				perror("SENSOR: Machine2 has more than 1 work pieces");
 			} else {
