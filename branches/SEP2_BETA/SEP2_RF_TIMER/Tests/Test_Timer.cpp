@@ -33,15 +33,28 @@ void Test_Timer::shutdown(){
 void Test_Timer::execute(void*){
 	usleep(100000);
 	Puck_FSM_1 test_fsm;
-	CallInterface<Puck_FSM, void, void*>* test_func_1 =
+
+	CallInterface<Puck_FSM, void, void*>* openswitch =
 			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::openswitch);
+
+	CallInterface<Puck_FSM, void, void*>* closeswitch =
+			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::closeswitch);
 
 	HALCore *test_halcore = HALCore::getInstance();;
 		CallInterface<HALCore, void, void*>* test_func_2 =
 				FunctorMaker<HALCore, void, void*>::makeFunctor(test_halcore, &HALCore::closeSwitch);
 
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+	sleep(4);
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+	sleep(4);
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+
 	//timer->testTimer();
-	timer->addTimerFunction(test_func_1,3000);
+	//timer->addTimerFunction(test_func_1,3000);
 
 
 	/*timer->addTimerFunction(test_func_1,1000);
@@ -51,10 +64,10 @@ void Test_Timer::execute(void*){
 	gettimeofday( &time_val, &time_zone);
 	std::cout << "Time_val::" << time_val.tv_usec << std::endl;*/
 
-	timer->addTimerFunction(test_func_1,1000);
+	/*timer->addTimerFunction(test_func_1,1000);
 	timer->addTimerFunction(test_func_1,999);
 	timer->addTimerFunction(test_func_1,998);
-	timer->addTimerFunction(test_func_1,1600);
+	timer->addTimerFunction(test_func_1,1600);*/
 
 
 	sleep(11);

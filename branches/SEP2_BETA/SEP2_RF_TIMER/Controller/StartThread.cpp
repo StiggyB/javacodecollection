@@ -31,7 +31,7 @@ void StartThread::execute(void*) {
 	//l->start(NULL);
 	cout << "Lampen started" << endl;
 	Sensor s;
-	s.start(NULL);
+	//s.start(NULL);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);

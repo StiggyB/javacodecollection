@@ -73,9 +73,13 @@ public:
 	 */
 	void errorState();
 	/**
-	 * general error state
+	 * openswitch - wrapper
 	 */
 	void openswitch(void*);
+	/**
+	 * closeswitch - wrapper
+	 */
+	void closeswitch(void*);
 	/**
 	 * is true, if wp has passed first light barrier
 	 */

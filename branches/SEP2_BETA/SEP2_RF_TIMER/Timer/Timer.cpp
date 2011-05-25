@@ -28,37 +28,6 @@ Timer::~Timer() {
 }
 
 
-void Timer::testTimer(){
-	timer_t             timerid;
-    struct sigevent     event;
-    struct itimerspec   timer;
-    struct idTOfunction new_element;
-
-	timer.it_value.tv_sec = 2;
-	timer.it_value.tv_nsec = 300;
-
-    new_element.id = getnextid();
-    new_element.type = PUCK_FSM;
-
-    //struct idTOfunction new_element_copy = new_element;
-    //funcp_list_fsm.push_back(new_element_copy);
-
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, 0, new_element.id );
-
-	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
-		perror( "Timer: cannot create OS-Timer");
-		return ;
-	}//if
-
-
-	if( timer_settime (timerid, 0, &timer, NULL) == -1){
-		perror( "Timer: cannot set OS-Timer");
-		return ;
-	}//if
-
-}
-
-
 bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
 	timer_t             timerid;
     struct sigevent     event;
@@ -70,20 +39,20 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
     	perror( "Timer: cannot calculate seconds and nano seconds");
     	return false;
     }//if
+
 	timer.it_value.tv_sec = sec;
 	timer.it_value.tv_nsec = nano_sec;
 
-
     if( (new_element.id = getnextid()) == -1){
+    	perror( "Timer: can't get id for timer");
     	return false;
     }//if
-    new_element.type = PUCK_FSM;
 
-    struct idTOfunction new_element_copy = new_element;
+
+    struct idTOfunction new_element_copy = new_element;//copy to avoid timer_settime failure
     funcp_list_fsm.push_back(new_element_copy);
 
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
-
 
 	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
 		perror( "Timer: cannot create OS-Timer");
@@ -128,12 +97,13 @@ void Timer::execute(void*) {
 	std::cout << "Timer: Start" << std::endl;
 
 	if (settingUpCommunicatorDevice(receiver)) {
+
 		//std::cout << "Timer coid:" << coid << "Timer chid:" << chid << std::endl;
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handlePulsMessage();
-			this->stop();
 		}//while
+
 	}else{
 		perror("Timer: Setting Up failed!");
 		endCommunication();
@@ -176,13 +146,13 @@ struct idTOfunction Timer::find_function(unsigned int id){
 	result.id = -1;
 
 	for(unsigned int i = 0; i<funcp_list_fsm.size(); i++){
-		//std::cout << "find_function id:" << funcp_list[i].id << std::endl;
+
 		if(funcp_list_fsm[i].id == id){
-			//std::cout << "found" << std::endl;
 			result = funcp_list_fsm[i];
 			funcp_list_fsm.erase(funcp_list_fsm.begin()+i);
 			return result;
 		}//if
+
 	}//for
 	return result;
 }
@@ -196,9 +166,7 @@ int Timer::getnextid(){
 		reserved = false;
 
 		for(unsigned int i = 0; i < funcp_list_fsm.size(); i++){
-			//std::cout << "for i=" << i <<std::endl;
 			if(funcp_list_fsm[i].id==id){
-				//std::cout << "reserved id" << std::endl;
 				reserved = true;
 			}//if
 		}//for
@@ -216,17 +184,17 @@ int Timer::getnextid(){
 
 int Timer::calculateTime(int ms, int *s, int *ns){
     if(ms <= 10000){
+
     	if(ms >= 1000){
     		(*s) = ms/1000;
     		(*ns) = (ms-( (*s)*1000))*1000*1000;
     	}else{
     		(*ns) = ms*1000*1000;
     	}//if
+
     } else {
     	perror( "Timer: parameter ms not in range (0 <= ms <= 10000)!");
     	return -1;
     }//if
-
-    //std::cout << "Timer s:" << (*s) << " Timer ns:" << (*ns) << std::endl;
     return 0;
 }
