@@ -24,7 +24,7 @@ Timer::Timer() {
 
 
 Timer::~Timer() {
-	// TODO Auto-generated destructor stub
+	funcp_list_fsm.clear();
 }
 
 
@@ -98,7 +98,6 @@ void Timer::execute(void*) {
 
 	if (settingUpCommunicatorDevice(receiver)) {
 
-		//std::cout << "Timer coid:" << coid << "Timer chid:" << chid << std::endl;
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handlePulsMessage();
@@ -118,7 +117,6 @@ void Timer::handleNormalMessage(){
 
 void Timer::handlePulsMessage(){
 	std::cout << "Timer: received a Puls" << std::endl;
-	//std::cout << "value:" << val << " code:" << code << std::endl;
 	struct idTOfunction temp;
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
@@ -141,7 +139,7 @@ void Timer::shutdown() {
 }
 
 
-struct idTOfunction Timer::find_function(unsigned int id){
+struct idTOfunction Timer::find_function(int id){
 	struct idTOfunction result;
 	result.id = -1;
 
@@ -159,10 +157,10 @@ struct idTOfunction Timer::find_function(unsigned int id){
 
 
 int Timer::getnextid(){
-	unsigned int id = 0;
+	int id = 0;
 	bool reserved = false;
 
-	while(id <= funcp_list_fsm.size()){
+	while(id <= (signed int) funcp_list_fsm.size()){
 		reserved = false;
 
 		for(unsigned int i = 0; i < funcp_list_fsm.size(); i++){

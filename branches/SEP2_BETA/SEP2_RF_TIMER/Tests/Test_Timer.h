@@ -31,10 +31,21 @@ class Test_Timer  : public thread::HAWThread{
 public:
 	Test_Timer();
 	virtual ~Test_Timer();
+	/**
+	 * Timer object, which will tested
+	 */
 	Timer *timer;
+	/**
+	 * set the timer object, this object was started from another thread
+	 * \param t the Timer object
+	 */
 	void setTimer(Timer *t){ timer = t;}
 protected:
-	virtual void execute(void*);
+	/**
+	 * set the timer object, this object was started from another thread
+	 * \param data optional data, which the thread can process
+	 */
+	virtual void execute(void* data);
 	virtual void shutdown();
 };
 
