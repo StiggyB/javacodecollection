@@ -76,7 +76,7 @@ void Sensor::handleNormalMessage(){
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
 	#endif
 	#ifdef TEST_SEN
-	ts.test_sen_interrupt(port, r_msg->pulse.value.sival_int);
+	ts->test_sen_interrupt(port, r_msg->pulse.value.sival_int);
 	#endif
 	#ifdef TEST_IRQ
 	interrupt(port, r_msg->pulse.value.sival_int);

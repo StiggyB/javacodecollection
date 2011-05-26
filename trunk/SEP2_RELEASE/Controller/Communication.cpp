@@ -224,19 +224,19 @@ bool Communication::connectWithCommunicator(CommunicatorType c, CommunicatorType
 
 bool Communication::connectWithCommunicator(CommunicatorType c, int number, CommunicatorType my){
 	int id = getChannelIdForObject(c,number);
+	if ( -1 == id ) {
+		perror("Communication: failed to get ChannelId!");
+		return false;
+	}
 	if (!attachConnection(id, c)) {
 		perror("Communication: failed to AttachConnection!");
 		return false;
 	}
 	if(c != my){
-		if (-1 == (id = getChannelIdForObject(c,number))) {
-			perror("Communication: failed to get ChannelId!");
-			return false;
-		}
 		coid = getConnectIdForObject(c,number);
-		buildMessage(m, id, coid, startConnection, my,uniqueID);
+		buildMessage(m, chid, coid, startConnection, my,uniqueID);
 		if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-			perror("Communication: failed to send message to IC!");
+			perror("Communication: failed to send message to Communicator!");
 			return false;
 		}
 	}
@@ -377,7 +377,7 @@ bool Communication::requestChannelIDForObject(CommunicatorType c,int number){
 bool Communication::attachConnection(int id, CommunicatorType c){
 	coid = ConnectAttach(0, 0, id, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
-		perror("Communication: failed to attach Channel for Interrupt\n");
+		perror("Communication: failed to attach Channel.");
 		return false;
 	}
 	if(c != mine){
