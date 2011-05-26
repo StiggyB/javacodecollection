@@ -42,12 +42,13 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
 
 	timer.it_value.tv_sec = sec;
 	timer.it_value.tv_nsec = nano_sec;
-
+	locker.lock();
     if( (new_element.id = getnextid()) == -1){
     	perror( "Timer: can't get id for timer");
+    	locker.unlock();
     	return false;
     }//if
-
+    locker.unlock();
 
     struct idTOfunction new_element_copy = new_element;//copy to avoid timer_settime failure
     funcp_list_fsm.push_back(new_element_copy);

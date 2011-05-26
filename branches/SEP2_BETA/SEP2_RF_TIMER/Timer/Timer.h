@@ -17,14 +17,15 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include "../Functor/CallInterface.h"
-#include "../Functor/Functor.h"
-#include "../Functor/FunctorMaker.h"
 #include "Communication.h"
-#include "../Thread/HAWThread.h"
+#include "../HAL/HALCore.h"
 #include "../FSM/Puck_FSM.h"
 #include "../FSM/Puck_FSM_1.h"
-#include "../HAL/HALCore.h"
+#include "../Thread/Mutex.h"
+#include "../Thread/HAWThread.h"
+#include "../Functor/Functor.h"
+#include "../Functor/FunctorMaker.h"
+#include "../Functor/CallInterface.h"
 #include <vector>
 
 /**
@@ -92,6 +93,10 @@ private:
 	 * \return a integer, this is the next free id (not index) in list
 	 */
 	int getnextid();
+	/**
+	 * ensures threadsafety
+	 */
+	Mutex locker;
 };
 
 /**
