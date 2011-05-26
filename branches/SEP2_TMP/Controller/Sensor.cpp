@@ -168,7 +168,7 @@ void Sensor::handleNormalMessage() {
 	case INTERRUPT_D_PORT_C_HIGH:
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
-
+//			s->send();
 		} else if (((val >> WP_E_STOP) & 1)
 				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
@@ -231,9 +231,9 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->hasPocket = false;
 			}
 		}
-
 #endif
 	}
+
 #ifdef TEST_FSM
 	cout << "TEST_FSM" << endl;
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
