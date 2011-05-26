@@ -25,7 +25,12 @@ Puck_FSM::Puck_FSM() {
 
 Puck_FSM::~Puck_FSM() {
 }
-
+void Puck_FSM::openswitch(void*){
+	hc->openSwitch();
+}
+void Puck_FSM::closeswitch(void*){
+	hc->closeSwitch();
+}
 
 void Puck_FSM::ls_b0(){
 	current->ls_b0(this);

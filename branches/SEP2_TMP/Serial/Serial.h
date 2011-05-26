@@ -13,6 +13,7 @@
 #include "../Thread/HAWThread.h"
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
+#include "../Thread/Mutex.h"
 
 //enum msgType{
 //	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
@@ -122,6 +123,7 @@ private:
 	int cnt;
 	bool hasSettings;
 	CommunicatorType receiver;
+	Mutex locker;
 };
 
 #endif /* SERIAL_H_ */

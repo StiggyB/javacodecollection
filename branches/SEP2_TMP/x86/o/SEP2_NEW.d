@@ -23,6 +23,7 @@ SEP2_NEW.o: Z:/TI_Labor/QNX650/workspace/SEP2_TMP/SEP2_NEW.cc \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Serial/../Thread/HAWThread.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Serial/../Controller/Communication.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Serial/../Tests/test.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Serial/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Controller/Communication.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/Test_Lights.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../HAL/Lampen.h \
@@ -50,5 +51,16 @@ SEP2_NEW.o: Z:/TI_Labor/QNX650/workspace/SEP2_TMP/SEP2_NEW.cc \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Thread/Singleton_T.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/CommunicationServer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/Test_Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../HAL/HALCore.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../FSM/Puck_FSM.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../FSM/Puck_FSM_1.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Timer/Timer.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/InterruptController.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/HAL/HALCore.h

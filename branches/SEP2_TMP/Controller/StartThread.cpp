@@ -6,6 +6,7 @@
  */
 
 #include "StartThread.h"
+#include "../Timer/Timer.h"
 
 StartThread::StartThread(){
 	h = HALCore::getInstance();
@@ -27,8 +28,8 @@ void StartThread::execute(void*) {
 	cout << "starting IC" <<endl;
 	ic->start(NULL);
 	cout << "IC started" <<endl;
-//	l->start(NULL);
-//	cout << "Lampen started" << endl;
+	l->start(NULL);
+	cout << "Lampen started" << endl;
 	Sensor s;
 	s.start(NULL);
 #ifdef TEST_IRQ
@@ -76,7 +77,7 @@ void StartThread::execute(void*) {
 	s.testFSM(&tests_fsm);
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
-	tests_fsm.join();
+	//tests_fsm.join();
 #endif
 #ifdef TEST_FUN
 	cout << "starting Functor-Test"	 << endl;
@@ -84,6 +85,15 @@ void StartThread::execute(void*) {
 	cout << "waiting for Functor-Test" << endl;
 	tf.join();
 #endif
+#ifdef TEST_TIMER
+	cout << "starting Timer-Test"	 << endl;
+	timer.start(NULL);
+	timer_test.setTimer(&timer);
+	timer_test.start(NULL);
+	cout << "waiting for Timer-Test" << endl;
+	timer_test.join();
+#endif
+
 	/*
 	sleep(4);
 	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
@@ -101,8 +111,9 @@ void StartThread::execute(void*) {
 		}
 	}
 */
-	//sleep(40);
+//	sleep(40);
 	s.join();
+	//h->join();
 
 }
 

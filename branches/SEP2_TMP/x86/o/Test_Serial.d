@@ -14,4 +14,5 @@ Test_Serial.o: \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Tests/../Serial/../Controller/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Tests/../Serial/../Controller/../HAL/../Thread/Singleton_T.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Tests/../Serial/../Tests/test.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Tests/../Serial/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Tests/../Controller/Communication.h

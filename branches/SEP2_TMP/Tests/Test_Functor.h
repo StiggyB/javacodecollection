@@ -1,18 +1,8 @@
-/**
- * Test class for the Functor Pattern.
+/*
+ * Test_Functor.h
  *
- * SE2 (+ SY and PL) Project SoSe 2011
- *
- * Authors: Rico Flaegel,
- * 			Tell Mueller-Pettenpohl,
- * 			Torsten Krane,
- * 			Jan Quenzel
- *
- * This class executes test functions for the
- * Functor Pattern and the helper class FunctorMaker.
- * The functions test the pattern with generic return
- * value, generic parameter and without parameter (void*).
- *
+ *  Created on: 12.05.2011
+ *      Author: aax691
  */
 
 #ifndef TEST_FUNCTOR_H_

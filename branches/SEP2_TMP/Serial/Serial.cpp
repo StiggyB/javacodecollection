@@ -224,7 +224,7 @@ void Serial::shutdown() {
 }
 
 int Serial::send(int data, int lenBytes) {
-
+	locker.lock();
 	unsigned int *p = (unsigned int*) (&data);
 	int n = (int) write(ser, &data, lenBytes);
 	printf("----->>>>>send: port %i DATA: %d \n", comPort,*p) ;
@@ -236,7 +236,7 @@ int Serial::send(int data, int lenBytes) {
 	} else {
 		return 0;
 	}//if
-	cout << "hello! :P" << endl;
+	locker.unlock();
 	return 0;
 }
 
@@ -255,7 +255,7 @@ int Serial::receive(void* data, int lenBytes) {
 		}
 	} else {
 		return 0;
-	}//if// return 0;
+	}
 }
 
 void Serial::handleNormalMessage(){

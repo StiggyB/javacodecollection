@@ -10,14 +10,14 @@
  *
  * Encapsulates functions for the Functor Pattern.
  * These functions provide a generic Callback with
- * dynamic object type, return type and parameter type.
+ * dynamic Objecttype, Returntype and Parametertype.
  *
  */
 
 #ifndef IFUNCTOR_H_
 #define IFUNCTOR_H_
 
-template <typename T, typename R/*, typename P*/>
+template <typename T, typename R, typename P>
 class CallInterface {
 
 public:
@@ -27,14 +27,14 @@ public:
 	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the returnvalue.
 	 */
-	virtual R operator()(/*P param*/) = 0;
+	virtual R operator()(P param) = 0;
 
 	/**
 	 * Provides a dynamic choose of Functionpointers.
 	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the returnvalue.
 	 */
-	virtual R call(/*P param*/) = 0;
+	virtual R call(P param) = 0;
 
 };
 

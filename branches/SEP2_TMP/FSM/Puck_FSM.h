@@ -32,6 +32,14 @@ public:
 	Puck_FSM();
 	virtual ~Puck_FSM();
 	/**
+	 * openswitch - wrapper
+	 */
+	void openswitch(void*);
+	/**
+	 * closeswitch - wrapper
+	 */
+	void closeswitch(void*);
+	/**
 	 * set new state
 	 * \param a State, which will be the new acutal state of fsm
 	 */

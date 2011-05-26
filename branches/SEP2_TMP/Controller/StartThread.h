@@ -15,6 +15,8 @@
 #include "Sensor.h"
 #include "InterruptController.h"
 #include "CommunicationServer.h"
+#include "../Tests/Test_Timer.h"
+#include "../Timer/Timer.h"
 
 class StartThread : public thread::HAWThread {
 public:
@@ -66,6 +68,11 @@ private:
 #ifdef TEST_FUN
     Test_Functor tf;
 #endif
+#ifdef TEST_TIMER
+    Test_Timer timer_test;
+    Timer timer;
+#endif
+
 };
 
 #endif /* STARTTHREAD_H_ */

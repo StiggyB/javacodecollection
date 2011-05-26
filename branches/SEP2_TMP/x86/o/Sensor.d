@@ -17,6 +17,7 @@ Sensor.o: Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/Sensor.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Serial/../Thread/HAWThread.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Serial/../Controller/Communication.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Serial/../Tests/test.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Serial/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/Communication.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/test.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_TMP/Controller/../Tests/Test_Sensor.h \
