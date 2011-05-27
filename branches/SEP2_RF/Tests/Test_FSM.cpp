@@ -27,8 +27,8 @@ Test_FSM::Test_FSM() {
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x50;
 	aWPendOfMachine = false;
-	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_1 );
-	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_2 );
+	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_1(serial, &puck_list) );
+	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_2(serial, &puck_list) );
 	wp_list[3]->hasPocket = 1;
 	wp_list[4]->hasPocket = 1;
 
@@ -112,23 +112,23 @@ void Test_FSM::handleSignal(int val, int port){
 				break;
 			}
 
-			if(wp_list_index==0 && wp_list[wp_list_index]->pass_ls_b7){
+			if(wp_list_index==0 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test 1 passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "Test2: please take workpiece from machine and put on a workpiece without pocket and normal height on LS_B0" << endl;
 
-			} else if(wp_list_index==0 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==0 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test1: NOT passed, workpiece is not at end of machine" << endl;
 
-			} else if(wp_list_index==1 && wp_list[wp_list_index]->pass_ls_b7){
+			} else if(wp_list_index==1 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test2: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "Test3: please take workpiece from machine and put on a workpiece with plane height on LS_B0" << endl;
 
-			} else if(wp_list_index==1 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==1 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test2: NOT passed, workpiece is not at end of machine" << endl;
 
-			} else if(wp_list_index==2 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==2 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test3: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
 				cout << "--------------------------------------------------------------------------------" << endl;
@@ -136,31 +136,31 @@ void Test_FSM::handleSignal(int val, int port){
 				cout << "--------------------------------------------------------------------------------" << endl;
 				cout << "Test4: please take workpiece from machine and put on a workpiece with Pocket and without metal on LS_B0" << endl;
 
-			} else if(wp_list_index==2 && wp_list[wp_list_index]->pass_ls_b7){
+			} else if(wp_list_index==2 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test3: NOT passed, workpiece is not in slide" << endl;
 
-			} else if(wp_list_index==3 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==3 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test4: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
 				cout << "Test5: please take workpiece from machine and put on a workpiece with Pocket and metal on LS_B0" << endl;
 
-			} else if(wp_list_index==3 && wp_list[wp_list_index]->pass_ls_b7){
+			} else if(wp_list_index==3 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test4: NOT passed, workpiece is not in slide" << endl;
 
-			} else if(wp_list_index==4 && wp_list[wp_list_index]->pass_ls_b7){
+			} else if(wp_list_index==4 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test5: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "Test6: please take workpiece from machine and workpiece on a WP without Pocket and normal Height on LS_B0" << endl;
 
-			} else if(wp_list_index==4 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==4 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test5: NOT passed, workpiece is not at end of machine" << endl;
 
-			} else if(wp_list_index==5 && wp_list[wp_list_index]->pass_ls_b7){
+			} else if(wp_list_index==5 && wp_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test6: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
 				cout << "------------All Tests passed successful----------" << endl;
 				running = false;
-			} else if(wp_list_index==5 && wp_list[wp_list_index]->pass_ls_b6){
+			} else if(wp_list_index==5 && wp_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test 6 NOT passed, workpiece is not at end of machine" << endl;
 				running = false;
 			}

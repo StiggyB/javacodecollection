@@ -10,26 +10,30 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *class for machine 1 - sort out WP with correct/incorrect height
+ *class for machine 1 - sort out WP with with/without metal
  *
  *
  */
 
 #include "Puck_FSM_2.h"
 
-Puck_FSM_2::Puck_FSM_2() {
+Puck_FSM_2::~Puck_FSM_2() {
+
+}
+
+
+Puck_FSM_2::Puck_FSM_2(Serial* serialobj, std::vector<Puck_FSM*>* puck_listobj){
+	serial = serialobj;
+	puck_list = puck_listobj;
 	current = new FSM_2_start_state;
 	current->entry(this);
 	#ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
 	#endif
 	hc = HALCore::getInstance();
-
 }
 
-Puck_FSM_2::~Puck_FSM_2() {
 
-}
 
 
 //functions for FSM_2_start_state
@@ -37,6 +41,7 @@ void FSM_2_start_state :: ls_b0(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_start_state: ls_b0" << endl;
 	#endif
+	fsm->serial->send(PUCK_ARRIVED, sizeof(msgType));
 	fsm->setCurrent(new FSM_2_after_ls_b0() );
 }
 void FSM_2_start_state :: entry(Puck_FSM * fsm){
@@ -69,7 +74,7 @@ void FSM_2_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b0: ls_b1" << endl;
 	#endif
-	fsm->pass_ls_b1 = 1;
+	fsm->location = AFTER_HEIGH_MEASURE;
 	fsm->setCurrent(new FSM_2_after_ls_b1() );
 }
 
@@ -89,7 +94,6 @@ void FSM_2_after_ls_b1 :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b1: ls_b3" << endl;
 	#endif
-	fsm->pass_ls_b3 = 1;
 	fsm->setCurrent(new FSM_2_in_metal_measure() );
 }
 
@@ -106,12 +110,14 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 		#ifdef PUCK_FSM_2_DEBUG
 		cout << "is Metall and has pocket" << endl;
 		#endif
+		fsm->location = AFTER_METAL_SENSOR_FORWARD;
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 
 	} else if( (fsm->hc->isMetal() == 0) && (fsm->hasPocket==0) ) {
 		#ifdef PUCK_FSM_2_DEBUG
 		cout << "no Metall, no pocket" << endl;
 		#endif
+		fsm->location = AFTER_METAL_SENSOR_FORWARD;
 		fsm->setCurrent(new FSM_2_after_metal_measure() );
 
 	} else {
@@ -119,6 +125,7 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 		if( fsm->hc->isMetal() )cout << "isMetal" << endl;
 		if( fsm->hasPocket ) cout << "pocket" << endl;
 		#endif
+		fsm->location = AFTER_METAL_SENSOR_SORT_OUT;
 		fsm->setCurrent(new FSM_2_sort_out() );
 	}
 
@@ -150,7 +157,7 @@ void FSM_2_after_metal_measure :: ls_b7_in(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_metal_measure: ls_b7_in" << endl;
 	#endif
-	fsm->pass_ls_b7 = 1;
+	fsm->location = ON_LAST_LB;
 	fsm->setCurrent(new FSM_2_end_state() );
 }
 
@@ -171,9 +178,11 @@ void FSM_2_end_state :: exit(Puck_FSM * fsm){
 }
 void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
-	cout << "Ende_Band2: ls_b7_out" << endl;
+	cout << "FSM_2_end_state: ls_b7_out" << endl;
 	#endif
-	fsm->out_of_FSM_1 = true;
+	fsm->location = AFTER_LAST_LB;
+	fsm->delete_unnecessary_wp();
+	fsm->puck_fsm2_outgoing();
 }
 
 
@@ -193,7 +202,8 @@ void FSM_2_sort_out :: ls_b6(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_sort_out: ls_b3" << endl;
 	#endif
-	fsm->pass_ls_b6 = 1;
+	fsm->location = SORT_OUT;
+	fsm->puck_fsm2_outgoing();
 	fsm->setCurrent(new FSM_2_in_slide() );
 }
 
@@ -223,7 +233,7 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 //	if( fsm->hc->isSlideFull() ){
 //		fsm->setCurrent( new FSM_2_ErrorState() );
 //	}
-
+	fsm->delete_unnecessary_wp();
 }
 void FSM_2_check_slide :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG

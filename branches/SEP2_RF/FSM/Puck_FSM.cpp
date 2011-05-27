@@ -21,9 +21,99 @@
 Puck_FSM::Puck_FSM() {
 	hc = HALCore::getInstance();
 	lamp = Lampen::getInstance();
+
 }
 
 Puck_FSM::~Puck_FSM() {
+}
+
+
+void Puck_FSM::puck_fsm2_outgoing() {
+	if (request == true) {
+		cout << "Sensor: request true, seriel message will be send" << endl;
+		hc->engineContinue();
+		serial->send(MACHINE2_FREE, sizeof(msgType));
+		hc->engineContinue();
+		request = false;
+	}//if
+}
+void Puck_FSM::delete_unnecessary_wp() {
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location == AFTER_LAST_LB) {
+			cout << "deleted" << endl;
+			puck_list->erase(puck_list->begin() + i);
+		}
+	}
+	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
+}
+
+void Puck_FSM::starts_engine_if_nessecary() {
+	int active_state = 0;
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ( (*puck_list)[i]->engine_should_be_started ) {
+			cout << "A PUCK NEED ENGINE" << endl;
+			active_state = 1;
+		}
+	}
+	if (active_state == 1) {
+		hc->engineContinue();
+		hc->engineRight();
+	}
+}
+
+int Puck_FSM::check_last_lb(){
+    for(unsigned int i = 0;i < puck_list->size();i++){
+        if( (*puck_list)[i]->location == ON_LAST_LB){
+            return 1;
+        }//if
+    }//for
+    return 0;
+}
+
+void Puck_FSM::requestfromMachine1(){
+	cout << "Puck_FSM_2: REQUEST_FREE" << endl;
+	if(puck_list->size() > 0) {
+		request = true;
+		cout << "request, but wp is on machine" << request << endl;
+	} else {
+		serial->send(MACHINE2_FREE, sizeof(msgType));
+		hc->engineContinue();
+		hc->engineRight();
+	}//if
+}
+void Puck_FSM::PuckhasPocket(){
+	cout << "Puck_FSM_2: POCKET" << endl;
+	if(puck_list->size() > 1) {
+		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+	} else {
+		(*puck_list)[0]->hasPocket = true;
+	}//if
+
+}
+void Puck_FSM::PuckhasnoPocket(){
+	cout << "Puck_FSM_2: NO_POCKET" << endl;
+	if(puck_list->size() > 1) {
+		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+	} else {
+		(*puck_list)[0]->hasPocket = false;
+	}//if
+
+}
+void Puck_FSM::machine2_free(){
+	cout << "Sensor: machine2_free" << endl;
+	hc->engineContinue();
+}
+void Puck_FSM::puck_arrived(){
+	cout << "Sensor: puck_arrived" << endl;
+	hc->engineStop();
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET, sizeof(msgType));
+		}
+		(*puck_list)[i]->ls_b7_out();
+	}
+	delete_unnecessary_wp();
+	starts_engine_if_nessecary();
 }
 void Puck_FSM::openswitch(void*){
 	hc->openSwitch();
@@ -31,7 +121,6 @@ void Puck_FSM::openswitch(void*){
 void Puck_FSM::closeswitch(void*){
 	hc->closeSwitch();
 }
-
 void Puck_FSM::ls_b0(){
 	current->ls_b0(this);
 }

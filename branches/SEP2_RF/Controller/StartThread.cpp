@@ -30,8 +30,11 @@ void StartThread::execute(void*) {
 	cout << "IC started" <<endl;
 	l->start(NULL);
 	cout << "Lampen started" << endl;
-	Sensor s;
-	s.start(NULL);
+	Sensor sensor;
+	Serial serial;
+	serial.init(1, true);
+	sensor.serial = &serial;
+	sensor.start(NULL);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);
@@ -74,7 +77,8 @@ void StartThread::execute(void*) {
 #ifdef TEST_FSM
 	cout << "starting FSM-Tests" << endl;
 	tests_fsm.init_tests();
-	s.testFSM(&tests_fsm);
+	tests_fsm.serial = &serial;
+	sensor.testFSM(&tests_fsm);
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
 	//tests_fsm.join();
@@ -87,6 +91,7 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_TIMER
 	cout << "starting Timer-Test"	 << endl;
+	timer.serial = &serial;
 	timer.start(NULL);
 	timer_test.setTimer(&timer);
 	timer_test.start(NULL);
@@ -112,7 +117,7 @@ void StartThread::execute(void*) {
 	}
 */
 //	sleep(40);
-	s.join();
+	sensor.join();
 	//h->join();
 
 }
