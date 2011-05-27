@@ -1,2 +1,0 @@
-IHAL.o: Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/HAL/IHAL.cpp \
- Z:/TI_Labor/QNX650/workspace/SEP2_NEW_BRANCH_RF/HAL/IHAL.h
