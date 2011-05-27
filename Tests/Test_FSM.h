@@ -34,6 +34,8 @@ public:
 	int last_Reg_State_B;
 	int last_Reg_State_C;
 	bool running;
+	Serial* serial;
+	std::vector<Puck_FSM*> puck_list;
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

@@ -17,6 +17,7 @@
 
 #include "Test_Timer.h"
 
+
 Test_Timer::Test_Timer() {
 
 }
@@ -31,7 +32,7 @@ void Test_Timer::shutdown(){
 
 void Test_Timer::execute(void* data){
 	usleep(100000);
-	Puck_FSM_1 test_fsm;
+	Puck_FSM_1 test_fsm(serial, &puck_list);
 
 	CallInterface<Puck_FSM, void, void*>* openswitch =
 			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::openswitch);

@@ -41,6 +41,7 @@ public:
     Sensor();
     virtual ~Sensor();
     bool is_Band_has_wp_ls7;
+    Serial *serial;
 protected:
     virtual void execute(void*);
     virtual void shutdown();
@@ -50,7 +51,6 @@ protected:
 private:
     HALCore *h;
     Lampen *l;
-    Serial *s;
     std::vector<Puck_FSM*> wp_list;
 	bool request;
     bool settingUpSensor();
@@ -61,8 +61,6 @@ private:
     void puck_fsm2_outgoing();
     void delete_unnecessary_wp();
     void starts_engine_if_nessecary();
-
-	void initPucks();
 
 };
 

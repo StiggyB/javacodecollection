@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *class for machine 2 - sort out WP with/without metal
+ * class for machine 1 - sort out WP with correct/incorrect height
  *
  *
  */
@@ -19,13 +19,15 @@
 #define Puck_FSM_1_H_
 
 #include "Puck_FSM.h"
+#include <vector>
 #include "iostream.h"
 
-//#define PUCK_FSM_1_DEBUG
+#define PUCK_FSM_1_DEBUG
 
 class Puck_FSM_1 : public Puck_FSM {
   public:
-	Puck_FSM_1();
+	//Puck_FSM_1();
+	Puck_FSM_1(Serial* serial, std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_1();
 
 };
@@ -36,6 +38,7 @@ class FSM_1_start_state : public State{
 		void exit(Puck_FSM *);
 		void entry(Puck_FSM *);
 		void ls_b0(Puck_FSM *);
+		void ls_b7_out(Puck_FSM *);
 };
 
 class FSM_1_after_ls_b0 : public State{

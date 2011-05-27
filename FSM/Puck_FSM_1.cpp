@@ -10,14 +10,20 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *class for machine 2 - sort out WP with/without metal
+ * class for machine 1 - sort out WP with correct/incorrect height
  *
  *
  */
 
 #include "Puck_FSM_1.h"
 
-Puck_FSM_1::Puck_FSM_1() {
+Puck_FSM_1::~Puck_FSM_1() {
+
+}
+
+Puck_FSM_1::Puck_FSM_1(Serial* serialobj, std::vector<Puck_FSM*>* puck_listobj){
+	serial = serialobj;
+	puck_list = puck_listobj;
 	current = new FSM_1_start_state;
 	current->entry(this);
 	#ifdef PUCK_FSM_1_DEBUG
@@ -26,43 +32,49 @@ Puck_FSM_1::Puck_FSM_1() {
 	hc = HALCore::getInstance();
 }
 
-Puck_FSM_1::~Puck_FSM_1() {
-
-}
-
-
 
 //functions for Start_M1
 void FSM_1_start_state :: ls_b0(Puck_FSM * fsm){
+    cout << "FSM_1_start_state: LS_B0 wurde ausgelöst" << endl;
+
+    if( fsm->check_last_lb() == 0){
+        fsm->setCurrent(new FSM_1_after_ls_b0());
+    }//if
+
+}
+void FSM_1_start_state :: ls_b7_out(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Start_M1: LS_B0 wurde ausgelöst" << endl;
+	cout << "FSM_1_start_state: ls_b7_out" << endl;
 	#endif
 
-	fsm->setCurrent(new FSM_1_after_ls_b0());
+    if( fsm->check_last_lb() == 0){
+        fsm->setCurrent(new FSM_1_after_ls_b0());
+    }//if
+
 }
 void FSM_1_start_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Start_M1: entry" << endl;
+	cout << "FSM_1_start_state: entry" << endl;
 	#endif
 	fsm->engine_should_be_started = true;
 }
 void FSM_1_start_state :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Start_M1: exit" << endl;
+	cout << "FSM_1_start_state: exit" << endl;
 	#endif
 }
 
 //functions for Band1_aufgelegt
 void FSM_1_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Band1_aufgelegt: LS_B1 wurde ausgelöst" << endl;
+	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 	#endif
-	fsm->pass_ls_b1 = 1;
+	fsm->location = AFTER_FIRST_LB;
 	fsm->setCurrent(new FSM_1_height_measure() );
 }
 void FSM_1_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Band1_aufgelegt: entry" << endl;
+	cout << "FSM_1_after_ls_b0: entry" << endl;
 	#endif
 	fsm->hc->engineContinue();
 	fsm->hc->engineRight();
@@ -71,20 +83,17 @@ void FSM_1_after_ls_b0 :: entry(Puck_FSM * fsm){
 }
 void FSM_1_after_ls_b0 :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Band1_aufgelegt: exit" << endl;
+	cout << "FSM_1_after_ls_b0: exit" << endl;
 	#endif
 }
 
 
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure :: entry(Puck_FSM * fsm){
-	//fsm->cc->engineStop();
-	//fsm->engine_should_be_started = 0;
-	//fsm->hc->engineStop();
 	int height = fsm->hc->identifyHeight();
 
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Band1_hoehenmessung: entry" << endl;
+	cout << "FSM_1_height_measure: entry" << endl;
 	cout << "height: " << height << endl;
 	#endif
 
@@ -100,31 +109,28 @@ void FSM_1_height_measure :: entry(Puck_FSM * fsm){
 }
 void FSM_1_height_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Band1_hoehenmessung: exit" << endl;
+	cout << "FSM_1_height_measure: exit" << endl;
 	#endif
-	//fsm->hc->engineContinue();
-//	fsm->hc->engineRight();
-	//fsm->engine_should_be_started = 1;
 }
 
 
 //functions for durchschleusen
 void FSM_1_correct_height :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen: LS_B3 wurde ausgelöst" << endl;
+	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 	#endif
 	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_forward() );
 }
 void FSM_1_correct_height :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen: entry" << endl;
+	cout << "FSM_1_correct_height: entry" << endl;
 	#endif
 
 }
 void FSM_1_correct_height :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen: exit" << endl;
+	cout << "FSM_1_correct_height: exit" << endl;
 	#endif
 	sleep(1);
 	fsm->hc->closeSwitch();
@@ -134,48 +140,49 @@ void FSM_1_correct_height :: exit(Puck_FSM * fsm){
 //functions for durchschleusen_bei_LS3
 void FSM_1_ls_b3_passed_forward :: ls_b7_in(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen_bei_LS3: LS_B7 wurde ausgelöst" << endl;
+	cout << "FSM_1_ls_b3_passed_forward: LS_B7 wurde ausgelöst" << endl;
 	#endif
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
-	fsm->pass_ls_b7 = true;
+	fsm->location = ON_LAST_LB;
+	fsm->serial->send(REQUEST_FREE, 4);
 	fsm->setCurrent(new FSM_1_end_state() );
 }
 void FSM_1_ls_b3_passed_forward :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen_bei_LS3: entry" << endl;
+	cout << "FSM_1_ls_b3_passed_forward: entry" << endl;
 	#endif
 }
 void FSM_1_ls_b3_passed_forward :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "durchschleusen_bei_LS3: exit" << endl;
+	cout << "FSM_1_ls_b3_passed_forward: exit" << endl;
 	#endif
 }
 
 //functions for pruef_LS7
 void FSM_1_end_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "pruef_LS7: entry" << endl;
+	cout << "FSM_1_end_state: entry" << endl;
 	#endif
 }
 void FSM_1_end_state :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "pruef_LS7: exit" << endl;
+	cout << "FSM_1_end_state: exit" << endl;
 	#endif
 }
 void FSM_1_end_state :: ls_b7_out (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "pruef_LS7: ls_b7 out" << endl;
+	cout << "FSM_1_end_state: ls_b7 out" << endl;
 	#endif
-	fsm->pass_ls_b7 = false;
-	fsm->out_of_FSM_1 = true;
+	fsm->location = AFTER_LAST_LB;
+	fsm->starts_engine_if_nessecary();
 }
 
 
 //functions for ausschleusen
 void FSM_1_sort_out :: ls_b3 (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "ausschleusen: LS_B3" << endl;
+	cout << "FSM_1_sort_out: LS_B3" << endl;
 	#endif
 	fsm->hc->engineReset();
 	fsm->hc->engineRight();
@@ -186,12 +193,12 @@ void FSM_1_sort_out :: ls_b3 (Puck_FSM * fsm){
 
 void FSM_1_sort_out :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "ausschleusen: entry" << endl;
+	cout << "FSM_1_sort_out: entry" << endl;
 	#endif
 }
 void FSM_1_sort_out :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "ausschleusen: exit" << endl;
+	cout << "FSM_1_sort_out: exit" << endl;
 	#endif
 }
 
@@ -199,22 +206,24 @@ void FSM_1_sort_out :: exit (Puck_FSM * fsm){
 //functions for Weiche_zu
 void FSM_1_ls_b3_passed :: ls_b6 (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Weiche_zu: LS_B6" << endl;
+	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 	#endif
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
+	fsm->location = SORT_OUT;
+	fsm->starts_engine_if_nessecary();
+	fsm->delete_unnecessary_wp();
 	fsm->setCurrent(new FSM_1_wp_in_slide() );
-	fsm->pass_ls_b6 = 1;
 
 }
 void FSM_1_ls_b3_passed :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Weiche_zu: entry" << endl;
+	cout << "FSM_1_ls_b3_passed: entry" << endl;
 	#endif
 }
 void FSM_1_ls_b3_passed :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "Weiche_zu: exit" << endl;
+	cout << "FSM_1_ls_b3_passed: exit" << endl;
 	#endif
 }
 
@@ -222,13 +231,13 @@ void FSM_1_ls_b3_passed :: exit (Puck_FSM * fsm){
 //functions for WS_im_Schacht
 void FSM_1_wp_in_slide :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "WS_im_Schacht: entry" << endl;
+	cout << "FSM_1_wp_in_slide: entry" << endl;
 	#endif
 	fsm->setCurrent(new FSM_1_check_slide() );
 }
 void FSM_1_wp_in_slide :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "WS_im_Schacht: exit" << endl;
+	cout << "FSM_1_wp_in_slide: exit" << endl;
 	#endif
 }
 
@@ -237,17 +246,18 @@ void FSM_1_wp_in_slide :: exit (Puck_FSM * fsm){
 //functions for pruef_schacht_voll
 void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "pruef_schacht_voll: entry" << endl;
+	cout << "FSM_1_check_slide: entry" << endl;
 	#endif
 //	sleep(1);
 
 //	if( fsm->hc->isSlideFull() ){
 //		fsm->setCurrent( new FSM_1_ErrorState() );
 //	}
+	fsm->delete_unnecessary_wp();
 }
 void FSM_1_check_slide :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
-	cout << "pruef_schacht_voll: exit" << endl;
+	cout << "FSM_1_check_slide: exit" << endl;
 	#endif
 }
 

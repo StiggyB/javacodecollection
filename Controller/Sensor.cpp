@@ -30,7 +30,6 @@ Sensor::Sensor() :
 		h = HALCore::getInstance();
 	}
 	l = Lampen::getInstance();
-	s = new Serial();
 	/**
 	 * Initialize with start values
 	 */
@@ -46,10 +45,9 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	s->init(1, true);
-	s->start(NULL);
+	serial->init(1, true);
+	serial->start(NULL);
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
-		initPucks();
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
@@ -59,15 +57,6 @@ void Sensor::execute(void*) {
 	} else {
 		perror("Sensor: Setting Up failed!");
 	}
-}
-
-void Sensor::initPucks() {
-	//int last_Reg_State_B = 0xD3;//defines a standard state of register B
-	//int last_Reg_State_C = 0x50;//defines a standard state of register C
-	cout << "Sensor: Start" << endl;
-	/*Machine1 *fsm;
-	 fsm = new Machine1();
-	 //fsm->setPocket();*/
 }
 
 void Sensor::handleNormalMessage() {
@@ -91,24 +80,16 @@ void Sensor::handleNormalMessage() {
 	case INTERRUPT_D_PORT_B:
 		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
 			cout << "Sensor: in" << endl;
-			int ls7blocked = 0;
-			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if (wp_list[i]->pass_ls_b7) {
-					ls7blocked = 1;
-				}
-			}
-#ifdef PUCK_FSM_1
-				wp_list.push_back(new Puck_FSM_1);
-#endif
-#ifdef PUCK_FSM_2
-				wp_list.push_back(new Puck_FSM_2);
-				s->send(PUCK_ARRIVED, sizeof(msgType));
-#endif
+				#ifdef PUCK_FSM_1
+					wp_list.push_back(new Puck_FSM_1(serial, &wp_list));
+				#endif
+				#ifdef PUCK_FSM_2
+					wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
+				#endif
 				cout << "FSM CREATED" << endl;
-			if (ls7blocked == 0) {
-				for (unsigned int i = 0; i < wp_list.size(); i++) {
-					wp_list[i]->ls_b0();
-				}
+
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				wp_list[i]->ls_b0();
 			}
 		}
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
@@ -131,44 +112,28 @@ void Sensor::handleNormalMessage() {
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b6();
 			}
-			delete_unnecessary_wp();
-#ifdef PUCK_FSM_2
-			cout << "Sensor: request:" << request << endl;
-			puck_fsm2_outgoing();
-#endif
-			starts_engine_if_nessecary();
+
 		}
 		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band in" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_in();
 			}
-#ifdef PUCK_FSM_1
-			s->send(REQUEST_FREE, 4);
-#endif
+
 		}
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				wp_list[i]->ls_b7_out();
 			}
-#ifdef PUCK_FSM_1
 
-#endif
-
-#ifdef PUCK_FSM_2
-			delete_unnecessary_wp();
-			cout << "Sensor: request:" << request << endl;
-			puck_fsm2_outgoing();
-#endif
-			starts_engine_if_nessecary();
 		}
 		last_Reg_State_B = val;
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
-//			s->send();
+
 		} else if (((val >> WP_E_STOP) & 1)
 				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
@@ -182,57 +147,24 @@ void Sensor::handleNormalMessage() {
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
 
-		}
+		}//if
 		last_Reg_State_C = val;
 		break;
-	case INTERRUPT_D_SERIAL:
 
-#ifdef PUCK_FSM_1
+	case INTERRUPT_D_SERIAL:
 		if (val == MACHINE2_FREE) {
-			h->engineContinue();
-			cout << "Sensor: MACHINE2_FREE" << endl;
+			if(wp_list.size() >0 ) wp_list[0]->machine2_free();
 		} else if (val == PUCK_ARRIVED) {
-			cout << "Sensor: PUCK_ARRIVED" << endl;
-			h->engineStop();
-			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if (wp_list[i]->out_of_FSM_1) {
-					s->send(wp_list[i]->hasPocket ? POCKET : NO_POCKET,
-							sizeof(msgType));
-				}
-				wp_list[i]->ls_b7_out();
-			}
-			delete_unnecessary_wp();
-			starts_engine_if_nessecary();
-		}
-#endif
-#ifdef PUCK_FSM_2
-		if(val == REQUEST_FREE) {
-			cout << "Sensor: REQUEST_FREE" << endl;
-			if(wp_list.size() > 0) {
-				request = true;
-				cout << "request, but wp is on machine" << request << endl;
-			} else {
-				s->send(MACHINE2_FREE, sizeof(msgType));
-				h->engineContinue();
-				h->engineRight();
-			}
+			if(wp_list.size() >0 ) wp_list[0]->puck_arrived();
+		}else if(val == REQUEST_FREE) {
+			if(wp_list.size() >0 ) wp_list[0]->requestfromMachine1();
 		} else if (val == POCKET) {
-			cout << "Sensor: POCKET" << endl;
-			if(wp_list.size() > 1) {
-				perror("SENSOR: Machine2 has more than 1 work pieces");
-			} else {
-				wp_list[0]->hasPocket = true;
-			}
+			if(wp_list.size() >0 ) wp_list[0]->PuckhasPocket();
 		} else if(val == NO_POCKET) {
-			cout << "Sensor: NO_POCKET" << endl;
-			if(wp_list.size() > 1) {
-				perror("SENSOR: Machine2 has more than 1 work pieces");
-			} else {
-				wp_list[0]->hasPocket = false;
-			}
-		}
-#endif
-	}
+			if(wp_list.size() >0 ) wp_list[0]->PuckhasnoPocket();
+		}//if
+
+	}//switch
 
 #ifdef TEST_FSM
 	cout << "TEST_FSM" << endl;
@@ -246,40 +178,9 @@ void Sensor::handleNormalMessage() {
 #endif
 }
 
-void Sensor::delete_unnecessary_wp() {
-	for (unsigned int i = 0; i < wp_list.size(); i++) {
-		if (wp_list[i]->out_of_FSM_1 || wp_list[i]->pass_ls_b6) {
-			cout << "deleted" << endl;
-			wp_list.erase(wp_list.begin() + i);
-		}
-	}
-	cout << "********** COUNT OF WP´S: " << wp_list.size() << endl;
-}
 
-void Sensor::starts_engine_if_nessecary() {
-	int active_state = 0;
-	for (unsigned int i = 0; i < wp_list.size(); i++) {
-		if (wp_list[i]->engine_should_be_started) {
-			cout << "PUCK FOUND" << endl;
-			active_state = 1;
-		}
-	}
-	cout << "********** COUNT OF WP´S: " << wp_list.size() << endl;
-	if (active_state == 1) {
-		h->engineContinue();
-		h->engineRight();
-	}
-}
 
-void Sensor::puck_fsm2_outgoing() {
-	if (request == true) {
-		cout << "Sensor: request true, seriel message will be send" << endl;
-		h->engineContinue();
-		s->send(MACHINE2_FREE, sizeof(msgType));
-		h->engineContinue();
-		request = false;
-	}
-}
+
 
 void Sensor::handlePulsMessage() {
 	std::cout << "Sensor: received a Puls, but doesn't know what to do with it"

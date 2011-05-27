@@ -25,6 +25,7 @@
 #include "../FSM/Puck_FSM_1.h"
 #include "../FSM/Puck_FSM_2.h"
 #include <sys/time.h>
+#include <vector>
 
 
 class Test_Timer  : public thread::HAWThread{
@@ -40,6 +41,8 @@ public:
 	 * \param t the Timer object
 	 */
 	void setTimer(Timer *t){ timer = t;}
+	Serial* serial;
+	std::vector<Puck_FSM*> puck_list;
 protected:
 	/**
 	 * set the timer object, this object was started from another thread

@@ -20,8 +20,15 @@
 
 #include "../HAL/HALCore.h"
 #include "../HAL/Lampen.h"
+#include <vector>
+#include "../Serial/Serial.h"
 
 //#define PUCK_FSM_STATE_DEBUG
+
+enum location_attribut {
+	ON_FIRST_LB, AFTER_FIRST_LB, AFTER_HEIGH_MEASURE, AFTER_METAL_SENSOR_SORT_OUT, SORT_OUT,
+	AFTER_METAL_SENSOR_FORWARD, ON_LAST_LB, AFTER_LAST_LB
+};
 
 class Puck_FSM {
 public:
@@ -29,6 +36,7 @@ public:
 	 * Pointer to actual state
 	 */
 	class State *current;
+	//Puck_FSM();
 	Puck_FSM();
 	virtual ~Puck_FSM();
 	/**
@@ -81,26 +89,6 @@ public:
 	 */
 	void errorState();
 	/**
-	 * is true, if wp has passed first light barrier
-	 */
-	bool pass_ls_b1;
-	/**
-	 * is true, if wp has passed second light barrier
-	 */
-	bool pass_ls_b3;
-	/**
-	 * is true, if wp has passed the light barrier in slide
-	 */
-	bool pass_ls_b6;
-	/**
-	 * is true, if wp has passed the light barrier at the end of machine
-	 */
-	bool pass_ls_b7;
-	/**
-	 * is true, if wp has gone out of FSM_1
-	 */
-	bool out_of_FSM_1;
-	/**
 	 * is true, if wp need transport for finite state input
 	 */
 	bool engine_should_be_started;
@@ -116,6 +104,20 @@ public:
 	 * Instance for HW control
 	 */
 	HALCore *hc;
+	location_attribut location;
+    int check_last_lb();
+    void delete_unnecessary_wp();
+    void starts_engine_if_nessecary();
+	void requestfromMachine1();
+	void PuckhasPocket();
+	void PuckhasnoPocket();
+	void puck_arrived();
+	void machine2_free();
+	void puck_fsm2_outgoing();
+	bool request;
+	Serial* serial;
+protected:
+    std::vector<Puck_FSM*>* puck_list;
 
 };
 
