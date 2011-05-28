@@ -24,11 +24,58 @@ Timer::Timer() {
 
 
 Timer::~Timer() {
-	funcp_list_fsm.clear();
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if( timer_delete( funcp_list[i].timer_id ) != 0){
+			perror( "Timer: cannot delete OS-Timer");
+		}//if
+	}//for
+	funcp_list.clear();
 }
 
+int Timer::addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void, void*>* funcp){
+	return 0;
+}
 
-bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
+int Timer::addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void, void*>* funcp ){
+	return 0;
+}
+
+int Timer::initTimer_list(){
+	int numberOfStaticTimer = 5;
+	struct TimerData timer[numberOfStaticTimer];
+
+	timer[0].timer.it_value.tv_sec = 3;
+	timer[0].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[1].timer.it_value.tv_sec = 2;
+	timer[1].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[2].timer.it_value.tv_sec = 2;
+	timer[2].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[3].timer.it_value.tv_sec = 3;
+	timer[3].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[4].timer.it_value.tv_sec = 1;
+	timer[4].timer.it_value.tv_nsec = 0;
+
+	for(int i = 0; i < numberOfStaticTimer; i++){
+		if( timer_create (CLOCK_REALTIME, &timer[i].event, &timer[i].timerid) == -1){
+			perror( "Timer: cannot create a static OS-Timer");
+			return false;
+		}//if
+		timer_list.push_back(timer[i]);
+	}//for
+
+
+
+
+
+	//timer_list
+	return 0;
+}
+
+bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms){
 	timer_t             timerid;
     struct sigevent     event;
     struct itimerspec   timer;
@@ -42,6 +89,7 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
 
 	timer.it_value.tv_sec = sec;
 	timer.it_value.tv_nsec = nano_sec;
+
 	locker.lock();
     if( (new_element.id = getnextid()) == -1){
     	perror( "Timer: can't get id for timer");
@@ -50,8 +98,6 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
     }//if
     locker.unlock();
 
-    struct idTOfunction new_element_copy = new_element;//copy to avoid timer_settime failure
-    funcp_list_fsm.push_back(new_element_copy);
 
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
 
@@ -60,6 +106,10 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
 		return false;
 	}//if
 
+	new_element.timer_id = timerid;
+
+    struct IdTOfunction new_element_copy = new_element;//copy to avoid timer_settime failure
+    funcp_list.push_back(new_element_copy);
 
 	if( timer_settime (timerid, 0, &timer, NULL) == -1){
 		perror( "Timer: cannot set OS-Timer");
@@ -71,7 +121,7 @@ bool Timer::addTimerFunction(struct idTOfunction new_element, int ms){
 
 
 bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int ms){
-    struct idTOfunction new_element;
+    struct IdTOfunction new_element;
     new_element.type = PUCK_FSM;
     new_element.funcp.funcp_fsm = funcp;
     if(addTimerFunction(new_element, ms)){
@@ -83,7 +133,7 @@ bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int m
 
 
 bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms){
-    struct idTOfunction new_element;
+    struct IdTOfunction new_element;
     new_element.type = HALCORE;
     new_element.funcp.funcp_hal = funcp;
     if( addTimerFunction(new_element, ms) ){
@@ -118,7 +168,7 @@ void Timer::handleNormalMessage(){
 
 void Timer::handlePulsMessage(){
 	std::cout << "Timer: received a Puls" << std::endl;
-	struct idTOfunction temp;
+	struct IdTOfunction temp;
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
 		switch(temp.type){
@@ -140,15 +190,21 @@ void Timer::shutdown() {
 }
 
 
-struct idTOfunction Timer::find_function(int id){
-	struct idTOfunction result;
+struct IdTOfunction Timer::find_function(int id){
+	struct IdTOfunction result;
 	result.id = -1;
 
-	for(unsigned int i = 0; i<funcp_list_fsm.size(); i++){
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
 
-		if(funcp_list_fsm[i].id == id){
-			result = funcp_list_fsm[i];
-			funcp_list_fsm.erase(funcp_list_fsm.begin()+i);
+		if(funcp_list[i].id == id){
+			result = funcp_list[i];
+
+			if( timer_delete( funcp_list[i].timer_id ) == -1){
+				perror( "Timer: cannot delete OS-Timer");
+				return result;
+			}//if
+
+			funcp_list.erase(funcp_list.begin()+i);
 			return result;
 		}//if
 
@@ -161,11 +217,11 @@ int Timer::getnextid(){
 	int id = 0;
 	bool reserved = false;
 
-	while(id <= (signed int) funcp_list_fsm.size()){
+	while(id <= (signed int) funcp_list.size()){
 		reserved = false;
 
-		for(unsigned int i = 0; i < funcp_list_fsm.size(); i++){
-			if(funcp_list_fsm[i].id==id){
+		for(unsigned int i = 0; i < funcp_list.size(); i++){
+			if(funcp_list[i].id==id){
 				reserved = true;
 			}//if
 		}//for

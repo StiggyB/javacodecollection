@@ -34,6 +34,10 @@
 enum Pulse_code_timer {
 	PUCK_FSM=(0), HALCORE=(1)
 };
+enum timer_section {
+	BEGIN_TO_HEIGH_MEASURE, HEIGH_MEASURE_TO_METAL_MEASURE, METAL_MEASURE_TO_SLIDE,
+	METAL_MEASURE_TO_END, SWITCH_FORWARD_TIME
+};
 
 class Timer : public thread::HAWThread, public Communication{
 public:
@@ -53,6 +57,8 @@ public:
 	 * \return a bool, true if action was successful, false if not.
 	 */
 	bool addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int timer );
+	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void, void*>* funcp);
+	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void, void*>* funcp);
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
@@ -66,20 +72,22 @@ private:
 	/**
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
 	 */
-	std::vector< struct idTOfunction> funcp_list_fsm;
+	std::vector< struct IdTOfunction> funcp_list;
+	std::vector< struct TimerData> timer_list;
+	int initTimer_list();
 	/**
 	 * internal function to find a specific functor in actual list
 	 * \param id this is the attribute for searching in list
 	 * \return a struct idTOfunction, if the id contains -1, the search was not successful, otherwise successful
 	 */
-	struct idTOfunction find_function(int id);
+	struct IdTOfunction find_function(int id);
 	/**
 	 * internal function to add functor to list
 	 * \param new_element this struct already contains already the given type and functor
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction(struct idTOfunction new_element, int ms);
+	bool addTimerFunction(struct IdTOfunction new_element, int ms);
 	/**
 	 * calculates the seconds and nanoseconds for timer attributes
 	 * \param ms milliseconds, will be splitted into seconds and nanoseconds
@@ -110,10 +118,17 @@ union Functionpointer{
 /**
  * struct, which store id and functor
  */
-struct idTOfunction{
+struct IdTOfunction{
 	int id;
 	int type;
+	int timer_id;
 	Functionpointer funcp;
+};
+
+struct TimerData{
+	timer_t	timerid;
+	struct itimerspec timer;
+	struct sigevent event;
 };
 
 
