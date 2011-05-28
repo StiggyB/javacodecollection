@@ -48,6 +48,7 @@ void FSM_2_start_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_start_state: entry" << endl;
 	#endif
+	fsm->location = ON_FIRST_LB;
 }
 void FSM_2_start_state :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
@@ -55,11 +56,13 @@ void FSM_2_start_state :: exit(Puck_FSM * fsm){
 	#endif
 }
 
+
 //functions for FSM_2_after_ls_b0
 void FSM_2_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b0: entry" << endl;
 	#endif
+	fsm->location = AFTER_FIRST_LB;
 	fsm->hc->engineContinue();
 	fsm->hc->engineRight();
 	fsm->hc->shine(GREEN);

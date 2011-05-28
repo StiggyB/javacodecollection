@@ -22,7 +22,7 @@
 #include "iostream.h"
 #include <vector>
 
-//#define PUCK_FSM_2_DEBUG
+#define PUCK_FSM_2_DEBUG
 
 class Puck_FSM_2 : public Puck_FSM{
 public:

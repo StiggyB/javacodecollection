@@ -9,10 +9,10 @@
 #include "../Timer/Timer.h"
 
 StartThread::StartThread(){
-	h = HALCore::getInstance();
-	ic = InterruptController::getInstance();
-	cs = CommunicationServer::getInstance();
-	l = Lampen::getInstance();
+	halCore = HALCore::getInstance();
+	interruptController = InterruptController::getInstance();
+	communicationserver = CommunicationServer::getInstance();
+	lampen = Lampen::getInstance();
 }
 
 StartThread::~StartThread() {
@@ -23,18 +23,24 @@ void StartThread::execute(void*) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	cs->start(NULL);
-	h->start(NULL);
+
+	communicationserver->start(NULL);
+	halCore->start(NULL);
+
 	cout << "starting IC" <<endl;
-	ic->start(NULL);
+	interruptController->start(NULL);
 	cout << "IC started" <<endl;
-	l->start(NULL);
+
+	lampen->start(NULL);
 	cout << "Lampen started" << endl;
 	Sensor sensor;
+
 	Serial serial;
 	serial.init(1, true);
 	sensor.serial = &serial;
+
 	sensor.start(NULL);
+
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);
@@ -91,7 +97,7 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_TIMER
 	cout << "starting Timer-Test"	 << endl;
-	timer.serial = &serial;
+	timer_test.serial = &serial;
 	timer.start(NULL);
 	timer_test.setTimer(&timer);
 	timer_test.start(NULL);
@@ -129,9 +135,9 @@ void StartThread::stopProcess() {
 }
 
 void StartThread::shutdown(){
-	l->deleteInstance();
-	cs->deleteInstance();
-	ic->deleteInstance();
-	h->resetAllOutPut();
-	h->deleteInstance();
+	lampen->deleteInstance();
+	communicationserver->deleteInstance();
+	interruptController->deleteInstance();
+	halCore->resetAllOutPut();
+	halCore->deleteInstance();
 }

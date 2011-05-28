@@ -30,20 +30,20 @@ private:
     /**
      * pointer to the HAL
      */
-    HALCore *h;
+    HALCore *halCore;
     /**
      * pointer to the InterruptController
      */
-    InterruptController *ic;
+    InterruptController *interruptController;
 
     /**
      * pointer to the CommunicationServer
      */
-    CommunicationServer *cs;
+    CommunicationServer *communicationserver;
     /**
      * pointer to the Lampen
      */
-    Lampen * l;
+    Lampen * lampen;
 #ifdef TEST_M1
     Test_M1 tm;
 #endif
