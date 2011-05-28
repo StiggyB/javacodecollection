@@ -106,7 +106,7 @@ protected:
 	 * \param lenByte an integer, the lengths of the data in bytes.
 	 * \return an integer, 0 for okay -1 for error, -2 for no data received.
 	 */
-	int receive(void*, int lenByte);
+	int receive(unsigned int* data, int lenByte);
 	/**
 	 * Will start the thread to do his work (send/receive), depending on modus.
 	 * \param data a void pointer, in this case it will be ignored..no use. Pass a NULL to start the thread.
