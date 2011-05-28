@@ -31,7 +31,7 @@ void Test_Timer::shutdown(){
 }
 
 void Test_Timer::execute(void* data){
-	usleep(100000);
+	sleep(4);
 	Puck_FSM_1 test_fsm(serial, &puck_list);
 
 	CallInterface<Puck_FSM, void, void*>* openswitch =
@@ -43,10 +43,10 @@ void Test_Timer::execute(void* data){
 
 	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
-	sleep(4);
+	sleep(5);
 	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
-	sleep(4);
+	sleep(5);
 	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
 

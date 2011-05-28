@@ -39,7 +39,7 @@ int Timer::addFunction_staticTimer(timer_section timer, CallInterface<HALCore, v
 int Timer::addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void, void*>* funcp ){
 	return 0;
 }
-
+/*
 int Timer::initTimer_list(){
 	int numberOfStaticTimer = 5;
 	struct TimerData timer[numberOfStaticTimer];
@@ -67,52 +67,47 @@ int Timer::initTimer_list(){
 		timer_list.push_back(timer[i]);
 	}//for
 
-
-
-
-
 	//timer_list
 	return 0;
-}
+}*/
 
-bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms){
-	timer_t             timerid;
-    struct sigevent     event;
-    struct itimerspec   timer;
-    int nano_sec = 0;
-    int sec = 0;
+bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
+	timer_t timerid;
+	struct sigevent event;
+	struct itimerspec timer;
+	int nano_sec = 0;
+	int sec = 0;
 
-    if( calculateTime(ms, &sec, &nano_sec) == -1 ){
-    	perror( "Timer: cannot calculate seconds and nano seconds");
-    	return false;
-    }//if
+	if (calculateTime(ms, &sec, &nano_sec) == -1) {
+		perror("Timer: cannot calculate seconds and nano seconds");
+		return false;
+	}//if
 
 	timer.it_value.tv_sec = sec;
 	timer.it_value.tv_nsec = nano_sec;
+	timer.it_interval.tv_nsec = 0;
+	timer.it_interval.tv_sec = 0;
 
-	locker.lock();
-    if( (new_element.id = getnextid()) == -1){
-    	perror( "Timer: can't get id for timer");
-    	locker.unlock();
-    	return false;
-    }//if
-    locker.unlock();
+	if ((new_element.id = getnextid()) == -1) {
+		perror("Timer: can't get id for timer");
+		return false;
+	}//if
 
 
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
 
-	if( timer_create (CLOCK_REALTIME, &event, &timerid) == -1){
-		perror( "Timer: cannot create OS-Timer");
+	if (timer_create(CLOCK_REALTIME, &event, &timerid) == -1) {
+		perror("Timer: cannot create OS-Timer");
 		return false;
 	}//if
 
 	new_element.timer_id = timerid;
+	funcp_list.push_back(new_element);
+	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
 
-    struct IdTOfunction new_element_copy = new_element;//copy to avoid timer_settime failure
-    funcp_list.push_back(new_element_copy);
-
-	if( timer_settime (timerid, 0, &timer, NULL) == -1){
-		perror( "Timer: cannot set OS-Timer");
+	if (timer_settime(timerid, 0, &timer, NULL) == -1) {
+		perror("Timer: cannot set OS-Timer");
+		printf("errno: %i", errno);
 		return false;
 	}//if
 

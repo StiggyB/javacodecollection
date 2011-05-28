@@ -26,6 +26,7 @@
 #include "../Functor/Functor.h"
 #include "../Functor/FunctorMaker.h"
 #include "../Functor/CallInterface.h"
+#include "errno.h"
 #include <vector>
 
 /**

@@ -56,6 +56,7 @@ void FSM_1_start_state :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_start_state: entry" << endl;
 	#endif
+	fsm->location = ON_FIRST_LB;
 	fsm->engine_should_be_started = true;
 }
 void FSM_1_start_state :: exit(Puck_FSM * fsm){
@@ -69,13 +70,13 @@ void FSM_1_after_ls_b0 :: ls_b1(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 	#endif
-	fsm->location = AFTER_FIRST_LB;
 	fsm->setCurrent(new FSM_1_height_measure() );
 }
 void FSM_1_after_ls_b0 :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: entry" << endl;
 	#endif
+	fsm->location = AFTER_FIRST_LB;
 	fsm->hc->engineContinue();
 	fsm->hc->engineRight();
 	fsm->hc->shine(GREEN);
@@ -91,6 +92,7 @@ void FSM_1_after_ls_b0 :: exit(Puck_FSM * fsm){
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure :: entry(Puck_FSM * fsm){
 	int height = fsm->hc->identifyHeight();
+	fsm->location = AFTER_HEIGH_MEASURE;
 
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_height_measure: entry" << endl;
@@ -119,6 +121,7 @@ void FSM_1_correct_height :: ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 	#endif
+	fsm->location = AFTER_METAL_SENSOR_FORWARD;
 	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_forward() );
 }
@@ -184,6 +187,7 @@ void FSM_1_sort_out :: ls_b3 (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 	#endif
+	fsm->location = AFTER_METAL_SENSOR_SORT_OUT;
 	fsm->hc->engineReset();
 	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
