@@ -16,6 +16,19 @@
 #include "InterruptController.h"
 #include "CommunicationServer.h"
 
+/**
+ * StartThread
+ *
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Class which starts all Components.
+ *
+ */
 class StartThread : public thread::HAWThread {
 public:
 	StartThread();
@@ -42,6 +55,12 @@ private:
      * pointer to the Lampen
      */
     Lampen * l;
+    /**
+     * pointer to the Sensor-dispatcher.
+     */
+    Sensor * s;
+
+    //TESTS
 #ifdef TEST_M1
     Test_M1 tm;
 #endif

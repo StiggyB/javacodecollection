@@ -1,5 +1,5 @@
 /**
- * Singleton Class - Template Try
+ * Singleton Class - Template
  *
  * SE2 (+ SY and PL) Project SoSe 2011
  *
@@ -38,12 +38,26 @@ private:
 	 */
 	static Mutex singleton;
 public:
+	/**
+	 * Get a pointer to the instance of this singleton.
+	 * \returns T a pointer
+	 */
 	static T* getInstance();
+	/**
+	 * Deletes the instance of the singleton.
+	 */
 	static void deleteInstance();
 };
+
+/**
+ * The mutex to ensure the threadsafety of the singleton instance.
+ */
 template <class T>
 Mutex Singleton_T<T>::singleton;
 
+/**
+ * The singleton instance.
+ */
 template <class T>
 T* Singleton_T<T>::pInstance = NULL;
 
@@ -59,6 +73,7 @@ T* Singleton_T<T>::getInstance() {
 	}
 	return pInstance;
 }
+
 template <class T>
 void Singleton_T<T>::deleteInstance(){
 	if( pInstance != NULL ){
