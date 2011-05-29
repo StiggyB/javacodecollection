@@ -34,7 +34,7 @@
 class Sensor : public thread::HAWThread, public Communication{
 public:
 	/**
-	 * Deal with the Interrupt for given port.
+	 * Deal with the Interrupt for given port. ONLY FOR TEST PURPOSES!
 	 * \param port an integer representing the port where an interrupt occures.
 	 * \param val an integer representing the value of the interrupts.
 	 */
@@ -42,7 +42,7 @@ public:
 	Sensor();
 	virtual ~Sensor();
 	bool is_Band_has_wp_ls7;
-
+//TESTS
 #ifdef TEST_SEN
 	Test_Sensor *ts;
 	void testSen(Test_Sensor *t){ ts = t;}

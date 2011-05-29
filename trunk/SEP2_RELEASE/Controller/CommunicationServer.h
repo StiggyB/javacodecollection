@@ -9,7 +9,7 @@
 #include "Communication.h"
 
 /**
- * Core Controller
+ * CommunicationServer
  *
  * SE2 (+ SY and PL) Project SoSe 2011
  *
@@ -18,16 +18,8 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * Capsulates many functions for the direct
- * in- and output from and to the Festo Transfersystem and
- * with Interrupts using Pulse Messages.
- * Starts the threads. Implements Singleton-Pattern.
- *
- * Upcoming: Other parts can get their necessary ChannelID's.
-
- * Liste für die channelid's der Prozesse
- * funktion um channelid zu registrieren
- * funktion um channelid zu erfragen
+ * Other parts can get their necessary ChannelID's
+ * and register/unregister themself.
  *
  */
 class CommunicationServer : public thread::HAWThread, public Communication, public Singleton_T <CommunicationServer>{
@@ -41,7 +33,6 @@ private:
 	bool settingUpCommunicationServer();
 	virtual void handlePulsMessage();
 	virtual void handleNormalMessage();
-	int id;
 protected:
     virtual void execute(void*);
     virtual void shutdown();

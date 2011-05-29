@@ -11,17 +11,36 @@
 /**
  * All types of Communicators
  */
-enum CommunicatorType{
-	INTERRUPTCONTROLLER=(1), SENSOR=(2), LIGHTS=(3), ANLAGENSTEUERUNG=(4),COMMUNICATIONCONTROLLER=(5),SERIAL=(6), TIMER=(7), NONE=(0), TESTER = (99)
+enum CommunicatorType {
+	INTERRUPTCONTROLLER = (1),
+	SENSOR = (2),
+	LIGHTS = (3),
+	ANLAGENSTEUERUNG = (4),
+	COMMUNICATIONCONTROLLER = (5),
+	SERIAL = (6),
+	TIMER = (7),
+	NONE = (0),
+	TESTER = (99)
 };
 
 /**
  * All Types of Messages
  */
-enum MsgType{
-	addToServer=(4),removeFromServer=(5),closeConnection=(6),startConnection=(7),
-	getIDforCom=(8), react=(9),reactC=(0xa), information=(0xb), OK = (1), notAvailable = (-2), sendID =(3), error = (-1)
+enum MsgType {
+	addToServer = (4),
+	removeFromServer = (5),
+	closeConnection = (6),
+	startConnection = (7),
+	getIDforCom = (8),
+	react = (9),
+	reactC = (0xA),
+	information = (0xB),
+	OK = (1),
+	notAvailable = (-2),
+	sendID = (3),
+	error = (-1)
 };
+
 /**
  * Message structure containing information about the Sender and what he wants from the Receiver
  */
@@ -52,7 +71,7 @@ typedef union message{
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * Capsulates many functions for the direct
+ * Encapsulates many functions for the direct
  * connection of components via Messages.
  *
  */
@@ -65,6 +84,12 @@ protected:
 	 * \return ChannelID
 	 */
 	int getChannelIdForObject(CommunicatorType c);
+	/**
+	 * Get the ChannelID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the count of communicators already listed.
+	 * \return ChannelID
+	 */
 	int getChannelIdForObject(CommunicatorType c, int number);
 	/**
 	 * Get the ConnectID of the specified Communicator from the local list.
@@ -72,11 +97,34 @@ protected:
 	 * \return ChannelID
 	 */
 	int getConnectIdForObject(CommunicatorType c);
+	/**
+	 * Get the ConnectID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the count of communicators already listed.
+	 * \return ChannelID
+	 */
 	int getConnectIdForObject(CommunicatorType c, int number);
-
+	/**
+	 * Get the UniqueID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \return ChannelID
+	 */
 	int getUniqueIdForObject(CommunicatorType c);
+	/**
+	 * Get the UniqueID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the count of communicators already listed.
+	 * \return ChannelID
+	 */
 	int getUniqueIdForObject(CommunicatorType c, int number);
 
+	/**
+	 * Get the specified ID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the count of communicators already listed.
+	 * \param mode the //TODO
+	 * \return ChannelID
+	 */
 	int getIdForObject(CommunicatorType c, int number,int mode);
 
 	/**
@@ -86,6 +134,13 @@ protected:
 	 * \return if
 	 */
 	bool requestChannelIDForObject(CommunicatorType c);
+	/**
+	 * Gets the ChannelID of the specified Communicator from the CommunicatorServer (CoreController)
+	 * over a separate connection to the CommunicatorServer and adds it to the local list.
+	 * \param c the specified Communicator.
+	 * \param number the count of communicators already listed.
+	 * \return if
+	 */
 	bool requestChannelIDForObject(CommunicatorType c,int number);
 
 	/**

@@ -1,8 +1,15 @@
-/*
- * StartThread.cpp
+/**
+ * StartThread
  *
- *  Created on: 13.04.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Class which starts all Components.
+ *
  */
 
 #include "StartThread.h"
@@ -12,6 +19,7 @@ StartThread::StartThread(){
 	ic = InterruptController::getInstance();
 	cs = CommunicationServer::getInstance();
 	l = Lampen::getInstance();
+	s = new Sensor();
 }
 
 StartThread::~StartThread() {
@@ -29,8 +37,7 @@ void StartThread::execute(void*) {
 	cout << "IC started" <<endl;
 	l->start(NULL);
 	cout << "Lampen started" << endl;
-	Sensor s;
-	s.start(NULL);
+	s->start(NULL);
 #ifdef TEST_IRQ
 	Test_IRQ ti;
 	ti.start(NULL);
@@ -84,26 +91,8 @@ void StartThread::execute(void*) {
 	cout << "waiting for Functor-Test" << endl;
 	tf.join();
 #endif
-	/*
-	sleep(4);
-	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
-	if (coid == -1) {
-		perror("InterruptController: failed to attach Channel for Interrupt\n");
-	}else{
-		short otto = 0;
-		short peter = 0;
-		while(1){
-			//struct _pulse puls;
-			//SIGEV_PULSE_INIT(&puls,coid,SIGEV_PULSE_PRIO_INHERIT,otto,peter);
-			if(-1 == MsgSendPulse(coid,SIGEV_PULSE_PRIO_INHERIT,otto++,peter++)){
-				perror("ST: failed to send puls!");
-			}
-		}
-	}
-*/
 	sleep(40);
 	//h->join();
-
 }
 
 void StartThread::stopProcess() {
@@ -118,4 +107,5 @@ void StartThread::shutdown(){
 	ic->deleteInstance();
 	h->resetAllOutPut();
 	h->deleteInstance();
+	delete s;
 }
