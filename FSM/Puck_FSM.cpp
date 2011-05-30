@@ -105,7 +105,7 @@ int Puck_FSM::check_last_lb(){
 void Puck_FSM::requestfromMachine1(){
 	if(puck_list->size() > 1) {
 		request = true;
-		cout << "request, but wp is on machine" << request << endl;
+		cout << "request, but wp is on machine" << endl;
 	} else {
 		serial->send(MACHINE2_FREE, sizeof(msgType));
 		hc->engineContinue();

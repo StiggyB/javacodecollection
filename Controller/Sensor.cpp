@@ -102,6 +102,7 @@ void Sensor::handleNormalMessage() {
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
+			running_mode = true;
 			if(wp_list.size() > 0)  wp_list[0]->reset_signal(false);
 
 		}//if
@@ -138,6 +139,7 @@ void Sensor::handleNormalMessage() {
 
 		} else if(val == E_STOP_PUSHED) {
 			cout << "Sensor: E_STOP_PUSHED" << endl;
+			running_mode = false;
 			if(wp_list.size() > 0){
 				wp_list[0]->estop_in_signal(true);
 			} else {
@@ -146,11 +148,13 @@ void Sensor::handleNormalMessage() {
 
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
+			running_mode = true;
 			if(wp_list.size() > 0)  wp_list[0]->estop_out_signal(true);
 
 
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
+			running_mode = false;
 			if(wp_list.size() > 0) {
 				wp_list[0]->stop_signal(true);
 			} else{
@@ -159,9 +163,11 @@ void Sensor::handleNormalMessage() {
 
 		} else if(val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
+			running_mode = true;
 			if(wp_list.size() > 0)  wp_list[0]->start_signal(true);
 
 		} else if(val == RESET_BUTTON) {
+			running_mode = true;
 			cout << "Sensor: RESET_BUTTON" << endl;
 			if(wp_list.size() > 0)  wp_list[0]->reset_signal(true);
 		}//if
@@ -241,6 +247,7 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_B = val;
 	}//switch
+	cout << "Sensor: running_mode: " << running_mode << endl;
 
 #ifdef TEST_FSM
 	cout << "TEST_FSM" << endl;
