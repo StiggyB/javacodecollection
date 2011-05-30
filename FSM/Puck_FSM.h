@@ -114,8 +114,15 @@ public:
 	void puck_arrived();
 	void machine2_free();
 	void puck_fsm2_outgoing();
+
+	void start_signal(bool was_serial);
+	void stop_signal(bool was_serial);
+	void reset_signal(bool was_serial);
+	void estop_in_signal(bool was_serial);
+	void estop_out_signal(bool was_serial);
 	bool request;
 	Serial* serial;
+
 protected:
     std::vector<Puck_FSM*>* puck_list;
 

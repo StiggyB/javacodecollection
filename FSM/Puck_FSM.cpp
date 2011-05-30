@@ -21,10 +21,42 @@
 Puck_FSM::Puck_FSM() {
 	hc = HALCore::getInstance();
 	lamp = Lampen::getInstance();
-
+	serial = NULL;
 }
 
 Puck_FSM::~Puck_FSM() {
+}
+
+void Puck_FSM::start_signal(bool was_serial){
+	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
+	if( puck_list->size() > 0){
+		hc->engineContinue();
+		hc->engineRight();
+	}//if
+
+}
+void Puck_FSM::stop_signal(bool was_serial){
+	if(!was_serial) serial->send(STOP_BUTTON, sizeof(int) );
+	hc->engineStop();
+
+}
+void Puck_FSM::reset_signal(bool was_serial){
+	//TODO implement reset
+	if(!was_serial) serial->send(RESET_BUTTON, sizeof(int) );
+}
+void Puck_FSM::estop_in_signal(bool was_serial){
+	if(!was_serial) serial->send(E_STOP_PUSHED, sizeof(int) );
+	hc->emergencyStop();
+
+}
+void Puck_FSM::estop_out_signal(bool was_serial){
+	if(!was_serial) serial->send(E_STOP_PULLED, sizeof(int) );
+	hc->resetAll();
+	if(puck_list->size() > 0){
+		hc->engineContinue();
+		hc->engineRight();
+	}//if
+
 }
 
 
