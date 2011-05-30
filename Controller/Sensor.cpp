@@ -74,7 +74,7 @@ void Sensor::handleNormalMessage() {
 		port = INTERRUPT_D_SERIAL;
 	}
 
-	//cout << "Sensor: some input m.ca: " << r_msg->m.ca << " val: " << (*r_msg).pulse.value.sival_int << endl;
+	cout << "Sensor: some input m.ca: " << r_msg->m.ca << " val: " << (*r_msg).pulse.value.sival_int << endl;
 
 	int val = (*r_msg).pulse.value.sival_int;
 
