@@ -71,8 +71,7 @@ int Puck_FSM::check_last_lb(){
 }
 
 void Puck_FSM::requestfromMachine1(){
-	cout << "Puck_FSM_2: REQUEST_FREE" << endl;
-	if(puck_list->size() > 0) {
+	if(puck_list->size() > 1) {
 		request = true;
 		cout << "request, but wp is on machine" << request << endl;
 	} else {
@@ -82,7 +81,6 @@ void Puck_FSM::requestfromMachine1(){
 	}//if
 }
 void Puck_FSM::PuckhasPocket(){
-	cout << "Puck_FSM_2: POCKET" << endl;
 	if(puck_list->size() > 1) {
 		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
 	} else {
@@ -91,7 +89,6 @@ void Puck_FSM::PuckhasPocket(){
 
 }
 void Puck_FSM::PuckhasnoPocket(){
-	cout << "Puck_FSM_2: NO_POCKET" << endl;
 	if(puck_list->size() > 1) {
 		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
 	} else {
@@ -100,11 +97,10 @@ void Puck_FSM::PuckhasnoPocket(){
 
 }
 void Puck_FSM::machine2_free(){
-	cout << "Sensor: machine2_free" << endl;
+	hc->engineRight();
 	hc->engineContinue();
 }
 void Puck_FSM::puck_arrived(){
-	cout << "Sensor: puck_arrived" << endl;
 	hc->engineStop();
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
