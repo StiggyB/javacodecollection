@@ -164,7 +164,6 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->estop_in_signal(true);
 			} else {
 				h->emergencyStop();
-				serial->send(E_STOP_PUSHED, sizeof(msgType));
 			}
 
 		} else if(val == E_STOP_PULLED) {
@@ -173,7 +172,7 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0){
 				wp_list[0]->estop_out_signal(true);
 			} else {
-				serial->send(E_STOP_PULLED, sizeof(msgType));
+
 			}//if
 
 
@@ -184,7 +183,7 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->stop_signal(true);
 			} else{
 				h->engineStop();
-				serial->send(STOP_BUTTON, sizeof(msgType));
+
 			}
 
 		} else if(val == START_BUTTON) {
@@ -193,7 +192,7 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0){
 				wp_list[0]->start_signal(true);
 			} else {
-				serial->send(STOP_BUTTON, sizeof(msgType));
+
 			}
 
 		} else if(val == RESET_BUTTON) {
@@ -202,7 +201,7 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0){
 				wp_list[0]->reset_signal(true);
 			} else {
-				serial->send(RESET_BUTTON, sizeof(msgType));
+
 			}
 		}//if
 		break;
