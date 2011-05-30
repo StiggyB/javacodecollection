@@ -144,12 +144,17 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->estop_in_signal(true);
 			} else {
 				h->emergencyStop();
+				serial->send(E_STOP_PUSHED, sizeof(msgType));
 			}
 
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			running_mode = true;
-			if(wp_list.size() > 0)  wp_list[0]->estop_out_signal(true);
+			if(wp_list.size() > 0){
+				wp_list[0]->estop_out_signal(true);
+			} else {
+				serial->send(E_STOP_PULLED, sizeof(msgType));
+			}//if
 
 
 		} else if(val == STOP_BUTTON) {
@@ -159,17 +164,26 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->stop_signal(true);
 			} else{
 				h->engineStop();
+				serial->send(STOP_BUTTON, sizeof(msgType));
 			}
 
 		} else if(val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
-			if(wp_list.size() > 0)  wp_list[0]->start_signal(true);
+			if(wp_list.size() > 0){
+				wp_list[0]->start_signal(true);
+			} else {
+				serial->send(STOP_BUTTON, sizeof(msgType));
+			}
 
 		} else if(val == RESET_BUTTON) {
 			running_mode = true;
 			cout << "Sensor: RESET_BUTTON" << endl;
-			if(wp_list.size() > 0)  wp_list[0]->reset_signal(true);
+			if(wp_list.size() > 0){
+				wp_list[0]->reset_signal(true);
+			} else {
+				serial->send(RESET_BUTTON, sizeof(msgType));
+			}
 		}//if
 		break;
 
