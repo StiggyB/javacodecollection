@@ -85,49 +85,68 @@ void Sensor::handleNormalMessage() {
 				#ifdef PUCK_FSM_1
 					wp_list.push_back(new Puck_FSM_1(serial, &wp_list));
 				#endif
-				#ifdef PUCK_FSM_2
-					//wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
-				#endif
-				cout << "FSM CREATED" << endl;
 
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b0();
-			}
+				if(wp_list[i]->location == ON_FIRST_LB){
+					wp_list[i]->ls_b0();
+					break;
+				}//if
+			}//for
 		}
+
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
 				& 1)) {
 			cout << "Sensor: in height measure " << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b1();
-			}
+				if(wp_list[i]->location == AFTER_FIRST_LB){
+					wp_list[i]->ls_b1();
+					break;
+				}//if
+			}//for
 		}
+
 		if (!((val >> WP_IN_SWITCH) & 1) && ((last_Reg_State_B >> WP_IN_SWITCH)
 				& 1)) {
 			cout << "Sensor: in metal measure" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b3();
-			}
+				if(wp_list[i]->location == AFTER_HEIGH_MEASURE){
+					wp_list[i]->ls_b3();
+					break;
+				}//if
+			}//for
 		}
+
 		if (!((val >> WP_IN_SLIDE) & 1) && ((last_Reg_State_B >> WP_IN_SLIDE)
 				& 1)) {
 			cout << "Sensor: in slide" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b6();
-			}
+				if(wp_list[i]->location == AFTER_METAL_SENSOR_SORT_OUT){
+					wp_list[i]->ls_b6();
+					break;
+				}//if
+			}//for
 
 		}
+
 		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band in" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b7_in();
-			}
+				if(wp_list[i]->location == AFTER_METAL_SENSOR_FORWARD){
+					wp_list[i]->ls_b7_in();
+					break;
+				}//if
+			}//for
 
 		}
+
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				wp_list[i]->ls_b7_out();
-			}
+				if(wp_list[i]->location == ON_LAST_LB){
+					wp_list[i]->ls_b7_out();
+					break;
+				}//if
+			}//for
 
 		}
 		last_Reg_State_B = val;
