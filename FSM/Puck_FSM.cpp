@@ -29,6 +29,7 @@ Puck_FSM::~Puck_FSM() {
 
 void Puck_FSM::start_signal(bool was_serial){
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
+	//todo hier fehler abfangen
 	if( puck_list->size() > 0){
 		hc->engineContinue();
 		hc->engineRight();
