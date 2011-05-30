@@ -90,6 +90,10 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: E-Stop Button out" << endl;
 			serial->send(E_STOP_PULLED, sizeof(int) );
 			h->resetAll();
+			if(wp_list.size() > 0){
+				h->engineContinue();
+				h->engineRight();
+			}//if
 			running_mode = true;
 
 		} else if (!((val >> WP_STOP) & 1)) {
@@ -140,6 +144,10 @@ void Sensor::handleNormalMessage() {
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			h->resetAll();
+			if(wp_list.size() > 0){
+				h->engineContinue();
+				h->engineRight();
+			}//if
 
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
