@@ -80,6 +80,7 @@ void Sensor::handleNormalMessage() {
 
 	switch (port) {
 	case INTERRUPT_D_PORT_C_HIGH:
+
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
 			running_mode = false;
@@ -130,7 +131,6 @@ void Sensor::handleNormalMessage() {
 		break;
 
 	case INTERRUPT_D_SERIAL:
-		if(!running_mode) return;
 
 		if (val == MACHINE2_FREE) {
 			cout << "Sensor: MACHINE2_FREE" << endl;
