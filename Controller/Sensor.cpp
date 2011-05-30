@@ -74,6 +74,8 @@ void Sensor::handleNormalMessage() {
 		port = INTERRUPT_D_SERIAL;
 	}
 
+	//cout << "Sensor: some input m.ca: " << r_msg->m.ca << " val: " << (*r_msg).pulse.value.sival_int << endl;
+
 	int val = (*r_msg).pulse.value.sival_int;
 
 	switch (port) {
@@ -84,7 +86,7 @@ void Sensor::handleNormalMessage() {
 					wp_list.push_back(new Puck_FSM_1(serial, &wp_list));
 				#endif
 				#ifdef PUCK_FSM_2
-					wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
+					//wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
 				#endif
 				cout << "FSM CREATED" << endl;
 
@@ -131,6 +133,7 @@ void Sensor::handleNormalMessage() {
 		last_Reg_State_B = val;
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
+		cout << "INTERRUPT_D_PORT_C_HIGH" << endl;
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
 
@@ -153,15 +156,21 @@ void Sensor::handleNormalMessage() {
 
 	case INTERRUPT_D_SERIAL:
 		if (val == MACHINE2_FREE) {
-			if(wp_list.size() >0 ) wp_list[0]->machine2_free();
+			cout << "Sensor: MACHINE2_FREE" << endl;
+			wp_list[0]->machine2_free();
 		} else if (val == PUCK_ARRIVED) {
-			if(wp_list.size() >0 ) wp_list[0]->puck_arrived();
+			cout << "Sensor: PUCK_ARRIVED" << endl;
+			wp_list[0]->puck_arrived();
 		}else if(val == REQUEST_FREE) {
-			if(wp_list.size() >0 ) wp_list[0]->requestfromMachine1();
+			cout << "Sensor: REQUEST_FREE" << endl;
+			wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
+			wp_list[0]->requestfromMachine1();
 		} else if (val == POCKET) {
-			if(wp_list.size() >0 ) wp_list[0]->PuckhasPocket();
+			cout << "Sensor: POCKET" << endl;
+			wp_list[0]->PuckhasPocket();
 		} else if(val == NO_POCKET) {
-			if(wp_list.size() >0 ) wp_list[0]->PuckhasnoPocket();
+			cout << "Sensor: NO_POCKET" << endl;
+			wp_list[0]->PuckhasnoPocket();
 		}//if
 
 	}//switch
