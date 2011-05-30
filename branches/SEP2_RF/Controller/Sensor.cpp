@@ -155,19 +155,30 @@ void Sensor::handleNormalMessage() {
 		cout << "INTERRUPT_D_PORT_C_HIGH" << endl;
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
+			h->emergencyStop();
+			serial->send(E_STOP_PUSHED, sizeof(int) );
 
-		} else if (((val >> WP_E_STOP) & 1)
-				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
+		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
+			serial->send(E_STOP_PULLED, sizeof(int) );
+			h->resetAll();
 
 		} else if (!((val >> WP_STOP) & 1)) {
 			cout << "Sensor: stop Button" << endl;
+			serial->send(STOP_BUTTON, sizeof(int) );
+			h->engineStop();
 
 		} else if ((val >> WP_START) & 1) {
 			cout << "Sensor: Start Button" << endl;
+			serial->send(START_BUTTON, sizeof(int) );
+			if(wp_list.size() > 0){
+				h->engineContinue();
+				h->engineRight();
+			}//if
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
+			serial->send(RESET_BUTTON, sizeof(int) );
 
 		}//if
 		last_Reg_State_C = val;
@@ -190,7 +201,28 @@ void Sensor::handleNormalMessage() {
 		} else if(val == NO_POCKET) {
 			cout << "Sensor: NO_POCKET" << endl;
 			wp_list[0]->PuckhasnoPocket();
-		}//if
+		} else if(val == E_STOP_PUSHED) {
+			cout << "Sensor: E_STOP_PUSHED" << endl;
+			h->emergencyStop();
+		} else if(val == E_STOP_PULLED) {
+			cout << "Sensor: E_STOP_PULLED" << endl;
+			h->resetAll();
+
+		} else if(val == STOP_BUTTON) {
+			cout << "Sensor: STOP_BUTTON" << endl;
+			h->engineStop();
+
+		} else if(val == START_BUTTON) {
+			cout << "Sensor: START_BUTTON" << endl;
+			if(wp_list.size() > 0){
+				h->engineContinue();
+				h->engineRight();
+			}//if
+
+		} else if(val == RESET_BUTTON) {
+			cout << "Sensor: RESET_BUTTON" << endl;
+
+		}
 
 	}//switch
 
