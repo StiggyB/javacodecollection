@@ -40,7 +40,7 @@ public:
     void interrupt(int port, int val);
     Sensor();
     virtual ~Sensor();
-    bool is_Band_has_wp_ls7;
+    bool running_mode;
     Serial *serial;
 protected:
     virtual void execute(void*);
