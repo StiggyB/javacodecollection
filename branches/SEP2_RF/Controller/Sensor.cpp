@@ -83,26 +83,26 @@ void Sensor::handleNormalMessage() {
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
 			running_mode = false;
-			wp_list[0]->estop_in_signal(false);
+			if(wp_list.size() > 0) wp_list[0]->estop_in_signal(false);
 
 		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
-			wp_list[0]->estop_out_signal(false);
+			if(wp_list.size() > 0)  wp_list[0]->estop_out_signal(false);
 			running_mode = true;
 
 		} else if (!((val >> WP_STOP) & 1)) {
 			cout << "Sensor: stop Button" << endl;
-			wp_list[0]->stop_signal(false);
+			if(wp_list.size() > 0)  wp_list[0]->stop_signal(false);
 			running_mode = false;
 
 		} else if ((val >> WP_START) & 1) {
 			cout << "Sensor: Start Button" << endl;
-			wp_list[0]->start_signal(false);
+			if(wp_list.size() > 0)  wp_list[0]->start_signal(false);
 			running_mode = true;
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
-			wp_list[0]->reset_signal(false);
+			if(wp_list.size() > 0)  wp_list[0]->reset_signal(false);
 
 		}//if
 		last_Reg_State_C = val;
@@ -113,11 +113,15 @@ void Sensor::handleNormalMessage() {
 
 		if (val == MACHINE2_FREE) {
 			cout << "Sensor: MACHINE2_FREE" << endl;
-			wp_list[0]->machine2_free();
+			if(wp_list.size() > 0) wp_list[0]->machine2_free();
 
 		} else if (val == PUCK_ARRIVED) {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
-			wp_list[0]->puck_arrived();
+			if(wp_list.size() > 0){
+				wp_list[0]->puck_arrived();
+			} else {
+				h->engineStop();
+			}//if
 
 		}else if(val == REQUEST_FREE) {
 			cout << "Sensor: REQUEST_FREE" << endl;
@@ -126,7 +130,7 @@ void Sensor::handleNormalMessage() {
 
 		} else if (val == POCKET) {
 			cout << "Sensor: POCKET" << endl;
-			wp_list[0]->PuckhasPocket();
+			if(wp_list.size() > 0)  wp_list[0]->PuckhasPocket();
 
 		} else if(val == NO_POCKET) {
 			cout << "Sensor: NO_POCKET" << endl;
@@ -134,24 +138,32 @@ void Sensor::handleNormalMessage() {
 
 		} else if(val == E_STOP_PUSHED) {
 			cout << "Sensor: E_STOP_PUSHED" << endl;
-			wp_list[0]->estop_in_signal(true);
+			if(wp_list.size() > 0){
+				wp_list[0]->estop_in_signal(true);
+			} else {
+				h->emergencyStop();
+			}
 
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
-			wp_list[0]->estop_out_signal(true);
+			if(wp_list.size() > 0)  wp_list[0]->estop_out_signal(true);
 
 
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
-			wp_list[0]->stop_signal(true);
+			if(wp_list.size() > 0) {
+				wp_list[0]->stop_signal(true);
+			} else{
+				h->engineStop();
+			}
 
 		} else if(val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
-			wp_list[0]->start_signal(true);
+			if(wp_list.size() > 0)  wp_list[0]->start_signal(true);
 
 		} else if(val == RESET_BUTTON) {
 			cout << "Sensor: RESET_BUTTON" << endl;
-			wp_list[0]->reset_signal(true);
+			if(wp_list.size() > 0)  wp_list[0]->reset_signal(true);
 		}//if
 		break;
 
