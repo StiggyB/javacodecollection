@@ -9,9 +9,9 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * Tests the sensor system. React to the pulse messages
+ * Tests the sensor system. React to the messages
  * from the interrupt controller. Additional testing of
- * expected values and included reaction from the light.
+ * expected values and included reaction from the system.
  *
  * Tests:
  *
@@ -34,13 +34,10 @@
 
 #include "Test_Sensor.h"
 
-//TODO 2prio -- implement a routine for a teaching piece
-
 Test_Sensor::Test_Sensor()
 :last_state_B(BIT_WP_OUT), last_state_C(BIT_START_PUSHED),
  success(true), section(0), height(0), res(0)
 {
-
 }
 
 Test_Sensor::~Test_Sensor() {
@@ -52,9 +49,7 @@ void Test_Sensor::shutdown() {
 }
 
 void Test_Sensor::execute(void*) {
-
 	//test_sen_polling();
-
 }
 
 void Test_Sensor::test_sen_interrupt(int port, int value) {
@@ -212,11 +207,6 @@ bool Test_Sensor::assert_equals(string sen_no, int actual, const int state) {
 void Test_Sensor::test_print(string sen_no, int actual, const int state) {
 	cout << "TEST " << sen_no << " RESULT: " << actual << "=?" << state << endl;
 }
-
-
-
-
-
 
 void Test_Sensor::test_sen_polling(int port, int value) {
 

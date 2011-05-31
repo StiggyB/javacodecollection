@@ -10,7 +10,7 @@
  *
  * Encapsulates functions for the Functor Pattern.
  * These functions provide a generic Callback with
- * dynamic Objecttype, Returntype and Parametertype.
+ * dynamic object type, return type and parameter type.
  *
  */
 
@@ -23,16 +23,16 @@ class CallInterface {
 public:
 
 	/**
-	 * Provides a dynamic choose of Functionpointers.
+	 * Provides a dynamic choose of function pointers.
 	 * \param a generic P, represents the parameter.
-	 * \return a generic R, represents the returnvalue.
+	 * \return a generic R, represents the return value.
 	 */
 	virtual R operator()(P param) = 0;
 
 	/**
-	 * Provides a dynamic choose of Functionpointers.
+	 * Provides a dynamic choose of function pointers.
 	 * \param a generic P, represents the parameter.
-	 * \return a generic R, represents the returnvalue.
+	 * \return a generic R, represents the return value.
 	 */
 	virtual R call(P param) = 0;
 

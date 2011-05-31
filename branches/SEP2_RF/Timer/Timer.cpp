@@ -10,8 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *this class will provide the functionality to execute functions in x milliseconds for Puck_fsm and HALCore objects
- *
+ * This class will provide the functionality to execute functions in x milliseconds for Puck_fsm and HALCore objects
  *
  */
 
