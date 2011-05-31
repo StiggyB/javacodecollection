@@ -52,7 +52,6 @@ void Sensor::execute(void*) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
 			handleMessage();
 		}
-
 		endCommunication();
 	} else {
 		perror("Sensor: Setting Up failed!");
@@ -125,7 +124,6 @@ void Sensor::handleNormalMessage() {
 			} else {
 				serial->send(RESET_BUTTON, sizeof(msgType));
 			}//if
-
 		}//if
 		last_Reg_State_C = val;
 		break;
@@ -175,7 +173,6 @@ void Sensor::handleNormalMessage() {
 
 			}//if
 
-
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
 			running_mode = false;
@@ -183,7 +180,6 @@ void Sensor::handleNormalMessage() {
 				wp_list[0]->stop_signal(true);
 			} else{
 				h->engineStop();
-
 			}
 
 		} else if(val == START_BUTTON) {
@@ -192,7 +188,6 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0){
 				wp_list[0]->start_signal(true);
 			} else {
-
 			}
 
 		} else if(val == RESET_BUTTON) {
@@ -201,7 +196,6 @@ void Sensor::handleNormalMessage() {
 			if(wp_list.size() > 0){
 				wp_list[0]->reset_signal(true);
 			} else {
-
 			}
 		}//if
 		break;
@@ -265,7 +259,6 @@ void Sensor::handleNormalMessage() {
 					break;
 				}//if
 			}//for
-
 		}
 
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
@@ -276,7 +269,6 @@ void Sensor::handleNormalMessage() {
 					break;
 				}//if
 			}//for
-
 		}
 		last_Reg_State_B = val;
 	}//switch

@@ -33,7 +33,7 @@
  * Pulse code enum
  */
 enum Pulse_code_timer {
-	PUCK_FSM=(0), HALCORE=(1)
+	PUCK_FSM, HALCORE
 };
 enum timer_section {
 	BEGIN_TO_HEIGH_MEASURE, HEIGH_MEASURE_TO_METAL_MEASURE, METAL_MEASURE_TO_SLIDE,
