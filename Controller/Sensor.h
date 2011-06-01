@@ -52,6 +52,7 @@ private:
     HALCore *h;
     Lampen *l;
     std::vector<Puck_FSM*> wp_list;
+    Puck_FSM dummy_fsm;
 	bool request;
     bool settingUpSensor();
     void cleanUpSensor();
