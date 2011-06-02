@@ -50,17 +50,38 @@ void ExceptionHandler::handleNormalMessage() {
 	//TODO implement different shining for specific acknowledge (see exercise page 5).
 	switch (exception) {
 
-	case WP_DISAPPEARED:
+	case WP_DISAPPEARED_B1:
 		h->engineStop();
 		l->shine(RED);
 		//ErrorPrint
 		break;
-	case WP_UNKOWN:
+	case WP_UNKOWN_B1:
 		h->engineStop();
 		l->shine(RED);
 		//ErrorPrint
 		break;
-	case SLIDE_FULL:
+	case WP_DISAPPEARED_B3:
+		h->engineStop();
+		l->shine(RED);
+		//ErrorPrint
+		break;
+	case WP_UNKOWN_B3:
+		h->engineStop();
+		l->shine(RED);
+		//ErrorPrint
+		break;
+	case WP_DISAPPEARED_B7:
+		h->engineStop();
+		l->shine(RED);
+		//ErrorPrint
+		break;
+	case WP_UNKOWN_B7:
+		h->engineStop();
+		l->shine(RED);
+		//ErrorPrint
+		break;
+
+	case SLIDE_FULL_B6:
 		h->engineStop();
 		l->shine(RED);
 		//ErrorPrint
@@ -74,15 +95,6 @@ void ExceptionHandler::handleException(ExceptionType exception) {
 
 	switch (exception) {
 
-	case WP_DISAPPEARED:
-
-		break;
-	case WP_UNKOWN:
-
-		break;
-	case SLIDE_FULL:
-
-		break;
 	default:
 		cout << "ExceptionHandler: Unknown type to handle with." << endl;
 	}

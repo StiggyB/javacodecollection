@@ -17,12 +17,15 @@
 
 /**
  * Faults while normal running in the Festo System.
- * (No logging of fault sources - should be fast)
  */
 enum ExceptionType {
-	WP_DISAPPEARED,
-	WP_UNKOWN,
-	SLIDE_FULL
+	WP_DISAPPEARED_B1,
+	WP_UNKOWN_B1,
+	WP_DISAPPEARED_B3,
+	WP_UNKOWN_B3,
+	WP_DISAPPEARED_B7,
+	WP_UNKOWN_B7,
+	SLIDE_FULL_B6
 	/*...*/
 };
 
