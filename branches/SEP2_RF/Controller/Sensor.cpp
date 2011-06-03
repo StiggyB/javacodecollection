@@ -45,6 +45,10 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
+	//TODO to extract!
+	serial->init(1, true);
+	serial->start(NULL);
+
 	dummy_fsm = new Puck_FSM_1(serial, &wp_list);
 
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
