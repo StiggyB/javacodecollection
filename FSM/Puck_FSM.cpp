@@ -28,11 +28,13 @@ Puck_FSM::~Puck_FSM() {
 }
 
 void Puck_FSM::start_signal(bool was_serial){
+	cout << "start_signal1" << endl;
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
+	cout << "start_signal2" << endl;
 	if( check_last_lb() == 0){
 		starts_engine_if_nessecary();
 	}//if
-
+	cout << "start_signal3" << endl;
 }
 void Puck_FSM::stop_signal(bool was_serial){
 	if(!was_serial) serial->send(STOP_BUTTON, sizeof(int) );
