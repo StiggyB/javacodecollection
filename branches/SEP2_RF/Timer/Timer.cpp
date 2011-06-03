@@ -31,44 +31,24 @@ Timer::~Timer() {
 	funcp_list.clear();
 }
 
-int Timer::addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void, void*>* funcp){
-	return 0;
+void Timer::execute(void*) {
+	std::cout << "Timer: Start" << std::endl;
+
+	if (settingUpCommunicatorDevice(receiver)) {
+
+		while (!isStopped()) {
+			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
+			handlePulsMessage();
+		}//while
+	}else{
+		perror("Timer: Setting Up failed!");
+		endCommunication();
+	}//if
 }
 
-int Timer::addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void, void*>* funcp ){
-	return 0;
+void Timer::shutdown() {
+
 }
-/*
-int Timer::initTimer_list(){
-	int numberOfStaticTimer = 5;
-	struct TimerData timer[numberOfStaticTimer];
-
-	timer[0].timer.it_value.tv_sec = 3;
-	timer[0].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[1].timer.it_value.tv_sec = 2;
-	timer[1].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[2].timer.it_value.tv_sec = 2;
-	timer[2].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[3].timer.it_value.tv_sec = 3;
-	timer[3].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[4].timer.it_value.tv_sec = 1;
-	timer[4].timer.it_value.tv_nsec = 0;
-
-	for(int i = 0; i < numberOfStaticTimer; i++){
-		if( timer_create (CLOCK_REALTIME, &timer[i].event, &timer[i].timerid) == -1){
-			perror( "Timer: cannot create a static OS-Timer");
-			return false;
-		}//if
-		timer_list.push_back(timer[i]);
-	}//for
-
-	//timer_list
-	return 0;
-}*/
 
 bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	timer_t timerid;
@@ -92,7 +72,6 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 		return false;
 	}//if
 
-
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
 
 	if (timer_create(CLOCK_REALTIME, &event, &timerid) == -1) {
@@ -113,8 +92,7 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	return true;
 }
 
-
-bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int ms){
+bool Timer::addTimerFunction( CallInterface<Puck_FSM, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = PUCK_FSM;
     new_element.funcp.funcp_fsm = funcp;
@@ -125,8 +103,7 @@ bool Timer::addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int m
     }//if
 }
 
-
-bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms){
+bool Timer::addTimerFunction( CallInterface<HALCore, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = HALCORE;
     new_element.funcp.funcp_hal = funcp;
@@ -137,28 +114,9 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int ms
     }//if
 }
 
-
-void Timer::execute(void*) {
-	std::cout << "Timer: Start" << std::endl;
-
-	if (settingUpCommunicatorDevice(receiver)) {
-
-		while (!isStopped()) {
-			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
-			handlePulsMessage();
-		}//while
-
-	}else{
-		perror("Timer: Setting Up failed!");
-		endCommunication();
-	}//if
-}
-
-
 void Timer::handleNormalMessage(){
 	std::cout << "Timer: received a message, but doesn't know what to do with it" << std::endl;
 }
-
 
 void Timer::handlePulsMessage(){
 	std::cout << "Timer: received a Puls" << std::endl;
@@ -166,9 +124,9 @@ void Timer::handlePulsMessage(){
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
 		switch(temp.type){
-		case PUCK_FSM: temp.funcp.funcp_fsm->call(NULL);
+		case PUCK_FSM: temp.funcp.funcp_fsm->call();
 			break;
-		case HALCORE: temp.funcp.funcp_hal->call(NULL);
+		case HALCORE: temp.funcp.funcp_hal->call();
 			break;
 		default:
 			perror("Timer: unknown type for functionpointer!");
@@ -177,12 +135,6 @@ void Timer::handlePulsMessage(){
 		perror( "Timer: got pulseMesage for a not known Timer?!");
 	}//if
 }
-
-
-void Timer::shutdown() {
-
-}
-
 
 struct IdTOfunction Timer::find_function(int id){
 	struct IdTOfunction result;
@@ -205,7 +157,6 @@ struct IdTOfunction Timer::find_function(int id){
 	}//for
 	return result;
 }
-
 
 int Timer::getnextid(){
 	int id = 0;
@@ -247,3 +198,43 @@ int Timer::calculateTime(int ms, int *s, int *ns){
     }//if
     return 0;
 }
+
+/*
+int Timer::addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp){
+	return 0;
+}
+
+int Timer::addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp ){
+	return 0;
+}
+
+int Timer::initTimer_list(){
+	int numberOfStaticTimer = 5;
+	struct TimerData timer[numberOfStaticTimer];
+
+	timer[0].timer.it_value.tv_sec = 3;
+	timer[0].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[1].timer.it_value.tv_sec = 2;
+	timer[1].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[2].timer.it_value.tv_sec = 2;
+	timer[2].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[3].timer.it_value.tv_sec = 3;
+	timer[3].timer.it_value.tv_nsec = 5*1000*100;
+
+	timer[4].timer.it_value.tv_sec = 1;
+	timer[4].timer.it_value.tv_nsec = 0;
+
+	for(int i = 0; i < numberOfStaticTimer; i++){
+		if( timer_create (CLOCK_REALTIME, &timer[i].event, &timer[i].timerid) == -1){
+			perror( "Timer: cannot create a static OS-Timer");
+			return false;
+		}//if
+		timer_list.push_back(timer[i]);
+	}//for
+
+	//timer_list
+	return 0;
+}*/

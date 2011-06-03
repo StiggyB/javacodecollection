@@ -50,16 +50,16 @@ public:
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction( CallInterface<Puck_FSM, void, void*>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
+	bool addTimerFunction( CallInterface<Puck_FSM, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
 	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction( CallInterface<HALCore, void, void*>* funcp, int timer );
-	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void, void*>* funcp);
-	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void, void*>* funcp);
+	bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
+//	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
+//	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
@@ -112,8 +112,8 @@ private:
  * struct to avoid double code and optional to expand functionality
  */
 union Functionpointer{
-	CallInterface<Puck_FSM, void, void*>* funcp_fsm;
-	CallInterface<HALCore, void, void*>* funcp_hal;
+	CallInterface<Puck_FSM, void>* funcp_fsm;
+	CallInterface<HALCore, void>* funcp_hal;
 };
 
 /**

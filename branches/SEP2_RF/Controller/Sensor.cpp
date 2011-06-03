@@ -90,14 +90,12 @@ void Sensor::handleNormalMessage() {
 			running_mode = false;
 			dummy_fsm->estop_in_signal(false);
 
-
 		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
 
 			dummy_fsm->estop_out_signal(false);
 
 			cout << "Sensor: nach E-Stop Button out" << endl;
-			running_mode = true;
 
 		} else if (!((val >> WP_STOP) & 1)) {
 			cout << "Sensor: stop Button" << endl;
@@ -118,7 +116,6 @@ void Sensor::handleNormalMessage() {
 		break;
 
 	case INTERRUPT_D_SERIAL:
-
 		if (val == MACHINE2_FREE) {
 			cout << "Sensor: MACHINE2_FREE" << endl;
 			dummy_fsm->machine2_free();
@@ -252,10 +249,6 @@ void Sensor::handleNormalMessage() {
 	interrupt(port, r_msg->pulse.value.sival_int);
 #endif
 }
-
-
-
-
 
 void Sensor::handlePulsMessage() {
 	std::cout << "Sensor: received a Puls, but doesn't know what to do with it"

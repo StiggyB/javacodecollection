@@ -17,7 +17,7 @@
 #ifndef IFUNCTOR_H_
 #define IFUNCTOR_H_
 
-template <typename T, typename R, typename P>
+template <typename T, typename R>
 class CallInterface {
 
 public:
@@ -27,14 +27,14 @@ public:
 	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
-	virtual R operator()(P param) = 0;
+	virtual R operator()() = 0;
 
 	/**
 	 * Provides a dynamic choose of function pointers.
 	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
-	virtual R call(P param) = 0;
+	virtual R call() = 0;
 
 };
 

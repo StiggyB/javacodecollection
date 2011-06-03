@@ -32,13 +32,14 @@ void Test_Timer::shutdown(){
 
 void Test_Timer::execute(void* data){
 	sleep(4);
-	Puck_FSM_1 test_fsm(serial, &puck_list);
+	HALCore* h;
+	h = HALCore::getInstance();
 
-	CallInterface<Puck_FSM, void, void*>* openswitch =
-			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::openswitch);
+	CallInterface<HALCore, void>* openswitch =
+			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::openSwitch);
 
-	CallInterface<Puck_FSM, void, void*>* closeswitch =
-			FunctorMaker<Puck_FSM, void, void*>::makeFunctor(&test_fsm, &Puck_FSM::closeswitch);
+	CallInterface<HALCore, void>* closeswitch =
+			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::closeSwitch);
 
 
 	timer->addTimerFunction(openswitch, 2000);
