@@ -37,6 +37,13 @@ void StartThread::execute(void*) {
 	Sensor sensor;
 	sensor.serial = &serial;
 	sensor.start(NULL);
+//	Sensor sensor;
+//
+//	Serial serial;
+//	serial.init(1, true);
+//	sensor.serial = &serial;
+//
+//	sensor.start(NULL);
 
 
 
