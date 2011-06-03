@@ -29,6 +29,7 @@ public:
 	//Puck_FSM_2();
 	Puck_FSM_2(Serial* serial, std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_2();
+	void checkSlide();
 };
 
 

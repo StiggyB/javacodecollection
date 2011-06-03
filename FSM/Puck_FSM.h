@@ -22,6 +22,10 @@
 #include "../HAL/Lampen.h"
 #include <vector>
 #include "../Serial/Serial.h"
+#include "../Timer/Timer.h"
+#include "../Functor/Functor.h"
+#include "../Functor/FunctorMaker.h"
+#include "../Functor/CallInterface.h"
 
 //#define PUCK_FSM_STATE_DEBUG
 
@@ -96,6 +100,8 @@ public:
 	 * Instance for HW control
 	 */
 	HALCore *hc;
+
+	Timer *timer;
 	location_attribut location;
     int check_last_lb();
     void delete_unnecessary_wp();

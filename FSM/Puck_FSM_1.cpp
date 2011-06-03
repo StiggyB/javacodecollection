@@ -245,15 +245,17 @@ void FSM_1_wp_in_slide :: exit (Puck_FSM * fsm){
 }
 
 
-
 //functions for pruef_schacht_voll
 void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_check_slide: entry" << endl;
 	#endif
-//	sleep(1);
+	CallInterface<Puck_FSM_1, void> checkTime =
+				FunctorMaker<Puck_FSM_1, void>::makeFunctor(fsm,
+						&Puck_FSM_1::checkSlide);
+	timer->addTimerFunction(checkTime, 50);
 
-//	if( fsm->hc->isSlideFull() ){
+//	if( checkSlide() ){
 //		fsm->setCurrent( new FSM_1_ErrorState() );
 //	}
 	fsm->delete_unnecessary_wp();
@@ -274,9 +276,9 @@ void FSM_1_ErrorState :: entry (Puck_FSM * fsm){
 	fsm->lamp->flash(500,RED);
 	//fsm->lamp.fast_blink();
 	//fsm->lamp.start(NULL);
-	while ( fsm->hc->isSlideFull() ){
-		sleep(1);
-	}
+//	while ( fsm->hc->isSlideFull() ){
+//		sleep(1);
+//	}
 	fsm->lamp->flash(1000,RED);
 	//fsm->lamp.slow_blink();
 }
@@ -295,3 +297,11 @@ void FSM_1_ErrorState :: exit (Puck_FSM * fsm){
 	fsm->lamp->removeLight(RED);
 	//fsm->lamp.stop();
 }
+
+//TODO lookup a better position (redundant)
+void Puck_FSM_1::checkSlide() {
+	if( hc->checkSlide() ){
+		setCurrent( new FSM_1_ErrorState() );
+	}
+}
+
