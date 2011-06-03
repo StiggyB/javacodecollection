@@ -34,7 +34,7 @@ Sensor::Sensor() :
 	 * Initialize with start values
 	 */
 	last_Reg_State_B = 0xD3;
-	last_Reg_State_C = 0x50;
+	last_Reg_State_C = 0x90;
 	running_mode = false;
 	request = false;
 	mine = SENSOR;
@@ -45,8 +45,8 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	serial->init(1, true);
-	serial->start(NULL);
+	dummy_fsm = new Puck_FSM_1(serial, &wp_list);
+
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		while (!isStopped()) {
 			rcvid = MsgReceive(chid, r_msg, sizeof(Message), NULL);
@@ -83,28 +83,31 @@ void Sensor::handleNormalMessage() {
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
 			running_mode = false;
-			dummy_fsm.estop_in_signal(false);
+			dummy_fsm->estop_in_signal(false);
 
 
 		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
-			dummy_fsm.estop_out_signal(false);
+
+			dummy_fsm->estop_out_signal(false);
+
+			cout << "Sensor: nach E-Stop Button out" << endl;
 			running_mode = true;
 
 		} else if (!((val >> WP_STOP) & 1)) {
 			cout << "Sensor: stop Button" << endl;
-			dummy_fsm.stop_signal(false);
+			dummy_fsm->stop_signal(false);
 			running_mode = false;
 
 		} else if ((val >> WP_START) & 1) {
 			cout << "Sensor: Start Button" << endl;
-			dummy_fsm.start_signal(false);
+			dummy_fsm->start_signal(false);
 			running_mode = true;
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
 			running_mode = true;
-			dummy_fsm.reset_signal(false);
+			dummy_fsm->reset_signal(false);
 		}//if
 		last_Reg_State_C = val;
 		break;
@@ -113,49 +116,49 @@ void Sensor::handleNormalMessage() {
 
 		if (val == MACHINE2_FREE) {
 			cout << "Sensor: MACHINE2_FREE" << endl;
-			dummy_fsm.machine2_free();
+			dummy_fsm->machine2_free();
 
 		} else if (val == PUCK_ARRIVED) {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
-			dummy_fsm.puck_arrived();
+			dummy_fsm->puck_arrived();
 
 		}else if(val == REQUEST_FREE) {
 			cout << "Sensor: REQUEST_FREE" << endl;
 			wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
-			dummy_fsm.requestfromMachine1();
+			dummy_fsm->requestfromMachine1();
 
 		} else if (val == POCKET) {
 			cout << "Sensor: POCKET" << endl;
-			dummy_fsm.PuckhasPocket();
+			dummy_fsm->PuckhasPocket();
 
 		} else if(val == NO_POCKET) {
 			cout << "Sensor: NO_POCKET" << endl;
-			dummy_fsm.PuckhasnoPocket();
+			dummy_fsm->PuckhasnoPocket();
 
 		} else if(val == E_STOP_PUSHED) {
 			cout << "Sensor: E_STOP_PUSHED" << endl;
 			running_mode = false;
-			dummy_fsm.estop_in_signal(true);
+			dummy_fsm->estop_in_signal(true);
 
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			running_mode = true;
-			dummy_fsm.estop_out_signal(true);
+			dummy_fsm->estop_out_signal(true);
 
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
 			running_mode = false;
-			dummy_fsm.stop_signal(true);
+			dummy_fsm->stop_signal(true);
 
 		} else if(val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
-			dummy_fsm.start_signal(true);
+			dummy_fsm->start_signal(true);
 
 		} else if(val == RESET_BUTTON) {
 			running_mode = true;
 			cout << "Sensor: RESET_BUTTON" << endl;
-			dummy_fsm.reset_signal(true);
+			dummy_fsm->reset_signal(true);
 		}//if
 		break;
 
