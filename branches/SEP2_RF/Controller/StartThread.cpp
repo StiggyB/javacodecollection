@@ -34,12 +34,13 @@ void StartThread::execute(void*) {
 	//lampen->start(NULL);
 	cout << "Lampen started" << endl;
 	Sensor sensor;
+	sensor.start(NULL);
 
 	Serial serial;
 	serial.init(1, true);
-	sensor.serial = &serial;
+	serial.start(NULL);
 
-	sensor.start(NULL);
+	sensor.serial = &serial;
 
 #ifdef TEST_IRQ
 	Test_IRQ ti;
