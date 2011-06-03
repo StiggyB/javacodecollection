@@ -28,13 +28,10 @@ Puck_FSM::~Puck_FSM() {
 }
 
 void Puck_FSM::start_signal(bool was_serial){
-	cout << "start_signal1" << endl;
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
-	cout << "start_signal2" << endl;
-	if( check_last_lb() == 0){
+	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
 		starts_engine_if_nessecary();
 	}//if
-	cout << "start_signal3" << endl;
 }
 void Puck_FSM::stop_signal(bool was_serial){
 	if(!was_serial) serial->send(STOP_BUTTON, sizeof(int) );
@@ -53,7 +50,7 @@ void Puck_FSM::estop_in_signal(bool was_serial){
 void Puck_FSM::estop_out_signal(bool was_serial){
 	if(!was_serial) serial->send(E_STOP_PULLED, sizeof(int) );
 	hc->resetAll();
-	if( check_last_lb() == 0){
+	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
 		starts_engine_if_nessecary();
 	}//if
 
@@ -96,7 +93,7 @@ void Puck_FSM::starts_engine_if_nessecary() {
 int Puck_FSM::check_last_lb(){
     for(unsigned int i = 0;i < puck_list->size();i++){
         if( (*puck_list)[i]->location == ON_LAST_LB){
-            return 1;
+            return -1;
         }//if
     }//for
     return 0;
