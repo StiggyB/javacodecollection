@@ -32,8 +32,8 @@
  *
  */
 
-#define PUCK_FSM_1
-//#define PUCK_FSM_2
+//#define PUCK_FSM_1
+#define PUCK_FSM_2
 
 class Sensor : public thread::HAWThread, public Communication{
 public:
@@ -52,7 +52,7 @@ private:
     HALCore *h;
     Lampen *l;
     std::vector<Puck_FSM*> wp_list;
-    Puck_FSM dummy_fsm;
+    Puck_FSM* dummy_fsm;
 	bool request;
     bool settingUpSensor();
     void cleanUpSensor();
