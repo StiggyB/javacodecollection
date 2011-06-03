@@ -111,6 +111,7 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: Reset Button" << endl;
 			running_mode = true;
 			dummy_fsm->reset_signal(false);
+
 		}//if
 		last_Reg_State_C = val;
 		break;

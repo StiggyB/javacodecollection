@@ -11,6 +11,7 @@
 #include "../Thread/Semaphor.h"
 #include "../Thread/Condition.h"
 #include "../Thread/Singleton_T.h"
+//#include "../Timer/Timer.h"
 
 #define CONDOR
 //#define SEMAP
@@ -26,7 +27,7 @@
 /**
  * BASE ADRESS for Digital IO
  */
-#define D_IOBASE 0x300 								// Anfangsadresse Ports
+#define D_IOBASE 0x300 	// Anfangsadresse Ports
 /**
  * BASE ADRESS for Analog IO
  */
@@ -466,7 +467,8 @@ public:
 	 */
 	void resetAll();
 	int identifyHeight();
-	bool isSlideFull();
+	void checkTimeIdentifyHeight();
+	bool checkSlide();
 	/**
 	 * Returns if there is metal under the metal detector.
 	 * \return a bool, true if there is metal.
@@ -580,6 +582,10 @@ private:
 	 */
 	bool stopped;
 	/**
+	 * Timeout flag for identifyHeight loop.
+	 */
+	bool timeout;
+	/**
 	 * Wakeup the thread
 	 */
 	void wakeup();
@@ -595,6 +601,10 @@ private:
 	 * List of function pointers which should worked up
 	 */
 	vector<Functions *> lst;
+	/**
+	 * Pointer to Timer.
+	 */
+	Timer* timer;
 #ifdef CONDOR
 
 	Condition condvar;

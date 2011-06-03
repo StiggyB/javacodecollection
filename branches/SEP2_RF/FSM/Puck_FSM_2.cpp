@@ -231,6 +231,10 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_check_slide: entry" << endl;
 	#endif
+	CallInterface<Puck_FSM_2, void> checkTime =
+				FunctorMaker<Puck_FSM_2, void>::makeFunctor(fsm,
+						&Puck_FSM_2::checkSlide);
+	timer->addTimerFunction(checkTime, 50);
 
 //	sleep(2);
 //	if( fsm->hc->isSlideFull() ){
@@ -257,5 +261,12 @@ void FSM_2_ErrorState :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "ErrorState: exit" << endl;
 	#endif
+}
+
+//TODO lookup a better position (redundant)
+void Puck_FSM_2::checkSlide() {
+	if( hc->checkSlide() ){
+		setCurrent( new FSM_2_ErrorState() );
+	}
 }
 

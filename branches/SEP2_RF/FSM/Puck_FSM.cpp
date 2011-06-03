@@ -35,6 +35,7 @@ void Puck_FSM::start_signal(bool was_serial){
 	}//if
 }
 void Puck_FSM::stop_signal(bool was_serial){
+	hc->shine(RED);
 	if(!was_serial) serial->send(STOP_BUTTON, sizeof(int) );
 	hc->engineStop();
 

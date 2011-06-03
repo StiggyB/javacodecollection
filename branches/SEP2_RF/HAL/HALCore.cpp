@@ -1,4 +1,3 @@
-
 /**
  * Hardware Abstraction Layer for Aktorik and Sensorik.
  *
@@ -58,8 +57,8 @@ HALCore::HALCore() {
 		std::cout << "error for IO Control" << std::endl;
 	}
 	controlBits = BIT_CNTRLS;
-	out8(PORT_CNTRL,BIT_CNTRLS);
-	out8(INTERRUPT_SET_ADRESS_D,0xFF);
+	out8(PORT_CNTRL, BIT_CNTRLS);
+	out8(INTERRUPT_SET_ADRESS_D, 0xFF);
 	portA = read(PORT_A);
 	portB = read(PORT_B);
 	portC = read(PORT_C);
@@ -67,9 +66,11 @@ HALCore::HALCore() {
 	portIRQ = read(PORT_IRQ);
 	//out8(PORT_C,0x0F);
 	setFPArray();
+	timeout = true;
+	timer->start(NULL);
 #ifdef CONDOR
 	condvar.setMutex(&mut);
-	requested=false;
+	requested = false;
 #endif
 #ifdef SEMAP
 	sem.init(0);
@@ -100,12 +101,12 @@ void HALCore::execute(void*) {
 		// OLD CODE!
 		std::cout << "HC waiting..." <<std::endl;
 		sem.wait();
-		if(!lst.empty()){
+		if(!lst.empty()) {
 			it = lst.begin();
-		//if ((*it) != NULL) {
+			//if ((*it) != NULL) {
 			std::cout << "HC: do something from queue! " << (*(*it)).func <<std::endl;
 			(*this.*((*(*it)).func))((*(*it)).v);
-		//}
+			//}
 			free((*it));
 			it = lst.erase(it);
 		}
@@ -113,18 +114,18 @@ void HALCore::execute(void*) {
 		//else it = lst.begin();
 #endif
 #ifdef CONDOR
-		if(!lst.empty()){
+		if (!lst.empty()) {
 			it = lst.begin();
 			//if((*it) != NULL){
 			((*this).*((*it)->func))((*it)->v);
 			//}
-			free(((*it)->v));	// free VAL
-			free((*it));	// free struct of function
+			free(((*it)->v)); // free VAL
+			free((*it)); // free struct of function
 			lst.erase(it);
 			//it++;
-		}else{
+		} else {
 			changedMutex.lock();
-			if(!requested){
+			if (!requested) {
 				changedMutex.unlock();
 				mut.lock();
 				//cout << "waiting" << endl;
@@ -137,7 +138,6 @@ void HALCore::execute(void*) {
 		}
 #endif
 
-
 	}
 }
 
@@ -145,89 +145,132 @@ void HALCore::shutdown() {
 
 }
 
-int HALCore::setPortToInput(int bits){
+int HALCore::setPortToInput(int bits) {
 	controlBits = controlBits | bits;
-	out8(PORT_CNTRL,controlBits);
-	return 1;
-}
-
-int HALCore::setPortToOutput(int bits){
-	controlBits = controlBits  & (~bits);
 	out8(PORT_CNTRL, controlBits);
 	return 1;
 }
 
-bool HALCore::isOutput(int dir){
+int HALCore::setPortToOutput(int bits) {
+	controlBits = controlBits & (~bits);
+	out8(PORT_CNTRL, controlBits);
+	return 1;
+}
+
+bool HALCore::isOutput(int dir) {
 	return !isInput(dir);
 }
 
-bool HALCore::isInput(int dir){
-	switch(dir){
-	case PORT_A:dir = BIT_PORT_A; break;
-	case PORT_B:dir = BIT_PORT_B; break;
-	case PORT_C:dir = BIT_PORT_C; break;
-	default: dir = 0x00; break;
+bool HALCore::isInput(int dir) {
+	switch (dir) {
+	case PORT_A:
+		dir = BIT_PORT_A;
+		break;
+	case PORT_B:
+		dir = BIT_PORT_B;
+		break;
+	case PORT_C:
+		dir = BIT_PORT_C;
+		break;
+	default:
+		dir = 0x00;
+		break;
 	}
 	return (controlBits & dir);
 }
 
-int HALCore::write(int dir, int value, bool set){
-	value = checkVal(dir,value, set);
+int HALCore::write(int dir, int value, bool set) {
+	value = checkVal(dir, value, set);
 	int volatile *port = 0;
-	switch(dir){
-		case PORT_B: port = &portB; /* val = portB & value;*/ break;
-		case PORT_C: port = &portC; /* val = portC & value;*/ break;
-		case PORT_CNTRL: port = &controlBits;/* val = controlBits & value;*/ break;
-		case INTERRUPT_SET_ADRESS_D: port = &portIRE;/* val = portIRE & value;*/ break;
-		case INTERRUPT_RESET_ADRESS_D: port = &portIRQ;/* val = portIRQ & value;*/ break;
-		default: port = &portA; portA = read(PORT_A);/* val = portA & value;*/ break; //PORT_A
+	switch (dir) {
+	case PORT_B:
+		port = &portB; /* val = portB & value;*/
+		break;
+	case PORT_C:
+		port = &portC; /* val = portC & value;*/
+		break;
+	case PORT_CNTRL:
+		port = &controlBits;/* val = controlBits & value;*/
+		break;
+	case INTERRUPT_SET_ADRESS_D:
+		port = &portIRE;/* val = portIRE & value;*/
+		break;
+	case INTERRUPT_RESET_ADRESS_D:
+		port = &portIRQ;/* val = portIRQ & value;*/
+		break;
+	default:
+		port = &portA;
+		portA = read(PORT_A);/* val = portA & value;*/
+		break; //PORT_A
 	}
 	int newVal = 0;
-	if(set){
+	if (set) {
 		newVal = (value | (*port)) & 0xFF;
-	}else{
+	} else {
 		newVal = ((*port) & (~value)) & 0xFF;
 	}
 	*port = newVal;
 	//std::cout << "RealWrite: " << std::hex << newVal << " on Adr.: "  << std::hex << dir << std::endl;
-	out8(dir,newVal);
+	out8(dir, newVal);
 	return newVal;
 }
 
-int HALCore::read(int dir){
+int HALCore::read(int dir) {
 	return in8(dir);
 }
 
-int HALCore::getValueFromAdress(int dir){
+int HALCore::getValueFromAdress(int dir) {
 	int value = 0x00;
 	switch (dir) {
-		case PORT_CNTRL: value = controlBits; break;
-		case PORT_B: value = portB; break;
-		case PORT_C: value = portC; break;
-		case PORT_IRE: value = portIRE;break;
-		case PORT_IRQ: value = portIRQ;break;
-		default: value = portA; break;
+	case PORT_CNTRL:
+		value = controlBits;
+		break;
+	case PORT_B:
+		value = portB;
+		break;
+	case PORT_C:
+		value = portC;
+		break;
+	case PORT_IRE:
+		value = portIRE;
+		break;
+	case PORT_IRQ:
+		value = portIRQ;
+		break;
+	default:
+		value = portA;
+		break;
 	}
 	return value;
 }
 
-int HALCore::getBitsToAdress(int dir){
+int HALCore::getBitsToAdress(int dir) {
 	int bits = 0x00;
 	switch (dir) {
-		case PORT_A: bits = BIT_PORT_A; break;
-		case PORT_B: bits = BIT_PORT_B; break;
-		case PORT_C: bits = BIT_PORT_C; break;
-		default: bits = 0x00; break;
+	case PORT_A:
+		bits = BIT_PORT_A;
+		break;
+	case PORT_B:
+		bits = BIT_PORT_B;
+		break;
+	case PORT_C:
+		bits = BIT_PORT_C;
+		break;
+	default:
+		bits = 0x00;
+		break;
 	}
 	return bits;
 }
 
-int HALCore::checkVal(int dir, int value,bool set) {
+int HALCore::checkVal(int dir, int value, bool set) {
 	if (dir == PORT_A && set) {
-		if ((value == BIT_ENGINE_RIGHT || value == BIT_ENGINE_S_R) && (portA & BIT_ENGINE_LEFT)) {
-			reset(PORT_A,BIT_ENGINE_LEFT);
-		} else if ((value == BIT_ENGINE_LEFT || value == BIT_ENGINE_S_L) && (portA & BIT_ENGINE_RIGHT)) {
-			reset(PORT_A,BIT_ENGINE_RIGHT);
+		if ((value == BIT_ENGINE_RIGHT || value == BIT_ENGINE_S_R) && (portA
+				& BIT_ENGINE_LEFT)) {
+			reset(PORT_A, BIT_ENGINE_LEFT);
+		} else if ((value == BIT_ENGINE_LEFT || value == BIT_ENGINE_S_L)
+				&& (portA & BIT_ENGINE_RIGHT)) {
+			reset(PORT_A, BIT_ENGINE_RIGHT);
 		}
 	}
 	return value;
@@ -282,45 +325,52 @@ const struct sigevent * ISR(void *arg, int id) {
 	short iir;
 	struct sigevent *event = (struct sigevent*) arg;
 	iir = in8(PORT_IRQ_AND_RESET) & IIR_MASK_D;
-	switch(iir){
-	case INTERRUPT_D_PORT_A: val = in8(PORT_A);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_A,val);
-	return (event);break;
-	case INTERRUPT_D_PORT_B: val = in8(PORT_B);
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,val);
-	return (event);break;
-	case INTERRUPT_D_PORT_C_HIGH: val = in8(PORT_C);
-	if(!(val & BIT_E_STOP)){
-		out8(PORT_A,0x88); // rotes Licht + Stop
-		out8(PORT_C,0x00);
-		emstopped = true;
-	//	return (NULL);
-	}//else{
-	SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
-	//}
-	return (event);break;
-	default: return (NULL);break;
+	switch (iir) {
+	case INTERRUPT_D_PORT_A:
+		val = in8(PORT_A);
+		SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_A,val);
+		return (event);
+		break;
+	case INTERRUPT_D_PORT_B:
+		val = in8(PORT_B);
+		SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_B,val);
+		return (event);
+		break;
+	case INTERRUPT_D_PORT_C_HIGH:
+		val = in8(PORT_C);
+		if (!(val & BIT_E_STOP)) {
+			out8(PORT_A, 0x88); // rotes Licht + Stop
+			out8(PORT_C, 0x00);
+			emstopped = true;
+			//	return (NULL);
+		}//else{
+		SIGEV_PULSE_INIT(event,(*event).__sigev_un1.__sigev_coid,(*event).__sigev_un2.__st.__sigev_priority,INTERRUPT_D_PORT_C_HIGH,val);
+		//}
+		return (event);
+		break;
+	default:
+		return (NULL);
+		break;
 	}
 	return (NULL);
 }
 
-int HALCore::getInterrupt(){
+int HALCore::getInterrupt() {
 	int irq = read(PORT_IRQ_AND_RESET);
 	irq = irq & IIR_MASK_D;
 	return irq;
 }
 
-int HALCore::getSetInterrupt(){
+int HALCore::getSetInterrupt() {
 	return read(PORT_IRE);
 }
 
-
 //TODO implement
-void HALCore::stopProcess(){
+void HALCore::stopProcess() {
 
 }
 //TODO will be removed!
-void HALCore::emergencyStop(){
+void HALCore::emergencyStop() {
 	engineStop();
 	closeSwitch();
 	engineReset();
@@ -330,7 +380,7 @@ void HALCore::emergencyStop(){
 	stopped = true;
 }
 //TODO should stop all operations in queue!
-void HALCore::stopMachine(){
+void HALCore::stopMachine() {
 	engineStop();
 	closeSwitch();
 	//shine(RED);
@@ -357,7 +407,7 @@ void HALCore::resetAll() {
 	//shineLED(LEDS_OFF);
 }
 
-void HALCore::wakeup(){
+void HALCore::wakeup() {
 	//std::cout << "HC has to wakeup!" <<std::endl;
 #ifdef CONDOR
 	changedMutex.lock();
@@ -370,29 +420,30 @@ void HALCore::wakeup(){
 #endif
 }
 
-void HALCore::setFPArray(){
-	funcArray[0]= &HALCore::write;
-	funcArray[1]= &HALCore::reset;
+void HALCore::setFPArray() {
+	funcArray[0] = &HALCore::write;
+	funcArray[1] = &HALCore::reset;
 }
 
-HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2){
+HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2) {
 	return buildFunctions(f, val1, val2, true);
 }
 
-HALCore::Functions * HALCore::buildFunctions(FP f, bool val3){
+HALCore::Functions * HALCore::buildFunctions(FP f, bool val3) {
 	return buildFunctions(f, 0, 0, val3);
 }
 
-HALCore::Functions * HALCore::buildFunctions(FP f, int val1){
+HALCore::Functions * HALCore::buildFunctions(FP f, int val1) {
 	return buildFunctions(f, val1, 0, true);
 }
 
-HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2, bool val3){
+HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2,
+		bool val3) {
 	Functions *ptrMyF = (Functions *) malloc(sizeof(Functions));
 	VAL *va = (VAL*) malloc(sizeof(VAL));
 
-	if(ptrMyF != NULL && va != NULL){
-		ptrMyF->func=f;
+	if (ptrMyF != NULL && va != NULL) {
+		ptrMyF->func = f;
 		ptrMyF->v = va;
 		va->value1 = val1;
 		va->value2 = val2;
@@ -402,35 +453,35 @@ HALCore::Functions * HALCore::buildFunctions(FP f, int val1, int val2, bool val3
 	return ptrMyF;
 }
 
-void HALCore::write(void *ptr){
-	VAL* v =  (VAL *) ptr;
+void HALCore::write(void *ptr) {
+	VAL* v = (VAL *) ptr;
 	//std::cout << "Write: " << ptr << " "  << std::hex << v->value1  << " " << std::hex << v->value2 << " "  << std::hex << v->value3 << std::endl;
 	write(v->value1, v->value2, v->value3);
 }
-void HALCore::reset(void *ptr){
-	VAL* v =  (VAL *) ptr;
+void HALCore::reset(void *ptr) {
+	VAL* v = (VAL *) ptr;
 	//std::cout << "Reset: " << ptr<< " "  << std::hex << v->value1  << " " << std::hex << v->value2 << " "  << std::hex << v->value3 << std::endl;
 	write(v->value1, v->value2, v->value3);
 }
 
-void HALCore::resetPortsDirection(){
-	out8(PORT_CNTRL,BIT_CNTRLS);
+void HALCore::resetPortsDirection() {
+	out8(PORT_CNTRL, BIT_CNTRLS);
 }
 
-void HALCore::setPortsTo(int cb){
-	out8(PORT_CNTRL,cb);
+void HALCore::setPortsTo(int cb) {
+	out8(PORT_CNTRL, cb);
 }
 
-void HALCore::write(int dir, int value){
+void HALCore::write(int dir, int value) {
 	Functions * p = buildFunctions(funcArray[WRITE], dir, value, true);
-	lst.insert(lst.end(),p);
+	lst.insert(lst.end(), p);
 	wakeup();
 }
 
-void HALCore::reset(int dir, int value){
+void HALCore::reset(int dir, int value) {
 	Functions * p = buildFunctions(funcArray[RESET], dir, value, false);
 	//std::cout << "Function Build: " << hex <<(p->func) << " " << hex << (p->v) << std::endl;
-	lst.insert(lst.end(),p);
+	lst.insert(lst.end(), p);
 	wakeup();
 }
 
@@ -445,83 +496,84 @@ void HALCore::engineStart(int direction) {
 		}
 	}
 }
-void HALCore::openSwitch(){
+void HALCore::openSwitch() {
 	setSwitchDirection(BIT_SET);
 }
-void HALCore::closeSwitch(){
+void HALCore::closeSwitch() {
 	setSwitchDirection(BIT_DELETE);
 }
-void HALCore::setSwitchDirection(bool dir){
-	if(dir){
-		write(PORT_A,BIT_SWITCH);
-	}else{
-		reset(PORT_A,BIT_SWITCH);
+void HALCore::setSwitchDirection(bool dir) {
+	if (dir) {
+		write(PORT_A, BIT_SWITCH);
+	} else {
+		reset(PORT_A, BIT_SWITCH);
 	}
 }
-void HALCore::engineReset(){
-	int bit = BIT_ENGINE_RIGHT | BIT_ENGINE_LEFT | BIT_ENGINE_SLOW | BIT_ENGINE_STOP | BIT_SWITCH;
-	reset(PORT_A,bit);
+void HALCore::engineReset() {
+	int bit = BIT_ENGINE_RIGHT | BIT_ENGINE_LEFT | BIT_ENGINE_SLOW
+			| BIT_ENGINE_STOP | BIT_SWITCH;
+	reset(PORT_A, bit);
 }
-void HALCore::engineStop(){
-	write(PORT_A,BIT_ENGINE_STOP);
+void HALCore::engineStop() {
+	write(PORT_A, BIT_ENGINE_STOP);
 }
-void HALCore::engineContinue(){
-	reset(PORT_A,BIT_ENGINE_STOP);
+void HALCore::engineContinue() {
+	reset(PORT_A, BIT_ENGINE_STOP);
 }
-void HALCore::engineRight(){
+void HALCore::engineRight() {
 	engineStart(BIT_ENGINE_RIGHT);
 }
-void HALCore::engineLeft(){
+void HALCore::engineLeft() {
 	engineStart(BIT_ENGINE_LEFT);
 }
-void HALCore::engineSlowSpeed(){
-	if(!engineStopped()){
+void HALCore::engineSlowSpeed() {
+	if (!engineStopped()) {
 		write(PORT_A, BIT_ENGINE_SLOW);
 	}
 }
-void HALCore::engineNormalSpeed(){
-	if(!engineStopped()){
+void HALCore::engineNormalSpeed() {
+	if (!engineStopped()) {
 		reset(PORT_A, BIT_ENGINE_SLOW);
 	}
 }
 
-bool HALCore::engineStopped(){
+bool HALCore::engineStopped() {
 	return (portA & BIT_ENGINE_STOP);
 }
 
 void HALCore::engineSlowSpeed(int dir) {
-	if(!engineStopped()){
+	if (!engineStopped()) {
 		if (dir == BIT_ENGINE_LEFT || dir == BIT_ENGINE_S_L) {
 			reset(PORT_A, BIT_ENGINE_RIGHT);
 			write(PORT_A, BIT_ENGINE_LEFT | BIT_ENGINE_SLOW);
 		} else if (dir == BIT_ENGINE_RIGHT || dir == BIT_ENGINE_S_R) {
 			reset(PORT_A, BIT_ENGINE_LEFT);
 			write(PORT_A, BIT_ENGINE_RIGHT | BIT_ENGINE_SLOW);
-		}else{
+		} else {
 			write(PORT_A, BIT_ENGINE_SLOW);
 		}
 	}
 }
 
 void HALCore::engineSpeed(bool slow) {
-	if(!engineStopped()){
+	if (!engineStopped()) {
 		if (slow) {
 			write(PORT_A, BIT_ENGINE_SLOW);
-		} else{
+		} else {
 			reset(PORT_A, BIT_ENGINE_SLOW);
 		}
 	}
 }
 
-void HALCore::engineSlowLeft(){
+void HALCore::engineSlowLeft() {
 	engineSlowSpeed(BIT_ENGINE_LEFT);
 }
-void HALCore::engineSlowRight(){
+void HALCore::engineSlowRight() {
 	engineSlowSpeed(BIT_ENGINE_RIGHT);
 }
 
-void HALCore::resetAllOutPut(){
-	reset(PORT_A,0xFF);
+void HALCore::resetAllOutPut() {
+	reset(PORT_A, 0xFF);
 }
 
 void HALCore::addLight(Color col) {
@@ -549,18 +601,18 @@ void HALCore::shine(int color) {
 	}
 }
 
-void HALCore::removeLED(LEDS led){
+void HALCore::removeLED(LEDS led) {
 	int old = getLEDCode(led);
 	reset(PORT_C, old);
 }
 
-void HALCore::addLED(LEDS led){
+void HALCore::addLED(LEDS led) {
 	int old = getValueFromAdress(PORT_C);
 	old = old | getLEDCode(led);
 	write(PORT_C, old);
 }
 
-void HALCore::shineLED(LEDS led){
+void HALCore::shineLED(LEDS led) {
 	int val = getLEDCode(led);
 	shineLED(val);
 }
@@ -574,49 +626,71 @@ void HALCore::shineLED(int led) {
 	}
 }
 
-void HALCore::activateInterrupt(int port){
-	switch(port){
-	case PORT_A: port = INTERRUPT_D_PORT_A; break;
-	case PORT_C: port = INTERRUPT_D_PORT_C; break;
-	default: port = INTERRUPT_D_PORT_B; break; //portB
+void HALCore::activateInterrupt(int port) {
+	switch (port) {
+	case PORT_A:
+		port = INTERRUPT_D_PORT_A;
+		break;
+	case PORT_C:
+		port = INTERRUPT_D_PORT_C;
+		break;
+	default:
+		port = INTERRUPT_D_PORT_B;
+		break; //portB
 	}
-	reset(INTERRUPT_SET_ADRESS_D,port);// low active !
+	reset(INTERRUPT_SET_ADRESS_D, port);// low active !
 }
 
-void HALCore::deactivateInterrupt(int port){
-	switch(port){
-	case PORT_A: port = INTERRUPT_D_PORT_A; break;
-	case PORT_C: port = INTERRUPT_D_PORT_C; break;
-	default: port = INTERRUPT_D_PORT_B; break; //portB
+void HALCore::deactivateInterrupt(int port) {
+	switch (port) {
+	case PORT_A:
+		port = INTERRUPT_D_PORT_A;
+		break;
+	case PORT_C:
+		port = INTERRUPT_D_PORT_C;
+		break;
+	default:
+		port = INTERRUPT_D_PORT_B;
+		break; //portB
 	}
-	write(INTERRUPT_SET_ADRESS_D,port);// low active !
+	write(INTERRUPT_SET_ADRESS_D, port);// low active !
 }
 
-bool HALCore::isMetal(){
+bool HALCore::isMetal() {
 	return read(PORT_B) & BIT_WP_METAL;
 }
 
-//TODO 0prio -- implement max iterations with the timer
-int HALCore::identifyHeight(){
+int HALCore::identifyHeight() {
+	CallInterface<HALCore, void> checkTime =
+			FunctorMaker<HALCore, void>::makeFunctor(&this,
+					&HALCore::checkTimeIdentifyHeight);
+	timer->addTimerFunction(checkTime, 50);
 	out8(HEIGHT_REGISTER_PART1, HEIGHT_START_CODE);
 	//busy waiting until bit7 is high
-	while((in8(HEIGHT_MEASURE_STATUS) & (1<<7)) == 0) { //implement max iterations
+	while (((in8(HEIGHT_MEASURE_STATUS) & (1 << 7)) == 0) && (timeout == true)) {
 		/*DAC busy waiting*/
 	}
 	int height = in16((HEIGHT_REGISTER_PART1));
 	height &= HEIGHT_MASK;
-	if((height <= PLANE_WP + TOLERANCE_NORMAL) && (height >= PLANE_WP - TOLERANCE_NORMAL)) {
+	if ((height <= PLANE_WP + TOLERANCE_NORMAL) && (height >= PLANE_WP
+			- TOLERANCE_NORMAL)) {
 		height = PLANE_WP;
-	} else if ((height <= NORMAL_WP + TOLERANCE_NORMAL) && (height >= NORMAL_WP - TOLERANCE_NORMAL)) {
+	} else if ((height <= NORMAL_WP + TOLERANCE_NORMAL) && (height >= NORMAL_WP
+			- TOLERANCE_NORMAL)) {
 		height = NORMAL_WP;
-	} else if ((height <= POCKET_WP + TOLERANCE_POCKET) && (height >= POCKET_WP - TOLERANCE_POCKET)) {
+	} else if ((height <= POCKET_WP + TOLERANCE_POCKET) && (height >= POCKET_WP
+			- TOLERANCE_POCKET)) {
 		height = POCKET_WP;
 	}
 	return height;
 }
 
+void HALCore::checkTimeIdentifyHeight() {
+	timeout = false;
+}
+
 //TODO 1prio -- implement timer - test B(6)
 bool HALCore::isSlideFull() {
-	return ( !((in8(D_IOBASE+1)>>6)&1) );
+	return (!((in8(D_IOBASE + 1) >> 6) & 1));
 }
 
