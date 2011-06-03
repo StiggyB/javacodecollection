@@ -28,6 +28,7 @@ Puck_FSM::~Puck_FSM() {
 }
 
 void Puck_FSM::start_signal(bool was_serial){
+	hc->shine(GREEN);
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
 	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
 		starts_engine_if_nessecary();
@@ -50,9 +51,9 @@ void Puck_FSM::estop_in_signal(bool was_serial){
 void Puck_FSM::estop_out_signal(bool was_serial){
 	if(!was_serial) serial->send(E_STOP_PULLED, sizeof(int) );
 	hc->resetAll();
-	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
-		starts_engine_if_nessecary();
-	}//if
+//	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
+//		starts_engine_if_nessecary();
+//	}//if
 
 }
 
@@ -141,12 +142,7 @@ void Puck_FSM::puck_arrived(){
 	delete_unnecessary_wp();
 	starts_engine_if_nessecary();
 }
-void Puck_FSM::openswitch(void*){
-	hc->openSwitch();
-}
-void Puck_FSM::closeswitch(void*){
-	hc->closeSwitch();
-}
+
 void Puck_FSM::ls_b0(){
 	current->ls_b0(this);
 }

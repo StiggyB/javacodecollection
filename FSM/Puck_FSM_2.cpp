@@ -184,8 +184,8 @@ void FSM_2_end_state :: ls_b7_out(Puck_FSM * fsm){
 	cout << "FSM_2_end_state: ls_b7_out" << endl;
 	#endif
 	fsm->location = AFTER_LAST_LB;
-	fsm->delete_unnecessary_wp();
 	fsm->puck_fsm2_outgoing();
+	fsm->delete_unnecessary_wp();
 }
 
 
@@ -237,6 +237,7 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 //		fsm->setCurrent( new FSM_2_ErrorState() );
 //	}
 	fsm->delete_unnecessary_wp();
+	fsm->hc->shine(GREEN);
 }
 void FSM_2_check_slide :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG

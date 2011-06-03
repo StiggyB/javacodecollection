@@ -36,31 +36,30 @@ void Test_Functor::shutdown() {
 
 void Test_Functor::test_Functor_Without_Param() {
 	Test_Functions t;
-	Functor<Test_Functions, int, void*> func1(&t, &Test_Functions::test3);
-	Functor<Test_Functions, int, void*>* tfunc1 = &func1;
-	bool success = assert_equals("Functor1: ", tfunc1->call(NULL), FUNCTOR1);
+	Functor<Test_Functions, int> func1(&t, &Test_Functions::test1);
+	Functor<Test_Functions, int>* tfunc1 = &func1;
+	bool success = assert_equals("Functor1: ", tfunc1->call(), FUNCTOR1);
 	success_print(success);
 }
-
 void Test_Functor::test_Functor_With_Param() {
 	Test_Functions t;
-	Functor<Test_Functions, int, int> func2(&t, &Test_Functions::test4);
-	Functor<Test_Functions, int, int>* tfunc2 = &func2;
-	bool success = assert_equals("Functor2: ", tfunc2->call(0), FUNCTOR2);
+	Functor<Test_Functions, int> func2(&t, &Test_Functions::test1);
+	Functor<Test_Functions, int>* tfunc2 = &func2;
+	bool success = assert_equals("Functor2: ", tfunc2->call()+1, FUNCTOR2);
 	success_print(success);
 }
 void Test_Functor::test_FunctorMaker_Without_Param() {
 	Test_Functions t;
-	CallInterface<Test_Functions, int, void*>* func1 =
-			FunctorMaker<Test_Functions, int, void*>::makeFunctor(&t, &Test_Functions::test3);
-	bool success = assert_equals("FunctorMaker1: ", func1->call(NULL)+2, FUNCTOR3);
+	CallInterface<Test_Functions, int>* func1 =
+			FunctorMaker<Test_Functions, int>::makeFunctor(&t, &Test_Functions::test1);
+	bool success = assert_equals("FunctorMaker1: ", func1->call()+2, FUNCTOR3);
 	success_print(success);
 }
 void Test_Functor::test_FunctorMaker_With_Param() {
 	Test_Functions t;
-	CallInterface<Test_Functions, int, int>* func2 =
-			FunctorMaker<Test_Functions, int, int>::makeFunctor(&t, &Test_Functions::test4);
-	bool success = assert_equals("FunctorMaker2: ", func2->call(2), FUNCTOR4);
+	CallInterface<Test_Functions, int>* func2 =
+			FunctorMaker<Test_Functions, int>::makeFunctor(&t, &Test_Functions::test1);
+	bool success = assert_equals("FunctorMaker2: ", func2->call()+3, FUNCTOR4);
 	success_print(success);
 }
 

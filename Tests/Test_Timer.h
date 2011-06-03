@@ -21,9 +21,7 @@
 
 #include "../Thread/HAWThread.h"
 #include "../Timer/Timer.h"
-#include "../FSM/Puck_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
-#include "../FSM/Puck_FSM_2.h"
+#include "../HAL/HALCore.h"
 #include <sys/time.h>
 #include <vector>
 

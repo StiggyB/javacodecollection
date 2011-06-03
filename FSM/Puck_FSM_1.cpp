@@ -79,7 +79,6 @@ void FSM_1_after_ls_b0 :: entry(Puck_FSM * fsm){
 	fsm->location = AFTER_FIRST_LB;
 	fsm->hc->engineContinue();
 	fsm->hc->engineRight();
-	fsm->hc->shine(GREEN);
 	fsm->engine_should_be_started = 1;
 }
 void FSM_1_after_ls_b0 :: exit(Puck_FSM * fsm){
@@ -258,6 +257,7 @@ void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 //		fsm->setCurrent( new FSM_1_ErrorState() );
 //	}
 	fsm->delete_unnecessary_wp();
+	fsm->hc->shine(GREEN);
 }
 void FSM_1_check_slide :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
