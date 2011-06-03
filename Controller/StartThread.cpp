@@ -31,7 +31,7 @@ void StartThread::execute(void*) {
 	interruptController->start(NULL);
 	cout << "IC started" <<endl;
 
-	lampen->start(NULL);
+	//lampen->start(NULL);
 	cout << "Lampen started" << endl;
 	Sensor sensor;
 
