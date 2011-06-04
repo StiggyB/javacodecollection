@@ -16,7 +16,7 @@
 #include "CommunicationServer.h"
 
 
-CommunicationServer::CommunicationServer(): id(0){
+CommunicationServer::CommunicationServer(){
 	mine = COMMUNICATIONCONTROLLER;
 }
 

@@ -80,7 +80,7 @@ void StartThread::execute(void*) {
 #ifdef TEST_FSM
 	cout << "starting FSM-Tests" << endl;
 	tests_fsm.init_tests();
-	s.testFSM(&tests_fsm);
+	s->testFSM(&tests_fsm);
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
 	tests_fsm.join();
