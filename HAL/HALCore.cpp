@@ -67,7 +67,7 @@ HALCore::HALCore() {
 	//out8(PORT_C,0x0F);
 	setFPArray();
 	timeout = true;
-	timer->start(NULL);
+//	timer->start(NULL);
 
 #ifdef CONDOR
 	condvar.setMutex(&mut);
@@ -662,10 +662,10 @@ bool HALCore::isMetal() {
 }
 
 int HALCore::identifyHeight() {
-	CallInterface<HALCore, void> checkTime =
-			FunctorMaker<HALCore, void>::makeFunctor(&this,
-					&HALCore::checkTimeIdentifyHeight);
-	timer->addTimerFunction(checkTime, 50);
+//	CallInterface<HALCore, void> checkTime =
+//			FunctorMaker<HALCore, void>::makeFunctor(&this,
+//					&HALCore::checkTimeIdentifyHeight);
+//	timer->addTimerFunction(checkTime, 50);
 	out8(HEIGHT_REGISTER_PART1, HEIGHT_START_CODE);
 	//busy waiting until bit7 is high
 	while (((in8(HEIGHT_MEASURE_STATUS) & (1 << 7)) == 0) && (timeout == true)) {
@@ -691,7 +691,7 @@ void HALCore::checkTimeIdentifyHeight() {
 }
 
 //TODO 1prio -- implement timer - test B(6)
-bool HALCore::isSlideFull() {
+bool HALCore::checkSlide() {
 	return (!((in8(D_IOBASE + 1) >> 6) & 1));
 }
 

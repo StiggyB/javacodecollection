@@ -604,7 +604,7 @@ private:
 	/**
 	 * Pointer to Timer.
 	 */
-	Timer* timer;
+//	Timer* timer;
 #ifdef CONDOR
 
 	Condition condvar;
