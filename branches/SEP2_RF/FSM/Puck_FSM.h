@@ -101,7 +101,7 @@ public:
 	 */
 	HALCore *hc;
 
-	Timer *timer;
+//	Timer *timer;
 	location_attribut location;
     int check_last_lb();
     void delete_unnecessary_wp();

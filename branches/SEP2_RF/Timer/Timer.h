@@ -18,9 +18,9 @@
 #define TIMER_H_
 
 #include "Communication.h"
-//#include "../HAL/HALCore.h"
-//#include "../FSM/Puck_FSM.h"
-//#include "../FSM/Puck_FSM_1.h"
+#include "../HAL/HALCore.h"
+#include "../FSM/Puck_FSM.h"
+#include "../FSM/Puck_FSM_1.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "../Functor/Functor.h"
