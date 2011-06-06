@@ -33,7 +33,7 @@
 //};
 
 enum msgType {
-
+	ACK,
 	/* Machine Info */
 	REQUEST_FREE,
 	REQUEST_FREE_ACK,

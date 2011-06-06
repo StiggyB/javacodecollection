@@ -104,6 +104,17 @@ void Serial::execute(void* data) {
 	if (hasSettings) {
 		if (settingUpCommunicatorDevice(receiver)) {
 		cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
+
+		#ifdef PUCK_FSM_1
+			msg = INIT_SERIAL;
+			send(&msg,sizeof(msg));
+			while(receive(&msg, sizeof(msg)) != ACK){
+				msg = INIT_SERIAL;
+				send(&msg,sizeof(msg));
+			}
+			msg = -1;
+		#endif
+
 		while (!isStopped()) {
 
 			while (receive(&msg, sizeof(msg)) == -2);
@@ -141,11 +152,13 @@ int Serial::send(int data, int lenBytes) {
 
 	if (n < 0) {
 		printf("Write failed for com-port %i\n", comPort);
+		locker.unlock();
 		return -1;
-	} else {
-		return 0;
 	}//if
 	locker.unlock();
+		if(data != ACK){
+			while (receive(&msg, sizeof(msg)) != ACK);
+		}
 	return 0;
 }
 
@@ -163,6 +176,13 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 			return -1;
 		}
 	} else {
+		if(*data != ACK){
+			if(send(ACK,sizeof(int)) != 0){
+				printf("send ACK failed for com-port %i, errno=%i\n", comPort, errno );
+				return -3;
+			}
+			return ACK;
+		}
 		return 0;
 	}
 }
