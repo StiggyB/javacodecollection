@@ -21,7 +21,6 @@ Timer::Timer() {
 	receiver = TIMER;
 }
 
-
 Timer::~Timer() {
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
 		if( timer_delete( funcp_list[i].timer_id ) != 0){
@@ -92,7 +91,7 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	return true;
 }
 
-bool Timer::addTimerFunction( CallInterface<Puck_FSM, void>* funcp, int ms){
+bool Timer::addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = PUCK_FSM;
     new_element.funcp.funcp_fsm = funcp;

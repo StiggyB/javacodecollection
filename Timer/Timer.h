@@ -18,9 +18,9 @@
 #define TIMER_H_
 
 #include "Communication.h"
-#include "../HAL/HALCore.h"
-#include "../FSM/Puck_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
+//#include "../HAL/HALCore.h"
+//#include "../FSM/Puck_FSM.h"
+//#include "../FSM/Puck_FSM_1.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "../Functor/Functor.h"
@@ -40,6 +40,7 @@ enum timer_section {
 	METAL_MEASURE_TO_END, SWITCH_FORWARD_TIME
 };
 
+//template <typename T, typename R>
 class Timer : public thread::HAWThread, public Communication{
 public:
 	Timer();
@@ -50,7 +51,7 @@ public:
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction( CallInterface<Puck_FSM, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
+	bool addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
 	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
@@ -112,7 +113,7 @@ private:
  * struct to avoid double code and optional to expand functionality
  */
 union Functionpointer{
-	CallInterface<Puck_FSM, void>* funcp_fsm;
+	CallInterface<Puck_FSM_1, void>* funcp_fsm;
 	CallInterface<HALCore, void>* funcp_hal;
 };
 

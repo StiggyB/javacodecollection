@@ -231,10 +231,10 @@ void FSM_2_check_slide :: entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_check_slide: entry" << endl;
 	#endif
-	CallInterface<Puck_FSM_2, void> checkTime =
-				FunctorMaker<Puck_FSM_2, void>::makeFunctor(fsm,
-						&Puck_FSM_2::checkSlide);
-	timer->addTimerFunction(checkTime, 50);
+//	CallInterface<Puck_FSM_2, void> checkTime =
+//				FunctorMaker<Puck_FSM_2, void>::makeFunctor(fsm,
+//						&Puck_FSM_2::checkSlide);
+//	timer->addTimerFunction(checkTime, 50);
 
 //	sleep(2);
 //	if( fsm->hc->isSlideFull() ){

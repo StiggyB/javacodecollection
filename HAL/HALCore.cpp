@@ -68,6 +68,7 @@ HALCore::HALCore() {
 	setFPArray();
 	timeout = true;
 	timer->start(NULL);
+
 #ifdef CONDOR
 	condvar.setMutex(&mut);
 	requested = false;

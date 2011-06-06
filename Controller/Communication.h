@@ -5,7 +5,8 @@
 #include <list>
 #include <iostream>
 #include <stdlib.h>
-#include "../HAL/HALCore.h"
+#include "../Thread/HAWThread.h"
+//#include "../HAL/HALCore.h" //- in comments for timer.h
 
 #define PULSE_MIN_PRIO 1
 /**
