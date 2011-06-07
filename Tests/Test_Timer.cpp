@@ -35,6 +35,14 @@ void Test_Timer::execute(void* data){
 	HALCore* h;
 	h = HALCore::getInstance();
 
+	struct timeval act_time;
+	long millsec;
+	gettimeofday(&act_time, NULL);
+	millsec = ((act_time.tv_sec) * 1000 + act_time.tv_usec/1000.0) + 0.5;
+
+	std::cout << "Test_Timer: millsec=" << millsec << std::endl;
+
+
 	CallInterface<HALCore, void>* openswitch =
 			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::openSwitch);
 
@@ -44,12 +52,15 @@ void Test_Timer::execute(void* data){
 
 	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
-	sleep(5);
-	timer->addTimerFunction(openswitch, 2000);
-	timer->addTimerFunction(closeswitch, 4000);
-	sleep(5);
-	timer->addTimerFunction(openswitch, 2000);
-	timer->addTimerFunction(closeswitch, 4000);
+	sleep(1);
+	timer->stopAllTimer();
 
+	sleep(5);
+	/*timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+	sleep(5);
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+	*/
 	sleep(5);
 }

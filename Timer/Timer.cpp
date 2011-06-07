@@ -56,6 +56,10 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	int nano_sec = 0;
 	int sec = 0;
 
+	new_element.duration_ms = ms;
+
+	new_element.systemtime_ms = getSystemTime_ms();
+
 	if (calculateTime(ms, &sec, &nano_sec) == -1) {
 		perror("Timer: cannot calculate seconds and nano seconds");
 		return false;
@@ -95,22 +99,14 @@ bool Timer::addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = PUCK_FSM;
     new_element.funcp.funcp_fsm = funcp;
-    if(addTimerFunction(new_element, ms)){
-    	return true;
-    } else {
-    	return false;
-    }//if
+    return (addTimerFunction(new_element, ms));
 }
 
 bool Timer::addTimerFunction( CallInterface<HALCore, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = HALCORE;
     new_element.funcp.funcp_hal = funcp;
-    if( addTimerFunction(new_element, ms) ){
-    	return true;
-    } else {
-    	return false;
-    }//if
+    return (addTimerFunction(new_element, ms));
 }
 
 void Timer::handleNormalMessage(){
@@ -122,6 +118,10 @@ void Timer::handlePulsMessage(){
 	struct IdTOfunction temp;
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
+
+		printf("Timer: start_execute_duration=%i\n", getSystemTime_ms()-temp.systemtime_ms );
+		//std::cout << "Timer: start_execute_duration=" << millisec-temp.millisec << std::endl;
+
 		switch(temp.type){
 		case PUCK_FSM: temp.funcp.funcp_fsm->call();
 			break;
@@ -198,42 +198,40 @@ int Timer::calculateTime(int ms, int *s, int *ns){
     return 0;
 }
 
-/*
-int Timer::addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp){
-	return 0;
+long Timer::getSystemTime_ms(){
+	struct timeval act_time;
+	if ( gettimeofday(&act_time, NULL) != 0 ){
+		perror("Timer: getSystemTime_ms failed - gettimeofday!=0");
+		return -1;
+	}
+	return ((act_time.tv_sec) * 1000 + act_time.tv_usec/1000.0) + 0.5;
 }
 
-int Timer::addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp ){
-	return 0;
-}
+int Timer::stopAllTimer(){
+	long diff = 0;
 
-int Timer::initTimer_list(){
-	int numberOfStaticTimer = 5;
-	struct TimerData timer[numberOfStaticTimer];
-
-	timer[0].timer.it_value.tv_sec = 3;
-	timer[0].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[1].timer.it_value.tv_sec = 2;
-	timer[1].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[2].timer.it_value.tv_sec = 2;
-	timer[2].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[3].timer.it_value.tv_sec = 3;
-	timer[3].timer.it_value.tv_nsec = 5*1000*100;
-
-	timer[4].timer.it_value.tv_sec = 1;
-	timer[4].timer.it_value.tv_nsec = 0;
-
-	for(int i = 0; i < numberOfStaticTimer; i++){
-		if( timer_create (CLOCK_REALTIME, &timer[i].event, &timer[i].timerid) == -1){
-			perror( "Timer: cannot create a static OS-Timer");
-			return false;
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if( timer_delete( funcp_list[i].timer_id ) == -1){
+			perror( "Timer: cannot delete OS-Timer in Timer_stopAllTimer()");
+			return -1;
 		}//if
-		timer_list.push_back(timer[i]);
+		funcp_list[i].timer_id = -1;
+		diff = getSystemTime_ms()-funcp_list[i].systemtime_ms;
+		printf("Timer: start_stop_duration=%i\n", diff );
+		funcp_list[i].duration_ms = funcp_list[i].duration_ms - diff;
+		printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
+
 	}//for
 
-	//timer_list
 	return 0;
-}*/
+}
+
+int Timer::startAllTimer(){
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+
+
+	}//for
+	return 0;
+}
+
+
