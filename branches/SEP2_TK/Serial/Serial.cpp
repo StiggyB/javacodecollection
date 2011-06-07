@@ -92,7 +92,8 @@ void Serial::init(int numComPort, bool debug) {
 
 #ifdef PUCK_FSM_1
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	while (receive(&msg, sizeof(msg)) == -2);
+	while (receive(&msg, sizeof(msg)) == -2)
+		;
 	cout << "Serial FSM_1: init!" << endl;
 #endif
 
@@ -118,7 +119,6 @@ void Serial::execute(void* data) {
 			while (!isStopped()) {
 
 				while (receive(&msg, sizeof(msg)) == -2);
-				printf("<<<<<----- Serial: %d received\n", msg);
 
 				buildMessage(m, chid, coid, reactSerial, SENSOR,
 						r_msg->pulse.value.sival_int);
@@ -155,6 +155,17 @@ int Serial::send(int data, int lenBytes) {
 		printf("Write failed for com-port %i\n", comPort);
 		locker.unlock();
 		return -1;
+	} else if (data != ACK) {
+		bool flag = true;
+		while (flag) {
+			while (receive(&msg, sizeof(msg)) == -2);
+			if (msg != ACK) {
+				cout << "ERROR Serial: expected ACK and not " << msg << endl;
+				cout << "Message Ignored" << endl;
+			} else {
+				flag = false;
+			}
+		}
 	}
 	locker.unlock();
 	return 0;
@@ -174,6 +185,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 			return -1;
 		}
 	} else {
+		printf("<<<<<----- Serial: %d received\n", *data);
 		if (*data != ACK) {
 			send(ACK, sizeof(ACK));
 		}
