@@ -28,6 +28,11 @@
 #include "../Functor/CallInterface.h"
 #include "errno.h"
 #include <vector>
+#include <sys/time.h>
+#include <stdio.h>
+#include <cstdlib>
+#include <unistd.h>
+
 
 /**
  * Pulse code enum
@@ -61,6 +66,9 @@ public:
 	bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
+	int startAllTimer();
+	int stopAllTimer();
+
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
@@ -70,6 +78,8 @@ protected:
 	 * default receiver for communication
 	 */
 	CommunicatorType receiver;
+
+
 private:
 	/**
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
@@ -107,6 +117,8 @@ private:
 	 * ensures threadsafety
 	 */
 	Mutex locker;
+
+	long getSystemTime_ms();
 };
 
 /**
@@ -124,6 +136,8 @@ struct IdTOfunction{
 	int id;
 	int type;
 	int timer_id;
+	long systemtime_ms;
+	int duration_ms;
 	Functionpointer funcp;
 };
 

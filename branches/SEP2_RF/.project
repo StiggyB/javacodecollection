@@ -3,6 +3,7 @@
 	<name>SEP2_RF</name>
 	<comment></comment>
 	<projects>
+		<project>192.168.0.145</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

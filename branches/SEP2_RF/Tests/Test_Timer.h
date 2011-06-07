@@ -24,6 +24,9 @@
 #include "../HAL/HALCore.h"
 #include <sys/time.h>
 #include <vector>
+#include <stdio.h>
+#include <unistd.h>
+
 
 
 class Test_Timer  : public thread::HAWThread{
