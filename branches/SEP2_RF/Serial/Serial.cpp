@@ -97,7 +97,6 @@ void Serial::init(int numComPort, bool debug) {
 
 
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	cout << "getAck = " << getAck << endl;
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
 	while (receive(&msg, sizeof(msg)) == -2);
 	cout << "Serial: INIT successful!" << endl;
@@ -193,6 +192,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 
 void Serial::checkAck(){
 	if(getAck){
+		cout << "checkAck == false" << endl;
 		getAck = false;
 	}else{
 		cout << "Serial: TIMEOUT. no ACK received" << endl;
@@ -200,15 +200,15 @@ void Serial::checkAck(){
 }
 
 void Serial::checkInit(){
-	cout << "checkInit() enter" << endl;
-	if(getAck){
-
-		cout << "checkInit() getAck true"<<endl;
-		getAck = false;
-	}else{
-		cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
-		send(INIT_SERIAL, sizeof(INIT_SERIAL));
-		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+	if(!hasSettings){
+		if(getAck){
+			cout << "checkInit == false" << endl;
+			getAck = false;
+		}else{
+			cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
+			send(INIT_SERIAL, sizeof(INIT_SERIAL));
+			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+		}
 	}
 }
 
