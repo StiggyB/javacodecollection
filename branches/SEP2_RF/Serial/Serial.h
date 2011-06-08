@@ -13,28 +13,14 @@
 #include "../Thread/HAWThread.h"
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
-#include "../Thread/Singleton_T.h"
 #include "../Thread/Mutex.h"
 
-//enum msgType{
-//	SYNC_SIGNAL=(0),ACK_SYNC_SIGNAL=(100),
-//	POCKET=(1),ACK_POCKET=(101),
-//	NO_POCKET=(2),ACK_NO_POCKET=(102),
-//	REQUEST_FREE=(5),
-//	BAND2_FREE=(15),
-//	BAND2_OCCUPIED=(25),
-//	PUK_ARRIVED=(6),
-//	E_STOP_PUSHED=(7),
-//	E_STOP_PULLED=(8),
-//	STOP_BUTTON=(9),
-//	START_BUTTON=(10),
-//	RESET_BUTTON=(11),
-//	INIT_SERIAL=(1337),
-//	ACK_INIT_SERIAL=(42)
-//};
+//#define PUCK_FSM_1
+#define PUCK_FSM_2
 
 enum msgType {
 	ACK,
+	INIT_SERIAL,
 	/* Machine Info */
 	REQUEST_FREE,
 	REQUEST_FREE_ACK,
@@ -53,7 +39,6 @@ enum msgType {
 	START_BUTTON,
 	RESET_BUTTON,
 	/* Serial communication */
-	INIT_SERIAL,
 	SYNC_SIGNAL,
 	ACK_SYNC_SIGNAL,
 	ACK_INIT_SERIAL
@@ -78,8 +63,7 @@ enum msgType {
  * Two threads with the same modus won't work.
  *
  */
-class Serial : public thread::HAWThread, public Communication, public Singleton_T<Serial>{
-	friend class Singleton_T<Serial>;
+class Serial : public thread::HAWThread, public Communication{
 public:
 	/**
 	 * Constructor with integrated initialization.
