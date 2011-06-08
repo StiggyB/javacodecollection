@@ -40,6 +40,7 @@ private:
 public:
 	static T* getInstance();
 	static void deleteInstance();
+
 };
 template <class T>
 Mutex Singleton_T<T>::singleton;

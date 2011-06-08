@@ -34,6 +34,7 @@ void Test_Timer::execute(void* data){
 	sleep(1);
 	HALCore* h;
 	h = HALCore::getInstance();
+	timer = Timer::getInstance();
 
 	struct timeval act_time;
 	long millsec;
