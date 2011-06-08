@@ -33,19 +33,17 @@ void StartThread::execute(void*) {
 
 	//lampen->start(NULL);
 
+
+	timer = Timer::getInstance();
+	//timer->startInstance();
+
 	Serial serial;
 	Sensor sensor;
 	sensor.serial = &serial;
 
 	sensor.start(NULL);
 	cout << "sensor started" << endl;
-//	Sensor sensor;
-//
-//	Serial serial;
-//	serial.init(1, true);
-//	sensor.serial = &serial;
-//
-//	sensor.start(NULL);
+
 
 
 
@@ -106,8 +104,7 @@ void StartThread::execute(void*) {
 #ifdef TEST_TIMER
 	cout << "starting Timer-Test"	 << endl;
 	//timer_test.serial = &serial;
-	timer.start(NULL);
-	timer_test.setTimer(&timer);
+
 	timer_test.start(NULL);
 	cout << "waiting for Timer-Test" << endl;
 	timer_test.join();

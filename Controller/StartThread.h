@@ -70,7 +70,7 @@ private:
 #endif
 #ifdef TEST_TIMER
     Test_Timer timer_test;
-    Timer timer;
+    Timer* timer;
 #endif
 
 };
