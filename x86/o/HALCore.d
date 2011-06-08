@@ -81,4 +81,5 @@ HALCore.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/HALCore.cpp \
  C:/QNX650/target/qnx6/usr/include/semaphore.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/Mutex.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/Singleton_T.h
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Functor/CallBackThrower.h

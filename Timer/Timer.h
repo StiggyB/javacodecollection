@@ -18,14 +18,17 @@
 #define TIMER_H_
 
 #include "Communication.h"
-#include "../HAL/HALCore.h"
-#include "../FSM/Puck_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
+//#include "../HAL/HALCore.h"
+//#include "../FSM/Puck_FSM.h"
+//#include "../FSM/Puck_FSM_1.h"
 #include "../Thread/Mutex.h"
+#include "../Thread/Singleton_T.h"
 #include "../Thread/HAWThread.h"
 #include "../Functor/Functor.h"
 #include "../Functor/FunctorMaker.h"
 #include "../Functor/CallInterface.h"
+#include "../Functor/CallBackThrower.h"
+
 #include "errno.h"
 #include <vector>
 #include <sys/time.h>
@@ -46,7 +49,8 @@ enum timer_section {
 };
 
 //template <typename T, typename R>
-class Timer : public thread::HAWThread, public Communication{
+class Timer : public thread::HAWThread, public Communication, public Singleton_T<Timer>{
+	friend class Singleton_T<Timer>;
 public:
 	Timer();
 	virtual ~Timer();
@@ -56,14 +60,15 @@ public:
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
+	//bool addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
 	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
+	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
+	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
@@ -125,16 +130,18 @@ private:
  * struct to avoid double code and optional to expand functionality
  */
 union Functionpointer{
-	CallInterface<Puck_FSM_1, void>* funcp_fsm;
-	CallInterface<HALCore, void>* funcp_hal;
+	//CallInterface<Puck_FSM_1, void>* funcp_fsm;
+	//CallInterface<HALCore, void>* funcp_hal;
+	CallInterface<CallBackThrower,void> * funcp_cbt;
 };
+
 
 /**
  * struct, which store id and functor
  */
 struct IdTOfunction{
 	int id;
-	int type;
+	//int type;
 	int timer_id;
 	long systemtime_ms;
 	int duration_ms;

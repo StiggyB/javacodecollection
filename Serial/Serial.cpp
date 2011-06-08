@@ -105,16 +105,6 @@ void Serial::execute(void* data) {
 		if (settingUpCommunicatorDevice(receiver)) {
 		cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
 
-		#ifdef PUCK_FSM_1
-			msg = INIT_SERIAL;
-			send(&msg,sizeof(msg));
-			while(receive(&msg, sizeof(msg)) != ACK){
-				msg = INIT_SERIAL;
-				send(&msg,sizeof(msg));
-			}
-			msg = -1;
-		#endif
-
 		while (!isStopped()) {
 
 			while (receive(&msg, sizeof(msg)) == -2);

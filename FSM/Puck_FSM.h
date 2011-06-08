@@ -22,10 +22,11 @@
 #include "../HAL/Lampen.h"
 #include <vector>
 #include "../Serial/Serial.h"
-//#include "../Timer/Timer.h"
+#include "../Timer/Timer.h"
 #include "../Functor/Functor.h"
 #include "../Functor/FunctorMaker.h"
 #include "../Functor/CallInterface.h"
+#include "../Functor/CallBackThrower.h"
 
 //#define PUCK_FSM_STATE_DEBUG
 
@@ -34,7 +35,7 @@ enum location_attribut {
 	AFTER_METAL_SENSOR_FORWARD, ON_LAST_LB, AFTER_LAST_LB
 };
 
-class Puck_FSM {
+class Puck_FSM : public CallBackThrower{
 public:
 	/**
 	 * Pointer to actual state
@@ -101,7 +102,7 @@ public:
 	 */
 	HALCore *hc;
 
-//	Timer *timer;
+	Timer *timer;
 	location_attribut location;
     int check_last_lb();
     void delete_unnecessary_wp();
@@ -112,6 +113,8 @@ public:
 	void puck_arrived();
 	void machine2_free();
 	void puck_fsm2_outgoing();
+
+	void timer_test();
 
 	void start_signal(bool was_serial);
 	void stop_signal(bool was_serial);
