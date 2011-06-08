@@ -118,7 +118,12 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void>* funcp, int ms){
 
 bool Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms){
     struct IdTOfunction new_element;
-    new_element.funcp.funcp_cbt = funcp;
+    new_element.funcp.funcp_cbt_void = funcp;
+    return (addTimerFunction(new_element, ms));
+}
+bool Timer::addTimerFunction( CallInterface<CallBackThrower, bool>* funcp, int ms){
+    struct IdTOfunction new_element;
+    new_element.funcp.funcp_cbt_bool = funcp;
     return (addTimerFunction(new_element, ms));
 }
 
@@ -134,8 +139,8 @@ void Timer::handlePulsMessage(){
 
 		printf("Timer: start_execute_duration=%i ", getSystemTime_ms()-temp.systemtime_ms );
 
-		if( temp.funcp.funcp_cbt != NULL ){
-			temp.funcp.funcp_cbt->call();
+		if( temp.funcp.funcp_cbt_void != NULL ){
+			temp.funcp.funcp_cbt_void->call();
 			std::cout << "Timer: -->call()" << std::endl;
 		}//if
 
@@ -259,7 +264,7 @@ int Timer::startAllTimer(){
 			std::cout << "Timer: not stopped timer" << std::endl;
 
 		} else {
-			addTimerFunction(funcp_list_local[0].funcp.funcp_cbt, funcp_list_local[0].duration_ms);
+			addTimerFunction(funcp_list_local[0].funcp.funcp_cbt_void, funcp_list_local[0].duration_ms);
 			/*
 			switch( funcp_list_local[0].type ){
 			case PUCK_FSM: addTimerFunction(funcp_list_local[0].funcp.funcp_fsm, funcp_list_local[0].duration_ms);

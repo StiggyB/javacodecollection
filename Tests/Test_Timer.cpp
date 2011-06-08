@@ -44,15 +44,15 @@ void Test_Timer::execute(void* data){
 	std::cout << "Test_Timer: millsec=" << millsec << std::endl;
 
 
-	CallInterface<HALCore, void>* openswitch =
+	CallInterface<CallBackThrower, void>* openswitch = (CallInterface<CallBackThrower, void>*)
 			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::openSwitch);
 
-	CallInterface<HALCore, void>* closeswitch =
+	CallInterface<CallBackThrower, void>* closeswitch = (CallInterface<CallBackThrower, void>*)
 			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::closeSwitch);
 
 
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 2000);
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 4000);
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
 	sleep(1);
 	timer->stopAll_actual_Timer();
 	sleep(3);
