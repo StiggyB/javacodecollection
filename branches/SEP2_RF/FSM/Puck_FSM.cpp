@@ -22,6 +22,7 @@ Puck_FSM::Puck_FSM() {
 	hc = HALCore::getInstance();
 	lamp = Lampen::getInstance();
 	serial = Serial::getInstance();
+	timer = Timer::getInstance();
 }
 
 Puck_FSM::~Puck_FSM() {
@@ -74,6 +75,10 @@ void Puck_FSM::estop_out_signal(bool was_serial){
 
 }
 
+//TODO implement
+void Puck_FSM::isSlideFull() {
+
+}
 
 void Puck_FSM::puck_fsm2_outgoing() {
 	if (request == true) {

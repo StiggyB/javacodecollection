@@ -120,6 +120,7 @@ public:
 	void PuckhasnoPocket();
 	void puck_arrived();
 	void machine2_free();
+	void isSlideFull();
 	void puck_fsm2_outgoing();
 
 	void timer_test();

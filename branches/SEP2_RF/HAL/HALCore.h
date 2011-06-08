@@ -466,8 +466,17 @@ public:
 	 * Resets all hardware and software.
 	 */
 	void resetAll();
+	/**
+	 *
+	 */
 	int identifyHeight();
+	/**
+	 *
+	 */
 	void checkTimeIdentifyHeight();
+	/**
+	 *
+	 */
 	bool checkSlide();
 	/**
 	 * Returns if there is metal under the metal detector.

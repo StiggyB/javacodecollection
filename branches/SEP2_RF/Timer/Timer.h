@@ -69,6 +69,8 @@ public:
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
+
+	bool addTimerFunction( CallInterface<CallBackThrower, bool>* funcp, int ms);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
@@ -132,7 +134,9 @@ private:
 union Functionpointer{
 	//CallInterface<Puck_FSM_1, void>* funcp_fsm;
 	//CallInterface<HALCore, void>* funcp_hal;
-	CallInterface<CallBackThrower,void> * funcp_cbt;
+	CallInterface<CallBackThrower,void> * funcp_cbt_void;
+	CallInterface<CallBackThrower,bool> * funcp_cbt_bool;
+
 };
 
 

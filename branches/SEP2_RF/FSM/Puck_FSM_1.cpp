@@ -250,14 +250,14 @@ void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_check_slide: entry" << endl;
 	#endif
-//	Puck_FSM_1 fsm_1;
-//	CallInterface<Puck_FSM_1, void>* checkTime =
-//				FunctorMaker<Puck_FSM_1, void>::makeFunctor(&this, &Puck_FSM_1::checkSlide);
-//	timer->addTimerFunction(checkTime, 50);
+	CallInterface<CallBackThrower, void>* checkTime = (CallInterface<CallBackThrower, void>*)
+				FunctorMaker<Puck_FSM, void>::makeFunctor(fsm, &Puck_FSM::isSlideFull);
+	fsm->timer->addTimerFunction(checkTime, 50);
 
-//	if( checkSlide() ){
-//		fsm->setCurrent( new FSM_1_ErrorState() );
-//	}
+	//TODO to change...
+	if( fsm->hc->checkSlide() ) {
+		fsm->setCurrent( new FSM_1_ErrorState() );
+	}
 	fsm->delete_unnecessary_wp();
 	fsm->lamp->shine(GREEN);
 }
