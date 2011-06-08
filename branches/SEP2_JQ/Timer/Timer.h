@@ -17,6 +17,12 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
+#include <errno.h>
+#include <vector>
+#include <sys/time.h>
+#include <stdio.h>
+#include <cstdlib>
+#include <unistd.h>
 #include "Communication.h"
 //#include "../HAL/HALCore.h"
 //#include "../FSM/Puck_FSM.h"
@@ -29,14 +35,6 @@
 #include "../Functor/CallInterface.h"
 #include "../Functor/CallBackThrower.h"
 
-#include <errno.h>
-#include <vector>
-#include <sys/time.h>
-#include <stdio.h>
-#include <cstdlib>
-#include <unistd.h>
-
-
 /**
  * Pulse code enum
  */
@@ -48,29 +46,18 @@ enum timer_section {
 	METAL_MEASURE_TO_END, SWITCH_FORWARD_TIME
 };
 
-//template <typename T, typename R>
 class Timer : public thread::HAWThread, public Communication, public Singleton_T<Timer>{
 	friend class Singleton_T<Timer>;
 public:
 	Timer();
 	virtual ~Timer();
 	/**
-	 * adds a functor to internal list and activate Timer
+	 * adds a functor to internal list and activates Timer
 	 * \param funcp functor, the function of a Pck_FSM, which will be execute after timer timeout
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	//bool addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
-	/**
-	 * adds a functor to internal list and activate Timer
-	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
-	 * \param timer time im milliseconds, after this time the given function will be executed
-	 * \return a bool, true if action was successful, false if not.
-	 */
-	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
-//	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
-//	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
 	int stopAll_actual_Timer();
 
@@ -83,8 +70,6 @@ protected:
 	 * default receiver for communication
 	 */
 	CommunicatorType receiver;
-
-
 private:
 	/**
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
@@ -130,18 +115,15 @@ private:
  * struct to avoid double code and optional to expand functionality
  */
 union Functionpointer{
-	//CallInterface<Puck_FSM_1, void>* funcp_fsm;
-	//CallInterface<HALCore, void>* funcp_hal;
 	CallInterface<CallBackThrower,void> * funcp_cbt;
 };
 
 
 /**
- * struct, which store id and functor
+ * struct, which stores id and functor and the function pointer
  */
 struct IdTOfunction{
 	int id;
-	//int type;
 	int timer_id;
 	long systemtime_ms;
 	int duration_ms;
@@ -153,6 +135,5 @@ struct TimerData{
 	struct itimerspec timer;
 	struct sigevent event;
 };
-
 
 #endif /* TIMER_H_ */
