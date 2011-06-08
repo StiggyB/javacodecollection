@@ -13,6 +13,7 @@ StartThread::StartThread(){
 	interruptController = InterruptController::getInstance();
 	communicationserver = CommunicationServer::getInstance();
 	lampen = Lampen::getInstance();
+	timer = Timer::getInstance();
 }
 
 StartThread::~StartThread() {
@@ -33,9 +34,7 @@ void StartThread::execute(void*) {
 
 	//lampen->start(NULL);
 
-
-	timer = Timer::getInstance();
-	//timer->startInstance();
+	timer->start(NULL);
 
 	Serial serial;
 	Sensor sensor;
