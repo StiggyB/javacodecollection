@@ -11,12 +11,13 @@
 #include <termios.h>
 #include <sys/types.h>
 #include "../Thread/HAWThread.h"
+#include "../Thread/Singleton_T.h"
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
 #include "../Thread/Mutex.h"
 
-//#define PUCK_FSM_1
-#define PUCK_FSM_2
+#define PUCK_FSM_1
+//#define PUCK_FSM_2
 
 enum msgType {
 	ACK,
@@ -63,7 +64,8 @@ enum msgType {
  * Two threads with the same modus won't work.
  *
  */
-class Serial : public thread::HAWThread, public Communication{
+class Serial : public thread::HAWThread, public Communication,public Singleton_T<Serial>{
+	friend class Singleton_T<Serial>;
 public:
 	/**
 	 * Constructor with integrated initialization.
