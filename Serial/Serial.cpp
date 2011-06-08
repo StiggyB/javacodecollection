@@ -97,6 +97,7 @@ void Serial::init(int numComPort, bool debug) {
 
 
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
+	cout << "getAck = " << getAck << endl;
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
 	while (receive(&msg, sizeof(msg)) == -2);
 	cout << "Serial: INIT successful!" << endl;
@@ -156,8 +157,6 @@ int Serial::send(int data, int lenBytes) {
 		printf("Write failed for com-port %i\n", comPort);
 		locker.unlock();
 		return -1;
-	} else if (data != ACK) {
-		getAck = true;
 	}else{
 		if(hasSettings){
 			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 100);
@@ -201,7 +200,10 @@ void Serial::checkAck(){
 }
 
 void Serial::checkInit(){
+	cout << "checkInit() enter" << endl;
 	if(getAck){
+
+		cout << "checkInit() getAck true"<<endl;
 		getAck = false;
 	}else{
 		cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
