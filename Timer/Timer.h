@@ -18,9 +18,6 @@
 #define TIMER_H_
 
 #include "Communication.h"
-//#include "../HAL/HALCore.h"
-//#include "../FSM/Puck_FSM.h"
-//#include "../FSM/Puck_FSM_1.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/Singleton_T.h"
 #include "../Thread/HAWThread.h"
@@ -48,7 +45,6 @@ enum timer_section {
 	METAL_MEASURE_TO_END, SWITCH_FORWARD_TIME
 };
 
-//template <typename T, typename R>
 class Timer : public thread::HAWThread, public Communication, public Singleton_T<Timer>{
 	friend class Singleton_T<Timer>;
 public:
@@ -70,7 +66,6 @@ public:
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
 
-	bool addTimerFunction( CallInterface<CallBackThrower, bool>* funcp, int ms);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
@@ -135,8 +130,6 @@ union Functionpointer{
 	//CallInterface<Puck_FSM_1, void>* funcp_fsm;
 	//CallInterface<HALCore, void>* funcp_hal;
 	CallInterface<CallBackThrower,void> * funcp_cbt_void;
-	CallInterface<CallBackThrower,bool> * funcp_cbt_bool;
-
 };
 
 

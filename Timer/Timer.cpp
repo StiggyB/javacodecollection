@@ -121,11 +121,6 @@ bool Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int m
     new_element.funcp.funcp_cbt_void = funcp;
     return (addTimerFunction(new_element, ms));
 }
-bool Timer::addTimerFunction( CallInterface<CallBackThrower, bool>* funcp, int ms){
-    struct IdTOfunction new_element;
-    new_element.funcp.funcp_cbt_bool = funcp;
-    return (addTimerFunction(new_element, ms));
-}
 
 void Timer::handleNormalMessage(){
 	std::cout << "Timer: received a message, but doesn't know what to do with it" << std::endl;

@@ -27,7 +27,7 @@ class Puck_FSM_1 : public Puck_FSM {
   public:
 	Puck_FSM_1(std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_1();
-	void checkSlide();
+	void isSlideFull();
 };
 
 
@@ -108,6 +108,7 @@ class FSM_1_ErrorState : public State{
 		void entry(Puck_FSM *);
 		void exit(Puck_FSM *);
 		void ls_b6 (Puck_FSM * fsm);
+
 };
 
 
