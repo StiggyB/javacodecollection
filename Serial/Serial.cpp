@@ -19,11 +19,11 @@ Serial::Serial() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
-	#ifdef TEST_SER
+#ifdef TEST_SER
 	receiver = TESTER;
-	#else
+#else
 	receiver = SENSOR;
-	#endif
+#endif
 	mine = SERIAL;
 }
 
@@ -88,9 +88,20 @@ void Serial::init(int numComPort, bool debug) {
 	printf("fp zu com-port: %i\n", ser);
 	fflush(stdout);
 #endif
-
 	hasSettings = true;
 
+#ifdef PUCK_FSM_1
+	send(INIT_SERIAL, sizeof(INIT_SERIAL));
+	while (receive(&msg, sizeof(msg)) == -2)
+		;
+	cout << "Serial FSM_1: init!" << endl;
+#endif
+
+#ifdef PUCK_FSM_2
+	while (receive(&msg, sizeof(msg)) == -2);
+	send(INIT_SERIAL, sizeof(INIT_SERIAL));
+	cout << "Serial FSM_2: init!" << endl;
+#endif
 }
 
 Serial::~Serial() {
@@ -103,23 +114,24 @@ void Serial::execute(void* data) {
 
 	if (hasSettings) {
 		if (settingUpCommunicatorDevice(receiver)) {
-		cout <<"SETTING UP SERIAL ERFOLGREICH------------------------"<<endl;
+			cout << "SETTING UP SERIAL ERFOLGREICH------------------------"
+					<< endl;
+			while (!isStopped()) {
 
-		while (!isStopped()) {
+				while (receive(&msg, sizeof(msg)) == -2);
 
-			while (receive(&msg, sizeof(msg)) == -2);
-			printf("<<<<<----- Serial: %d received\n", msg);
+				buildMessage(m, chid, coid, reactSerial, SENSOR,
+						r_msg->pulse.value.sival_int);
+				m->pulse.value.sival_int = msg;
 
-			buildMessage(m, chid, coid, reactSerial, SENSOR, r_msg->pulse.value.sival_int);
-			m->pulse.value.sival_int = msg;
+				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+						sizeof(Message))) {
+					perror("Serial: failed to send Puls message to Sensor!");
+				}
 
-			if (-1 == MsgSend(coid, m, sizeof(Message), r_msg, sizeof(Message))) {
-				perror("Serial: failed to send Puls message to Sensor!");
-			}
-
-			msg = -1;
-		}//while
-		}else{
+				msg = -1;
+			}//while
+		} else {
 			perror("Serial: Setting Up failed!");
 		}
 	} else {
@@ -137,18 +149,25 @@ int Serial::send(int data, int lenBytes) {
 	locker.lock();
 	unsigned int *p = (unsigned int*) (&data);
 	int n = (int) write(ser, &data, lenBytes);
-	printf("----->>>>>send: port %i DATA: %d \n", comPort,*p) ;
-
+	printf("----->>>>>send: port %i DATA: %d \n", comPort, *p);
 
 	if (n < 0) {
 		printf("Write failed for com-port %i\n", comPort);
 		locker.unlock();
 		return -1;
-	}//if
-	locker.unlock();
-		if(data != ACK){
-			while (receive(&msg, sizeof(msg)) != ACK);
+	} else if (data != ACK) {
+		bool flag = true;
+		while (flag) {
+			while (receive(&msg, sizeof(msg)) == -2);
+			if (msg != ACK) {
+				cout << "ERROR Serial: expected ACK and not " << msg << endl;
+				cout << "Message Ignored" << endl;
+			} else {
+				flag = false;
+			}
 		}
+	}
+	locker.unlock();
 	return 0;
 }
 
@@ -166,23 +185,41 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 			return -1;
 		}
 	} else {
-		if(*data != ACK){
-			if(send(ACK,sizeof(int)) != 0){
-				printf("send ACK failed for com-port %i, errno=%i\n", comPort, errno );
-				return -3;
-			}
-			return ACK;
+		printf("<<<<<----- Serial: %d received\n", *data);
+		if (*data != ACK) {
+			send(ACK, sizeof(ACK));
 		}
 		return 0;
 	}
 }
 
-void Serial::handleNormalMessage(){
-	if(!handleConnectionMessage()){
-		cout << "Test_Serial: can't handle Message"<<endl;
+
+//void Serial::checkAck(){
+//	if(ackOk){
+//		ackOk = false;
+//		return;
+//	}else{
+//		cout << "Serial: TIMEOUT. no ACK received" << endl;
+//	}
+//}
+//
+//void Serial::checkInit(){
+//	if(ackOk){
+//		ackOk = false;
+//		return;
+//	}else{
+//		cout << "Serial: INIT TIMEOUT. no ACK received" << endl;
+//
+//	}
+//}
+
+void Serial::handleNormalMessage() {
+	if (!handleConnectionMessage()) {
+		cout << "Test_Serial: can't handle Message" << endl;
 	}
 }
 
-void Serial::handlePulsMessage(){
-	std::cout << "Serial: received a Puls, but doesn't know what to do with it" << std::endl;
+void Serial::handlePulsMessage() {
+	std::cout << "Serial: received a Puls, but doesn't know what to do with it"
+			<< std::endl;
 }
