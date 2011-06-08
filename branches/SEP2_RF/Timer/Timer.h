@@ -67,7 +67,7 @@ public:
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
-	int stopAllTimer();
+	int stopAll_actual_Timer();
 
 protected:
 	virtual void execute(void*);
