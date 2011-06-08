@@ -11,6 +11,7 @@
 #include "../Thread/Semaphor.h"
 #include "../Thread/Condition.h"
 #include "../Thread/Singleton_T.h"
+#include "../Timer/Timer.h"
 #include "../Functor/CallBackThrower.h"
 
 #define CONDOR
@@ -25,14 +26,13 @@
  */
 #define BIT_SET (true)
 /**
- * BASE ADRESS for Digital IO
+ * BASE ADDRESS for Digital IO
  */
-#define D_IOBASE 0x300 	// Anfangsadresse Ports
+#define D_IOBASE 0x300 	// start address Ports
 /**
- * BASE ADRESS for Analog IO
+ * BASE ADDRESS for Analog IO
  */
 #define A_IOBASE 0x320
-
 /*
  * tolerance range plane and normal work piece
  */
@@ -467,15 +467,19 @@ public:
 	 */
 	void resetAll();
 	/**
-	 *
+	 *	Identifies the height of a work piece and
+	 *	categorize in defined enum types.
+	 *	\return a integer, the height of the work piece.
 	 */
 	int identifyHeight();
 	/**
-	 *
+	 * Callback function for identifyHeight
+	 * which interrupts the DAC busy waiting.
 	 */
 	void checkTimeIdentifyHeight();
 	/**
-	 *
+	 * Checks the sensor b(6) on the slide.
+	 * \return a bool, true if there is a work piece.
 	 */
 	bool checkSlide();
 	/**
@@ -613,7 +617,7 @@ private:
 	/**
 	 * Pointer to Timer.
 	 */
-//	Timer* timer;
+	Timer *timer;
 #ifdef CONDOR
 
 	Condition condvar;

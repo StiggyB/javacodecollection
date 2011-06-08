@@ -28,22 +28,6 @@ Puck_FSM::Puck_FSM() {
 Puck_FSM::~Puck_FSM() {
 }
 
-
-void Puck_FSM::timer_test(){
-	CallInterface<HALCore, void>* openswitch =
-			FunctorMaker<HALCore, void>::makeFunctor(hc, &HALCore::openSwitch);
-
-	CallInterface<HALCore, void>* closeswitch =
-			FunctorMaker<HALCore, void>::makeFunctor(hc, &HALCore::closeSwitch);
-
-
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 2000);
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 4000);
-
-
-}
-
-
 void Puck_FSM::start_signal(bool was_serial){
 	lamp->shine(GREEN);
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
@@ -72,12 +56,13 @@ void Puck_FSM::estop_out_signal(bool was_serial){
 //	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
 //		starts_engine_if_nessecary();
 //	}//if
-
 }
 
-//TODO implement
+//TODO to implement
 void Puck_FSM::isSlideFull() {
-
+	if( hc->checkSlide() ){
+		setCurrent(/*new FSM_1_ErrorState()*/ NULL);
+	}
 }
 
 void Puck_FSM::puck_fsm2_outgoing() {

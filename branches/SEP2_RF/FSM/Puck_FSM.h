@@ -122,9 +122,6 @@ public:
 	void machine2_free();
 	void isSlideFull();
 	void puck_fsm2_outgoing();
-
-	void timer_test();
-
 	void start_signal(bool was_serial);
 	void stop_signal(bool was_serial);
 	void reset_signal(bool was_serial);
