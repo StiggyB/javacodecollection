@@ -212,6 +212,7 @@ void Serial::checkInit(){
 	}
 }
 
+
 void Serial::handleNormalMessage() {
 	if (!handleConnectionMessage()) {
 		cout << "Test_Serial: can't handle Message" << endl;
