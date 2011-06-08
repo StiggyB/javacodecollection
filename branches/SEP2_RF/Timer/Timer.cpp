@@ -78,7 +78,7 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	}//if
 	locker.unlock();
 
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, new_element.id );
 
 	if (timer_create(CLOCK_REALTIME, &event, &timerid) == -1) {
 		perror("Timer: cannot create OS-Timer");
@@ -101,6 +101,7 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	return true;
 }
 
+/*
 bool Timer::addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = PUCK_FSM;
@@ -112,6 +113,12 @@ bool Timer::addTimerFunction( CallInterface<HALCore, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.type = HALCORE;
     new_element.funcp.funcp_hal = funcp;
+    return (addTimerFunction(new_element, ms));
+}*/
+
+bool Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms){
+    struct IdTOfunction new_element;
+    new_element.funcp.funcp_cbt = funcp;
     return (addTimerFunction(new_element, ms));
 }
 
@@ -126,9 +133,15 @@ void Timer::handlePulsMessage(){
 	if( temp.id != -1 ){
 
 		printf("Timer: start_execute_duration=%i ", getSystemTime_ms()-temp.systemtime_ms );
+
+		if( temp.funcp.funcp_cbt != NULL ){
+			temp.funcp.funcp_cbt->call();
+			std::cout << "Timer: -->call()" << std::endl;
+		}//if
+
 		//std::cout << "Timer: start_execute_duration=" << millisec-temp.millisec << std::endl;
 
-		switch(temp.type){
+		/*switch(temp.type){
 		case PUCK_FSM: temp.funcp.funcp_fsm->call(); std::cout << "-->call()" << std::endl;
 			break;
 		case HALCORE: temp.funcp.funcp_hal->call(); std::cout << "-->call()" << std::endl;
@@ -136,6 +149,8 @@ void Timer::handlePulsMessage(){
 		default:
 			perror("Timer: unknown type for functionpointer!");
 		}//switch
+		*/
+
 	} else {
 		perror( "Timer: got pulseMesage for a not known Timer?!");
 	}//if
@@ -244,6 +259,8 @@ int Timer::startAllTimer(){
 			std::cout << "Timer: not stopped timer" << std::endl;
 
 		} else {
+			addTimerFunction(funcp_list_local[0].funcp.funcp_cbt, funcp_list_local[0].duration_ms);
+			/*
 			switch( funcp_list_local[0].type ){
 			case PUCK_FSM: addTimerFunction(funcp_list_local[0].funcp.funcp_fsm, funcp_list_local[0].duration_ms);
 				break;
@@ -252,6 +269,7 @@ int Timer::startAllTimer(){
 			default:
 				perror("Timer: unknown type for functionpointer in startAllTimer()");
 			}//switch
+			*/
 			std::cout << "Timer: restart timer" << std::endl;
 
 		}//if

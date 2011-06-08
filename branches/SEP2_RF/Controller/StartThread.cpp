@@ -32,11 +32,13 @@ void StartThread::execute(void*) {
 	cout << "IC started" <<endl;
 
 	//lampen->start(NULL);
-	cout << "Lampen started" << endl;
+
 	Serial serial;
 	Sensor sensor;
 	sensor.serial = &serial;
+
 	sensor.start(NULL);
+	cout << "sensor started" << endl;
 //	Sensor sensor;
 //
 //	Serial serial;
@@ -103,7 +105,7 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_TIMER
 	cout << "starting Timer-Test"	 << endl;
-	timer_test.serial = &serial;
+	//timer_test.serial = &serial;
 	timer.start(NULL);
 	timer_test.setTimer(&timer);
 	timer_test.start(NULL);

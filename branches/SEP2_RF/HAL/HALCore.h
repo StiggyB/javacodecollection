@@ -11,7 +11,7 @@
 #include "../Thread/Semaphor.h"
 #include "../Thread/Condition.h"
 #include "../Thread/Singleton_T.h"
-//#include "../Timer/Timer.h"
+#include "../Functor/CallBackThrower.h"
 
 #define CONDOR
 //#define SEMAP
@@ -243,7 +243,7 @@ extern volatile bool emstopped;
  *
  * Inherits: IHAL.h
  */
-class HALCore: public thread::HAWThread, public Singleton_T<HALCore>{
+class HALCore: public thread::HAWThread, public CallBackThrower, public Singleton_T<HALCore>{
 	friend class Singleton_T<HALCore>;
 public:
 	/**

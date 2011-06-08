@@ -84,4 +84,5 @@ Test_Sensor.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/Test_Sensor.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Functor/CallBackThrower.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Thread/HAWThread.h

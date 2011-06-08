@@ -85,6 +85,7 @@ Test_Lights.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/Test_Lights.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../HAL/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../HAL/../Functor/CallBackThrower.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/HAWThread.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Controller/Communication.h \
  C:/QNX650/target/qnx6/usr/include/cpp/list \
