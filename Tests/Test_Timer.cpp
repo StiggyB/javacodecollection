@@ -31,7 +31,7 @@ void Test_Timer::shutdown(){
 }
 
 void Test_Timer::execute(void* data){
-	sleep(4);
+	sleep(1);
 	HALCore* h;
 	h = HALCore::getInstance();
 
@@ -53,7 +53,14 @@ void Test_Timer::execute(void* data){
 	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
 	sleep(1);
-	timer->stopAllTimer();
+	timer->stopAll_actual_Timer();
+	sleep(3);
+
+	timer->addTimerFunction(openswitch, 2000);
+	timer->addTimerFunction(closeswitch, 4000);
+
+	sleep(8);
+	timer->startAllTimer();
 
 	sleep(5);
 	/*timer->addTimerFunction(openswitch, 2000);

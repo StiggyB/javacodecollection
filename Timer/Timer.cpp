@@ -70,10 +70,13 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	timer.it_interval.tv_nsec = 0;
 	timer.it_interval.tv_sec = 0;
 
+	locker.lock();
 	if ((new_element.id = getnextid()) == -1) {
 		perror("Timer: can't get id for timer");
+		locker.unlock();
 		return false;
 	}//if
+	locker.unlock();
 
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, new_element.type, new_element.id );
 
@@ -83,7 +86,10 @@ bool Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	}//if
 
 	new_element.timer_id = timerid;
+	locker.lock();
 	funcp_list.push_back(new_element);
+	locker.unlock();
+
 	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
 
 	if (timer_settime(timerid, 0, &timer, NULL) == -1) {
@@ -119,17 +125,17 @@ void Timer::handlePulsMessage(){
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
 
-		printf("Timer: start_execute_duration=%i\n", getSystemTime_ms()-temp.systemtime_ms );
+		printf("Timer: start_execute_duration=%i ", getSystemTime_ms()-temp.systemtime_ms );
 		//std::cout << "Timer: start_execute_duration=" << millisec-temp.millisec << std::endl;
 
 		switch(temp.type){
-		case PUCK_FSM: temp.funcp.funcp_fsm->call();
+		case PUCK_FSM: temp.funcp.funcp_fsm->call(); std::cout << "-->call()" << std::endl;
 			break;
-		case HALCORE: temp.funcp.funcp_hal->call();
+		case HALCORE: temp.funcp.funcp_hal->call(); std::cout << "-->call()" << std::endl;
 			break;
 		default:
 			perror("Timer: unknown type for functionpointer!");
-		}//if
+		}//switch
 	} else {
 		perror( "Timer: got pulseMesage for a not known Timer?!");
 	}//if
@@ -207,7 +213,7 @@ long Timer::getSystemTime_ms(){
 	return ((act_time.tv_sec) * 1000 + act_time.tv_usec/1000.0) + 0.5;
 }
 
-int Timer::stopAllTimer(){
+int Timer::stopAll_actual_Timer(){
 	long diff = 0;
 
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
@@ -227,10 +233,32 @@ int Timer::stopAllTimer(){
 }
 
 int Timer::startAllTimer(){
-	for(unsigned int i = 0; i<funcp_list.size(); i++){
+	std::vector< struct IdTOfunction> funcp_list_local;
 
+	funcp_list_local = funcp_list;
+	funcp_list.clear();
 
-	}//for
+	while(funcp_list_local.size() > 0){
+		if( funcp_list_local[0].timer_id != -1 ){//a not stopped timer
+			funcp_list.push_back( funcp_list_local[0] );
+			std::cout << "Timer: not stopped timer" << std::endl;
+
+		} else {
+			switch( funcp_list_local[0].type ){
+			case PUCK_FSM: addTimerFunction(funcp_list_local[0].funcp.funcp_fsm, funcp_list_local[0].duration_ms);
+				break;
+			case HALCORE: addTimerFunction(funcp_list_local[0].funcp.funcp_hal, funcp_list_local[0].duration_ms);
+				break;
+			default:
+				perror("Timer: unknown type for functionpointer in startAllTimer()");
+			}//switch
+			std::cout << "Timer: restart timer" << std::endl;
+
+		}//if
+
+		funcp_list_local.erase( funcp_list_local.begin() );
+
+	}//while
 	return 0;
 }
 
