@@ -16,6 +16,7 @@
 
 Serial::Serial() {
 	ack = -1;
+	timer = Timer::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
 	}
@@ -33,6 +34,11 @@ void Serial::init(int numComPort, bool debug) {
 	cnt = 0;
 	struct termios termSettings;
 	comPort = numComPort;
+
+	getAck = false;
+	check_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkAck);
+	check_init_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkInit);
+
 
 	switch (numComPort) {
 	case 1:
@@ -88,20 +94,15 @@ void Serial::init(int numComPort, bool debug) {
 	printf("fp zu com-port: %i\n", ser);
 	fflush(stdout);
 #endif
+
+
+	send(INIT_SERIAL, sizeof(INIT_SERIAL));
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+	while (receive(&msg, sizeof(msg)) == -2);
+	cout << "Serial: INIT successful!" << endl;
+
 	hasSettings = true;
 
-#ifdef PUCK_FSM_1
-	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	while (receive(&msg, sizeof(msg)) == -2)
-		;
-	cout << "Serial FSM_1: init!" << endl;
-#endif
-
-#ifdef PUCK_FSM_2
-	while (receive(&msg, sizeof(msg)) == -2);
-	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	cout << "Serial FSM_2: init!" << endl;
-#endif
 }
 
 Serial::~Serial() {
@@ -156,19 +157,13 @@ int Serial::send(int data, int lenBytes) {
 		locker.unlock();
 		return -1;
 	} else if (data != ACK) {
-		bool flag = true;
-		//while (flag) {
-//			while (receive(&msg, sizeof(msg)) == -2);
-//			if (msg != ACK) {
-//				cout << "ERROR Serial: expected ACK and not " << msg << endl;
-//				cout << "Message Ignored" << endl;
-//			} else {
-//				flag = false;
-//			}
-		//}
+		getAck = true;
+	}else{
+		if(hasSettings){
+			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 100);
+		}
 	}
 	locker.unlock();
-	cout << "Exit send" << endl;
 	return 0;
 }
 
@@ -189,31 +184,31 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		printf("<<<<<----- Serial: %d received\n", *data);
 		if (*data != ACK) {
 			send(ACK, sizeof(ACK));
+		}else{
+			getAck = true;
 		}
-		cout << "exit receive" << endl;
 		return 0;
 	}
 }
 
 
-//void Serial::checkAck(){
-//	if(ackOk){
-//		ackOk = false;
-//		return;
-//	}else{
-//		cout << "Serial: TIMEOUT. no ACK received" << endl;
-//	}
-//}
-//
-//void Serial::checkInit(){
-//	if(ackOk){
-//		ackOk = false;
-//		return;
-//	}else{
-//		cout << "Serial: INIT TIMEOUT. no ACK received" << endl;
-//
-//	}
-//}
+void Serial::checkAck(){
+	if(getAck){
+		getAck = false;
+	}else{
+		cout << "Serial: TIMEOUT. no ACK received" << endl;
+	}
+}
+
+void Serial::checkInit(){
+	if(getAck){
+		getAck = false;
+	}else{
+		cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
+		send(INIT_SERIAL, sizeof(INIT_SERIAL));
+		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+	}
+}
 
 void Serial::handleNormalMessage() {
 	if (!handleConnectionMessage()) {

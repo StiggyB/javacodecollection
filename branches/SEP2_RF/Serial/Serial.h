@@ -15,9 +15,10 @@
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
 #include "../Thread/Mutex.h"
+#include "../Functor/Callinterface.h"
+#include "../Functor/CallBackThrower.h"
+#include "../Timer/Timer.h"
 
-#define PUCK_FSM_1
-//#define PUCK_FSM_2
 
 enum msgType {
 	ACK,
@@ -103,6 +104,12 @@ protected:
 	virtual void shutdown();
 	void clean();
 private:
+	CallInterface<Serial, void>* check_ack;
+	CallInterface<Serial, void>* check_init_ack;
+	Timer* timer;
+	void checkAck();
+	void checkInit();
+	bool getAck;
 	unsigned int ack;
 	unsigned int msg;
 	int ser;
