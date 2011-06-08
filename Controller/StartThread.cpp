@@ -6,14 +6,15 @@
  */
 
 #include "StartThread.h"
-#include "../Timer/Timer.h"
 
 StartThread::StartThread(){
 	halCore = HALCore::getInstance();
 	interruptController = InterruptController::getInstance();
-	communicationserver = CommunicationServer::getInstance();
+	communicationServer = CommunicationServer::getInstance();
 	lampen = Lampen::getInstance();
 	timer = Timer::getInstance();
+	sensor = Sensor::getInstance();
+	serial = Serial::getInstance();
 }
 
 StartThread::~StartThread() {
@@ -25,29 +26,25 @@ void StartThread::execute(void*) {
 		perror("ThreadCtl access failed\n");
 	}
 
-	communicationserver->start(NULL);
+	cout << "Starting Instances..." << endl;
 	halCore->start(NULL);
-
-	cout << "starting IC" <<endl;
+	cout << "halCore started" << endl;
+	communicationServer->start(NULL);
+	cout << "communicationServer started" << endl;
 	interruptController->start(NULL);
-	cout << "IC started" <<endl;
+	cout << "interruptController started" <<endl;
 
-	//lampen->start(NULL);
-
+	lampen->start(NULL);
+	cout << "lampen started" << endl;
 	timer->start(NULL);
-
-	Serial serial;
-	Sensor sensor;
-	sensor.serial = &serial;
-
-	sensor.start(NULL);
+	cout << "timer started" << endl;
+	sensor->start(NULL);
 	cout << "sensor started" << endl;
-
-
-
+	serial->init(1, true);
+	serial->start(NULL);
+	cout << "serial started" << endl;
 
 #ifdef TEST_IRQ
-	Test_IRQ ti;
 	ti.start(NULL);
 #endif
 
@@ -81,6 +78,7 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_SEN
 	cout << "starting Sensor-Tests" << endl;
+	sensor->ts = &ts;
 	ts.start(NULL);
 	cout << "waiting for Sensor-Tests" << endl;
 	ts.join();
@@ -88,8 +86,7 @@ void StartThread::execute(void*) {
 #ifdef TEST_FSM
 	cout << "starting FSM-Tests" << endl;
 	tests_fsm.init_tests();
-	tests_fsm.serial = &serial;
-	sensor.testFSM(&tests_fsm);
+	sensor->tests_fsm = &tests_fsm;
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
 	//tests_fsm.join();
@@ -102,45 +99,26 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_TIMER
 	cout << "starting Timer-Test"	 << endl;
-	//timer_test.serial = &serial;
-
 	timer_test.start(NULL);
 	cout << "waiting for Timer-Test" << endl;
 	timer_test.join();
 #endif
 
-	/*
-	sleep(4);
-	int coid = ConnectAttach(0, 0, Communication::serverChannelId, _NTO_SIDE_CHANNEL, 0);
-	if (coid == -1) {
-		perror("InterruptController: failed to attach Channel for Interrupt\n");
-	}else{
-		short otto = 0;
-		short peter = 0;
-		while(1){
-			//struct _pulse puls;
-			//SIGEV_PULSE_INIT(&puls,coid,SIGEV_PULSE_PRIO_INHERIT,otto,peter);
-			if(-1 == MsgSendPulse(coid,SIGEV_PULSE_PRIO_INHERIT,otto++,peter++)){
-				perror("ST: failed to send puls!");
-			}
-		}
-	}
-*/
 //	sleep(40);
-	sensor.join();
-	//h->join();
-
+	halCore->join();
 }
 
 void StartThread::stopProcess() {
-	//h->resetAllOutPut();
-	//h->deleteInstance();
-	//ic->deleteInstance();
+	//halCore->resetAllOutPut();
+	//halCore->deleteInstance();
+	//interruptController->deleteInstance();
 }
 
 void StartThread::shutdown(){
+	serial->deleteInstance();
+	sensor->deleteInstance();
 	lampen->deleteInstance();
-	communicationserver->deleteInstance();
+	communicationServer->deleteInstance();
 	interruptController->deleteInstance();
 	halCore->resetAllOutPut();
 	halCore->deleteInstance();

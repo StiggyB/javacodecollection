@@ -13,6 +13,7 @@
 #include "../Thread/HAWThread.h"
 #include "../Controller/Communication.h"
 #include "../Tests/test.h"
+#include "../Thread/Singleton_T.h"
 #include "../Thread/Mutex.h"
 
 //enum msgType{
@@ -77,7 +78,8 @@ enum msgType {
  * Two threads with the same modus won't work.
  *
  */
-class Serial : public thread::HAWThread, public Communication{
+class Serial : public thread::HAWThread, public Communication, public Singleton_T<Serial>{
+	friend class Singleton_T<Serial>;
 public:
 	/**
 	 * Constructor with integrated initialization.

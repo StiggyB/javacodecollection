@@ -1,5 +1,16 @@
+
+#ifndef PUCK_FSM_2_H_
+#define PUCK_FSM_2_H_
+
+#include <vector>
+#include <iostream.h>
+#include "Puck_FSM.h"
+#include "../HAL/HALCore.h"
+
+#define PUCK_FSM_2_DEBUG
+
 /**
- * Puck_FSM
+ * Puck_FSM_2
  *
  * SE2 (+ SY and PL) Project SoSe 2011
  *
@@ -14,20 +25,9 @@
  *
  *
  */
-#ifndef PUCK_FSM_2_H_
-#define PUCK_FSM_2_H_
-
-#include "Puck_FSM.h"
-#include "../HAL/HALCore.h"
-#include "iostream.h"
-#include <vector>
-
-#define PUCK_FSM_2_DEBUG
-
 class Puck_FSM_2 : public Puck_FSM{
 public:
-	//Puck_FSM_2();
-	Puck_FSM_2(Serial* serial, std::vector<Puck_FSM*>* puck_list);
+	Puck_FSM_2(std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_2();
 	void checkSlide();
 };

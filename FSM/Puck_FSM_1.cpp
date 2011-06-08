@@ -1,5 +1,5 @@
 /**
- * Puck_FSM
+ * Puck_FSM 1
  *
  * SE2 (+ SY and PL) Project SoSe 2011
  *
@@ -21,15 +21,15 @@ Puck_FSM_1::~Puck_FSM_1() {
 
 }
 
-Puck_FSM_1::Puck_FSM_1(Serial* serialobj, std::vector<Puck_FSM*>* puck_listobj){
-	serial = serialobj;
+Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj){
+//	hc = HALCore::getInstance();
+//	serial = Serial::getInstance();
 	puck_list = puck_listobj;
 	current = new FSM_1_start_state;
 	current->entry(this);
 	#ifdef PUCK_FSM_1_DEBUG
 	printf("FSM Band1 is up\n");
 	#endif
-	hc = HALCore::getInstance();
 }
 
 
@@ -190,7 +190,7 @@ void FSM_1_sort_out :: ls_b3 (Puck_FSM * fsm){
 	fsm->hc->engineReset();
 	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
-	fsm->hc->shine(YELLOW);
+	fsm->lamp->shine(YELLOW);
 	fsm->setCurrent(new FSM_1_ls_b3_passed() );
 }
 
@@ -259,7 +259,7 @@ void FSM_1_check_slide :: entry (Puck_FSM * fsm){
 //		fsm->setCurrent( new FSM_1_ErrorState() );
 //	}
 	fsm->delete_unnecessary_wp();
-	fsm->hc->shine(GREEN);
+	fsm->lamp->shine(GREEN);
 }
 void FSM_1_check_slide :: exit (Puck_FSM * fsm){
 	#ifdef PUCK_FSM_1_DEBUG
