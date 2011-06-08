@@ -157,17 +157,18 @@ int Serial::send(int data, int lenBytes) {
 		return -1;
 	} else if (data != ACK) {
 		bool flag = true;
-		while (flag) {
-			while (receive(&msg, sizeof(msg)) == -2);
-			if (msg != ACK) {
-				cout << "ERROR Serial: expected ACK and not " << msg << endl;
-				cout << "Message Ignored" << endl;
-			} else {
-				flag = false;
-			}
-		}
+		//while (flag) {
+//			while (receive(&msg, sizeof(msg)) == -2);
+//			if (msg != ACK) {
+//				cout << "ERROR Serial: expected ACK and not " << msg << endl;
+//				cout << "Message Ignored" << endl;
+//			} else {
+//				flag = false;
+//			}
+		//}
 	}
 	locker.unlock();
+	cout << "Exit send" << endl;
 	return 0;
 }
 
@@ -189,6 +190,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		if (*data != ACK) {
 			send(ACK, sizeof(ACK));
 		}
+		cout << "exit receive" << endl;
 		return 0;
 	}
 }
