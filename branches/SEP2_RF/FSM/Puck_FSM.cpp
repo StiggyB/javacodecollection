@@ -21,7 +21,7 @@
 Puck_FSM::Puck_FSM() {
 	hc = HALCore::getInstance();
 	lamp = Lampen::getInstance();
-	serial = NULL;
+	serial = Serial::getInstance();
 }
 
 Puck_FSM::~Puck_FSM() {
@@ -44,14 +44,14 @@ void Puck_FSM::timer_test(){
 
 
 void Puck_FSM::start_signal(bool was_serial){
-	hc->shine(GREEN);
+	lamp->shine(GREEN);
 	if(!was_serial) serial->send(START_BUTTON, sizeof(int) );
 	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
 		starts_engine_if_nessecary();
 	}//if
 }
 void Puck_FSM::stop_signal(bool was_serial){
-	hc->shine(RED);
+	lamp->shine(RED);
 	if(!was_serial) serial->send(STOP_BUTTON, sizeof(int) );
 	hc->engineStop();
 

@@ -8,13 +8,13 @@
 #ifndef TEST_FSM_H_
 #define TEST_FSM_H_
 
+#include <vector>
 #include "Communication.h"
 #include "../Thread/HAWThread.h"
 #include "../HAL/HALCore.h"
 #include "../FSM/Puck_FSM.h"
 #include "../FSM/Puck_FSM_1.h"
 #include "../FSM/Puck_FSM_2.h"
-#include <vector>
 
 enum Signal {
 	INCOMMING, IN_HEIGHT, IN_METAL, IN_SLIDE, AT_END
@@ -34,7 +34,6 @@ public:
 	int last_Reg_State_B;
 	int last_Reg_State_C;
 	bool running;
-	Serial* serial;
 	std::vector<Puck_FSM*> puck_list;
 protected:
 	virtual void execute(void*);

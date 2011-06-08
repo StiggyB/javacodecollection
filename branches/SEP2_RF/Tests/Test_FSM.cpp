@@ -16,19 +16,14 @@
  */
 
 #include "Test_FSM.h"
-#include "../FSM/Puck_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
-#include "../FSM/Puck_FSM_2.h"
-#include "Communication.h"
-#include "../HAL/HALCore.h"
 
 Test_FSM::Test_FSM() {
 	cc = HALCore::getInstance();
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x50;
 	aWPendOfMachine = false;
-	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_1(serial, &puck_list) );
-	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_2(serial, &puck_list) );
+	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_1(&puck_list) );
+	for(int i=0; i<3; i++) wp_list.push_back( new Puck_FSM_2(&puck_list) );
 	wp_list[3]->hasPocket = 1;
 	wp_list[4]->hasPocket = 1;
 

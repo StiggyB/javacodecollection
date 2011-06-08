@@ -1,3 +1,30 @@
+
+#ifndef IPUCK_FSM_H_
+#define IPUCK_FSM_H_
+
+#include <vector>
+#include "../HAL/HALCore.h"
+#include "../HAL/Lampen.h"
+#include "../Serial/Serial.h"
+#include "../Timer/Timer.h"
+#include "../Functor/Functor.h"
+#include "../Functor/FunctorMaker.h"
+#include "../Functor/CallInterface.h"
+#include "../Functor/CallBackThrower.h"
+
+//#define PUCK_FSM_STATE_DEBUG
+
+enum location_attribut {
+	ON_FIRST_LB,
+	AFTER_FIRST_LB,
+	AFTER_HEIGH_MEASURE,
+	AFTER_METAL_SENSOR_SORT_OUT,
+	SORT_OUT,
+	AFTER_METAL_SENSOR_FORWARD,
+	ON_LAST_LB,
+	AFTER_LAST_LB
+};
+
 /**
  * Puck_FSM
  *
@@ -14,34 +41,12 @@
  *
  *
  */
-
-#ifndef IPUCK_FSM_H_
-#define IPUCK_FSM_H_
-
-#include "../HAL/HALCore.h"
-#include "../HAL/Lampen.h"
-#include <vector>
-#include "../Serial/Serial.h"
-#include "../Timer/Timer.h"
-#include "../Functor/Functor.h"
-#include "../Functor/FunctorMaker.h"
-#include "../Functor/CallInterface.h"
-#include "../Functor/CallBackThrower.h"
-
-//#define PUCK_FSM_STATE_DEBUG
-
-enum location_attribut {
-	ON_FIRST_LB, AFTER_FIRST_LB, AFTER_HEIGH_MEASURE, AFTER_METAL_SENSOR_SORT_OUT, SORT_OUT,
-	AFTER_METAL_SENSOR_FORWARD, ON_LAST_LB, AFTER_LAST_LB
-};
-
 class Puck_FSM : public CallBackThrower{
 public:
 	/**
 	 * Pointer to actual state
 	 */
 	class State *current;
-	//Puck_FSM();
 	Puck_FSM();
 	virtual ~Puck_FSM();
 	/**
@@ -103,6 +108,9 @@ public:
 	HALCore *hc;
 
 	Timer *timer;
+
+	Serial* serial;
+
 	location_attribut location;
     int check_last_lb();
     void delete_unnecessary_wp();
@@ -122,11 +130,8 @@ public:
 	void estop_in_signal(bool was_serial);
 	void estop_out_signal(bool was_serial);
 	bool request;
-	Serial* serial;
-
 protected:
     std::vector<Puck_FSM*>* puck_list;
-
 };
 
 class State

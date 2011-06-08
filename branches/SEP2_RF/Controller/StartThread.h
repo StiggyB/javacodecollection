@@ -3,8 +3,12 @@
 #define STARTTHREAD_H_
 
 #include <stdlib.h>
+#include "Sensor.h"
+#include "InterruptController.h"
+#include "CommunicationServer.h"
 #include "../HAL/HALCore.h"
 #include "../HAL/Lampen.h"
+#include "../Timer/Timer.h"
 #include "../Tests/test.h"
 #include "../Tests/Test_M1.h"
 #include "../Tests/Test_HAL.h"
@@ -12,11 +16,7 @@
 #include "../Tests/Test_Serial.h"
 #include "../Tests/Test_Lights.h"
 #include "../Tests/Test_Functor.h"
-#include "Sensor.h"
-#include "InterruptController.h"
-#include "CommunicationServer.h"
 #include "../Tests/Test_Timer.h"
-#include "../Timer/Timer.h"
 
 class StartThread : public thread::HAWThread {
 public:
@@ -39,11 +39,23 @@ private:
     /**
      * pointer to the CommunicationServer
      */
-    CommunicationServer *communicationserver;
+    CommunicationServer *communicationServer;
     /**
      * pointer to the Lampen
      */
     Lampen * lampen;
+    /**
+     * pointer to the serial controller
+     */
+    Serial * serial;
+    /**
+     * pointer to the sensor controller
+     */
+    Sensor * sensor;
+    /**
+     * pointer to the timer instance
+     */
+    Timer* timer;
 #ifdef TEST_M1
     Test_M1 tm;
 #endif
@@ -70,7 +82,6 @@ private:
 #endif
 #ifdef TEST_TIMER
     Test_Timer timer_test;
-    Timer* timer;
 #endif
 
 };

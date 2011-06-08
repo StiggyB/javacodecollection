@@ -15,20 +15,15 @@
  * Inherits: HAWThread.h
  */
 #include "Sensor.h"
-#include "../FSM/Puck_FSM.h"
-#include "../Tests/Test_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
-#include "../FSM/Puck_FSM_2.h"
-#include <vector>
+
+//TODO CLEANUP EVERYTHING!!!
 
 Sensor::Sensor() :
 	cnt(0) {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
-	if (h == NULL) {
-		h = HALCore::getInstance();
-	}
+	h = HALCore::getInstance();
 	l = Lampen::getInstance();
 	/**
 	 * Initialize with start values
@@ -45,12 +40,7 @@ Sensor::~Sensor() {
 }
 
 void Sensor::execute(void*) {
-	//TODO to extract!
-	serial->init(1, true);
-	serial->start(NULL);
-
-
-	dummy_fsm = new Puck_FSM_1(serial, &wp_list);
+	dummy_fsm = new Puck_FSM_1(&wp_list);
 
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		while (!isStopped()) {
@@ -127,7 +117,7 @@ void Sensor::handleNormalMessage() {
 
 		}else if(val == REQUEST_FREE) {
 			cout << "Sensor: REQUEST_FREE" << endl;
-			wp_list.push_back(new Puck_FSM_2(serial, &wp_list));
+			wp_list.push_back(new Puck_FSM_2(&wp_list));
 			dummy_fsm->requestfromMachine1();
 
 		} else if (val == POCKET) {
@@ -171,7 +161,7 @@ void Sensor::handleNormalMessage() {
 		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
 			cout << "Sensor: in" << endl;
 				#ifdef PUCK_FSM_1
-					wp_list.push_back(new Puck_FSM_1(serial, &wp_list));
+					wp_list.push_back(new Puck_FSM_1(&wp_list));
 				#endif
 
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
@@ -240,11 +230,10 @@ void Sensor::handleNormalMessage() {
 	cout << "Sensor: running_mode: " << running_mode << endl;
 
 #ifdef TEST_FSM
-	cout << "TEST_FSM" << endl;
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
 #endif
 #ifdef TEST_SEN
-	ts.test_sen_interrupt(port, r_msg->pulse.value.sival_int);
+	ts->test_sen_interrupt(port, r_msg->pulse.value.sival_int);
 #endif
 #ifdef TEST_IRQ
 	interrupt(port, r_msg->pulse.value.sival_int);
