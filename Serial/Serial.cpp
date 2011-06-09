@@ -159,7 +159,9 @@ int Serial::send(int data, int lenBytes) {
 	locker.lock();
 	unsigned int *p = (unsigned int*) (&data);
 	int n = (int) write(ser, &data, lenBytes);
-	printf("----->>>>>send: port %i DATA: %d \n", comPort, *p);
+	if(*data != SYNC){
+		printf("----->>>>>send: port %i DATA: %d \n", comPort, *p);
+	}
 
 	if (n < 0) {
 		printf("Write failed for com-port %i\n", comPort);
@@ -188,10 +190,12 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 			return -1;
 		}
 	} else {
-		printf("<<<<<----- Serial: %d received\n", *data);
 		if (*data == ACK) {
 			getAck = true;
 		}else{
+			if(*data != SYNC){
+				printf("<<<<<----- Serial: %d received\n", *data);
+			}
 			send(ACK, sizeof(ACK));
 		}
 		return 0;
