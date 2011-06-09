@@ -97,8 +97,9 @@ void Serial::init(int numComPort, bool debug) {
 
 
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+	int id = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
 	while (receive(&msg, sizeof(msg)) == -2);
+	timer->stopTimerbyId(id);
 	cout << "Serial: INIT successful!" << endl;
 
 	hasSettings = true;
