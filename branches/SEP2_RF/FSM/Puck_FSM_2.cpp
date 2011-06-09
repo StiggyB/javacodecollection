@@ -148,8 +148,10 @@ void FSM_2_after_metal_measure :: entry(Puck_FSM * fsm){
 	cout << "FSM_2_after_metal_measure: entry" << endl;
 	#endif
 	fsm->hc->openSwitch();
-	sleep(1);
-	fsm->hc->closeSwitch();
+	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
+			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
+			fsm->hc, &HALCore::closeSwitch);
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
 }
 void FSM_2_after_metal_measure :: exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_2_DEBUG
