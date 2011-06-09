@@ -130,8 +130,10 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: exit" << endl;
 #endif
-	sleep(1);
-	fsm->hc->closeSwitch();
+	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
+			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
+			fsm->hc, &HALCore::closeSwitch);
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
 }
 
 //functions for durchschleusen_bei_LS3
@@ -248,6 +250,9 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	fsm->delete_unnecessary_wp();
 	fsm->lamp->shine(GREEN);
 }
+
+//void
+
 void FSM_1_check_slide::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_check_slide: exit" << endl;
@@ -285,9 +290,9 @@ void FSM_1_ErrorState::exit(Puck_FSM * fsm) {
 }
 
 //TODO lookup a better position (redundant)
-void Puck_FSM_1::isSlideFull() {
-	if (hc->checkSlide()) {
-		setCurrent(new FSM_1_ErrorState());
-	}
-}
+//void Puck_FSM_1::isSlideFull() {
+//	if (hc->checkSlide()) {
+//		setCurrent(new FSM_1_ErrorState());
+//	}
+//}
 

@@ -61,7 +61,7 @@ void Puck_FSM::estop_out_signal(bool was_serial){
 //TODO to implement
 void Puck_FSM::isSlideFull() {
 	if( hc->checkSlide() ){
-		setCurrent(/*new FSM_1_ErrorState()*/ NULL);
+		errorState();
 	}
 }
 
