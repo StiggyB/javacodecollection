@@ -113,12 +113,12 @@ void Timer::handleNormalMessage(){
 }
 
 void Timer::handlePulsMessage(){
-	std::cout << "Timer: received a Puls" << std::endl;
+	//std::cout << "Timer: received a Puls" << std::endl;
 	struct IdTOfunction temp;
 	temp = find_function(r_msg->pulse.value.sival_int);
 	if( temp.id != -1 ){
 
-		printf("Timer: start_execute_duration=%i ", getSystemTime_ms()-temp.systemtime_ms );
+		//printf("Timer: start_execute_duration=%i ", getSystemTime_ms()-temp.systemtime_ms );
 
 		if( temp.funcp.funcp_cbt_void != NULL ){
 			temp.funcp.funcp_cbt_void->call();
@@ -231,11 +231,11 @@ int Timer::startAllTimer(){
 	while(funcp_list_local.size() > 0){
 		if( funcp_list_local[0].timer_id != -1 ){//a not stopped timer
 			funcp_list.push_back( funcp_list_local[0] );
-			std::cout << "Timer: not stopped timer" << std::endl;
+			//std::cout << "Timer: not stopped timer" << std::endl;
 
 		} else {
 			addTimerFunction(funcp_list_local[0].funcp.funcp_cbt_void, funcp_list_local[0].duration_ms);
-			std::cout << "Timer: restart timer" << std::endl;
+			//std::cout << "Timer: restart timer" << std::endl;
 
 		}//if
 
@@ -256,7 +256,7 @@ int Timer::deleteTimer(int id){
 			}//if
 
 			funcp_list.erase( funcp_list.begin()+i );
-			std::cout << "Timer: stopTimerbyId has delete a Timer" << std::endl;
+			//std::cout << "Timer: stopTimerbyId has delete a Timer" << std::endl;
 		}//if
 
 	}//for
