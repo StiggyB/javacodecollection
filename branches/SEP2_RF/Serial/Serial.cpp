@@ -36,8 +36,11 @@ void Serial::init(int numComPort, bool debug) {
 	comPort = numComPort;
 
 	getAck = false;
+	getSync = false;
 	check_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkAck);
 	check_init_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkInit);
+	sync_error = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncError);
+	sync_send = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncSend);
 
 
 	switch (numComPort) {
@@ -99,7 +102,7 @@ void Serial::init(int numComPort, bool debug) {
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
 	int id = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
 	while (receive(&msg, sizeof(msg)) == -2);
-	timer->stopTimerbyId(id);
+	timer->deleteTimer(id);
 	cout << "Serial: INIT successful!" << endl;
 
 	hasSettings = true;
@@ -118,17 +121,25 @@ void Serial::execute(void* data) {
 		if (settingUpCommunicatorDevice(receiver)) {
 			cout << "SETTING UP SERIAL ERFOLGREICH------------------------"
 					<< endl;
+			if(!getSync){
+				send(SYNC, sizeof(SYNC));
+				syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
+			}
 			while (!isStopped()) {
 
 				while (receive(&msg, sizeof(msg)) == -2);
 
-				buildMessage(m, chid, coid, reactSerial, SENSOR,
-						r_msg->pulse.value.sival_int);
-				m->pulse.value.sival_int = msg;
+				if(msg == SYNC){
+					syncReceive();
+				}else{
+					buildMessage(m, chid, coid, reactSerial, SENSOR,
+							r_msg->pulse.value.sival_int);
+					m->pulse.value.sival_int = msg;
 
-				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
-						sizeof(Message))) {
-					perror("Serial: failed to send Puls message to Sensor!");
+					if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+							sizeof(Message))) {
+						perror("Serial: failed to send Puls message to Sensor!");
+					}
 				}
 
 				msg = -1;
@@ -198,6 +209,20 @@ void Serial::checkAck(){
 	}else{
 		cout << "Serial: TIMEOUT. no ACK received" << endl;
 	}
+}
+
+void Serial::syncError(){
+	cout << "Serial: ERROR - did not get a SYNC message" << endl;
+}
+
+void Serial::syncSend(){
+	send(SYNC, sizeof(SYNC));
+	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
+}
+
+void Serial::syncReceive(){
+	timer->deleteTimer(syncId);
+	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND);
 }
 
 void Serial::checkInit(){

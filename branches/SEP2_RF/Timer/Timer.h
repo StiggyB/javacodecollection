@@ -65,7 +65,7 @@ public:
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
-	int stopTimerbyId(int id);
+	int deleteTimer(int id);
 
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);

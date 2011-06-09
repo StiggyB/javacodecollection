@@ -246,7 +246,7 @@ int Timer::startAllTimer(){
 }
 
 
-int Timer::stopTimerbyId(int id){
+int Timer::deleteTimer(int id){
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
 		if( funcp_list[i].id == id){
 
