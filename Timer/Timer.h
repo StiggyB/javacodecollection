@@ -65,6 +65,7 @@ public:
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
+	int stopTimerbyId(int id);
 
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
@@ -102,7 +103,7 @@ private:
 	 * \param timer time im milliseconds, after this time the given function will be executed
 	 * \return a bool, true if action was successful, false if not.
 	 */
-	bool addTimerFunction(struct IdTOfunction new_element, int ms);
+	int addTimerFunction(struct IdTOfunction new_element, int ms);
 	/**
 	 * calculates the seconds and nanoseconds for timer attributes
 	 * \param ms milliseconds, will be splitted into seconds and nanoseconds

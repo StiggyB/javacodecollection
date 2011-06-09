@@ -183,7 +183,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		if (*data == ACK) {
 			getAck = true;
 		}else{
-			//send(ACK, sizeof(ACK));
+			send(ACK, sizeof(ACK));
 		}
 		return 0;
 	}
