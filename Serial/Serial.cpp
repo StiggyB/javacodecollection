@@ -128,7 +128,7 @@ void Serial::execute(void* data) {
 
 				if(msg == SYNC){
 					syncReceive();
-				}else{
+				}else if(msg != ACK){
 					buildMessage(m, chid, coid, reactSerial, SENSOR,
 							r_msg->pulse.value.sival_int);
 					m->pulse.value.sival_int = msg;
@@ -159,7 +159,7 @@ int Serial::send(int data, int lenBytes) {
 	locker.lock();
 	unsigned int *p = (unsigned int*) (&data);
 	int n = (int) write(ser, &data, lenBytes);
-	if(*data != SYNC){
+	if(data != SYNC && data != ACK){
 		printf("----->>>>>send: port %i DATA: %d \n", comPort, *p);
 	}
 
