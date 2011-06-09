@@ -121,10 +121,7 @@ void Serial::execute(void* data) {
 		if (settingUpCommunicatorDevice(receiver)) {
 			cout << "SETTING UP SERIAL ERFOLGREICH------------------------"
 					<< endl;
-			if(!getSync){
-				send(SYNC, sizeof(SYNC));
-				syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
-			}
+			syncRestart();
 			while (!isStopped()) {
 
 				while (receive(&msg, sizeof(msg)) == -2);
@@ -221,6 +218,15 @@ void Serial::syncError(){
 		perror("Serial: failed to send Puls message to Sensor!");
 	}
 	cout << "Serial: ERROR - did not get a SYNC message" << endl;
+	getSync = false;
+	syncRestart();
+}
+
+void Serial::syncRestart(){
+	if(!getSync){
+		send(SYNC, sizeof(SYNC));
+		syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
+	}
 }
 
 void Serial::syncSend(){
@@ -229,6 +235,7 @@ void Serial::syncSend(){
 }
 
 void Serial::syncReceive(){
+	getSync = true;
 	timer->deleteTimer(syncId);
 	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND);
 }
