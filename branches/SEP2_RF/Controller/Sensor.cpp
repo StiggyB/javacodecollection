@@ -238,7 +238,7 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_B = val;
 	}//switch
-	cout << "Sensor: running_mode: " << running_mode << endl;
+	//cout << "Sensor: running_mode: " << running_mode << endl;
 
 #ifdef TEST_FSM
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);

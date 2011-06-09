@@ -51,8 +51,8 @@ enum msgType {
 
 #define DEBUG_SERIAL
 
-#define T_SYNC_ERROR 2000
-#define T_SYNC_SEND 1000
+#define T_SYNC_ERROR 1000
+#define T_SYNC_SEND 500
 
 /**
  * Interface for the Serial Connection
