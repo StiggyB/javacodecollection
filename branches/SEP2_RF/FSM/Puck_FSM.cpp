@@ -68,7 +68,6 @@ void Puck_FSM::isSlideFull() {
 void Puck_FSM::puck_fsm2_outgoing() {
 	if (request == true) {
 		cout << "Sensor: request true, seriel message will be send" << endl;
-		hc->engineContinue();
 		serial->send(MACHINE2_FREE, sizeof(msgType));
 		hc->engineContinue();
 		request = false;
@@ -184,7 +183,33 @@ void Puck_FSM::errorState(){
 	current->errorState(this);
 }
 
+void Puck_FSM::reset_button_pushed() {
+	switch (errType) {
+	case WP_DISAPPEARED_B1:
 
+		break;
+	case WP_UNKOWN_B1:
+
+		break;
+	case WP_DISAPPEARED_B3:
+
+		break;
+	case WP_UNKOWN_B3:
+
+		break;
+	case WP_DISAPPEARED_B7:
+
+		break;
+	case WP_UNKOWN_B7:
+
+		break;
+	case SLIDE_FULL_B6:
+		delete_unnecessary_wp();
+		hc->engineContinue();
+		lamp->shine(GREEN);
+		break;
+	}
+}
 //Methods for class State
 State::State(){
 
@@ -194,56 +219,62 @@ State::~State(){
 
 }
 
-void State::ls_b0(Puck_FSM *){
+void State::ls_b0(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("ls_b0 standard function\n");
 	#endif
 }
 
-void State::ls_b1(Puck_FSM *){
+void State::ls_b1(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("LS_B1 standard function\n");
 	#endif
 }
 
-void State::ls_b3(Puck_FSM *){
+void State::ls_b3(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("LS_B3 standard function\n");
 	#endif
 }
 
-void State::ls_b6(Puck_FSM *){
+void State::ls_b6(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("LS_B6 standard function\n");
 	#endif
 }
 
-void State::ls_b7_in(Puck_FSM *){
+void State::ls_b7_in(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("LS_B7_in standard function\n");
 	#endif
 }
 
-void State::ls_b7_out(Puck_FSM *){
+void State::ls_b7_out(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("LS_B7_out standard function\n");
 	#endif
 }
 
-void State::entry(Puck_FSM *){
+void State::entry(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("entry standard function\n");
 	#endif
 }
 
-void State::exit(Puck_FSM *){
+void State::exit(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("exit standard function\n");
 	#endif
 }
 
-void State::errorState(Puck_FSM *){
+void State::errorState(Puck_FSM * fsm){
 	#ifdef PUCK_FSM_STATE_DEBUG
 	printf("errorState standard function\n");
+	#endif
+}
+
+void State::reset_button_pushed(Puck_FSM * fsm) {
+	#ifdef PUCK_FSM_STATE_DEBUG
+	printf("reset button pushed standard function\n");
 	#endif
 }

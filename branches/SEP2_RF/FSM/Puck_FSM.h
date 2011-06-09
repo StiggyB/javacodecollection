@@ -26,6 +26,20 @@ enum location_attribut {
 };
 
 /**
+ * Faults while normal running in the Festo System.
+ */
+enum ErrorType {
+	WP_DISAPPEARED_B1,
+	WP_UNKOWN_B1,
+	WP_DISAPPEARED_B3,
+	WP_UNKOWN_B3,
+	WP_DISAPPEARED_B7,
+	WP_UNKOWN_B7,
+	SLIDE_FULL_B6
+	/*...*/
+};
+
+/**
  * Puck_FSM
  *
  * SE2 (+ SY and PL) Project SoSe 2011
@@ -91,6 +105,10 @@ public:
 	 */
 	void errorState();
 	/**
+	 * function to leave error state
+	 */
+	void reset_button_pushed();
+	/**
 	 * is true, if wp need transport for finite state input
 	 */
 	bool engine_should_be_started;
@@ -98,6 +116,14 @@ public:
 	 * is true, if wp has pocket (for second machine)
 	 */
 	bool hasPocket;
+	/**
+	 * Error is noticed or unnoticed
+	 */
+	bool errorNoticed;
+	/**
+	 * Actual error type
+	 */
+	ErrorType errType;
 	/**
 	 * Instance for lamp in error state
 	 */
@@ -182,6 +208,11 @@ class State
 	 * \param fsm Pointer to a Puck_FSM
 	 */
 	virtual void errorState(Puck_FSM *fsm);
+	/**
+	 * error noticed with reset button
+	 * \param fsm Pointer to a Puck_FSM
+	 */
+	virtual void reset_button_pushed(Puck_FSM * fsm);
 };
 
 #endif /* IPUCK_FSM_H_ */
