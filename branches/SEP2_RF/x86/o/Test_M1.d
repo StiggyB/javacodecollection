@@ -84,4 +84,20 @@ Test_M1.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/Test_M1.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/list \
+ C:/QNX650/target/qnx6/usr/include/cpp/functional \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Timer/../Functor/CallBackThrower.h \
+ C:/QNX650/target/qnx6/usr/include/errno.h \
+ C:/QNX650/target/qnx6/usr/include/sys/time.h \
+ C:/QNX650/target/qnx6/usr/include/sys/select.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../HAL/../Functor/CallBackThrower.h

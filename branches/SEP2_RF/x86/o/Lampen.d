@@ -83,9 +83,22 @@ Lampen.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/Lampen.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Thread/Singleton_T.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Functor/CallBackThrower.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/HAWThread.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
  C:/QNX650/target/qnx6/usr/include/cpp/list \
  C:/QNX650/target/qnx6/usr/include/cpp/functional \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Controller/../Thread/HAWThread.h
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Timer/../Functor/CallBackThrower.h \
+ C:/QNX650/target/qnx6/usr/include/errno.h \
+ C:/QNX650/target/qnx6/usr/include/sys/time.h \
+ C:/QNX650/target/qnx6/usr/include/sys/select.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../HAL/../Functor/CallBackThrower.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/../Controller/Communication.h
