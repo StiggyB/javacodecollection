@@ -98,7 +98,6 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 		return false;
 	}//if
 
-	std::cout << "new_element.id: "<< new_element.id << std::endl;
 	return new_element.id;
 }
 
@@ -249,7 +248,6 @@ int Timer::startAllTimer(){
 
 int Timer::stopTimerbyId(int id){
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		std::cout << "id: "<< funcp_list[i].id << std::endl;
 		if( funcp_list[i].id == id){
 
 			if( timer_delete( funcp_list[i].timer_id ) == -1){
