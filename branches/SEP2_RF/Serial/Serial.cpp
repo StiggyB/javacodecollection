@@ -212,6 +212,14 @@ void Serial::checkAck(){
 }
 
 void Serial::syncError(){
+	buildMessage(m, chid, coid, reactSerial, SENSOR,
+			r_msg->pulse.value.sival_int);
+	m->pulse.value.sival_int = STOP_BUTTON;
+
+	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+			sizeof(Message))) {
+		perror("Serial: failed to send Puls message to Sensor!");
+	}
 	cout << "Serial: ERROR - did not get a SYNC message" << endl;
 }
 
