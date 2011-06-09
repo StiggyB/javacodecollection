@@ -290,6 +290,18 @@ protected:
 	 */
 	bool sendPulses(CommunicatorType target, int number, int code, int value);
 	/**
+	 * Sends a Message.
+	 * \param msg Message which should be send.
+	 * \param rec Message where the answer should be received.
+	 * \returns bool, true if send successful
+	 */
+	bool sendMessage(Message *msg, Message * rec);
+	/**
+	 * Sends a Message with the in Message * m specified content and receives an answer.
+	 * \returns bool, true if send successful
+	 */
+	bool sendMessage();
+	/**
 	 * Sets up a communicator device (allocate memory, register and acquire a needed communication path);
 	 * \return bool, true if successful
 	 */
