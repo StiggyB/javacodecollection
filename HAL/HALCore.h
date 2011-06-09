@@ -143,7 +143,7 @@ enum Height {
  *
  */
 enum WPHeight{
-	PLANE_WP = 2715 , NORMAL_WP = 2472, POCKET_WP = 3514
+	PLANE_WP = 0xa9b , NORMAL_WP = 0x9a8, POCKET_WP = 0xdba
 };
 
 

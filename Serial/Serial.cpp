@@ -157,9 +157,9 @@ int Serial::send(int data, int lenBytes) {
 		locker.unlock();
 		return -1;
 	}else{
-		if(hasSettings){
+		/*if(hasSettings){
 			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 30);
-		}
+		}*/
 	}
 	locker.unlock();
 	return 0;
@@ -183,7 +183,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		if (*data == ACK) {
 			getAck = true;
 		}else{
-			send(ACK, sizeof(ACK));
+			//send(ACK, sizeof(ACK));
 		}
 		return 0;
 	}

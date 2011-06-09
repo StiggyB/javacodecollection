@@ -70,6 +70,7 @@ public:
 //	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
 	int startAllTimer();
 	int stopAll_actual_Timer();
+	long getSystemTime_ms();
 
 protected:
 	virtual void execute(void*);
@@ -120,7 +121,6 @@ private:
 	 */
 	Mutex locker;
 
-	long getSystemTime_ms();
 };
 
 /**
