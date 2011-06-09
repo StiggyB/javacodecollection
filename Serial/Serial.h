@@ -119,6 +119,7 @@ private:
 	void syncError();
 	void syncSend();
 	void syncReceive();
+	void syncRestart();
 	int syncId;
 	bool getSync;
 	bool getAck;
