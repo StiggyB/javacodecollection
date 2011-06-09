@@ -75,6 +75,8 @@ Test_Serial.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/Test_Serial.cpp \
  C:/QNX650/target/qnx6/usr/include/sys/stat.h \
  C:/QNX650/target/qnx6/usr/include/termios.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Controller/Communication.h \
  C:/QNX650/target/qnx6/usr/include/cpp/list \
  C:/QNX650/target/qnx6/usr/include/cpp/functional \
@@ -83,4 +85,19 @@ Test_Serial.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/Test_Serial.cpp \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Controller/../Thread/HAWThread.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Tests/test.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Functor/Callinterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Functor/CallBackThrower.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Serial/../Timer/../Functor/CallBackThrower.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/vector \
+ C:/QNX650/target/qnx6/usr/include/sys/time.h \
+ C:/QNX650/target/qnx6/usr/include/sys/select.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Tests/../Controller/Communication.h

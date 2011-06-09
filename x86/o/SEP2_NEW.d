@@ -55,103 +55,110 @@ SEP2_NEW.o: Z:/TI_Labor/QNX650/workspace/SEP2_RF/SEP2_NEW.cc \
  C:/QNX650/target/qnx6/usr/include/time.h \
  C:/QNX650/target/qnx6/usr/include/cpp/xlocinfo.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/StartThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Sensor.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/vector \
+ C:/QNX650/target/qnx6/usr/include/cpp/memory \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/list \
+ C:/QNX650/target/qnx6/usr/include/cpp/functional \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/HAWThread.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
+ C:/QNX650/target/qnx6/usr/include/pthread.h \
+ C:/QNX650/target/qnx6/usr/include/sys/cpuinline.h \
+ C:/QNX650/target/qnx6/usr/include/x86/cpuinline.h \
+ C:/QNX650/target/qnx6/usr/include/sched.h \
+ C:/QNX650/target/qnx6/usr/include/sys/types.h \
+ C:/QNX650/target/qnx6/usr/include/sys/storage.h \
+ C:/QNX650/target/qnx6/usr/include/x86/smpxchg.h \
+ C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
+ C:/QNX650/target/qnx6/usr/include/sys/states.h \
+ C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/HALCore.h \
  C:/QNX650/target/qnx6/usr/include/unistd.h \
  C:/QNX650/target/qnx6/usr/include/confname.h \
  C:/QNX650/target/qnx6/usr/include/process.h \
- C:/QNX650/target/qnx6/usr/include/cpp/vector \
- C:/QNX650/target/qnx6/usr/include/cpp/memory \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/HWaccess.h \
- C:/QNX650/target/qnx6/usr/include/sys/neutrino.h \
- C:/QNX650/target/qnx6/usr/include/sys/types.h \
- C:/QNX650/target/qnx6/usr/include/sched.h \
- C:/QNX650/target/qnx6/usr/include/sys/storage.h \
- C:/QNX650/target/qnx6/usr/include/sys/states.h \
- C:/QNX650/target/qnx6/usr/include/x86/neutrino.h \
  C:/QNX650/target/qnx6/usr/include/hw/inout.h \
  C:/QNX650/target/qnx6/usr/include/gulliver.h \
- C:/QNX650/target/qnx6/usr/include/sys/cpuinline.h \
- C:/QNX650/target/qnx6/usr/include/x86/cpuinline.h \
  C:/QNX650/target/qnx6/usr/include/x86/inout.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/Mutex.h \
- C:/QNX650/target/qnx6/usr/include/pthread.h \
- C:/QNX650/target/qnx6/usr/include/x86/smpxchg.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/HAWThread.h \
- C:/QNX650/target/qnx6/usr/include/cpp/iostream.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/Semaphor.h \
  C:/QNX650/target/qnx6/usr/include/semaphore.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/Condition.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Timer/../Functor/CallBackThrower.h \
+ C:/QNX650/target/qnx6/usr/include/errno.h \
+ C:/QNX650/target/qnx6/usr/include/sys/time.h \
+ C:/QNX650/target/qnx6/usr/include/sys/select.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Functor/CallBackThrower.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/Lampen.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../HAL/HALCore.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Controller/Communication.h \
- C:/QNX650/target/qnx6/usr/include/cpp/list \
- C:/QNX650/target/qnx6/usr/include/cpp/functional \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../HAL/../Controller/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/Puck_FSM.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../HAL/HALCore.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../HAL/Lampen.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/Serial.h \
+ C:/QNX650/target/qnx6/usr/include/fcntl.h \
+ C:/QNX650/target/qnx6/usr/include/sys/stat.h \
+ C:/QNX650/target/qnx6/usr/include/termios.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Controller/Communication.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Tests/test.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Functor/Callinterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Functor/CallBackThrower.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Serial/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Functor/Functor.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Functor/FunctorMaker.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Functor/CallInterface.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/../Functor/CallBackThrower.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/Puck_FSM_1.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/Puck_FSM.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../FSM/Puck_FSM_2.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Serial/Serial.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/test.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_M1.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Sensor.h \
+ C:/QNX650/target/qnx6/usr/include/cpp/string \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../HAL/HALCore.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Thread/HAWThread.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_FSM.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM_1.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM_2.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/Singleton_T.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/InterruptController.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/Mutex.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/CommunicationServer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Timer/Timer.h \
+ Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_M1.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_HAL.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_IRQ.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Serial.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Serial/Serial.h \
- C:/QNX650/target/qnx6/usr/include/errno.h \
- C:/QNX650/target/qnx6/usr/include/fcntl.h \
- C:/QNX650/target/qnx6/usr/include/sys/stat.h \
- C:/QNX650/target/qnx6/usr/include/termios.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Serial/../Thread/HAWThread.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Serial/../Controller/Communication.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Serial/../Tests/test.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Serial/../Thread/Mutex.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Controller/Communication.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Lights.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../HAL/Lampen.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Functor.h \
- C:/QNX650/target/qnx6/usr/include/cpp/string \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Functor/Functor.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Functor/CallInterface.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Functor/FunctorMaker.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Functor/CallInterface.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Thread/HAWThread.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Functions.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Sensor.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/HAWThread.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Serial/Serial.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Sensor.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_FSM.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/Communication.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../HAL/HALCore.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../HAL/Lampen.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Serial/Serial.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/Timer.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Thread/Mutex.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Thread/Singleton_T.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Thread/HAWThread.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Functor/Functor.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Functor/FunctorMaker.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Functor/CallInterface.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Timer/../Functor/CallBackThrower.h \
- C:/QNX650/target/qnx6/usr/include/sys/time.h \
- C:/QNX650/target/qnx6/usr/include/sys/select.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Functor/Functor.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Functor/FunctorMaker.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Functor/CallInterface.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/../Functor/CallBackThrower.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM_1.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../FSM/Puck_FSM_2.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/InterruptController.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/Mutex.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Thread/Singleton_T.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/CommunicationServer.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/Test_Timer.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Timer/Timer.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Tests/../Functor/CallBackThrower.h \
- Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/../Timer/Timer.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/Controller/InterruptController.h \
  Z:/TI_Labor/QNX650/workspace/SEP2_RF/HAL/HALCore.h
