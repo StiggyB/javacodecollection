@@ -42,8 +42,9 @@ void Puck_FSM::stop_signal(bool was_serial){
 
 }
 void Puck_FSM::reset_signal(bool was_serial){
-	//TODO implement reset
+	//TODO implement reset only in one system
 	if(!was_serial) serial->send(RESET_BUTTON, sizeof(int) );
+	reset_button_pushed();
 }
 void Puck_FSM::estop_in_signal(bool was_serial){
 	if(!was_serial) serial->send(E_STOP_PUSHED, sizeof(int) );
@@ -62,6 +63,8 @@ void Puck_FSM::estop_out_signal(bool was_serial){
 void Puck_FSM::isSlideFull() {
 	if( hc->checkSlide() ){
 		errorState();
+	} else {
+		delete_unnecessary_wp();
 	}
 }
 
@@ -207,7 +210,10 @@ void Puck_FSM::reset_button_pushed() {
 		delete_unnecessary_wp();
 		hc->engineContinue();
 		lamp->shine(GREEN);
+		errType = NO_ERROR;
 		break;
+	default:
+		cout << "No Error" << endl;
 	}
 }
 //Methods for class State

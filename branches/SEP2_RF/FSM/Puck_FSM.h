@@ -12,7 +12,7 @@
 #include "../Functor/CallInterface.h"
 #include "../Functor/CallBackThrower.h"
 
-//#define PUCK_FSM_STATE_DEBUG
+#define PUCK_FSM_STATE_DEBUG
 
 enum location_attribut {
 	ON_FIRST_LB,
@@ -29,6 +29,7 @@ enum location_attribut {
  * Faults while normal running in the Festo System.
  */
 enum ErrorType {
+	NO_ERROR,
 	WP_DISAPPEARED_B1,
 	WP_UNKOWN_B1,
 	WP_DISAPPEARED_B3,
