@@ -78,6 +78,7 @@ void Sensor::handleNormalMessage() {
 		if (!((val >> WP_E_STOP) & 1) && ((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button in" << endl;
 			running_mode = false;
+			l->removeLight(GREEN);
 			dummy_fsm->estop_in_signal(false);
 
 		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
@@ -91,16 +92,21 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: stop Button" << endl;
 			dummy_fsm->stop_signal(false);
 			running_mode = false;
+			l->removeLight(GREEN);
 
 		} else if ((val >> WP_START) & 1) {
 			cout << "Sensor: Start Button" << endl;
 			dummy_fsm->start_signal(false);
 			running_mode = true;
+			l->addLight(GREEN);
+
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
 			running_mode = true;
 			dummy_fsm->reset_signal(false);
+			l->addLight(GREEN);
+
 
 		}//if
 		last_Reg_State_C = val;
@@ -131,25 +137,30 @@ void Sensor::handleNormalMessage() {
 		} else if(val == E_STOP_PUSHED) {
 			cout << "Sensor: E_STOP_PUSHED" << endl;
 			running_mode = false;
+			l->removeLight(GREEN);
 			dummy_fsm->estop_in_signal(true);
 
 		} else if(val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			running_mode = true;
+			l->addLight(GREEN);
 			dummy_fsm->estop_out_signal(true);
 
 		} else if(val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
 			running_mode = false;
+			l->removeLight(GREEN);
 			dummy_fsm->stop_signal(true);
 
 		} else if(val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
+			l->addLight(GREEN);
 			dummy_fsm->start_signal(true);
 
 		} else if(val == RESET_BUTTON) {
 			running_mode = true;
+			l->addLight(GREEN);
 			cout << "Sensor: RESET_BUTTON" << endl;
 			dummy_fsm->reset_signal(true);
 		}//if
@@ -227,7 +238,7 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_B = val;
 	}//switch
-	cout << "Sensor: running_mode: " << running_mode << endl;
+	//cout << "Sensor: running_mode: " << running_mode << endl;
 
 #ifdef TEST_FSM
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
