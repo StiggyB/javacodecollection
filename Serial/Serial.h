@@ -42,6 +42,7 @@ enum msgType {
 	START_BUTTON,
 	RESET_BUTTON,
 	/* Serial communication */
+	SYNC,
 	SYNC_SIGNAL,
 	ACK_SYNC_SIGNAL,
 	ACK_INIT_SERIAL
@@ -49,6 +50,9 @@ enum msgType {
 
 
 #define DEBUG_SERIAL
+
+#define T_SYNC_ERROR 2000
+#define T_SYNC_SEND 1000
 
 /**
  * Interface for the Serial Connection
@@ -107,9 +111,16 @@ protected:
 private:
 	CallInterface<Serial, void>* check_ack;
 	CallInterface<Serial, void>* check_init_ack;
+	CallInterface<Serial, void>* sync_send;
+	CallInterface<Serial, void>* sync_error;
 	Timer* timer;
 	void checkAck();
 	void checkInit();
+	void syncError();
+	void syncSend();
+	void syncReceive();
+	int syncId;
+	bool getSync;
 	bool getAck;
 	unsigned int ack;
 	unsigned int msg;

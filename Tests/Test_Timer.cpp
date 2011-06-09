@@ -46,7 +46,7 @@ void Test_Timer::execute(void* data){
 	timer->addTimerFunction(openswitch, 2000);
 	int id = timer->addTimerFunction(closeswitch, 3500);
 
-	timer->stopTimerbyId(id);
+	timer->deleteTimer(id);
 	sleep(1);
 
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 2000);
