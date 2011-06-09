@@ -151,7 +151,6 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
 	fsm->starts_engine_if_nessecary();
-	fsm->delete_unnecessary_wp();
 	fsm->setCurrent(new FSM_1_wp_in_slide());
 
 }
@@ -192,6 +191,9 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_check_slide: errorState" << endl;
+#endif
 	fsm->errType = SLIDE_FULL_B6;
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
@@ -230,12 +232,12 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 //functions for durchschleusen_bei_LS3
 void FSM_1_ls_b3_passed_correct_height::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "FSM_1_ls_b3_passed_forward: entry" << endl;
+	cout << "FSM_1_ls_b3_passed_correct_height: entry" << endl;
 #endif
 }
 void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "FSM_1_ls_b3_passed_forward: LS_B7 wurde ausgelöst" << endl;
+	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
@@ -244,11 +246,13 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 	fsm->setCurrent(new FSM_1_end_state());
 }
 void FSM_1_ls_b3_passed_correct_height::errorState(Puck_FSM * fsm) {
-
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_ls_b3_passed_correct_height: errorState wurde ausgelöst" << endl;
+#endif
 }
 void FSM_1_ls_b3_passed_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "FSM_1_ls_b3_passed_forward: exit" << endl;
+	cout << "FSM_1_ls_b3_passed_correct_height: exit" << endl;
 #endif
 }
 
@@ -291,6 +295,9 @@ void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 	}
 }
 void FSM_1_ErrorState::reset_button_pushed(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "ErrorState: reset_button_pushed" << endl;
+#endif
 	fsm->setCurrent(/* errorType */NULL);
 }
 void FSM_1_ErrorState::exit(Puck_FSM * fsm) {

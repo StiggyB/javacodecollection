@@ -81,7 +81,8 @@ void Sensor::handleNormalMessage() {
 			l->removeLight(GREEN);
 			dummy_fsm->estop_in_signal(false);
 
-		} else if (((val >> WP_E_STOP) & 1)	&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
+		} else if (((val >> WP_E_STOP) & 1)
+				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
 
 			dummy_fsm->estop_out_signal(false);
@@ -100,13 +101,11 @@ void Sensor::handleNormalMessage() {
 			running_mode = true;
 			l->addLight(GREEN);
 
-
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
 			running_mode = true;
 			dummy_fsm->reset_signal(false);
 			l->addLight(GREEN);
-
 
 		}//if
 		last_Reg_State_C = val;
@@ -121,7 +120,7 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
 			dummy_fsm->puck_arrived();
 
-		}else if(val == REQUEST_FREE) {
+		} else if (val == REQUEST_FREE) {
 			cout << "Sensor: REQUEST_FREE" << endl;
 			wp_list.push_back(new Puck_FSM_2(&wp_list));
 			dummy_fsm->requestfromMachine1();
@@ -130,35 +129,35 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: POCKET" << endl;
 			dummy_fsm->PuckhasPocket();
 
-		} else if(val == NO_POCKET) {
+		} else if (val == NO_POCKET) {
 			cout << "Sensor: NO_POCKET" << endl;
 			dummy_fsm->PuckhasnoPocket();
 
-		} else if(val == E_STOP_PUSHED) {
+		} else if (val == E_STOP_PUSHED) {
 			cout << "Sensor: E_STOP_PUSHED" << endl;
 			running_mode = false;
 			l->removeLight(GREEN);
 			dummy_fsm->estop_in_signal(true);
 
-		} else if(val == E_STOP_PULLED) {
+		} else if (val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			running_mode = true;
 			l->addLight(GREEN);
 			dummy_fsm->estop_out_signal(true);
 
-		} else if(val == STOP_BUTTON) {
+		} else if (val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
 			running_mode = false;
 			l->removeLight(GREEN);
 			dummy_fsm->stop_signal(true);
 
-		} else if(val == START_BUTTON) {
+		} else if (val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
 			l->addLight(GREEN);
 			dummy_fsm->start_signal(true);
 
-		} else if(val == RESET_BUTTON) {
+		} else if (val == RESET_BUTTON) {
 			running_mode = true;
 			l->addLight(GREEN);
 			cout << "Sensor: RESET_BUTTON" << endl;
@@ -167,16 +166,17 @@ void Sensor::handleNormalMessage() {
 		break;
 
 	case INTERRUPT_D_PORT_B:
-		if(!running_mode) return;
+		if (!running_mode)
+			return;
 
 		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
 			cout << "Sensor: in" << endl;
-				#ifdef PUCK_FSM_1
-					wp_list.push_back(new Puck_FSM_1(&wp_list));
-				#endif
+#ifdef PUCK_FSM_1
+			wp_list.push_back(new Puck_FSM_1(&wp_list));
+#endif
 
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == ON_FIRST_LB){
+				if (wp_list[i]->location == ON_FIRST_LB) {
 					wp_list[i]->ls_b0();
 					break;
 				}//if
@@ -187,7 +187,7 @@ void Sensor::handleNormalMessage() {
 				& 1)) {
 			cout << "Sensor: in height measure " << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == AFTER_FIRST_LB){
+				if (wp_list[i]->location == AFTER_FIRST_LB) {
 					wp_list[i]->ls_b1();
 					break;
 				}//if
@@ -198,7 +198,7 @@ void Sensor::handleNormalMessage() {
 				& 1)) {
 			cout << "Sensor: in metal measure" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == AFTER_HEIGH_MEASURE){
+				if (wp_list[i]->location == AFTER_HEIGH_MEASURE) {
 					wp_list[i]->ls_b3();
 					break;
 				}//if
@@ -209,18 +209,29 @@ void Sensor::handleNormalMessage() {
 				& 1)) {
 			cout << "Sensor: in slide" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == AFTER_METAL_SENSOR_SORT_OUT){
+				if (wp_list[i]->location == AFTER_METAL_SENSOR_SORT_OUT) {
 					wp_list[i]->ls_b6();
 					break;
 				}//if
 			}//for
+		}
 
+		if (((val >> WP_IN_SLIDE) & 1) && !((last_Reg_State_B >> WP_IN_SLIDE)
+				& 1)) {
+			cout << "Sensor: work piece in slide removed" << endl;
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				if (wp_list[i]->location == SORT_OUT) {
+					cout << wp_list.size() << endl;
+					wp_list[i]->ls_b6();
+					break;
+				}//if
+			}//for
 		}
 
 		if (!((val >> WP_OUTLET) & 1) && ((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band in" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == AFTER_METAL_SENSOR_FORWARD){
+				if (wp_list[i]->location == AFTER_METAL_SENSOR_FORWARD) {
 					wp_list[i]->ls_b7_in();
 					break;
 				}//if
@@ -230,7 +241,7 @@ void Sensor::handleNormalMessage() {
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if(wp_list[i]->location == ON_LAST_LB){
+				if (wp_list[i]->location == ON_LAST_LB) {
 					wp_list[i]->ls_b7_out();
 					break;
 				}//if
