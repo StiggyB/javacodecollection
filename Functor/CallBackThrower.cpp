@@ -8,10 +8,9 @@
 #include "CallBackThrower.h"
 
 CallBackThrower::CallBackThrower() {
-	// TODO Auto-generated constructor stub
 
 }
 
 CallBackThrower::~CallBackThrower() {
-	// TODO Auto-generated destructor stub
+
 }

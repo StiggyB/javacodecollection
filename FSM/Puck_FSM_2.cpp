@@ -125,7 +125,7 @@ void FSM_2_in_metal_measure :: entry(Puck_FSM * fsm){
 		if( fsm->hc->isMetal() )cout << "isMetal" << endl;
 		if( fsm->hasPocket ) cout << "pocket" << endl;
 		#endif
-		fsm->location = AFTER_METAL_SENSOR_SORT_OUT;
+		fsm->location = AFTER_METAL_SENSOR;
 		fsm->setCurrent(new FSM_2_after_metal_measure_uncorrect_wp() );
 	}
 }
@@ -271,10 +271,10 @@ void FSM_2_ErrorState :: exit(Puck_FSM * fsm){
 	#endif
 }
 
-//TODO lookup a better position (redundant)
-void Puck_FSM_2::checkSlide() {
-	if( hc->checkSlide() ){
-		setCurrent( new FSM_2_ErrorState() );
-	}
-}
+// lookup a better position (redundant) - necessary any more? TMP
+//void Puck_FSM_2::checkSlide() {
+//	if( hc->checkSlide() ){
+//		setCurrent( new FSM_2_ErrorState() );
+//	}
+//}
 

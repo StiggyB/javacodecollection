@@ -14,11 +14,12 @@
 
 #define PUCK_FSM_STATE_DEBUG
 
+//TODO Test the reference timer then implement the rest!
 enum location_attribut {
 	ON_FIRST_LB,
 	AFTER_FIRST_LB,
 	AFTER_HEIGH_MEASURE,
-	AFTER_METAL_SENSOR_SORT_OUT,
+	AFTER_METAL_SENSOR,
 	SORT_OUT,
 	AFTER_METAL_SENSOR_FORWARD,
 	ON_LAST_LB,
@@ -34,10 +35,29 @@ enum ErrorType {
 	WP_UNKOWN_B1,
 	WP_DISAPPEARED_B3,
 	WP_UNKOWN_B3,
+	WP_DISAPPEARED_B6,
+	WP_UNKOWN_B6,
+	SLIDE_FULL_B6,
 	WP_DISAPPEARED_B7,
-	WP_UNKOWN_B7,
-	SLIDE_FULL_B6
+	WP_UNKOWN_B7
 	/*...*/
+};
+
+/**
+ * Allocated time for the sectors in ms.
+ * (note: this are inexact values)
+ *
+ */
+//TODO Set exact values with min/max tolerance.
+enum ReferenceTime {
+	MIN_TIME_B1 = 3000,
+	MAX_TIME_B1,
+	MIN_TIME_B3 = 2000,
+	MAX_TIME_B3,
+	MIN_TIME_B6 = 2500,
+	MAX_TIME_B6,
+	MIN_TIME_B7 = 3000,
+	MAX_TIME_B7,
 };
 
 /**
@@ -126,6 +146,14 @@ public:
 	 */
 	ErrorType errType;
 	/**
+	 * Actual max timer id
+	 */
+	int maxTimerId;
+	/**
+	 * Actual min timer id
+	 */
+	int minTimerId;
+	/**
 	 * Instance for lamp in error state
 	 */
 	Lampen *lamp;
@@ -133,9 +161,13 @@ public:
 	 * Instance for HW control
 	 */
 	HALCore *hc;
-
+	/**
+	 * Instance for the Timer
+	 */
 	Timer *timer;
-
+	/**
+	 * Instance for the Serial interface
+	 */
 	Serial* serial;
 
 	location_attribut location;
@@ -148,6 +180,8 @@ public:
 	void puck_arrived();
 	void machine2_free();
 	void isSlideFull();
+	int setErrorStateTimer(ReferenceTime allocTime);
+	void selectErrorState(Timer* currentTimer);
 	void puck_fsm2_outgoing();
 	void start_signal(bool was_serial);
 	void stop_signal(bool was_serial);

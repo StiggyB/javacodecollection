@@ -5,7 +5,7 @@
 #include <iostream.h>
 #include "Puck_FSM.h"
 
-#define PUCK_FSM_1_DEBUG
+//#define PUCK_FSM_1_DEBUG
 /**
  * Puck_FSM
  *
@@ -26,7 +26,7 @@ class Puck_FSM_1: public Puck_FSM {
 public:
 	Puck_FSM_1(std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_1();
-	void isSlideFull();
+//	void isSlideFull();
 };
 
 class FSM_1_start_state: public State {

@@ -22,8 +22,6 @@ Puck_FSM_1::~Puck_FSM_1() {
 }
 
 Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
-	//	hc = HALCore::getInstance();
-	//	serial = Serial::getInstance();
 	puck_list = puck_listobj;
 	current = new FSM_1_start_state;
 	current->entry(this);
@@ -41,12 +39,12 @@ void FSM_1_start_state::entry(Puck_FSM * fsm) {
 	fsm->engine_should_be_started = true;
 }
 void FSM_1_start_state::ls_b0(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_start_state: LS_B0 wurde ausgelöst" << endl;
-
+#endif
 	if (fsm->check_last_lb() == 0) {
 		fsm->setCurrent(new FSM_1_after_ls_b0());
 	}//if
-
 }
 void FSM_1_start_state::ls_b7_out(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -62,6 +60,9 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_start_state: exit" << endl;
 #endif
+	//Callback in errorState in reference time x
+	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B1);
+	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 }
 
 //functions for Band1_aufgelegt
@@ -88,6 +89,9 @@ void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
 
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure::entry(Puck_FSM * fsm) {
+	//delete timer
+	fsm->timer->deleteTimer(fsm->minTimerId);
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	int height = fsm->hc->identifyHeight();
 	fsm->location = AFTER_HEIGH_MEASURE;
 
@@ -106,12 +110,17 @@ void FSM_1_height_measure::entry(Puck_FSM * fsm) {
 	}//if
 }
 void FSM_1_height_measure::errorState(Puck_FSM * fsm) {
-
+	//TODO 0 prio -- implement function which react if the disappeared wp is back!
+	fsm->selectErrorState(fsm->timer);
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_height_measure: exit" << endl;
 #endif
+	//Callback in errorState in reference time x
+	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
+	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
 }
 
 //functions for ausschleusen
@@ -124,7 +133,11 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-	fsm->location = AFTER_METAL_SENSOR_SORT_OUT;
+	//delete timer
+	fsm->timer->deleteTimer(fsm->minTimerId);
+	fsm->timer->deleteTimer(fsm->maxTimerId);
+
+	fsm->location = AFTER_METAL_SENSOR;
 	fsm->hc->engineReset();
 	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
@@ -135,6 +148,8 @@ void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
 #endif
+	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
+	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
 }
 
 //functions for Weiche_zu
@@ -147,12 +162,13 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
+	fsm->timer->deleteTimer(fsm->minTimerId);
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
 	fsm->starts_engine_if_nessecary();
 	fsm->setCurrent(new FSM_1_wp_in_slide());
-
 }
 void FSM_1_ls_b3_passed_sort_out::errorState(Puck_FSM * fsm) {
 
@@ -215,6 +231,10 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
+	//delete timer
+	fsm->timer->deleteTimer(fsm->minTimerId);
+	fsm->timer->deleteTimer(fsm->maxTimerId);
+
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
 	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_correct_height());
@@ -227,6 +247,8 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
+	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
 }
 
 //functions for durchschleusen_bei_LS3
@@ -239,6 +261,8 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
+	fsm->timer->deleteTimer(fsm->minTimerId);
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;
