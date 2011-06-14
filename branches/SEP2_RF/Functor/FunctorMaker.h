@@ -32,7 +32,7 @@ public:
 	 * \return Function pointer from type CallInterface<T, R, P>.
 	 */
 	static CallInterface<T, R>* makeFunctor(T* pMemObj, R(T::*objFuncp)()) {
-		return new Functor<T, R> (pMemObj, objFuncp);
+		return new Functor<T, R>(pMemObj, objFuncp);
 	}
 };
 

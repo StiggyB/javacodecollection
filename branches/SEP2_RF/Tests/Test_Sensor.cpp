@@ -148,7 +148,7 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 		}
 		break;
 	case INTERRUPT_D_PORT_C_HIGH:
-		//TODO 0prio -- how to? only one test per push!
+
 		if (!(value & BIT_E_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED) || (last_state_C == BIT_STOP_PUSHED))) {
 			res = (*cc).read(PORT_C);
 			success &= assert_equals("C(7)", (res & BIT_E_STOP)+1, BIT_E_STOP_PUSHED); //implement test for BIT_E_STOP_LOST
@@ -164,7 +164,7 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 			test_isSuccessful(success);
 			success = true;
 
-		} else if (!(value & BIT_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED))) { //TODO 0prio -- 2 tests (push/lost button) -> only 1 test
+		} else if (!(value & BIT_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED))) {
 			res = (*cc).read(PORT_C);
 			success &= assert_equals("C(5)", (res & BIT_STOP), BIT_STOP_PUSHED);
 			(*cc).stopMachine();

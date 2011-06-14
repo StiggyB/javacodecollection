@@ -209,7 +209,7 @@ void Sensor::handleNormalMessage() {
 				& 1)) {
 			cout << "Sensor: in slide" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if (wp_list[i]->location == AFTER_METAL_SENSOR_SORT_OUT) {
+				if (wp_list[i]->location == AFTER_METAL_SENSOR) {
 					wp_list[i]->ls_b6();
 					break;
 				}//if
