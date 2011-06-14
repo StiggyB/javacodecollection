@@ -63,6 +63,7 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B1);
 	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
+	fsm->expectedLocation = AFTER_FIRST_LB;
 }
 
 //functions for Band1_aufgelegt
@@ -80,6 +81,11 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
 	fsm->setCurrent(new FSM_1_height_measure());
+}
+void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
+	//TODO 0 prio -- implement function which react if the disappeared wp is back!
+	fsm->selectErrorState(fsm->timer);
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -119,8 +125,8 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	cout << "FSM_1_height_measure: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
-	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
+//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
+//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
 }
 
 //functions for ausschleusen
@@ -134,8 +140,8 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
 	//delete timer
-	fsm->timer->deleteTimer(fsm->minTimerId);
-	fsm->timer->deleteTimer(fsm->maxTimerId);
+//	fsm->timer->deleteTimer(fsm->minTimerId);
+//	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR;
 	fsm->hc->engineReset();
@@ -148,8 +154,8 @@ void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
 #endif
-	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
-	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
+//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
+//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
 }
 
 //functions for Weiche_zu
@@ -162,8 +168,8 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
-	fsm->timer->deleteTimer(fsm->minTimerId);
-	fsm->timer->deleteTimer(fsm->maxTimerId);
+//	fsm->timer->deleteTimer(fsm->minTimerId);
+//	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
@@ -203,7 +209,7 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->timer->addTimerFunction(checkSlide, 500);
+	fsm->timer->addTimerFunction(checkSlide, 2000);
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
@@ -232,8 +238,8 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
 	//delete timer
-	fsm->timer->deleteTimer(fsm->minTimerId);
-	fsm->timer->deleteTimer(fsm->maxTimerId);
+//	fsm->timer->deleteTimer(fsm->minTimerId);
+//	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
 	fsm->hc->openSwitch();
@@ -247,8 +253,8 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
-	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
+//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
 }
 
 //functions for durchschleusen_bei_LS3
@@ -261,8 +267,8 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
-	fsm->timer->deleteTimer(fsm->minTimerId);
-	fsm->timer->deleteTimer(fsm->maxTimerId);
+//	fsm->timer->deleteTimer(fsm->minTimerId);
+//	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;

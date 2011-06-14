@@ -154,6 +154,14 @@ public:
 	 */
 	int minTimerId;
 	/**
+	 *
+	 */
+	location_attribut expectedLocation;
+	/**
+	 *
+	 */
+	bool checked_to_early;
+	/**
 	 * Instance for lamp in error state
 	 */
 	Lampen *lamp;
@@ -181,6 +189,8 @@ public:
 	void machine2_free();
 	void isSlideFull();
 	int setErrorStateTimer(ReferenceTime allocTime);
+	int setCheckLocationTimer(ReferenceTime refTime);
+	void checkLocation();
 	void selectErrorState(Timer* currentTimer);
 	void puck_fsm2_outgoing();
 	void start_signal(bool was_serial);

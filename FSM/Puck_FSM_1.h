@@ -5,7 +5,7 @@
 #include <iostream.h>
 #include "Puck_FSM.h"
 
-//#define PUCK_FSM_1_DEBUG
+#define PUCK_FSM_1_DEBUG
 /**
  * Puck_FSM
  *
@@ -41,6 +41,7 @@ class FSM_1_after_ls_b0: public State {
 public:
 	void entry(Puck_FSM * fsm);
 	void ls_b1(Puck_FSM * fsm);
+	void errorState(Puck_FSM * fsm);
 	void exit(Puck_FSM * fsm);
 };
 

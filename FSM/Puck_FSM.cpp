@@ -65,24 +65,43 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
+		cout << "errorState" << endl;
 		errorState();
 	} else {
+		cout << "delete_wp" << endl;
 		delete_unnecessary_wp();
 	}
 }
 
+int Puck_FSM::setCheckLocationTimer(ReferenceTime refTime) {
+	CallInterface<CallBackThrower, void>* callCheckLocatio = (CallInterface<
+			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
+			this, &Puck_FSM::checkLocation);
+	return timer->addTimerFunction(callCheckLocatio, refTime);
+}
 int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callErrorState = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
-			this, &Puck_FSM::errorState);
+			this, &Puck_FSM::errorState); //not sure which state !
 	return timer->addTimerFunction(callErrorState, refTime);
 }
 
-void Puck_FSM::selectErrorState(Timer* currentTimer) {
-	if (/*currentTimer->getId() == fsm->minTimerId*/true) {
 
+
+void Puck_FSM::checkLocation() {
+	if(expectedLocation == location) {
+		checked_to_early = true;
+		errorState();
+	}
+}
+
+void Puck_FSM::selectErrorState(Timer* currentTimer) {
+	if (checked_to_early == true) {
+		checked_to_early = false;
 		//TODO 0 prio --Lookup the specific location in difference
 		// of disappeared or unknown!
+
+		//TODO 0prio -- implement switch!
 		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_DISAPPEARED_B1;
@@ -99,8 +118,24 @@ void Puck_FSM::selectErrorState(Timer* currentTimer) {
 		default:
 			cout << "No ErrorState defined!" << endl;
 		}
-	} else {
 		cout << "Unknown ErrorState!" << endl;
+	} else {
+		switch (location) {
+		case AFTER_FIRST_LB:
+			errType = WP_DISAPPEARED_B1;
+			break;
+		case AFTER_HEIGH_MEASURE:
+			errType = WP_DISAPPEARED_B3;
+			break;
+		case AFTER_METAL_SENSOR:
+			errType = WP_DISAPPEARED_B6;
+			break;
+		case AFTER_METAL_SENSOR_FORWARD:
+			errType = WP_DISAPPEARED_B7;
+			break;
+		default:
+			cout << "No ErrorState defined!" << endl;
+		}
 	}
 }
 
