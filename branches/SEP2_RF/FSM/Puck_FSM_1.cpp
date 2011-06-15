@@ -321,6 +321,8 @@ void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 	cout << "ErrorState: LS_B6" << endl;
 #endif
 	if(fsm->hc->checkSlide() == false) {
+		//should be work without removeLight or need removeAll
+		fsm->removeAllLights();
 		fsm->lamp->flash(1000, RED);
 	}
 }
