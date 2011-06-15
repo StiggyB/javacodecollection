@@ -93,7 +93,7 @@ void Puck_FSM::removeAllLights() {
 }
 
 void Puck_FSM::checkLocation() {
-	if(expectedLocation == location) {
+	if(expectedLocation != location) {
 		checked_to_early = true;
 		errorState();
 	}
@@ -108,7 +108,7 @@ void Puck_FSM::selectErrorState(Timer* currentTimer) {
 		//TODO 0 prio --Lookup the specific location in difference
 		// of disappeared or unknown!
 
-		//TODO 0prio -- implement switch!
+		//TODO 0prio -- implement correct locations!
 		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
@@ -201,6 +201,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 
 void Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
+	//TODO -1prio --should be true since errorState::entry() but is false!
 	cout << "errorNoticed: " << errorNoticed << endl;
 	if (errorNoticed == false) { 			//-- new
 		for (unsigned int i = 0; i < puck_list->size(); i++) {

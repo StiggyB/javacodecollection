@@ -26,7 +26,6 @@ class Puck_FSM_1: public Puck_FSM {
 public:
 	Puck_FSM_1(std::vector<Puck_FSM*>* puck_list);
 	virtual ~Puck_FSM_1();
-//	void isSlideFull();
 };
 
 class FSM_1_start_state: public State {
@@ -56,6 +55,7 @@ class FSM_1_sort_out: public State {
 public:
 	void entry(Puck_FSM * fsm);
 	void ls_b3(Puck_FSM * fsm);
+	void errorState(Puck_FSM * fsm);
 	void exit(Puck_FSM * fsm);
 };
 
@@ -77,14 +77,15 @@ public:
 class FSM_1_check_slide: public State {
 public:
 	void entry(Puck_FSM * fsm);
-	void exit(Puck_FSM * fsm);
 	void errorState(Puck_FSM * fsm);
+	void exit(Puck_FSM * fsm);
 };
 
 class FSM_1_correct_height: public State {
 public:
 	void entry(Puck_FSM * fsm);
 	void ls_b3(Puck_FSM * fsm);
+	void errorState(Puck_FSM * fsm);
 	void exit(Puck_FSM * fsm);
 };
 
