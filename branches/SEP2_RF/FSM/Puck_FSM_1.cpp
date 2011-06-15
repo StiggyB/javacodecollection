@@ -83,6 +83,9 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 	fsm->setCurrent(new FSM_1_height_measure());
 }
 void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_after_ls_b0: errorState" << endl;
+#endif
 	//TODO 0 prio -- implement function which react if the disappeared wp is back!
 	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
@@ -116,6 +119,9 @@ void FSM_1_height_measure::entry(Puck_FSM * fsm) {
 	}//if
 }
 void FSM_1_height_measure::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_height_measure: errorState" << endl;
+#endif
 	//TODO 0 prio -- implement function which react if the disappeared wp is back!
 	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
@@ -173,11 +179,15 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
+	//TODO 0prio --This method call could start the band - global errorState var necessary
 	fsm->starts_engine_if_nessecary();
 	fsm->setCurrent(new FSM_1_wp_in_slide());
 }
 void FSM_1_ls_b3_passed_sort_out::errorState(Puck_FSM * fsm) {
-
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_ls_b3_passed: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_ls_b3_passed_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -193,7 +203,10 @@ void FSM_1_wp_in_slide::entry(Puck_FSM * fsm) {
 	fsm->setCurrent(new FSM_1_check_slide());
 }
 void FSM_1_wp_in_slide::errorState(Puck_FSM * fsm) {
-
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_wp_in_slide: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_wp_in_slide::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -277,8 +290,9 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 }
 void FSM_1_ls_b3_passed_correct_height::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "FSM_1_ls_b3_passed_correct_height: errorState wurde ausgelöst" << endl;
+	cout << "FSM_1_ls_b3_passed_correct_height: errorState" << endl;
 #endif
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_ls_b3_passed_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -300,7 +314,10 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 	fsm->starts_engine_if_nessecary();
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {
-
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_end_state: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_end_state::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -313,7 +330,11 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "ErrorState: entry" << endl;
 #endif
+	//avoid a new puck creation - need something like running_mode
+	fsm->errorNoticed = true;
+	cout << "fsm->errorNoticed = true: " << fsm->errorNoticed << endl;
 	fsm->hc->engineStop();
+	fsm->removeAllLights();
 	fsm->lamp->flash(500, RED);
 }
 void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
