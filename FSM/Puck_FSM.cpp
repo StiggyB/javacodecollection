@@ -86,7 +86,11 @@ int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	return timer->addTimerFunction(callErrorState, refTime);
 }
 
-
+void Puck_FSM::removeAllLights() {
+	lamp->removeLight(GREEN);
+	lamp->removeLight(YELLOW);
+	lamp->removeLight(RED);
+}
 
 void Puck_FSM::checkLocation() {
 	if(expectedLocation == location) {
@@ -104,16 +108,16 @@ void Puck_FSM::selectErrorState(Timer* currentTimer) {
 		//TODO 0prio -- implement switch!
 		switch (location) {
 		case AFTER_FIRST_LB:
-			errType = WP_DISAPPEARED_B1;
+			errType = WP_UNKOWN_B1;
 			break;
 		case AFTER_HEIGH_MEASURE:
-			errType = WP_DISAPPEARED_B3;
+			errType = WP_UNKOWN_B3;
 			break;
 		case AFTER_METAL_SENSOR:
-			errType = WP_DISAPPEARED_B6;
+			errType = WP_UNKOWN_B6;
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
-			errType = WP_DISAPPEARED_B7;
+			errType = WP_UNKOWN_B7;
 			break;
 		default:
 			cout << "No ErrorState defined!" << endl;

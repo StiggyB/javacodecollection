@@ -190,6 +190,7 @@ public:
 	void isSlideFull();
 	int setErrorStateTimer(ReferenceTime allocTime);
 	int setCheckLocationTimer(ReferenceTime refTime);
+	void removeAllLights();
 	void checkLocation();
 	void selectErrorState(Timer* currentTimer);
 	void puck_fsm2_outgoing();
