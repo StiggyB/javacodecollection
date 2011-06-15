@@ -51,13 +51,14 @@ enum ErrorType {
 //TODO Set exact values with min/max tolerance.
 enum ReferenceTime {
 	MIN_TIME_B1 = 3000,
-	MAX_TIME_B1,
+	MAX_TIME_B1 = 3000,
 	MIN_TIME_B3 = 2000,
-	MAX_TIME_B3,
+	MAX_TIME_B3 = 2000,
 	MIN_TIME_B6 = 2500,
-	MAX_TIME_B6,
+	MAX_TIME_B6 = 2500,
 	MIN_TIME_B7 = 3000,
-	MAX_TIME_B7,
+	MAX_TIME_B7 = 3000,
+	MAX_TIME_IN_SLIDE = 2000
 };
 
 /**

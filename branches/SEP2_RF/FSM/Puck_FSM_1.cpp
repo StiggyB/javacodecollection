@@ -86,7 +86,7 @@ void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: errorState" << endl;
 #endif
-	//TODO 0 prio -- implement function which react if the disappeared wp is back!
+	//TODO 0 prio --implement function which react if the disappeared wp is back!
 	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
@@ -122,7 +122,7 @@ void FSM_1_height_measure::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_height_measure: errorState" << endl;
 #endif
-	//TODO 0 prio -- implement function which react if the disappeared wp is back!
+	//TODO 0 prio --implement function which react if the disappeared wp is back!
 	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
@@ -133,6 +133,11 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
+	if(/*fsm->current == FSM_1_sort_out*/ true) {
+		fsm->expectedLocation = AFTER_METAL_SENSOR;
+	} else {
+		fsm->expectedLocation = AFTER_METAL_SENSOR_FORWARD;
+	}
 }
 
 //functions for ausschleusen
@@ -156,12 +161,20 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 	fsm->lamp->shine(YELLOW);
 	fsm->setCurrent(new FSM_1_ls_b3_passed_sort_out());
 }
+void FSM_1_sort_out::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_sort_out: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_1_ErrorState());
+}
+
 void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
 #endif
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
+	fsm->expectedLocation = SORT_OUT;
 }
 
 //functions for Weiche_zu
@@ -222,7 +235,7 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->timer->addTimerFunction(checkSlide, 2000);
+	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE);
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
@@ -258,6 +271,13 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_correct_height());
 }
+void FSM_1_correct_height::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_1_DEBUG
+	cout << "FSM_1_correct_height: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_1_ErrorState());
+}
+
 void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: exit" << endl;
@@ -268,6 +288,7 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+	fsm->expectedLocation = ON_LAST_LB;
 }
 
 //functions for durchschleusen_bei_LS3
