@@ -154,11 +154,11 @@ public:
 	 */
 	int minTimerId;
 	/**
-	 *
+	 * Used as a compare variable for expected location
 	 */
 	location_attribut expectedLocation;
 	/**
-	 *
+	 * Flag is true if a work piece arrives to early
 	 */
 	bool checked_to_early;
 	/**

@@ -100,6 +100,9 @@ void Puck_FSM::checkLocation() {
 }
 
 void Puck_FSM::selectErrorState(Timer* currentTimer) {
+	cout << "errorNoticed = true: " << errorNoticed << endl;
+	errorNoticed = true;
+	cout << "errorNoticed = true: " << errorNoticed << endl;
 	if (checked_to_early == true) {
 		checked_to_early = false;
 		//TODO 0 prio --Lookup the specific location in difference
@@ -168,6 +171,7 @@ void Puck_FSM::reset_button_pushed() {
 	case SLIDE_FULL_B6:
 		delete_unnecessary_wp();
 		hc->engineContinue();
+		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
 		break;
@@ -197,15 +201,18 @@ void Puck_FSM::delete_unnecessary_wp() {
 
 void Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->engine_should_be_started) {
-			cout << "A PUCK NEED ENGINE" << endl;
-			active_state = 1;
+	cout << "errorNoticed: " << errorNoticed << endl;
+	if (errorNoticed == false) { 			//-- new
+		for (unsigned int i = 0; i < puck_list->size(); i++) {
+			if ((*puck_list)[i]->engine_should_be_started) {
+				cout << "A PUCK NEED ENGINE" << endl;
+				active_state = 1;
+			}
 		}
-	}
-	if (active_state == 1) {
-		hc->engineContinue();
-		hc->engineRight();
+		if (active_state == 1) {
+			hc->engineContinue();
+			hc->engineRight();
+		}
 	}
 }
 
