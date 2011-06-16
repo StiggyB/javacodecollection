@@ -60,10 +60,13 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_start_state: exit" << endl;
 #endif
+
 	//Callback in errorState in reference time x
-	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B1);
-	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
+	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B1);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 	fsm->expectedLocation = AFTER_FIRST_LB;
+	cout << "minID: " << fsm->minTimerId << endl;
+	cout << "maxID: " << fsm->maxTimerId << endl;
 }
 
 //functions for Band1_aufgelegt
@@ -87,7 +90,6 @@ void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
 	cout << "FSM_1_after_ls_b0: errorState" << endl;
 #endif
 	//TODO 0 prio --implement function which react if the disappeared wp is back!
-	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
@@ -99,7 +101,7 @@ void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure::entry(Puck_FSM * fsm) {
 	//delete timer
-	fsm->timer->deleteTimer(fsm->minTimerId);
+//	fsm->timer->deleteTimer(fsm->minTimerId);
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	int height = fsm->hc->identifyHeight();
 	fsm->location = AFTER_HEIGH_MEASURE;
@@ -123,7 +125,6 @@ void FSM_1_height_measure::errorState(Puck_FSM * fsm) {
 	cout << "FSM_1_height_measure: errorState" << endl;
 #endif
 	//TODO 0 prio --implement function which react if the disappeared wp is back!
-	fsm->selectErrorState(fsm->timer);
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_height_measure::exit(Puck_FSM * fsm) {
@@ -133,11 +134,11 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
-	if(/*fsm->current == FSM_1_sort_out*/ true) {
-		fsm->expectedLocation = AFTER_METAL_SENSOR;
-	} else {
-		fsm->expectedLocation = AFTER_METAL_SENSOR_FORWARD;
-	}
+//	if(/*fsm->current == FSM_1_sort_out*/ false) {
+//		fsm->expectedLocation = AFTER_METAL_SENSOR;
+//	} else {
+//		fsm->expectedLocation = AFTER_METAL_SENSOR_FORWARD;
+//	}
 }
 
 //functions for ausschleusen
@@ -174,7 +175,7 @@ void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #endif
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
-	fsm->expectedLocation = SORT_OUT;
+//	fsm->expectedLocation = SORT_OUT;
 }
 
 //functions for Weiche_zu
@@ -288,7 +289,7 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
 //	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
 //	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
-	fsm->expectedLocation = ON_LAST_LB;
+//	fsm->expectedLocation = ON_LAST_LB;
 }
 
 //functions for durchschleusen_bei_LS3
@@ -352,11 +353,12 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 	cout << "ErrorState: entry" << endl;
 #endif
 	//avoid a new puck creation - need something like running_mode
-	fsm->errorNoticed = true;
-	cout << "fsm->errorNoticed = true: " << fsm->errorNoticed << endl;
+	fsm->setErrorNoticed(true);
+	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
 	fsm->removeAllLights();
 	fsm->lamp->flash(500, RED);
+	fsm->selectErrorState();
 }
 void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -368,11 +370,13 @@ void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 		fsm->lamp->flash(1000, RED);
 	}
 }
-void FSM_1_ErrorState::reset_button_pushed(Puck_FSM * fsm) {
+void FSM_1_ErrorState::reset(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "ErrorState: reset_button_pushed" << endl;
 #endif
-	fsm->setCurrent(/* errorType */NULL);
+	fsm->lamp->flash(1000, RED);
+	fsm->noticed_error_confirmed();
+//	fsm->setCurrent(/* errorType */NULL);
 }
 void FSM_1_ErrorState::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG

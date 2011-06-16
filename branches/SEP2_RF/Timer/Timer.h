@@ -64,7 +64,7 @@ public:
 	 * \return a bool, true if action was successful, false if not.
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
-	bool addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
+	int addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
 	int deleteTimer(int id);
 
 //	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);

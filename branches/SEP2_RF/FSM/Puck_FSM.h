@@ -1,4 +1,3 @@
-
 #ifndef IPUCK_FSM_H_
 #define IPUCK_FSM_H_
 
@@ -40,7 +39,7 @@ enum ErrorType {
 	SLIDE_FULL_B6,
 	WP_DISAPPEARED_B7,
 	WP_UNKOWN_B7
-	/*...*/
+/*...*/
 };
 
 /**
@@ -50,7 +49,7 @@ enum ErrorType {
  */
 //TODO Set exact values with min/max tolerance.
 enum ReferenceTime {
-	MIN_TIME_B1 = 3000,
+	MIN_TIME_B1 = 2000,
 	MAX_TIME_B1 = 3000,
 	MIN_TIME_B3 = 2000,
 	MAX_TIME_B3 = 2000,
@@ -77,7 +76,7 @@ enum ReferenceTime {
  *
  *
  */
-class Puck_FSM : public CallBackThrower{
+class Puck_FSM: public CallBackThrower {
 public:
 	/**
 	 * Pointer to actual state
@@ -127,9 +126,13 @@ public:
 	 */
 	void errorState();
 	/**
+	 *
+	 */
+	void reset();
+	/**
 	 * function to leave error state
 	 */
-	void reset_button_pushed();
+	void noticed_error_confirmed();
 	/**
 	 * is true, if wp need transport for finite state input
 	 */
@@ -138,10 +141,6 @@ public:
 	 * is true, if wp has pocket (for second machine)
 	 */
 	bool hasPocket;
-	/**
-	 * Error is noticed or unnoticed
-	 */
-	bool errorNoticed;
 	/**
 	 * Actual error type
 	 */
@@ -178,11 +177,14 @@ public:
 	 * Instance for the Serial interface
 	 */
 	Serial* serial;
-
+	/**
+	 *
+	 */
 	location_attribut location;
-    int check_last_lb();
-    void delete_unnecessary_wp();
-    void starts_engine_if_nessecary();
+
+	int check_last_lb();
+	void delete_unnecessary_wp();
+	void starts_engine_if_nessecary();
 	void requestfromMachine1();
 	void PuckhasPocket();
 	void PuckhasnoPocket();
@@ -193,7 +195,9 @@ public:
 	int setCheckLocationTimer(ReferenceTime refTime);
 	void removeAllLights();
 	void checkLocation();
-	void selectErrorState(Timer* currentTimer);
+	bool getErrorNoticed();
+	void setErrorNoticed(bool errorNoticed);
+	void selectErrorState();
 	void puck_fsm2_outgoing();
 	void start_signal(bool was_serial);
 	void stop_signal(bool was_serial);
@@ -202,12 +206,16 @@ public:
 	void estop_out_signal(bool was_serial);
 	bool request;
 protected:
-    std::vector<Puck_FSM*>* puck_list;
+	std::vector<Puck_FSM*>* puck_list;
+private:
+	/**
+	 * Error is noticed or unnoticed
+	 */
+	bool errorNoticed;
 };
 
-class State
-{
-  public:
+class State {
+public:
 	State();
 	virtual ~State();
 	/**
@@ -259,7 +267,7 @@ class State
 	 * error noticed with reset button
 	 * \param fsm Pointer to a Puck_FSM
 	 */
-	virtual void reset_button_pushed(Puck_FSM * fsm);
+	virtual void reset(Puck_FSM * fsm);
 };
 
 #endif /* IPUCK_FSM_H_ */
