@@ -109,7 +109,7 @@ class FSM_1_ErrorState: public State {
 public:
 	void entry(Puck_FSM * fsm);
 	void ls_b6(Puck_FSM * fsm);
-	void reset_button_pushed(Puck_FSM * fsm);
+	void reset(Puck_FSM * fsm);
 	void exit(Puck_FSM * fsm);
 };
 

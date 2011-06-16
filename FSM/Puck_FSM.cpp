@@ -28,11 +28,12 @@ Puck_FSM::~Puck_FSM() {
 }
 
 void Puck_FSM::start_signal(bool was_serial) {
-	lamp->shine(GREEN);
 	if (!was_serial)
 		serial->send(START_BUTTON, sizeof(int));
 	if ((check_last_lb() == 0) && (puck_list->size() > 0)) {
 		starts_engine_if_nessecary();
+	} else if((puck_list->size() == 0)) {
+		lamp->shine(GREEN);
 	}//if
 }
 void Puck_FSM::stop_signal(bool was_serial) {
@@ -46,7 +47,6 @@ void Puck_FSM::reset_signal(bool was_serial) {
 	//TODO implement reset only in one system
 	if (!was_serial)
 		serial->send(RESET_BUTTON, sizeof(int));
-	reset_button_pushed();
 }
 void Puck_FSM::estop_in_signal(bool was_serial) {
 	if (!was_serial)
@@ -93,23 +93,31 @@ void Puck_FSM::removeAllLights() {
 }
 
 void Puck_FSM::checkLocation() {
-	if(expectedLocation != location) {
+	if (expectedLocation != location) {
 		checked_to_early = true;
 		errorState();
 	}
 }
 
-void Puck_FSM::selectErrorState(Timer* currentTimer) {
-	cout << "errorNoticed = true: " << errorNoticed << endl;
-	errorNoticed = true;
-	cout << "errorNoticed = true: " << errorNoticed << endl;
+bool Puck_FSM::getErrorNoticed() {
+	cout << "Address: " << &(this->errorNoticed) << endl;
+	return errorNoticed;
+}
+void Puck_FSM::setErrorNoticed(bool errorNoticed) {
+	cout << "Address: " << &(this->errorNoticed) << endl;
+	this->errorNoticed = errorNoticed;
+}
+
+void Puck_FSM::selectErrorState() {
+	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
+	setErrorNoticed(true);
+	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 	if (checked_to_early == true) {
-		checked_to_early = false;
 		//TODO 0 prio --Lookup the specific location in difference
 		// of disappeared or unknown!
-
+		cout << "ExpecetedLocation: " << expectedLocation << endl;
 		//TODO 0prio -- implement correct locations!
-		switch (location) {
+		switch (expectedLocation) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
 			break;
@@ -126,6 +134,7 @@ void Puck_FSM::selectErrorState(Timer* currentTimer) {
 			cout << "No ErrorState defined!" << endl;
 		}
 		cout << "Unknown ErrorState!" << endl;
+		checked_to_early = false;
 	} else {
 		switch (location) {
 		case AFTER_FIRST_LB:
@@ -144,39 +153,23 @@ void Puck_FSM::selectErrorState(Timer* currentTimer) {
 			cout << "No ErrorState defined!" << endl;
 		}
 	}
+	cout << "ErrorType: " << errType << endl;
 }
 
-void Puck_FSM::reset_button_pushed() {
-	switch (errType) {
-	case WP_DISAPPEARED_B1:
-		hc->engineContinue();
-		lamp->shine(GREEN);
-		errType = NO_ERROR;
-		break;
-	case WP_UNKOWN_B1:
-
-		break;
-	case WP_DISAPPEARED_B3:
-
-		break;
-	case WP_UNKOWN_B3:
-
-		break;
-	case WP_DISAPPEARED_B7:
-
-		break;
-	case WP_UNKOWN_B7:
-
-		break;
-	case SLIDE_FULL_B6:
+void Puck_FSM::noticed_error_confirmed() {
+	if(errorNoticed == true) {
+		cout << "reset_button_pushed: errorNoticed == true"  << endl;
+//		hc->engineContinue();
+//		lamp->shine(GREEN);
+		location = SORT_OUT;
+		errorNoticed = false;
+	} else {
+		cout << "reset_button_pushed: errorNoticed == false"  << endl;
 		delete_unnecessary_wp();
-		hc->engineContinue();
+		starts_engine_if_nessecary();
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
-		break;
-	default:
-		cout << "No Error" << endl;
 	}
 }
 
@@ -194,6 +187,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 				== AFTER_LAST_LB) {
 			cout << "deleted" << endl;
 			puck_list->erase(puck_list->begin() + i);
+//			lamp->shine(GREEN);
 		}
 	}
 	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
@@ -202,106 +196,117 @@ void Puck_FSM::delete_unnecessary_wp() {
 void Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
 	//TODO -1prio --should be true since errorState::entry() but is false!
-	cout << "errorNoticed: " << errorNoticed << endl;
-	if (errorNoticed == false) { 			//-- new
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			if ((*puck_list)[i]->engine_should_be_started) {
-				cout << "A PUCK NEED ENGINE" << endl;
-				active_state = 1;
-			}
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		cout << "errorNoticed: " << getErrorNoticed() << endl;
+		if ((*puck_list)[i]->getErrorNoticed() == true) {
+			return;
 		}
-		if (active_state == 1) {
-			hc->engineContinue();
-			hc->engineRight();
+	}
+
+	lamp->shine(GREEN);
+	cout << "SHINE GREEN" << endl;
+
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->engine_should_be_started) {
+			cout << "A PUCK NEED ENGINE" << endl;
+			active_state = 1;
 		}
+	}
+	if (active_state == 1) {
+		hc->engineContinue();
+		hc->engineRight();
 	}
 }
 
+
 int Puck_FSM::check_last_lb() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == ON_LAST_LB) {
-			return -1;
-		}//if
-	}//for
-	return 0;
+for (unsigned int i = 0; i < puck_list->size(); i++) {
+	if ((*puck_list)[i]->location == ON_LAST_LB) {
+		return -1;
+	}//if
+}//for
+return 0;
 }
 
 void Puck_FSM::requestfromMachine1() {
-	if (puck_list->size() > 1) {
-		//request = true;
-		(*puck_list)[0]->request = true;
-		cout << "request, but wp is on machine" << endl;
-	} else {
-		serial->send(MACHINE2_FREE, sizeof(msgType));
-		hc->engineContinue();
-		hc->engineRight();
-	}//if
+if (puck_list->size() > 1) {
+	//request = true;
+	(*puck_list)[0]->request = true;
+	cout << "request, but wp is on machine" << endl;
+} else {
+	serial->send(MACHINE2_FREE, sizeof(msgType));
+	hc->engineContinue();
+	hc->engineRight();
+}//if
 }
 void Puck_FSM::PuckhasPocket() {
-	if (puck_list->size() > 1) {
-		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
-	} else {
-		(*puck_list)[0]->hasPocket = true;
-	}//if
+if (puck_list->size() > 1) {
+	perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+} else {
+	(*puck_list)[0]->hasPocket = true;
+}//if
 
 }
 void Puck_FSM::PuckhasnoPocket() {
-	if (puck_list->size() > 1) {
-		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
-	} else {
-		(*puck_list)[0]->hasPocket = false;
-	}//if
+if (puck_list->size() > 1) {
+	perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+} else {
+	(*puck_list)[0]->hasPocket = false;
+}//if
 
 }
 void Puck_FSM::machine2_free() {
-	hc->engineRight();
-	hc->engineContinue();
+hc->engineRight();
+hc->engineContinue();
 }
 void Puck_FSM::puck_arrived() {
-	hc->engineStop();
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,
-					sizeof(msgType));
-		}
-		(*puck_list)[i]->ls_b7_out();
+hc->engineStop();
+for (unsigned int i = 0; i < puck_list->size(); i++) {
+	if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+		serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,
+				sizeof(msgType));
 	}
-	delete_unnecessary_wp();
-	starts_engine_if_nessecary();
+	(*puck_list)[i]->ls_b7_out();
+}
+delete_unnecessary_wp();
+starts_engine_if_nessecary();
 }
 
 void Puck_FSM::ls_b0() {
-	current->ls_b0(this);
+current->ls_b0(this);
 }
 void Puck_FSM::ls_b1() {
-	current->ls_b1(this);
+current->ls_b1(this);
 }
 void Puck_FSM::ls_b3() {
-	current->ls_b3(this);
+current->ls_b3(this);
 }
 void Puck_FSM::ls_b6() {
-	current->ls_b6(this);
+current->ls_b6(this);
 }
 void Puck_FSM::ls_b7_in() {
-	current->ls_b7_in(this);
+current->ls_b7_in(this);
 }
 void Puck_FSM::ls_b7_out() {
-	current->ls_b7_out(this);
+current->ls_b7_out(this);
+}
+void Puck_FSM::reset() {
+current->reset(this);
 }
 void Puck_FSM::entry() {
-	current->entry(this);
+current->entry(this);
 }
 void Puck_FSM::exit() {
-	current->exit(this);
+current->exit(this);
 }
 void Puck_FSM::setCurrent(State *s) {
-	current->exit(this);
-	delete current;
-	current = s;
-	this->entry();
+current->exit(this);
+delete current;
+current = s;
+this->entry();
 }
 void Puck_FSM::errorState() {
-	current->errorState(this);
+current->errorState(this);
 }
 
 //Methods for class State
@@ -315,60 +320,60 @@ State::~State() {
 
 void State::ls_b0(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("ls_b0 standard function\n");
+printf("ls_b0 standard function\n");
 #endif
 }
 
 void State::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("LS_B1 standard function\n");
+printf("LS_B1 standard function\n");
 #endif
 }
 
 void State::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("LS_B3 standard function\n");
+printf("LS_B3 standard function\n");
 #endif
 }
 
 void State::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("LS_B6 standard function\n");
+printf("LS_B6 standard function\n");
 #endif
 }
 
 void State::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("LS_B7_in standard function\n");
+printf("LS_B7_in standard function\n");
 #endif
 }
 
 void State::ls_b7_out(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("LS_B7_out standard function\n");
+printf("LS_B7_out standard function\n");
 #endif
 }
 
 void State::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("entry standard function\n");
+printf("entry standard function\n");
 #endif
 }
 
 void State::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("exit standard function\n");
+printf("exit standard function\n");
 #endif
 }
 
 void State::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("errorState standard function\n");
+printf("errorState standard function\n");
 #endif
 }
 
-void State::reset_button_pushed(Puck_FSM * fsm) {
+void State::reset(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_STATE_DEBUG
-	printf("reset button pushed standard function\n");
+printf("reset button pushed standard function\n");
 #endif
 }

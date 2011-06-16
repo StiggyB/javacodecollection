@@ -99,15 +99,22 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: Start Button" << endl;
 			dummy_fsm->start_signal(false);
 			running_mode = true;
-			l->addLight(GREEN);
 
 		} else if ((val >> WP_RESET) & 1) {
 			cout << "Sensor: Reset Button" << endl;
 			running_mode = true;
-			dummy_fsm->reset_signal(false);
-			l->addLight(GREEN);
+			if (wp_list.size() == 0) {
+				dummy_fsm->reset_signal(false);
+			} else {
+				for (unsigned int i = 0; i < wp_list.size(); i++) {
+					if (wp_list[i]->errType != NO_ERROR) {
+						wp_list[i]->reset();
+					}
+				}
+				//			l->addLight(GREEN);
 
-		}//if
+			}//if
+		}
 		last_Reg_State_C = val;
 		break;
 

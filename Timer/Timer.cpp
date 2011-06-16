@@ -90,7 +90,7 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	funcp_list.push_back(new_element);
 	locker.unlock();
 
-	//printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
+//	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
 
 	if (timer_settime(timerid, 0, &timer, NULL) == -1) {
 		perror("Timer: cannot set OS-Timer");
@@ -102,7 +102,7 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 }
 
 
-bool Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms){
+int Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms){
     struct IdTOfunction new_element;
     new_element.funcp.funcp_cbt_void = funcp;
     return (addTimerFunction(new_element, ms));
@@ -122,7 +122,7 @@ void Timer::handlePulsMessage(){
 
 		if( temp.funcp.funcp_cbt_void != NULL ){
 			temp.funcp.funcp_cbt_void->call();
-			//std::cout << "Timer: -->call()" << std::endl;
+//			std::cout << "Timer: -->call()" << std::endl;
 		}//if
 
 
@@ -255,8 +255,8 @@ int Timer::deleteTimer(int id){
 				return -1;
 			}//if
 
+//			std::cout << "Timer: stopTimerbyId has delete a Timer - ID: " << funcp_list[i].timer_id << std::endl;
 			funcp_list.erase( funcp_list.begin()+i );
-			//std::cout << "Timer: stopTimerbyId has delete a Timer" << std::endl;
 		}//if
 
 	}//for
