@@ -30,6 +30,7 @@ EXTRA_SRCVPATH+=$(PROJECT_ROOT)/Controller  \
 LIBS+=phrender ph cpt_terminal
 
 include $(MKFILES_ROOT)/qmacros.mk
+
 #===== EXTRA_OBJS - object files and libraries contributed additionaly on link/archive step
 EXTRA_OBJS+=C:/QNX650/target/qnx6/x86/lib/libioaccess.a  \
 	C:/QNX650/target/qnx6/x86/lib/libioaccess_g.a  \
