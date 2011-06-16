@@ -206,18 +206,35 @@ long Timer::getSystemTime_ms(){
 int Timer::stopAll_actual_Timer(){
 	locker.lock();
 	long diff = 0;
+	bool unstoppablefound = false;
+	bool notfound = true;
 
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		if( timer_delete( funcp_list[i].timer_id ) == -1){
-			perror( "Timer: cannot delete OS-Timer in Timer_stopAllTimer()");
-			locker.unlock();
-			return -1;
-		}//if
-		funcp_list[i].timer_id = -1;
-		diff = getSystemTime_ms()-funcp_list[i].systemtime_ms;
-		printf("Timer: start_stop_duration=%i\n", diff );
-		funcp_list[i].duration_ms = funcp_list[i].duration_ms - diff;
-		printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
+		notfound = true;
+		unstoppablefound = false;
+
+		for(unsigned int j = 0; j<unstoppable_funcp_list.size() && notfound; j++){
+			if(funcp_list[i].funcp.funcp_cbt_void == unstoppable_funcp_list[j]){
+				unstoppablefound = true;
+				cout << "unstoppablefound found" << endl;
+				notfound = false;
+			}//if
+		}//for
+
+		if(!unstoppablefound){
+
+			if( timer_delete( funcp_list[i].timer_id ) == -1){
+				perror( "Timer: cannot delete OS-Timer in Timer_stopAllTimer()");
+				locker.unlock();
+				return -1;
+			}//if
+			funcp_list[i].timer_id = -1;
+			diff = getSystemTime_ms()-funcp_list[i].systemtime_ms;
+			printf("Timer: start_stop_duration=%i\n", diff );
+			funcp_list[i].duration_ms = funcp_list[i].duration_ms - diff;
+			printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
+
+		}//for
 
 	}//for
 	locker.unlock();
@@ -227,49 +244,65 @@ int Timer::stopAll_actual_Timer(){
 
 int Timer::startAllTimer(){
 	locker.lock();
-	std::vector< struct IdTOfunction> funcp_list_local;
+	int sec = 0;
+	int nano = 0;
+	timer_t timerid;
+	struct sigevent event;
+	struct itimerspec timer;
 
-	funcp_list_local = funcp_list;
-	funcp_list.clear();
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if( funcp_list[i].timer_id == -1 ){//a not stopped timer
 
-	while(funcp_list_local.size() > 0){
-		if( funcp_list_local[0].timer_id != -1 ){//a not stopped timer
-			funcp_list.push_back( funcp_list_local[0] );
-			//std::cout << "Timer: not stopped timer" << std::endl;
+			calculateTime(funcp_list[i].duration_ms, &sec, &nano);
 
-		} else {
-			addTimerFunction(funcp_list_local[0].funcp.funcp_cbt_void, funcp_list_local[0].duration_ms);
-			//std::cout << "Timer: restart timer" << std::endl;
+			timer.it_value.tv_sec = sec;
+			timer.it_value.tv_nsec = nano;
+			timer.it_interval.tv_nsec = 0;
+			timer.it_interval.tv_sec = 0;
+
+			SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, funcp_list[i].id );
+
+			if (timer_create(CLOCK_REALTIME, &event, &timerid) == -1) {
+				perror("Timer: cannot create OS-Timer in startAllTimer()");
+				return -1;
+			}//if
+
+			funcp_list[i].timer_id = timerid;
+
+			//printf("restart timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
+
+			if (timer_settime(timerid, 0, &timer, NULL) == -1) {
+				perror("Timer: cannot set OS-Timer in startAllTimer()");
+				printf("errno: %i", errno);
+				return -1;
+			}//if
 
 		}//if
+	}//for
 
-		funcp_list_local.erase( funcp_list_local.begin() );
 
-	}//while
 	locker.unlock();
 	return 0;
 }
 
 
 int Timer::deleteTimer(int id){
-	locker.lock();
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		if( funcp_list[i].id == id && funcp_list[i].timer_id != -1 ){
+		if( funcp_list[i].id == id){ //&& funcp_list[i].timer_id != -1
 
 			if( timer_delete( funcp_list[i].timer_id ) == -1){
 				perror( "Timer: cannot delete OS-Timer in stopTimerbyId()");
-				locker.unlock();
 				return -1;
 			}//if
 
 //			std::cout << "Timer: stopTimerbyId has delete a Timer - ID: " << funcp_list[i].timer_id << std::endl;
-			funcp_list.erase( funcp_list.begin() + i );
+			funcp_list.erase( funcp_list.begin()+i );
 		}//if
 
 	}//for
-	locker.unlock();
 	return 0;
 }
+
 
 int Timer::deleteAllTimer(){
 	locker.lock();
@@ -286,5 +319,9 @@ int Timer::deleteAllTimer(){
 
 	locker.unlock();
 	return 0;
+}
+
+int Timer::addUnstoppableFunction( CallInterface<CallBackThrower,void>* funcp ){
+	unstoppable_funcp_list.push_back(funcp);
 }
 

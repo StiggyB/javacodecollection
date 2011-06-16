@@ -40,6 +40,11 @@ public:
 	Timer();
 	virtual ~Timer();
 	/**
+	 *
+	 */
+	int addUnstoppableFunction(CallInterface<CallBackThrower,void>* funcp);
+	std::vector< CallInterface<CallBackThrower,void>* > unstoppable_funcp_list;
+	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
 	 * \param timer time im milliseconds, after this time the given function will be executed
