@@ -49,7 +49,7 @@ void Test_Sensor::shutdown() {
 }
 
 void Test_Sensor::execute(void*) {
-	//test_sen_polling();
+
 }
 
 void Test_Sensor::test_sen_interrupt(int port, int value) {
@@ -63,11 +63,11 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f0" << endl;
 				}
-				cc->shine(YELLOW);
+				hc->shine(YELLOW);
 				cout << "Section test1" <<  endl;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(0)", (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
-				(*cc).engineRight();
+				(*hc).engineRight();
 				last_state_B = BIT_WP_RUN_IN;
 			}
 			if(!(value & BIT_WP_IN_HEIGHT)) {
@@ -75,11 +75,11 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f12" << endl;
 				}
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-				height = (*cc).identifyHeight();
+				height = (*hc).identifyHeight();
 				success &= assert_equals("B(2)", height, PLANE_WP_DEFAULT_HEIGHT);
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				last_state_B = BIT_WP_IN_HEIGHT;
 			}
 
@@ -88,10 +88,10 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f34" << endl;
 				}
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
 				success &= assert_equals("B(4)", (res & BIT_WP_METAL), NO_METAL_STATE);
-				(*cc).openSwitch();
+				(*hc).openSwitch();
 				last_state_B = BIT_WP_IN_SWITCH;
 			}
 
@@ -101,9 +101,9 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f7" << endl;
 				}
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
-				(*cc).engineLeft();
+				(*hc).engineLeft();
 				section++;
 				last_state_B = BIT_WP_OUTLET;
 			}
@@ -124,10 +124,10 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f5" << endl;
 				}
-				(*cc).closeSwitch();
-				(*cc).engineRight();
+				(*hc).closeSwitch();
+				(*hc).engineRight();
 				sleep(1);
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_CLOSED_STATE);
 				last_state_B = BIT_WP_IN_HEIGHT;
 			}
@@ -136,9 +136,9 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 					success &= false;
 					cout << "f6" << endl;
 				}
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(6)", (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
-				(*cc).engineReset();
+				(*hc).engineReset();
 				test_isSuccessful(success);
 				last_state_B = BIT_WP_OUT;
 				section--;
@@ -150,34 +150,34 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 	case INTERRUPT_D_PORT_C_HIGH:
 
 		if (!(value & BIT_E_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED) || (last_state_C == BIT_STOP_PUSHED))) {
-			res = (*cc).read(PORT_C);
+			res = (*hc).read(PORT_C);
 			success &= assert_equals("C(7)", (res & BIT_E_STOP)+1, BIT_E_STOP_PUSHED); //implement test for BIT_E_STOP_LOST
-			(*cc).emergencyStop();
+			(*hc).emergencyStop();
 			last_state_C = BIT_E_STOP_PUSHED;
 			test_isSuccessful(success);
 			//success = true;
 			//Final test isSuccessful()
 		} else if (value & BIT_E_STOP && (last_state_C == BIT_E_STOP_PUSHED)) {
-			res = (*cc).read(PORT_C);
+			res = (*hc).read(PORT_C);
 			success &= assert_equals("C(7)", (res & BIT_E_STOP), BIT_E_STOP_LOST);
 			last_state_C = BIT_E_STOP_LOST;
 			test_isSuccessful(success);
 			success = true;
 
 		} else if (!(value & BIT_STOP) && ((last_state_C == BIT_START_PUSHED) || (last_state_C == BIT_RESET_PUSHED))) {
-			res = (*cc).read(PORT_C);
+			res = (*hc).read(PORT_C);
 			success &= assert_equals("C(5)", (res & BIT_STOP), BIT_STOP_PUSHED);
-			(*cc).stopMachine();
+			(*hc).stopMachine();
 			last_state_C = BIT_STOP_PUSHED;
 		} else if (value & BIT_START) {
 			cout << "Please, push the Emergency Stop as a last" << endl;
-			res = (*cc).read(PORT_C);
+			res = (*hc).read(PORT_C);
 			success &= assert_equals("C(4)", (res & BIT_START), BIT_START_PUSHED);
-			(*cc).restart();
+			(*hc).restart();
 		} else if (value & BIT_RESET) {
-			res = (*cc).read(PORT_C);
+			res = (*hc).read(PORT_C);
 			success &= assert_equals("C(6)", (res & BIT_RESET), BIT_RESET_PUSHED);
-			(*cc).resetAll();
+			(*hc).resetAll();
 		}
 		break;
 	}
@@ -186,10 +186,10 @@ void Test_Sensor::test_sen_interrupt(int port, int value) {
 void Test_Sensor::test_isSuccessful(bool success) {
 	if(success) {
 		cout << "Test successful." << endl;
-		(*cc).shine(GREEN);
+		(*hc).shine(GREEN);
 	} else {
 		cout << "Test failure." << endl;
-		(*cc).shine(RED);
+		(*hc).shine(RED);
 	}
 }
 
@@ -218,7 +218,7 @@ void Test_Sensor::test_sen_polling(int port, int value) {
 	int res = 0;
 
 	cout << "\nTest_Sensor: work piece included test started" << endl;
-	(*cc).shine(YELLOW);
+	(*hc).shine(YELLOW);
 	while(1) {
 
 		while(section1) {
@@ -226,79 +226,79 @@ void Test_Sensor::test_sen_polling(int port, int value) {
 			if (!(value & BIT_WP_RUN_IN) && next_test) {
 				cout << "Section test1" <<  endl;
 				next_test = !next_test;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
-				(*cc).engineSlowRight();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowRight();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_HIGH);
-				(*cc).engineSlowLeft();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowLeft();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
-				(*cc).engineSlowRight();
+				(*hc).engineSlowRight();
 			}
 
 			if (!(value & BIT_WP_IN_HEIGHT) && !(next_test)) {
 				next_test = !next_test;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-				height = (*cc).identifyHeight();
+				height = (*hc).identifyHeight();
 				cout << "Height: " << height << endl;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(2)", (res & BIT_HEIGHT_1), PLANE_WP_DEFAULT_HEIGHT);
-				(*cc).engineSlowLeft();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowLeft();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_HIGH);
-				(*cc).engineSlowRight();
-				sleep(TIME);
-				(*cc).engineStop();
+				(*hc).engineSlowRight();
+				sleep(DURATION);
+				(*hc).engineStop();
 				sleep(5);
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-				(*cc).engineContinue();
-				(*cc).engineSlowRight();
+				(*hc).engineContinue();
+				(*hc).engineSlowRight();
 			}
 
 			if (!(value & BIT_WP_IN_SWITCH) && next_test) {
 				next_test = !next_test;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(4)", (res & BIT_WP_METAL), IS_METAL_STATE);
-				(*cc).openSwitch();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).openSwitch();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success = assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_OPEN_STATE);
-				(*cc).engineSlowRight();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowRight();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_HIGH);
-				(*cc).engineSlowLeft();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowLeft();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
-				(*cc).engineSlowRight();
+				(*hc).engineSlowRight();
 			}
 
 			if (!(value & BIT_WP_OUTLET) && !(next_test)) {
 
 				next_test = !next_test;
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
-				(*cc).engineSlowLeft();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).engineSlowLeft();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_HIGH);
-				(*cc).engineSlowRight();
-				sleep(TIME);
-				(*cc).engineStop();
+				(*hc).engineSlowRight();
+				sleep(DURATION);
+				(*hc).engineStop();
 				sleep(5);
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
-				(*cc).engineContinue();
-				(*cc).engineSlowLeft();
+				(*hc).engineContinue();
+				(*hc).engineSlowLeft();
 				section1 = false;
 				cout << "out" << endl;
 			}
@@ -308,137 +308,20 @@ void Test_Sensor::test_sen_polling(int port, int value) {
 			if (!(value & BIT_WP_IN_HEIGHT) && next_test) {
 				cout << "Section test2" <<  endl;
 				next_test = !next_test;
-				(*cc).closeSwitch();
-				sleep(TIME);
-				res = (*cc).read(PORT_B);
+				(*hc).closeSwitch();
+				sleep(DURATION);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_CLOSED_STATE);
-				(*cc).engineSlowRight();
+				(*hc).engineSlowRight();
 			}
 
 			if (!(value & BIT_WP_IN_SLIDE) && !(next_test)) {
-				res = (*cc).read(PORT_B);
+				res = (*hc).read(PORT_B);
 				success &= assert_equals("B(6)", (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
-				(*cc).engineReset();
+				(*hc).engineReset();
 				section2 = false;
 				test_isSuccessful(success);
 			}
 		}
 	}
-}
-
-bool Test_Sensor::test_sen_b0() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
-	(*cc).engineSlowRight();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_HIGH);
-	(*cc).engineSlowLeft();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals(0, (res & BIT_WP_RUN_IN), RUN_IN_STATE_LOW);
-	(*cc).engineSlowRight();
-	return success;
-}
-
-bool Test_Sensor::test_sen_b1() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-	test_height_sen_b2();
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(2)", (res & BIT_HEIGHT_1), PLANE_WP_DEFAULT_HEIGHT);
-	(*cc).engineSlowLeft();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_HIGH);
-	(*cc).engineSlowRight();
-	sleep(TIME);
-	(*cc).engineStop();
-	sleep(5);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(1)", (res & BIT_WP_IN_HEIGHT), IN_HEIGHT_STATE_LOW);
-	(*cc).engineContinue();
-	(*cc).engineSlowRight();
-	return success;
-}
-
-bool Test_Sensor::test_height_sen_b2() {
-	bool success = false;
-	int height = 0;
-	height = (*cc).identifyHeight();
-	cout << "Height: " << height << endl;
-	if((height <= PLANE_WP_DEFAULT_HEIGHT + TOLERANCE_NORMAL) && (height >= PLANE_WP_DEFAULT_HEIGHT - TOLERANCE_NORMAL)) {
-		success = true;
-	} else {
-		success = false;
-	}
-	return success;
-}
-
-bool Test_Sensor::test_sen_b3() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
-	test_induct_sen_b4();
-	(*cc).openSwitch();
-	sleep(TIME);
-	test_mag_sen_b5();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_HIGH);
-	(*cc).engineSlowLeft();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(3)", (res & BIT_WP_IN_SWITCH), IN_SWITCH_STATE_LOW);
-	(*cc).engineSlowRight();
-	return success;
-}
-
-bool Test_Sensor::test_induct_sen_b4() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(4)", (res & BIT_WP_METAL), IS_METAL_STATE);
-	return success;
-}
-
-bool Test_Sensor::test_mag_sen_b5() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success = assert_equals("B(5)", (res & BIT_SWITCH_STATUS), SWITCH_OPEN_STATE);
-	(*cc).engineSlowRight();
-	return success;
-}
-bool Test_Sensor::test_sen_b6() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(6)", (res & BIT_WP_IN_SLIDE), IN_SLIDE_STATE_LOW);
-	(*cc).engineReset();
-	return success;
-}
-bool Test_Sensor::test_sen_b7() {
-	bool success = false;
-	int res = 0;
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(7)",(res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
-	(*cc).engineSlowLeft();
-	sleep(TIME);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_HIGH);
-	(*cc).engineSlowRight();
-	sleep(TIME);
-	(*cc).engineStop();
-	sleep(5);
-	res = (*cc).read(PORT_B);
-	success &= assert_equals("B(7)", (res & BIT_WP_OUTLET), OUTLET_STATE_LOW);
-	(*cc).engineContinue();
-	(*cc).engineSlowLeft();
-	return success;
 }

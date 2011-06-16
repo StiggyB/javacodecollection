@@ -65,7 +65,6 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B1);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
-	//fsm->expectedLocation = AFTER_FIRST_LB;
 }
 
 //functions for Band1_aufgelegt
@@ -88,7 +87,6 @@ void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: errorState" << endl;
 #endif
-	//TODO 0 prio --implement function which react if the disappeared wp is back!
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
@@ -131,8 +129,6 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B3);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
-
-	//fsm->expectedLocation = AFTER_HEIGH_MEASURE;
 	fsm->expected_loc_list.push_back(AFTER_HEIGH_MEASURE);
 
 }
@@ -188,7 +184,6 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
-	//TODO 0prio --This method call could start the band - global errorState var necessary
 	fsm->starts_engine_if_nessecary();
 	fsm->setCurrent(new FSM_1_wp_in_slide());
 }
@@ -346,7 +341,6 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "ErrorState: entry" << endl;
 #endif
-	//avoid a new puck creation - need something like running_mode
 	fsm->setErrorNoticed(true);
 	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
@@ -370,7 +364,6 @@ void FSM_1_ErrorState::reset(Puck_FSM * fsm) {
 #endif
 	fsm->lamp->flash(1000, RED);
 	fsm->noticed_error_confirmed();
-//	fsm->setCurrent(/* errorType */NULL);
 }
 void FSM_1_ErrorState::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG

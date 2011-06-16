@@ -19,13 +19,16 @@
 
 class Test_Functions {
 public:
-	void test(const char* text);
-	int test1();
-	void test2();
-	int test3(void* val);
-	int test4(int a);
-	int test5(int a, int b);
-
+	/**
+	 * Test function without return value.
+	 * Prints "Functor2: Test successful." when called.
+	 */
+	void test1();
+	/**
+	 * Test function with return value.
+	 * \return test value 0
+	 */
+	int test2();
 };
 
 #endif /* TEST_H_ */
