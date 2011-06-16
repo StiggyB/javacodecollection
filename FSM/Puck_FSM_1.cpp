@@ -122,7 +122,6 @@ void FSM_1_height_measure::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_height_measure: errorState" << endl;
 #endif
-	//TODO 0 prio --implement function which react if the disappeared wp is back!
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
 void FSM_1_height_measure::exit(Puck_FSM * fsm) {
@@ -342,7 +341,7 @@ void FSM_1_end_state::exit(Puck_FSM * fsm) {
 //functions for errorState
 void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "ErrorState: entry" << endl;
+	cout << "FSM_1_ErrorState: entry" << endl;
 #endif
 	fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
@@ -354,7 +353,7 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 }
 void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "ErrorState: LS_B6" << endl;
+	cout << "FSM_1_ErrorState: LS_B6" << endl;
 #endif
 	if(fsm->errType == SLIDE_FULL_B6){
 		if(fsm->hc->checkSlide() == false) {
@@ -366,14 +365,14 @@ void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 }
 void FSM_1_ErrorState::reset(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "ErrorState: reset_button_pushed" << endl;
+	cout << "FSM_1_ErrorState: reset_button_pushed" << endl;
 #endif
 	fsm->lamp->flash(1000, RED);
 	fsm->noticed_error_confirmed();
 }
 void FSM_1_ErrorState::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "ErrorState: exit" << endl;
+	cout << "FSM_1_ErrorState: exit" << endl;
 #endif
 }
 

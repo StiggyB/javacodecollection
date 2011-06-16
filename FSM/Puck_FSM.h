@@ -13,7 +13,9 @@
 
 #define PUCK_FSM_STATE_DEBUG
 
-//TODO Test the reference timer then implement the rest!
+/**
+ * Actual locations for the work pieces on the system.
+ */
 enum location_attribut {
 	ON_FIRST_LB,
 	AFTER_FIRST_LB,
@@ -39,7 +41,6 @@ enum ErrorType {
 	SLIDE_FULL_B6,
 	WP_DISAPPEARED_B7,
 	WP_UNKOWN_B7
-/*...*/
 };
 
 /**
@@ -78,62 +79,62 @@ enum ReferenceTime {
  */
 class Puck_FSM: public CallBackThrower {
 public:
-    class State *current;
-    Puck_FSM();
-    virtual ~Puck_FSM();
-    void setCurrent(State *s);
-    void ls_b0();
-    void ls_b1();
-    void ls_b3();
-    void ls_b6();
-    void ls_b7_in();
-    void ls_b7_out();
-    void entry();
-    void exit();
-    void errorState();
-    void reset();
-    void noticed_error_confirmed();
-    bool engine_should_be_started;
-    bool hasPocket;
-    ErrorType errType;
-    int maxTimerId;
-    int minTimerId;
-    int checkSlide_TID;
-    bool checked_to_early;
-    Lampen *lamp;
-    HALCore *hc;
-    Timer *timer;
-    Serial *serial;
-    location_attribut location;
-    int check_last_lb();
-    void delete_unnecessary_wp();
-    bool starts_engine_if_nessecary();
-    void requestfromMachine1();
-    void PuckhasPocket();
-    void PuckhasnoPocket();
-    void puck_arrived();
-    void machine2_free();
-    void isSlideFull();
-    int setErrorStateTimer(ReferenceTime allocTime);
-    int setCheckLocationTimer(ReferenceTime refTime);
-    void removeAllLights();
-    void checkLocation();
-    bool getErrorNoticed();
-    void setErrorNoticed(bool errorNoticed);
-    void selectErrorType();
-    void puck_fsm2_outgoing();
-    void start_signal(bool was_serial);
-    void stop_signal(bool was_serial);
-    void reset_signal(bool was_serial);
-    void estop_in_signal(bool was_serial);
-    void estop_out_signal(bool was_serial);
-    void delete_last_expected_location();
-    bool request;
-    std::vector<location_attribut> expected_loc_list;
+	class State *current;
+	Puck_FSM();
+	virtual ~Puck_FSM();
+	void setCurrent(State *s);
+	void ls_b0();
+	void ls_b1();
+	void ls_b3();
+	void ls_b6();
+	void ls_b7_in();
+	void ls_b7_out();
+	void entry();
+	void exit();
+	void errorState();
+	void reset();
+	void noticed_error_confirmed();
+	bool engine_should_be_started;
+	bool hasPocket;
+	ErrorType errType;
+	int maxTimerId;
+	int minTimerId;
+	int checkSlide_TID;
+	bool checked_to_early;
+	Lampen *lamp;
+	HALCore *hc;
+	Timer *timer;
+	Serial *serial;
+	location_attribut location;
+	int check_last_lb();
+	void delete_unnecessary_wp();
+	bool starts_engine_if_nessecary();
+	void requestfromMachine1();
+	void PuckhasPocket();
+	void PuckhasnoPocket();
+	void puck_arrived();
+	void machine2_free();
+	void isSlideFull();
+	int setErrorStateTimer(ReferenceTime allocTime);
+	int setCheckLocationTimer(ReferenceTime refTime);
+	void removeAllLights();
+	void checkLocation();
+	bool getErrorNoticed();
+	void setErrorNoticed(bool errorNoticed);
+	void selectErrorType();
+	void puck_fsm2_outgoing();
+	void start_signal(bool was_serial);
+	void stop_signal(bool was_serial);
+	void reset_signal(bool was_serial);
+	void estop_in_signal(bool was_serial);
+	void estop_out_signal(bool was_serial);
+	void delete_last_expected_location();
+	bool request;
+	std::vector<location_attribut> expected_loc_list;
 protected:
-    std::vector<Puck_FSM*> *puck_list;
+	std::vector<Puck_FSM*> *puck_list;
 private:
-    bool errorNoticed;
+	bool errorNoticed;
 };
 
 class State {

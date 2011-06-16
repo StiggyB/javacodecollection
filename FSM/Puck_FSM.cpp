@@ -57,9 +57,6 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 	if (!was_serial)
 		serial->send(E_STOP_PULLED, sizeof(int));
 	hc->resetAll();
-	//	if( (check_last_lb() == 0) && (puck_list->size() > 0)){
-	//		starts_engine_if_nessecary();
-	//	}//if
 }
 
 void Puck_FSM::isSlideFull() {

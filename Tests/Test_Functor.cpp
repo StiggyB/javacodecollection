@@ -38,26 +38,29 @@ void Test_Functor::test_Functor_Without_Return() {
 	Functor<Test_Functions, void> func1(&t, &Test_Functions::test1);
 	Functor<Test_Functions, void>* tfunc1 = &func1;
 	tfunc1->call();
+	bool success = assert_equals("Functor1: ", 0, FUNCTOR1);
+	success_print(success);
 }
 void Test_Functor::test_Functor_With_Return() {
 	Test_Functions t;
 	Functor<Test_Functions, int> func2(&t, &Test_Functions::test2);
 	Functor<Test_Functions, int>* tfunc2 = &func2;
-	bool success = assert_equals("Functor2: ", tfunc2->call(), FUNCTOR1);
+	bool success = assert_equals("Functor2: ", tfunc2->call(), FUNCTOR2);
 	success_print(success);
 }
 void Test_Functor::test_FunctorMaker_Without_Return() {
 	Test_Functions t;
 	CallInterface<Test_Functions, void>* func1 = FunctorMaker<Test_Functions,
-			void>::makeFunctor(&t, &Test_Functions::test1);
+			void>::makeFunctor(&t, &Test_Functions::test3);
 	func1->call();
+	bool success = assert_equals("FunctorMaker1: ", 0, FUNCTOR3 - 2);
+	success_print(success);
 }
 void Test_Functor::test_FunctorMaker_With_Return() {
 	Test_Functions t;
 	CallInterface<Test_Functions, int>* func2 = FunctorMaker<Test_Functions,
-			int>::makeFunctor(&t, &Test_Functions::test2);
-	bool success =
-			assert_equals("FunctorMaker2: ", func2->call() + 1, FUNCTOR2);
+			int>::makeFunctor(&t, &Test_Functions::test4);
+	bool success = assert_equals("FunctorMaker2: ", func2->call(), FUNCTOR4);
 	success_print(success);
 }
 
@@ -80,9 +83,9 @@ void Test_Functor::test_print(string function, int actual, const int expected) {
 
 void Test_Functor::success_print(bool success) {
 	if (success) {
-		cout << "Successful" << endl;
+		cout << "**************Test successful**************" << endl;
 	} else {
-		cout << "Failure" << endl;
+		cout << "**************Test failure**************" << endl;
 	}
 }
 

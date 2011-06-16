@@ -29,10 +29,10 @@
 #include "Test_Functions.h"
 
 enum ExpectedValues {
-	FUNCTOR1, FUNCTOR2
+	FUNCTOR1, FUNCTOR2, FUNCTOR3, FUNCTOR4
 };
 
-class Test_Functor : public thread::HAWThread {
+class Test_Functor: public thread::HAWThread {
 public:
 	Test_Functor();
 	virtual ~Test_Functor();

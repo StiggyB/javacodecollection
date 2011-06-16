@@ -41,7 +41,7 @@ void StartThread::execute(void*) {
 	sensor->start(NULL);
 	cout << "sensor started" << endl;
 	serial->init(1, true);
-	serial->start(NULL);
+//	serial->start(NULL);
 	cout << "serial started" << endl;
 
 #ifdef TEST_IRQ
@@ -89,12 +89,12 @@ void StartThread::execute(void*) {
 	sensor->tests_fsm = &tests_fsm;
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;
-	//tests_fsm.join();
+	tests_fsm.join();
 #endif
 #ifdef TEST_FUN
 	cout << "starting Functor-Test"	 << endl;
-	tf.start(NULL);
 	cout << "waiting for Functor-Test" << endl;
+	tf.start(NULL);
 	tf.join();
 #endif
 #ifdef TEST_TIMER

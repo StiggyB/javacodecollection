@@ -21,14 +21,24 @@ class Test_Functions {
 public:
 	/**
 	 * Test function without return value.
-	 * Prints "Functor2: Test successful." when called.
+	 * Prints "Functor1: Test successful" when called.
 	 */
 	void test1();
 	/**
 	 * Test function with return value.
-	 * \return test value 0
+	 * \return test value 1
 	 */
 	int test2();
+	/**
+	 * Test function without return value.
+	 * Prints "FunctorMaker1: Test successful" when called.
+	 */
+	void test3();
+	/**
+	 * Test function with return value.
+	 * \return test value 3
+	 */
+	int test4();
 };
 
 #endif /* TEST_H_ */
