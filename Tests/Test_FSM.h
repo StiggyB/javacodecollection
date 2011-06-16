@@ -16,25 +16,50 @@
 #include "../FSM/Puck_FSM_1.h"
 #include "../FSM/Puck_FSM_2.h"
 
-enum Signal {
-	INCOMMING, IN_HEIGHT, IN_METAL, IN_SLIDE, AT_END
-};
-
 class Test_FSM : public thread::HAWThread{
 public:
 	Test_FSM();
 	virtual ~Test_FSM();
-	void init_tests();
+	/**
+	 * prepare an internal list for the 6 test cases
+	 */
 	void handleSignal(int val, int port);
+	/**
+	 * actual object for test case
+	 */
 	Puck_FSM actual_fsm;
+	/**
+	 * reference to HAL
+	 */
 	HALCore *cc;
-	std::vector<Puck_FSM*> wp_list;
+	/**
+	 *this list contains the 6 test cases
+	 */
+	std::vector<Puck_FSM*> wp_test_list;
+	/**
+	 * markers, if a wp is on last light barrier
+	 */
 	bool aWPendOfMachine;
+	/**
+	 *	markers the actual index for test case list
+	 */
 	int wp_list_index;
+	/**
+	 * defines a standard register status for register B
+	 */
 	int last_Reg_State_B;
+	/**
+	 * defines a standard register status for register C
+	 */
 	int last_Reg_State_C;
+	/**
+	 * in test mode this bool is true
+	 */
 	bool running;
-	std::vector<Puck_FSM*> puck_list;
+	/**
+	 * empty list for testing - only one wp in one test
+	 */
+	std::vector<Puck_FSM*> dummy_puck_list;
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();

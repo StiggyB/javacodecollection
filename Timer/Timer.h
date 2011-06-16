@@ -34,29 +34,11 @@
 #include <unistd.h>
 
 
-/**
- * Pulse code enum
- */
-enum Pulse_code_timer {
-	PUCK_FSM, HALCORE
-};
-enum timer_section {
-	BEGIN_TO_HEIGH_MEASURE, HEIGH_MEASURE_TO_METAL_MEASURE, METAL_MEASURE_TO_SLIDE,
-	METAL_MEASURE_TO_END, SWITCH_FORWARD_TIME
-};
-
 class Timer : public thread::HAWThread, public Communication, public Singleton_T<Timer>{
 	friend class Singleton_T<Timer>;
 public:
 	Timer();
 	virtual ~Timer();
-	/**
-	 * adds a functor to internal list and activate Timer
-	 * \param funcp functor, the function of a Pck_FSM, which will be execute after timer timeout
-	 * \param timer time im milliseconds, after this time the given function will be executed
-	 * \return a bool, true if action was successful, false if not.
-	 */
-	//bool addTimerFunction( CallInterface<Puck_FSM_1, void>* funcp, int timer );//CallInterface<Puck_FSM, void, void*>*
 	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
@@ -65,12 +47,25 @@ public:
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	int addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
+	/**
+	 * delete a Timer by a specific internal id
+	 * \param id specified the timer, which should be stopped
+	 */
 	int deleteTimer(int id);
-
-//	int addFunction_staticTimer(timer_section timer, CallInterface<HALCore, void>* funcp);
-//	int addFunction_staticTimer(timer_section timer, CallInterface<Puck_FSM, void>* funcp);
+	/**
+	 * restart all actual timer
+	 * if the list contains active timer, this timers will be ignored
+	 */
 	int startAllTimer();
+	/**
+	 * stop all active timer
+	 * after this operation, new timer can be set
+	 */
 	int stopAll_actual_Timer();
+	/**
+	 * get the actual system time in ms
+	 * usage for compare between 2 times
+	 */
 	long getSystemTime_ms();
 
 protected:
@@ -89,8 +84,6 @@ private:
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
 	 */
 	std::vector< struct IdTOfunction> funcp_list;
-	std::vector< struct TimerData> timer_list;
-	int initTimer_list();
 	/**
 	 * internal function to find a specific functor in actual list
 	 * \param id this is the attribute for searching in list
@@ -145,12 +138,5 @@ struct IdTOfunction{
 	int duration_ms;
 	Functionpointer funcp;
 };
-
-struct TimerData{
-	timer_t	timerid;
-	struct itimerspec timer;
-	struct sigevent event;
-};
-
 
 #endif /* TIMER_H_ */
