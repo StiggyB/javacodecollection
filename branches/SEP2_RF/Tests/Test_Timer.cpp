@@ -49,13 +49,15 @@ void Test_Timer::execute(void* data){
 	//timer->deleteTimer(id);
 	sleep(1);
 
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 2000);
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 4000);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 500);
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)openswitch);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 2000);
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)closeswitch);
 
 
-sleep(1);
+	sleep(0);
 	timer->stopAll_actual_Timer();
-	sleep(5);
+	sleep(10);
 	timer->startAllTimer();
 	sleep(6);
 	timer->addTimerFunction(openswitch, 2000);
