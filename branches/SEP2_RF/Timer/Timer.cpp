@@ -90,7 +90,7 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	funcp_list.push_back(new_element);
 	locker.unlock();
 
-	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
+	//printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
 
 	if (timer_settime(timerid, 0, &timer, NULL) == -1) {
 		perror("Timer: cannot set OS-Timer");
