@@ -191,17 +191,17 @@ void Sensor::handleNormalMessage() {
 			}//for
 		}
 
+#ifdef PUCK_FSM_1
 		if (((val >> WP_RUN_IN) & 1) && !((last_Reg_State_B >> WP_RUN_IN) & 1)) {
 			cout << "Sensor: first LB out" << endl;
-
 			if( !(h->isEngineRunning())){
 				if(wp_list.size() > 0) {
-				wp_list.erase( wp_list.begin() + wp_list.size() -1 );
-				timer->deleteAllTimer();
+					wp_list.erase( wp_list.begin() + wp_list.size() -1 );
+					timer->deleteAllTimer();
 				}
 			}//if
 		}//if
-
+#endif
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
 				& 1)) {
 			cout << "Sensor: in height measure " << endl;
