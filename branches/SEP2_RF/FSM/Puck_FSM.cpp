@@ -93,7 +93,8 @@ void Puck_FSM::removeAllLights() {
 }
 
 void Puck_FSM::checkLocation() {
-	if (expectedLocation != location) {
+	if ( expected_loc_list[0] != location) {
+		expected_loc_list.erase(expected_loc_list.begin());
 		checked_to_early = true;
 		errorState();
 	}
@@ -133,7 +134,7 @@ void Puck_FSM::selectErrorState() {
 		default:
 			cout << "No ErrorState defined!" << endl;
 		}
-		cout << "Unknown ErrorState!" << endl;
+		//cout << "Unknown ErrorState!" << endl;
 		checked_to_early = false;
 	} else {
 		switch (location) {

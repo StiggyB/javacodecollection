@@ -64,9 +64,8 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B1);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
-	fsm->expectedLocation = AFTER_FIRST_LB;
-	cout << "minID: " << fsm->minTimerId << endl;
-	cout << "maxID: " << fsm->maxTimerId << endl;
+	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
+	//fsm->expectedLocation = AFTER_FIRST_LB;
 }
 
 //functions for Band1_aufgelegt
@@ -100,8 +99,6 @@ void FSM_1_after_ls_b0::exit(Puck_FSM * fsm) {
 
 //functions for Band1_hoehenmessung
 void FSM_1_height_measure::entry(Puck_FSM * fsm) {
-	//delete timer
-//	fsm->timer->deleteTimer(fsm->minTimerId);
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	int height = fsm->hc->identifyHeight();
 	fsm->location = AFTER_HEIGH_MEASURE;
@@ -132,13 +129,12 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	cout << "FSM_1_height_measure: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B3);
-//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
-//	if(/*fsm->current == FSM_1_sort_out*/ false) {
-//		fsm->expectedLocation = AFTER_METAL_SENSOR;
-//	} else {
-//		fsm->expectedLocation = AFTER_METAL_SENSOR_FORWARD;
-//	}
+	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B3);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
+
+	//fsm->expectedLocation = AFTER_HEIGH_MEASURE;
+	fsm->expected_loc_list.push_back(AFTER_HEIGH_MEASURE);
+
 }
 
 //functions for ausschleusen
@@ -151,9 +147,8 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-	//delete timer
-//	fsm->timer->deleteTimer(fsm->minTimerId);
-//	fsm->timer->deleteTimer(fsm->maxTimerId);
+
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR;
 	fsm->hc->engineReset();
@@ -264,9 +259,8 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
-	//delete timer
-//	fsm->timer->deleteTimer(fsm->minTimerId);
-//	fsm->timer->deleteTimer(fsm->maxTimerId);
+
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
 	fsm->hc->openSwitch();

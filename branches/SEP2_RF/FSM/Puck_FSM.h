@@ -51,7 +51,7 @@ enum ErrorType {
 enum ReferenceTime {
 	MIN_TIME_B1 = 2000,
 	MAX_TIME_B1 = 3000,
-	MIN_TIME_B3 = 2000,
+	MIN_TIME_B3 = 800,
 	MAX_TIME_B3 = 2000,
 	MIN_TIME_B6 = 2500,
 	MAX_TIME_B6 = 2500,
@@ -205,6 +205,7 @@ public:
 	void estop_in_signal(bool was_serial);
 	void estop_out_signal(bool was_serial);
 	bool request;
+	std::vector<location_attribut> expected_loc_list;
 protected:
 	std::vector<Puck_FSM*>* puck_list;
 private:
