@@ -13,6 +13,7 @@
 #include "../Serial/Serial.h"
 #include "../Thread/HAWThread.h"
 #include "../Tests/test.h"
+#include "../Timer/Timer.h"
 #include "../Tests/Test_Sensor.h"
 #include "../Tests/Test_FSM.h"
 #include "../Thread/Singleton_T.h"
@@ -60,6 +61,7 @@ protected:
 private:
     HALCore *h;
     Lampen *l;
+    Timer* timer;
     std::vector<Puck_FSM*> wp_list;
     Puck_FSM* dummy_fsm;
 	bool request;

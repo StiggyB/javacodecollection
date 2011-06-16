@@ -25,6 +25,7 @@ Sensor::Sensor() :
 	}
 	h = HALCore::getInstance();
 	l = Lampen::getInstance();
+	timer = Timer::getInstance();
 	/**
 	 * Initialize with start values
 	 */
@@ -177,7 +178,7 @@ void Sensor::handleNormalMessage() {
 			return;
 
 		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
-			cout << "Sensor: in" << endl;
+			cout << "Sensor: first LB in" << endl;
 #ifdef PUCK_FSM_1
 			wp_list.push_back(new Puck_FSM_1(&wp_list));
 #endif
@@ -189,6 +190,17 @@ void Sensor::handleNormalMessage() {
 				}//if
 			}//for
 		}
+
+		if (((val >> WP_RUN_IN) & 1) && !((last_Reg_State_B >> WP_RUN_IN) & 1)) {
+			cout << "Sensor: first LB out" << endl;
+
+			if( !(h->isEngineRunning())){
+				if(wp_list.size() > 0) {
+				wp_list.erase( wp_list.begin() + wp_list.size() -1 );
+				timer->deleteAllTimer();
+				}
+			}//if
+		}//if
 
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
 				& 1)) {

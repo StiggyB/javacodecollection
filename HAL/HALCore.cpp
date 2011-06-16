@@ -705,3 +705,6 @@ bool HALCore::checkSlide() {
 	return (!((in8(D_IOBASE + 1) >> 6) & 1));
 }
 
+bool HALCore::isEngineRunning() {
+	return ( ((in8(D_IOBASE + 0) >> 0) & 1) ) && ( !((in8(D_IOBASE + 0) >> 3) & 1) );
+}
