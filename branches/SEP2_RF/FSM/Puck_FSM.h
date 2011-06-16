@@ -50,12 +50,12 @@ enum ErrorType {
 //TODO Set exact values with min/max tolerance.
 enum ReferenceTime {
 	MIN_TIME_B1 = 2000,
-	MAX_TIME_B1 = 3000,
+	MAX_TIME_B1 = 3500,
 	MIN_TIME_B3 = 800,
 	MAX_TIME_B3 = 2000,
-	MIN_TIME_B6 = 2500,
-	MAX_TIME_B6 = 2500,
-	MIN_TIME_B7 = 3000,
+	MIN_TIME_B6 = 1500,
+	MAX_TIME_B6 = 3000,
+	MIN_TIME_B7 = 2000,
 	MAX_TIME_B7 = 3000,
 	MAX_TIME_IN_SLIDE = 2000
 };
@@ -78,141 +78,62 @@ enum ReferenceTime {
  */
 class Puck_FSM: public CallBackThrower {
 public:
-	/**
-	 * Pointer to actual state
-	 */
-	class State *current;
-	Puck_FSM();
-	virtual ~Puck_FSM();
-	/**
-	 * set new state
-	 * \param a State, which will be the new acutal state of fsm
-	 */
-	void setCurrent(State *s);
-	/**
-	 * first light barrier was passed
-	 */
-	void ls_b0();
-	/**
-	 * second light barrier (for height measure) was passed
-	 */
-	void ls_b1();
-	/**
-	 * third light barrier (for metal measure) was passed
-	 */
-	void ls_b3();
-	/**
-	 * slide light barrier was passed
-	 */
-	void ls_b6();
-	/**
-	 * end light barrier was passed
-	 */
-	void ls_b7_in();
-	/**
-	 * wp was taken from band
-	 */
-	void ls_b7_out();
-	/**
-	 * entry function for state, only internal use
-	 */
-	void entry();
-	/**
-	 * exit function for state, only internal use
-	 */
-	void exit();
-	/**
-	 * general error state
-	 */
-	void errorState();
-	/**
-	 *
-	 */
-	void reset();
-	/**
-	 * function to leave error state
-	 */
-	void noticed_error_confirmed();
-	/**
-	 * is true, if wp need transport for finite state input
-	 */
-	bool engine_should_be_started;
-	/**
-	 * is true, if wp has pocket (for second machine)
-	 */
-	bool hasPocket;
-	/**
-	 * Actual error type
-	 */
-	ErrorType errType;
-	/**
-	 * Actual max timer id
-	 */
-	int maxTimerId;
-	/**
-	 * Actual min timer id
-	 */
-	int minTimerId;
-	/**
-	 * Used as a compare variable for expected location
-	 */
-	location_attribut expectedLocation;
-	/**
-	 * Flag is true if a work piece arrives to early
-	 */
-	bool checked_to_early;
-	/**
-	 * Instance for lamp in error state
-	 */
-	Lampen *lamp;
-	/**
-	 * Instance for HW control
-	 */
-	HALCore *hc;
-	/**
-	 * Instance for the Timer
-	 */
-	Timer *timer;
-	/**
-	 * Instance for the Serial interface
-	 */
-	Serial* serial;
-	/**
-	 *
-	 */
-	location_attribut location;
-
-	int check_last_lb();
-	void delete_unnecessary_wp();
-	void starts_engine_if_nessecary();
-	void requestfromMachine1();
-	void PuckhasPocket();
-	void PuckhasnoPocket();
-	void puck_arrived();
-	void machine2_free();
-	void isSlideFull();
-	int setErrorStateTimer(ReferenceTime allocTime);
-	int setCheckLocationTimer(ReferenceTime refTime);
-	void removeAllLights();
-	void checkLocation();
-	bool getErrorNoticed();
-	void setErrorNoticed(bool errorNoticed);
-	void selectErrorState();
-	void puck_fsm2_outgoing();
-	void start_signal(bool was_serial);
-	void stop_signal(bool was_serial);
-	void reset_signal(bool was_serial);
-	void estop_in_signal(bool was_serial);
-	void estop_out_signal(bool was_serial);
-	bool request;
-	std::vector<location_attribut> expected_loc_list;
+    class State *current;
+    Puck_FSM();
+    virtual ~Puck_FSM();
+    void setCurrent(State *s);
+    void ls_b0();
+    void ls_b1();
+    void ls_b3();
+    void ls_b6();
+    void ls_b7_in();
+    void ls_b7_out();
+    void entry();
+    void exit();
+    void errorState();
+    void reset();
+    void noticed_error_confirmed();
+    bool engine_should_be_started;
+    bool hasPocket;
+    ErrorType errType;
+    int maxTimerId;
+    int minTimerId;
+    int checkSlide_TID;
+    bool checked_to_early;
+    Lampen *lamp;
+    HALCore *hc;
+    Timer *timer;
+    Serial *serial;
+    location_attribut location;
+    int check_last_lb();
+    void delete_unnecessary_wp();
+    bool starts_engine_if_nessecary();
+    void requestfromMachine1();
+    void PuckhasPocket();
+    void PuckhasnoPocket();
+    void puck_arrived();
+    void machine2_free();
+    void isSlideFull();
+    int setErrorStateTimer(ReferenceTime allocTime);
+    int setCheckLocationTimer(ReferenceTime refTime);
+    void removeAllLights();
+    void checkLocation();
+    bool getErrorNoticed();
+    void setErrorNoticed(bool errorNoticed);
+    void selectErrorType();
+    void puck_fsm2_outgoing();
+    void start_signal(bool was_serial);
+    void stop_signal(bool was_serial);
+    void reset_signal(bool was_serial);
+    void estop_in_signal(bool was_serial);
+    void estop_out_signal(bool was_serial);
+    void delete_last_expected_location();
+    bool request;
+    std::vector<location_attribut> expected_loc_list;
 protected:
-	std::vector<Puck_FSM*>* puck_list;
+    std::vector<Puck_FSM*> *puck_list;
 private:
-	/**
-	 * Error is noticed or unnoticed
-	 */
-	bool errorNoticed;
+    bool errorNoticed;
 };
 
 class State {

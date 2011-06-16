@@ -67,6 +67,10 @@ public:
 	 * usage for compare between 2 times
 	 */
 	long getSystemTime_ms();
+	/**
+	 *
+	 */
+	int deleteAllTimer();
 
 protected:
 	virtual void execute(void*);

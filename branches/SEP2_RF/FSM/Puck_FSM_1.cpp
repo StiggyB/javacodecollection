@@ -67,20 +67,23 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
 }
 
+
 //functions for Band1_aufgelegt
 void FSM_1_after_ls_b0::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: entry" << endl;
 #endif
 	fsm->location = AFTER_FIRST_LB;
-	fsm->hc->engineContinue();
-	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
+
+	fsm->starts_engine_if_nessecary();
+
 }
 void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
+	fsm->delete_last_expected_location();
 	fsm->setCurrent(new FSM_1_height_measure());
 }
 void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
@@ -143,13 +146,12 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-
+	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR;
-	fsm->hc->engineReset();
-	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
+	fsm->starts_engine_if_nessecary();
 	fsm->lamp->shine(YELLOW);
 	fsm->setCurrent(new FSM_1_ls_b3_passed_sort_out());
 }
@@ -164,9 +166,9 @@ void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
 #endif
-//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B6);
-//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
-//	fsm->expectedLocation = SORT_OUT;
+	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B6);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
+	fsm->expected_loc_list.push_back(AFTER_METAL_SENSOR);
 }
 
 //functions for Weiche_zu
@@ -179,8 +181,8 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
-//	fsm->timer->deleteTimer(fsm->minTimerId);
-//	fsm->timer->deleteTimer(fsm->maxTimerId);
+	fsm->delete_last_expected_location();
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = SORT_OUT;
@@ -226,14 +228,13 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE);
+	fsm->checkSlide_TID = fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE);
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_check_slide: errorState" << endl;
 #endif
-	fsm->errType = SLIDE_FULL_B6;
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
 
@@ -255,6 +256,7 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
 
+	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
@@ -276,9 +278,10 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
-//	fsm->maxTimerId = fsm->setErrorStateTimer(MIN_TIME_B7);
-//	fsm->minTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
-//	fsm->expectedLocation = ON_LAST_LB;
+	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B7);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+	fsm->expected_loc_list.push_back(AFTER_METAL_SENSOR_FORWARD);
+
 }
 
 //functions for durchschleusen_bei_LS3
@@ -291,8 +294,8 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
-//	fsm->timer->deleteTimer(fsm->minTimerId);
-//	fsm->timer->deleteTimer(fsm->maxTimerId);
+
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;
@@ -341,22 +344,25 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "ErrorState: entry" << endl;
 #endif
+	fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
 	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
 	fsm->removeAllLights();
 	fsm->lamp->flash(500, RED);
-	fsm->selectErrorState();
+	fsm->selectErrorType();
 }
 void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "ErrorState: LS_B6" << endl;
 #endif
-	if(fsm->hc->checkSlide() == false) {
-		//should be work without removeLight or need removeAll
-		fsm->removeAllLights();
-		fsm->lamp->flash(1000, RED);
-	}
+	if(fsm->errType == SLIDE_FULL_B6){
+		if(fsm->hc->checkSlide() == false) {
+			//should be work without removeLight or need removeAll
+			fsm->removeAllLights();
+			fsm->lamp->flash(1000, RED);
+		}//if
+	}//if
 }
 void FSM_1_ErrorState::reset(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG

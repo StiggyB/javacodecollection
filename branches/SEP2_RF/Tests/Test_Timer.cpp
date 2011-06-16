@@ -43,21 +43,25 @@ void Test_Timer::execute(void* data){
 			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::closeSwitch);
 
 
-	timer->addTimerFunction(openswitch, 2000);
-	int id = timer->addTimerFunction(closeswitch, 3500);
+	//timer->addTimerFunction(openswitch, 2000);
+	//int id = timer->addTimerFunction(closeswitch, 3500);
 
-	timer->deleteTimer(id);
+	//timer->deleteTimer(id);
 	sleep(1);
 
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 2000);
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 4000);
 
 
+sleep(1);
+	timer->stopAll_actual_Timer();
 	sleep(5);
-	/*timer->addTimerFunction(openswitch, 2000);
+	timer->startAllTimer();
+	sleep(6);
+	timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
 	sleep(5);
-	timer->addTimerFunction(openswitch, 2000);
+	/*timer->addTimerFunction(openswitch, 2000);
 	timer->addTimerFunction(closeswitch, 4000);
 	*/
 	sleep(5);

@@ -90,7 +90,7 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	funcp_list.push_back(new_element);
 	locker.unlock();
 
-//	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
+	printf("timerid: %i, sec: %i, nsec: %i\n", timerid, timer.it_value.tv_sec, timer.it_value.tv_nsec);
 
 	if (timer_settime(timerid, 0, &timer, NULL) == -1) {
 		perror("Timer: cannot set OS-Timer");
@@ -122,7 +122,7 @@ void Timer::handlePulsMessage(){
 
 		if( temp.funcp.funcp_cbt_void != NULL ){
 			temp.funcp.funcp_cbt_void->call();
-//			std::cout << "Timer: -->call()" << std::endl;
+			std::cout << "Timer: -->call()" << std::endl;
 		}//if
 
 
@@ -204,11 +204,13 @@ long Timer::getSystemTime_ms(){
 }
 
 int Timer::stopAll_actual_Timer(){
+	locker.lock();
 	long diff = 0;
 
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
 		if( timer_delete( funcp_list[i].timer_id ) == -1){
 			perror( "Timer: cannot delete OS-Timer in Timer_stopAllTimer()");
+			locker.unlock();
 			return -1;
 		}//if
 		funcp_list[i].timer_id = -1;
@@ -218,11 +220,13 @@ int Timer::stopAll_actual_Timer(){
 		printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
 
 	}//for
+	locker.unlock();
 
 	return 0;
 }
 
 int Timer::startAllTimer(){
+	locker.lock();
 	std::vector< struct IdTOfunction> funcp_list_local;
 
 	funcp_list_local = funcp_list;
@@ -242,24 +246,45 @@ int Timer::startAllTimer(){
 		funcp_list_local.erase( funcp_list_local.begin() );
 
 	}//while
+	locker.unlock();
 	return 0;
 }
 
 
 int Timer::deleteTimer(int id){
+	locker.lock();
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		if( funcp_list[i].id == id){
+		if( funcp_list[i].id == id && funcp_list[i].timer_id != -1 ){
 
 			if( timer_delete( funcp_list[i].timer_id ) == -1){
 				perror( "Timer: cannot delete OS-Timer in stopTimerbyId()");
+				locker.unlock();
 				return -1;
 			}//if
 
 //			std::cout << "Timer: stopTimerbyId has delete a Timer - ID: " << funcp_list[i].timer_id << std::endl;
-			funcp_list.erase( funcp_list.begin()+i );
+			funcp_list.erase( funcp_list.begin() + i );
 		}//if
 
 	}//for
+	locker.unlock();
+	return 0;
+}
+
+int Timer::deleteAllTimer(){
+	locker.lock();
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+
+		if( timer_delete( funcp_list[i].timer_id ) == -1){
+			perror( "Timer: cannot delete OS-Timer in deleteAllTimer()");
+			locker.unlock();
+			return -1;
+		}//if
+
+	}//for
+	funcp_list.clear();
+
+	locker.unlock();
 	return 0;
 }
 

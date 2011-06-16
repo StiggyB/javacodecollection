@@ -65,6 +65,7 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
 		cout << "errorState" << endl;
+		errType = SLIDE_FULL_B6;
 		errorState();
 	} else {
 		cout << "delete_wp" << endl;
@@ -92,30 +93,39 @@ void Puck_FSM::removeAllLights() {
 }
 
 void Puck_FSM::checkLocation() {
-	if (expected_loc_list[0] != location) {
-//		expected_loc_list.erase(expected_loc_list.begin());
+	if (*(expected_loc_list.begin()) != location) {
+		cout << "COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
 		checked_to_early = true;
 		errorState();
 	}
 }
 
 bool Puck_FSM::getErrorNoticed() {
-	cout << "Address: " << &(this->errorNoticed) << endl;
+//	cout << "Address: " << &(this->errorNoticed) << endl;
 	return errorNoticed;
 }
 void Puck_FSM::setErrorNoticed(bool errorNoticed) {
-	cout << "Address: " << &(this->errorNoticed) << endl;
+//	cout << "Address: " << &(this->errorNoticed) << endl;
 	this->errorNoticed = errorNoticed;
 }
 
-void Puck_FSM::selectErrorState() {
-	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
+void Puck_FSM::delete_last_expected_location() {
+    if(expected_loc_list.size() > 0) {
+        expected_loc_list.erase(expected_loc_list.begin());
+    }
+}
+
+void Puck_FSM::selectErrorType() {
+	if(errType != NO_ERROR) {
+		return;
+	}
+//	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 	setErrorNoticed(true);
-	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
+//	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 
 	if (checked_to_early == true) {
-		cout << "ExpecetedLocation: " << expectedLocation << endl;
-		switch (expectedLocation) {
+		cout << "ExpecetedLocation: " << *(expected_loc_list.begin()) << endl;
+		switch (*(expected_loc_list.begin())) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
 			break;
@@ -124,6 +134,7 @@ void Puck_FSM::selectErrorState() {
 			break;
 		case AFTER_METAL_SENSOR:
 			errType = WP_UNKOWN_B6;
+			timer->deleteTimer(checkSlide_TID);
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
 			errType = WP_UNKOWN_B7;
@@ -150,19 +161,28 @@ void Puck_FSM::selectErrorState() {
 			cout << "SelectErrorState - Puck disappeared: No ErrorState defined!" << endl;
 		}
 	}
-	expected_loc_list.erase(expected_loc_list.begin());
-	cout << "ErrorType: " << errType << endl;
+    delete_last_expected_location();
+    cout << "ErrorType: " << errType << endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
 	if(errorNoticed == true) {
-		cout << "reset_button_pushed: errorNoticed == true"  << endl;
+//		cout << "reset_button_pushed: errorNoticed == true"  << endl;
 		location = SORT_OUT;
 		errorNoticed = false;
 	} else {
-		cout << "reset_button_pushed: errorNoticed == false"  << endl;
+//		cout << "reset_button_pushed: errorNoticed == false"  << endl;
+		cout << "ERRORTYPE: " << errType << endl;
+		if(errType == SLIDE_FULL_B6) {
+			if (hc->checkSlide()) {
+				return;
+			}
+		}
 		delete_unnecessary_wp();
 		starts_engine_if_nessecary();
+
+		timer->deleteAllTimer();
+		timer->startAllTimer();
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
@@ -190,12 +210,12 @@ void Puck_FSM::delete_unnecessary_wp() {
 	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
 }
 
-void Puck_FSM::starts_engine_if_nessecary() {
+bool Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		cout << "errorNoticed: " << getErrorNoticed() << endl;
-		if ((*puck_list)[i]->getErrorNoticed() == true) {
-			return;
+		cout << "errorNoticed: " << errType << endl;
+		if ((*puck_list)[i]->errType != NO_ERROR) {
+			return false;
 		}
 	}
 
@@ -212,6 +232,8 @@ void Puck_FSM::starts_engine_if_nessecary() {
 		hc->engineContinue();
 		hc->engineRight();
 	}
+
+	return true;
 }
 
 

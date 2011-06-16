@@ -246,6 +246,7 @@ extern volatile bool emstopped;
 class HALCore: public thread::HAWThread, public CallBackThrower, public Singleton_T<HALCore>{
 	friend class Singleton_T<HALCore>;
 public:
+	bool isEngineRunning();
 	/**
 	 * Reads from a port.
 	 * \param dir an integer, specifying the Port.
