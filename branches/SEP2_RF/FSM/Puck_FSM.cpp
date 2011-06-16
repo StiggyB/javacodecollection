@@ -44,7 +44,6 @@ void Puck_FSM::stop_signal(bool was_serial) {
 
 }
 void Puck_FSM::reset_signal(bool was_serial) {
-	//TODO implement reset only in one system
 	if (!was_serial)
 		serial->send(RESET_BUTTON, sizeof(int));
 }
@@ -93,8 +92,8 @@ void Puck_FSM::removeAllLights() {
 }
 
 void Puck_FSM::checkLocation() {
-	if ( expected_loc_list[0] != location) {
-		expected_loc_list.erase(expected_loc_list.begin());
+	if (expected_loc_list[0] != location) {
+//		expected_loc_list.erase(expected_loc_list.begin());
 		checked_to_early = true;
 		errorState();
 	}
@@ -113,11 +112,9 @@ void Puck_FSM::selectErrorState() {
 	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 	setErrorNoticed(true);
 	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
+
 	if (checked_to_early == true) {
-		//TODO 0 prio --Lookup the specific location in difference
-		// of disappeared or unknown!
 		cout << "ExpecetedLocation: " << expectedLocation << endl;
-		//TODO 0prio -- implement correct locations!
 		switch (expectedLocation) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
@@ -132,9 +129,8 @@ void Puck_FSM::selectErrorState() {
 			errType = WP_UNKOWN_B7;
 			break;
 		default:
-			cout << "No ErrorState defined!" << endl;
+			cout << "SelectErrorState - Puck unknown: No ErrorState defined!" << endl;
 		}
-		//cout << "Unknown ErrorState!" << endl;
 		checked_to_early = false;
 	} else {
 		switch (location) {
@@ -151,17 +147,16 @@ void Puck_FSM::selectErrorState() {
 			errType = WP_DISAPPEARED_B7;
 			break;
 		default:
-			cout << "No ErrorState defined!" << endl;
+			cout << "SelectErrorState - Puck disappeared: No ErrorState defined!" << endl;
 		}
 	}
+	expected_loc_list.erase(expected_loc_list.begin());
 	cout << "ErrorType: " << errType << endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
 	if(errorNoticed == true) {
 		cout << "reset_button_pushed: errorNoticed == true"  << endl;
-//		hc->engineContinue();
-//		lamp->shine(GREEN);
 		location = SORT_OUT;
 		errorNoticed = false;
 	} else {
@@ -188,6 +183,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 				== AFTER_LAST_LB) {
 			cout << "deleted" << endl;
 			puck_list->erase(puck_list->begin() + i);
+			//TODO 0prio -- Puck in slide where should the lamp shine?
 //			lamp->shine(GREEN);
 		}
 	}
@@ -196,7 +192,6 @@ void Puck_FSM::delete_unnecessary_wp() {
 
 void Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
-	//TODO -1prio --should be true since errorState::entry() but is false!
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		cout << "errorNoticed: " << getErrorNoticed() << endl;
 		if ((*puck_list)[i]->getErrorNoticed() == true) {
