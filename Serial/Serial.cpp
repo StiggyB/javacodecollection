@@ -34,7 +34,7 @@ void Serial::init(int numComPort, bool debug) {
 	comPort = numComPort;
 
 	getAck = false;
-	getSync = false;
+	getSync = true;
 	check_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkAck);
 	check_init_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkInit);
 	sync_error = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncError);
