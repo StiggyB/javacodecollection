@@ -71,18 +71,18 @@ void Puck_FSM::isSlideFull() {
 	}
 }
 
-void Puck_FSM::checkLocation() {
-	cout << "COULD COMPARE: " << *(expected_loc_list.begin()) << " == "
-			<< location << endl;
-	if (*(expected_loc_list.begin()) != location) {
-		cout << "Puck_FSM::checkLocation: COMPARE: "
-				<< *(expected_loc_list.begin()) << " == " << location << endl;
-		expectedLocation = *(expected_loc_list.begin());
-		checked_to_early = true;
-		errorState();
-	}
-	delete_last_expected_location();
-}
+//void Puck_FSM::checkLocation() {
+//	cout << "COULD COMPARE: " << *(expected_loc_list.begin()) << " == "
+//			<< location << endl;
+//	if (*(expected_loc_list.begin()) != location) {
+//		cout << "Puck_FSM::checkLocation: COMPARE: "
+//				<< *(expected_loc_list.begin()) << " == " << location << endl;
+//		expectedLocation = *(expected_loc_list.begin());
+//		checked_to_early = true;
+//		errorState();
+//	}
+//	delete_last_expected_location();
+//}
 
 int Puck_FSM::setDummyTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callDummyFunction = (CallInterface<
@@ -119,13 +119,13 @@ void Puck_FSM::setErrorNoticed(bool errorNoticed) {
 	this->errorNoticed = errorNoticed;
 }
 
-void Puck_FSM::delete_last_expected_location() {
-	if (expected_loc_list.size() > 0) {
-		cout << "Puck_FSM::delete_last_expected_location: "
-				<< *(expected_loc_list.begin()) << endl;
-		expected_loc_list.erase(expected_loc_list.begin());
-	}
-}
+//void Puck_FSM::delete_last_expected_location() {
+//	if (expected_loc_list.size() > 0) {
+//		cout << "Puck_FSM::delete_last_expected_location: "
+//				<< *(expected_loc_list.begin()) << endl;
+//		expected_loc_list.erase(expected_loc_list.begin());
+//	}
+//}
 
 void Puck_FSM::selectErrorType() {
 	if (errType != NO_ERROR) {
@@ -136,9 +136,9 @@ void Puck_FSM::selectErrorType() {
 	//	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 
 	if (checked_to_early == true) {
-		cout << "Puck_FSM::selectErrorType: ExpecetedLocation: "
-				<< expectedLocation << endl;
-		switch (expectedLocation) {
+//		cout << "Puck_FSM::selectErrorType: ExpecetedLocation: "
+//				<< expectedLocation << endl;
+		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
 			break;
