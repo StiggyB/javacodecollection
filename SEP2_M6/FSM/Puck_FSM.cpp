@@ -68,6 +68,9 @@ void Puck_FSM::isSlideFull() {
 	} else {
 		cout << "Puck_FSM::isSlideFull: delete_wp" << endl;
 		delete_unnecessary_wp();
+#ifdef PUCK_FSM_2
+		puck_fsm2_outgoing();
+#endif
 	}
 }
 
@@ -220,7 +223,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
 				== AFTER_LAST_LB) {
-			cout << "Puck_FSM::puck_fsm2_outgoing: deleted" << endl;
+			cout << "Puck_FSM::delete_unnecessary_wp: deleted" << endl;
 			puck_list->erase(puck_list->begin() + i);
 			//TODO 0prio -- Puck in slide where should the lamp shine?
 			//			lamp->shine(GREEN);
