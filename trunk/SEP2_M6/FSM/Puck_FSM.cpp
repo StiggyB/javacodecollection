@@ -300,13 +300,18 @@ void Puck_FSM::PuckhasnoPocket() {
 void Puck_FSM::machine2_free() {
 	hc->engineRight();
 	hc->engineContinue();
+	cout << "set maxtimer to fsm2" << endl;
+	maxTimerId = setErrorStateTimer(MAX_TIME_FSM2);
 }
 void Puck_FSM::puck_arrived() {
+	//todo erkennt nicht den fehler -> noch einbaun für den weg zur fsm
 	hc->engineStop();
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,
-					sizeof(msgType));
+			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,sizeof(msgType));
+			timer->deleteTimer(maxTimerId);
+			cout << "timer->deleteTimer(maxTimerId) puck_arrived" << errType << endl;
+
 		}
 		(*puck_list)[i]->ls_b7_out();
 	}
