@@ -195,7 +195,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 	} else {
 		if (*data == ACK) {
 			//if serial is not synchronized and get an ack send start to restart line
-			if(!getAck){
+			if(!getSync){
 				buildMessage(m, chid, coid, reactSerial, SENSOR,
 						r_msg->pulse.value.sival_int);
 				m->pulse.value.sival_int = START_BUTTON;
