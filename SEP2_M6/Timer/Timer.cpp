@@ -19,6 +19,7 @@
 Timer::Timer() {
 	mine = TIMER;
 	receiver = TIMER;
+	id_counter = 0;
 }
 
 Timer::~Timer() {
@@ -56,6 +57,13 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	int nano_sec = 0;
 	int sec = 0;
 
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if(funcp_list[i].id == new_element.id){
+			perror("Timer: double id found, this should be unique per getid()!!");
+			return false;
+		}//if
+	}//for
+
 	new_element.duration_ms = ms;
 
 	new_element.systemtime_ms = getSystemTime_ms();
@@ -70,13 +78,6 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 	timer.it_interval.tv_nsec = 0;
 	timer.it_interval.tv_sec = 0;
 
-	locker.lock();
-	if ((new_element.id = getnextid()) == -1) {
-		perror("Timer: can't get id for timer");
-		locker.unlock();
-		return false;
-	}//if
-	locker.unlock();
 
 	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, new_element.id );
 
@@ -102,9 +103,10 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 }
 
 
-int Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms){
+int Timer::addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms, int id){
     struct IdTOfunction new_element;
     new_element.funcp.funcp_cbt_void = funcp;
+    new_element.id = id;
     return (addTimerFunction(new_element, ms));
 }
 
@@ -154,26 +156,11 @@ struct IdTOfunction Timer::find_function(int id){
 }
 
 int Timer::getnextid(){
-	int id = 0;
-	bool reserved = false;
-
-	while(id <= (signed int) funcp_list.size()){
-		reserved = false;
-
-		for(unsigned int i = 0; i < funcp_list.size(); i++){
-			if(funcp_list[i].id==id){
-				reserved = true;
-			}//if
-		}//for
-
-		if(reserved){
-			id++;
-		} else {
-			return id;
-		}//if
-
-	}//while
-	return  -1;
+	if(id_counter>100000){
+		perror( "Timer: more than 100000 id's _> set to 0 !!");
+		id_counter = 0;
+	}//if
+	return (id_counter++);
 }
 
 
@@ -230,9 +217,9 @@ int Timer::stopAll_actual_Timer(){
 			}//if
 			funcp_list[i].timer_id = -1;
 			diff = getSystemTime_ms()-funcp_list[i].systemtime_ms;
-			printf("Timer: start_stop_duration=%i\n", diff );
+			//printf("Timer: start_stop_duration=%i\n", diff );
 			funcp_list[i].duration_ms = funcp_list[i].duration_ms - diff;
-			printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
+			//printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
 
 		}//for
 

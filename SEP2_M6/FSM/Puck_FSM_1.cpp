@@ -25,6 +25,10 @@ Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 	puck_list = puck_listobj;
 	current = new FSM_1_start_state;
 	current->entry(this);
+	minTimerId = timer->getnextid();
+	maxTimerId = timer->getnextid();
+	checkSlide_TID = timer->getnextid();
+	openSwitch_TID = timer->getnextid();
 #ifdef PUCK_FSM_1_DEBUG
 	printf("FSM Band1 is up\n");
 #endif
@@ -59,8 +63,8 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 	cout << "FSM_1_start_state: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B1);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
+	fsm->setDummyTimer(MIN_TIME_B1);
+	fsm->setErrorStateTimer(MAX_TIME_B1);
 }
 
 //functions for Band1_aufgelegt
@@ -127,8 +131,8 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	cout << "FSM_1_height_measure: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B3);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
+	fsm->setDummyTimer(MIN_TIME_B3);
+	fsm->setErrorStateTimer(MAX_TIME_B3);
 
 }
 
@@ -166,8 +170,8 @@ void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
 #endif
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B6);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
+	fsm->setDummyTimer(MIN_TIME_B6);
+	fsm->setErrorStateTimer(MAX_TIME_B6);
 }
 
 //functions for Weiche_zu
@@ -233,7 +237,7 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->checkSlide_TID = fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE);
+	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE, fsm->checkSlide_TID);
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
@@ -285,9 +289,10 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B7);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->openSwitch_TID);
+	fsm->setDummyTimer(MIN_TIME_B7);
+	fsm->setErrorStateTimer(MAX_TIME_B7);
 }
 
 //functions for durchschleusen_bei_LS3

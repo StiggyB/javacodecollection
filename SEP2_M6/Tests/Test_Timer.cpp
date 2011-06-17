@@ -42,29 +42,34 @@ void Test_Timer::execute(void* data){
 	CallInterface<CallBackThrower, void>* closeswitch = (CallInterface<CallBackThrower, void>*)
 			FunctorMaker<HALCore, void>::makeFunctor(h, &HALCore::closeSwitch);
 
+	int TID_1 = timer->getnextid();
+	int TID_2 = timer->getnextid();
+	int TID_3 = timer->getnextid();
+	int TID_4 = timer->getnextid();
 
-	//timer->addTimerFunction(openswitch, 2000);
-	//int id = timer->addTimerFunction(closeswitch, 3500);
+	timer->addTimerFunction(openswitch, 1000, TID_1);
+	timer->addTimerFunction(closeswitch, 2000, TID_2);
 
-	//timer->deleteTimer(id);
-	sleep(1);
+	//timer->deleteTimer(TID_2);
+	sleep(3);
 
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 500);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 1000, TID_3);
 	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)openswitch);
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 2000);
-	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)closeswitch);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 2500, TID_4);
+	//timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)closeswitch);
 
-
-	sleep(0);
 	timer->stopAll_actual_Timer();
-	sleep(10);
+	cout << "stopAll_actual_Timer()" <<endl;
+	sleep(7);
 	timer->startAllTimer();
-	sleep(6);
-	timer->addTimerFunction(openswitch, 2000);
-	timer->addTimerFunction(closeswitch, 4000);
+	cout << "startAllTimer()" <<endl;
+
+	sleep(4);
+	timer->addTimerFunction(openswitch, 1000, TID_1);
+	timer->addTimerFunction(closeswitch, 2000, TID_2);
 	sleep(5);
 	/*timer->addTimerFunction(openswitch, 2000);
-	timer->addTimerFunction(closeswitch, 4000);
-	*/
-	sleep(5);
+	timer->addTimerFunction(closeswitch, 4000);*/
+
+	sleep(50);
 }
