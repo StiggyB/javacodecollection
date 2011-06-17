@@ -41,7 +41,7 @@ void StartThread::execute(void*) {
 	sensor->start(NULL);
 	cout << "sensor started" << endl;
 	serial->init(1, true);
-//	serial->start(NULL);
+	serial->start(NULL);
 	cout << "serial started" << endl;
 
 #ifdef TEST_IRQ
