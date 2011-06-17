@@ -61,11 +61,11 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
-		cout << "errorState" << endl;
+		cout << "Puck_FSM::isSlideFull: errorState" << endl;
 		errType = SLIDE_FULL_B6;
 		errorState();
 	} else {
-		cout << "delete_wp" << endl;
+		cout << "Puck_FSM::isSlideFull: delete_wp" << endl;
 		delete_unnecessary_wp();
 	}
 }
@@ -91,7 +91,7 @@ void Puck_FSM::removeAllLights() {
 
 void Puck_FSM::checkLocation() {
 	if (*(expected_loc_list.begin()) != location) {
-		cout << "COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
+		cout << "Puck_FSM::checkLocation: COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
 		checked_to_early = true;
 		errorState();
 	}
@@ -121,7 +121,7 @@ void Puck_FSM::selectErrorType() {
 //	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 
 	if (checked_to_early == true) {
-		cout << "ExpecetedLocation: " << *(expected_loc_list.begin()) << endl;
+		cout << "Puck_FSM::selectErrorType: ExpecetedLocation: " << *(expected_loc_list.begin()) << endl;
 		switch (*(expected_loc_list.begin())) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
@@ -137,7 +137,7 @@ void Puck_FSM::selectErrorType() {
 			errType = WP_UNKOWN_B7;
 			break;
 		default:
-			cout << "SelectErrorState - Puck unknown: No ErrorState defined!" << endl;
+			cout << "Puck_FSM::selectErrorType: SelectErrorState - Puck unknown: No ErrorState defined!" << endl;
 		}
 		checked_to_early = false;
 	} else {
@@ -155,11 +155,11 @@ void Puck_FSM::selectErrorType() {
 			errType = WP_DISAPPEARED_B7;
 			break;
 		default:
-			cout << "SelectErrorState - Puck disappeared: No ErrorState defined!" << endl;
+			cout << "Puck_FSM::selectErrorType: SelectErrorState - Puck disappeared: No ErrorState defined!" << endl;
 		}
 	}
     delete_last_expected_location();
-    cout << "ErrorType: " << errType << endl;
+    cout << "Puck_FSM::selectErrorType: ErrorType: " << errType << endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
@@ -188,7 +188,7 @@ void Puck_FSM::noticed_error_confirmed() {
 
 void Puck_FSM::puck_fsm2_outgoing() {
 	if (request == true) {
-		cout << "Sensor: request true, seriel message will be send" << endl;
+		cout << "Puck_FSM::puck_fsm2_outgoing: request true, seriel message will be send" << endl;
 		serial->send(MACHINE2_FREE, sizeof(msgType));
 		hc->engineContinue();
 		request = false;
@@ -198,7 +198,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
 				== AFTER_LAST_LB) {
-			cout << "deleted" << endl;
+			cout << "Puck_FSM::puck_fsm2_outgoing: deleted" << endl;
 			puck_list->erase(puck_list->begin() + i);
 			//TODO 0prio -- Puck in slide where should the lamp shine?
 //			lamp->shine(GREEN);
@@ -210,14 +210,14 @@ void Puck_FSM::delete_unnecessary_wp() {
 bool Puck_FSM::starts_engine_if_nessecary() {
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		cout << "errorNoticed: " << errType << endl;
+		cout << "Puck_FSM::starts_engine_if_nessecary: errorNoticed: " << errType << endl;
 		if ((*puck_list)[i]->errType != NO_ERROR) {
 			return false;
 		}
 	}
 
 	lamp->shine(GREEN);
-	cout << "SHINE GREEN" << endl;
+	cout << "Puck_FSM::starts_engine_if_nessecary: SHINE GREEN" << endl;
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->engine_should_be_started) {
@@ -247,7 +247,7 @@ void Puck_FSM::requestfromMachine1() {
 if (puck_list->size() > 1) {
 	//request = true;
 	(*puck_list)[0]->request = true;
-	cout << "request, but wp is on machine" << endl;
+	cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine" << endl;
 } else {
 	serial->send(MACHINE2_FREE, sizeof(msgType));
 	hc->engineContinue();
