@@ -51,9 +51,9 @@ void FSM_2_start_state::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_start_state: exit" << endl;
 #endif
-//	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B1);
-//	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
-//	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
+	//Callback in errorState in reference time x
+	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B1);
+	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 }
 
 //functions for FSM_2_after_ls_b0
@@ -71,7 +71,10 @@ void FSM_2_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_ls_b0: ls_b1" << endl;
 #endif
-//	fsm->delete_last_expected_location();
+	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->errorState();
+		return;
+	}
 	fsm->location = AFTER_HEIGH_MEASURE;
 	fsm->setCurrent(new FSM_2_after_ls_b1());
 }
