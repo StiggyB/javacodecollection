@@ -12,6 +12,7 @@
 #include "../Functor/CallBackThrower.h"
 
 #define PUCK_FSM_STATE_DEBUG
+#define PUCK_FSM_2
 
 /**
  * Actual locations for the work pieces on the system.

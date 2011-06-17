@@ -78,6 +78,7 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
 	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
@@ -142,6 +143,7 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
 	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
@@ -180,6 +182,7 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #endif
 
 	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
@@ -258,6 +261,7 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
 	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
@@ -297,6 +301,7 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
 	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
