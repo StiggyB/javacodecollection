@@ -240,7 +240,7 @@ void Sensor::handleNormalMessage() {
 			cout << "Sensor: work piece in slide removed" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
 				if (wp_list[i]->location == SORT_OUT) {
-					cout << wp_list.size() << endl;
+					cout << "COUNT OF WORKPIECES: " << wp_list.size() << endl;
 					wp_list[i]->ls_b6();
 					break;
 				}//if
