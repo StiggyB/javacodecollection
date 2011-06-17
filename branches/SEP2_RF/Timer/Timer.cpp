@@ -122,7 +122,7 @@ void Timer::handlePulsMessage(){
 
 		if( temp.funcp.funcp_cbt_void != NULL ){
 			temp.funcp.funcp_cbt_void->call();
-			std::cout << "Timer: -->call()" << std::endl;
+//			std::cout << "Timer: -->call()" << std::endl;
 		}//if
 
 
@@ -216,7 +216,7 @@ int Timer::stopAll_actual_Timer(){
 		for(unsigned int j = 0; j<unstoppable_funcp_list.size() && notfound; j++){
 			if(funcp_list[i].funcp.funcp_cbt_void == unstoppable_funcp_list[j]){
 				unstoppablefound = true;
-				cout << "unstoppablefound found" << endl;
+				//cout << "unstoppablefound found" << endl;
 				notfound = false;
 			}//if
 		}//for
@@ -288,7 +288,7 @@ int Timer::startAllTimer(){
 
 int Timer::deleteTimer(int id){
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		if( funcp_list[i].id == id){ //&& funcp_list[i].timer_id != -1
+		if( funcp_list[i].id == id && funcp_list[i].timer_id != -1 ){ //
 
 			if( timer_delete( funcp_list[i].timer_id ) == -1){
 				perror( "Timer: cannot delete OS-Timer in stopTimerbyId()");
@@ -323,5 +323,6 @@ int Timer::deleteAllTimer(){
 
 int Timer::addUnstoppableFunction( CallInterface<CallBackThrower,void>* funcp ){
 	unstoppable_funcp_list.push_back(funcp);
+	return 0;
 }
 

@@ -49,6 +49,17 @@ enum ErrorType {
  *
  */
 //TODO Set exact values with min/max tolerance.
+//enum ReferenceTime {
+//	MIN_TIME_B1 = 2000,
+//	MAX_TIME_B1 = 3500,
+//	MIN_TIME_B3 = 800,
+//	MAX_TIME_B3 = 2000,
+//	MIN_TIME_B6 = 800,
+//	MAX_TIME_B6 = 3000,
+//	MIN_TIME_B7 = 2000,
+//	MAX_TIME_B7 = 3000,
+//	MAX_TIME_IN_SLIDE = 2000
+//};
 enum ReferenceTime {
 	MIN_TIME_B1 = 2000,
 	MAX_TIME_B1 = 3000,
@@ -101,11 +112,12 @@ public:
 	int minTimerId;
 	int checkSlide_TID;
 	bool checked_to_early;
+	location_attribut expectedLocation;
+	location_attribut location;
 	Lampen *lamp;
 	HALCore *hc;
 	Timer *timer;
 	Serial *serial;
-	location_attribut location;
 	int check_last_lb();
 	void delete_unnecessary_wp();
 	bool starts_engine_if_nessecary();

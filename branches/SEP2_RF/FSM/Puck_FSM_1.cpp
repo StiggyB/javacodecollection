@@ -62,6 +62,7 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 #endif
 
 	//Callback in errorState in reference time x
+	cout << "MIN_TIME_B1: " << MIN_TIME_B1 << endl;
 	fsm->minTimerId = fsm->setCheckLocationTimer(MIN_TIME_B1);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
@@ -75,7 +76,6 @@ void FSM_1_after_ls_b0::entry(Puck_FSM * fsm) {
 #endif
 	fsm->location = AFTER_FIRST_LB;
 	fsm->engine_should_be_started = 1;
-
 	fsm->starts_engine_if_nessecary();
 
 }
@@ -83,7 +83,7 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
-	fsm->delete_last_expected_location();
+//	fsm->delete_last_expected_location();
 	fsm->setCurrent(new FSM_1_height_measure());
 }
 void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
@@ -145,7 +145,7 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-	fsm->delete_last_expected_location();
+//	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR;
@@ -180,7 +180,7 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
-	fsm->delete_last_expected_location();
+//	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
@@ -255,7 +255,7 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
 
-	fsm->delete_last_expected_location();
+//	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
@@ -343,7 +343,7 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ErrorState: entry" << endl;
 #endif
-	fsm->timer->stopAll_actual_Timer();
+	//fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
 	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();

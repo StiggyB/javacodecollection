@@ -42,6 +42,12 @@ void Serial::init(int numComPort, bool debug) {
 	sync_error = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncError);
 	sync_send = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncSend);
 
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)check_ack);
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)check_init_ack);
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)sync_error);
+	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)sync_send);
+
+
 
 	switch (numComPort) {
 	case 1:
