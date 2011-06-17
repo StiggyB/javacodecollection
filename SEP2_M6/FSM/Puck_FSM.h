@@ -12,7 +12,7 @@
 #include "../Functor/CallBackThrower.h"
 
 #define PUCK_FSM_STATE_DEBUG
-#define PUCK_FSM_2
+//#define PUCK_FSM_2
 
 /**
  * Actual locations for the work pieces on the system.
@@ -41,7 +41,8 @@ enum ErrorType {
 	WP_UNKOWN_B6,
 	SLIDE_FULL_B6,
 	WP_DISAPPEARED_B7,
-	WP_UNKOWN_B7
+	WP_UNKOWN_B7,
+	WP_DISAPPEARED_FSM2
 };
 
 /**
@@ -70,7 +71,8 @@ enum ReferenceTime {
 	MAX_TIME_B6 = 1600,
 	MIN_TIME_B7 = 1500,
 	MAX_TIME_B7 = 2500,
-	MAX_TIME_IN_SLIDE = 2000
+	MAX_TIME_IN_SLIDE = 2000,
+	MAX_TIME_FSM2 = 2000
 };
 
 /**
