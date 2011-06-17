@@ -216,8 +216,8 @@ void FSM_2_check_slide::entry(Puck_FSM * fsm) {
 //			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 //			fsm, &Puck_FSM::isSlideFull);
 //	fsm->checkSlide_TID = fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE);
-//	fsm->delete_unnecessary_wp();
-//	fsm->lamp->shine(GREEN);
+	fsm->delete_unnecessary_wp();
+	fsm->lamp->shine(GREEN);
 }
 void FSM_2_check_slide::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG

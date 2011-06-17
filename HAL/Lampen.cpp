@@ -137,7 +137,7 @@ int Lampen::calcLights(){
 	int lights = 0;
 	for(unsigned int i = 0; i < sizeof(array)/sizeof(struct lights); i++){
 		if(array[i].time == 0 && array[i].activ){
-			array[i].on = (array[i].on == 1)? 0 : 1 ;
+			array[i].on = !array[i].on;
 			array[i].time = array[i].period;
 		}
 		if(array[i].on){
