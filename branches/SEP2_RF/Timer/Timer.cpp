@@ -288,7 +288,7 @@ int Timer::startAllTimer(){
 
 int Timer::deleteTimer(int id){
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
-		if( funcp_list[i].id == id && funcp_list[i].timer_id != -1 ){ //
+		if( funcp_list[i].id == id  && funcp_list[i].timer_id != -1){ //
 
 			if( timer_delete( funcp_list[i].timer_id ) == -1){
 				perror( "Timer: cannot delete OS-Timer in stopTimerbyId()");
@@ -326,3 +326,11 @@ int Timer::addUnstoppableFunction( CallInterface<CallBackThrower,void>* funcp ){
 	return 0;
 }
 
+bool Timer::existsTimer(int id){
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if(funcp_list[i].id == id){
+			return true;
+		}//if
+	}//for
+	return false;
+}

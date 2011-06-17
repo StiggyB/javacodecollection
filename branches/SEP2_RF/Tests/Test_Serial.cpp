@@ -37,7 +37,6 @@ void Test_Serial::execute(void*){
 			handleMessage();
 			if (i == 4) {
 				printf("s_0 send\n");
-				s_0->send(msg_test, sizeof(msg_test));
 			}
 		}
 		cout << "ending test serial..." <<endl;

@@ -41,6 +41,11 @@ public:
 	virtual ~Timer();
 	/**
 	 *
+	 *
+	 */
+	bool existsTimer(int id);
+	/**
+	 *
 	 */
 	int addUnstoppableFunction(CallInterface<CallBackThrower,void>* funcp);
 	std::vector< CallInterface<CallBackThrower,void>* > unstoppable_funcp_list;
