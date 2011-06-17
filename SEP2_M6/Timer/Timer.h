@@ -39,6 +39,7 @@ class Timer : public thread::HAWThread, public Communication, public Singleton_T
 public:
 	Timer();
 	virtual ~Timer();
+	bool existTimer(int id);
 	/**
 	 *
 	 */
