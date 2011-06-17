@@ -62,7 +62,6 @@ void FSM_1_start_state::exit(Puck_FSM * fsm) {
 #endif
 
 	//Callback in errorState in reference time x
-	cout << "MIN_TIME_B1: " << MIN_TIME_B1 << endl;
 	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B1);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
 //	fsm->expected_loc_list.push_back(AFTER_FIRST_LB);
@@ -83,10 +82,12 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)) {
+
+	if(fsm->timer->existTimer(fsm->minTimerId)){
 		fsm->errorState();
 		return;
 	}
+
 	fsm->setCurrent(new FSM_1_height_measure());
 }
 void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
@@ -148,7 +149,7 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)) {
+	if(fsm->timer->existTimer(fsm->minTimerId)){
 		fsm->errorState();
 		return;
 	}
@@ -186,6 +187,12 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
+
+	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->errorState();
+		return;
+	}
+
 //	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
@@ -260,6 +267,10 @@ void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
+	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->errorState();
+		return;
+	}
 
 //	fsm->delete_last_expected_location();
 	fsm->timer->deleteTimer(fsm->maxTimerId);
@@ -299,6 +310,11 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
 #endif
+
+	if(fsm->timer->existTimer(fsm->minTimerId)){
+		fsm->errorState();
+		return;
+	}
 
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
