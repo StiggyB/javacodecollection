@@ -70,12 +70,24 @@ void Puck_FSM::isSlideFull() {
 	}
 }
 
+void Puck_FSM::checkLocation() {
+	cout << "COULD COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
+	if (*(expected_loc_list.begin()) != location) {
+		cout << "Puck_FSM::checkLocation: COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
+		expectedLocation = *(expected_loc_list.begin());
+		checked_to_early = true;
+		errorState();
+	}
+		delete_last_expected_location();
+}
+
 int Puck_FSM::setCheckLocationTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callCheckLocatio = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			this, &Puck_FSM::checkLocation);
 	return timer->addTimerFunction(callCheckLocatio, refTime);
 }
+
 int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callErrorState = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
@@ -89,14 +101,6 @@ void Puck_FSM::removeAllLights() {
 	lamp->removeLight(RED);
 }
 
-void Puck_FSM::checkLocation() {
-	if (*(expected_loc_list.begin()) != location) {
-		cout << "Puck_FSM::checkLocation: COMPARE: " << *(expected_loc_list.begin()) << " == " << location << endl;
-		checked_to_early = true;
-		errorState();
-	}
-}
-
 bool Puck_FSM::getErrorNoticed() {
 //	cout << "Address: " << &(this->errorNoticed) << endl;
 	return errorNoticed;
@@ -108,6 +112,7 @@ void Puck_FSM::setErrorNoticed(bool errorNoticed) {
 
 void Puck_FSM::delete_last_expected_location() {
     if(expected_loc_list.size() > 0) {
+    	cout << "Puck_FSM::delete_last_expected_location: " << *(expected_loc_list.begin()) << endl;
         expected_loc_list.erase(expected_loc_list.begin());
     }
 }
@@ -121,8 +126,8 @@ void Puck_FSM::selectErrorType() {
 //	cout << "errorNoticed = true: " << getErrorNoticed() << endl;
 
 	if (checked_to_early == true) {
-		cout << "Puck_FSM::selectErrorType: ExpecetedLocation: " << *(expected_loc_list.begin()) << endl;
-		switch (*(expected_loc_list.begin())) {
+		cout << "Puck_FSM::selectErrorType: ExpecetedLocation: " << expectedLocation << endl;
+		switch (expectedLocation) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
 			break;
@@ -158,7 +163,6 @@ void Puck_FSM::selectErrorType() {
 			cout << "Puck_FSM::selectErrorType: SelectErrorState - Puck disappeared: No ErrorState defined!" << endl;
 		}
 	}
-    delete_last_expected_location();
     cout << "Puck_FSM::selectErrorType: ErrorType: " << errType << endl;
 }
 
@@ -169,7 +173,7 @@ void Puck_FSM::noticed_error_confirmed() {
 		errorNoticed = false;
 	} else {
 //		cout << "reset_button_pushed: errorNoticed == false"  << endl;
-		cout << "ERRORTYPE: " << errType << endl;
+		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType << endl;
 		if(errType == SLIDE_FULL_B6) {
 			if (hc->checkSlide()) {
 				return;
@@ -178,8 +182,8 @@ void Puck_FSM::noticed_error_confirmed() {
 		delete_unnecessary_wp();
 		starts_engine_if_nessecary();
 
-		timer->deleteAllTimer();
-		timer->startAllTimer();
+		//timer->deleteAllTimer();
+		//timer->startAllTimer();
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
@@ -212,16 +216,16 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		cout << "Puck_FSM::starts_engine_if_nessecary: errorNoticed: " << errType << endl;
 		if ((*puck_list)[i]->errType != NO_ERROR) {
+			cout << "Puck_FSM::starts_engine_if_nessecary: inErrorState" << endl;
 			return false;
 		}
 	}
 
 	lamp->shine(GREEN);
-	cout << "Puck_FSM::starts_engine_if_nessecary: SHINE GREEN" << endl;
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->engine_should_be_started) {
-			cout << "A PUCK NEED ENGINE" << endl;
+			cout << "A PUCK NEEDS ENGINE" << endl;
 			active_state = 1;
 		}
 	}
