@@ -109,27 +109,82 @@ protected:
 	virtual void shutdown();
 	void clean();
 private:
+
 	CallInterface<Serial, void>* check_ack;
 	CallInterface<Serial, void>* check_init_ack;
 	CallInterface<Serial, void>* sync_send;
 	CallInterface<Serial, void>* sync_error;
 	Timer* timer;
+
+	/**
+	 * checks if an ack received or not
+	 */
 	void checkAck();
+
+	/**
+	 * check if the serial connection is initialized.
+	 * If not, send INIT_SERIAL again and set the timer check_init_ack again.
+	 */
 	void checkInit();
+
+	/**
+	 * send a puls with STOP_BUTTON and call syncstart(),
+	 * to restart the synchronized communication
+	 */
 	void syncError();
+
+	/**
+	 * send a SYNC signal and start a new sync_error timer
+	 */
 	void syncSend();
+
+	/**
+	 * set getSync = true, delete the act. timer with the syncId and start a new sync_send timer
+	 */
 	void syncReceive();
+
+	/**
+	 * if the serial not synchronized, send a SYNC and start the sync_error timer
+	 */
 	void syncRestart();
+	/**
+	 * act. sync timer id
+	 */
 	int syncId;
+
+	/**
+	 * true if serial synchronized else false
+	 */
 	bool getSync;
+
+	/**
+	 * true if ack received else false
+	 */
 	bool getAck;
-	unsigned int ack;
+
+	/**
+	 * act received message
+	 */
 	unsigned int msg;
+
+	/**
+	 * serial
+	 */
 	int ser;
+
+	/**
+	 * act port number
+	 */
 	int comPort;
-	int sender_receiver;
-	int cnt;
+
+	/**
+	 * true if serial has settings else false
+	 */
 	bool hasSettings;
+
+	/**
+	 * receiver of the puls messages
+	 */
 	CommunicatorType receiver;
 	Mutex locker;
 };
