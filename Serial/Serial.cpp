@@ -15,7 +15,6 @@
 #include "Serial.h"
 
 Serial::Serial() {
-	ack = -1;
 	timer = Timer::getInstance();
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		perror("ThreadCtl access failed\n");
@@ -31,7 +30,6 @@ Serial::Serial() {
 void Serial::init(int numComPort, bool debug) {
 	printf("init Serial\n");
 	hasSettings = false;
-	cnt = 0;
 	struct termios termSettings;
 	comPort = numComPort;
 
@@ -121,7 +119,6 @@ Serial::~Serial() {
 
 void Serial::execute(void* data) {
 	msg = -1;
-	ack = -1;
 
 	if (hasSettings) {
 		if (settingUpCommunicatorDevice(receiver)) {
@@ -197,7 +194,20 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		}
 	} else {
 		if (*data == ACK) {
-			getAck = true;
+			//if serial is not synchronized and get an ack send start to restart line
+			if(!getAck){
+				buildMessage(m, chid, coid, reactSerial, SENSOR,
+						r_msg->pulse.value.sival_int);
+				m->pulse.value.sival_int = START_BUTTON;
+
+				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+						sizeof(Message))) {
+					perror("Serial: failed to send Puls message to Sensor!");
+				}
+
+				getAck = true;
+			}
+
 		}else{
 			if(*data != SYNC){
 				printf("<<<<<----- Serial: %d received\n", *data);
@@ -218,14 +228,17 @@ void Serial::checkAck(){
 	}
 }
 
-void Serial::syncError(){
-	buildMessage(m, chid, coid, reactSerial, SENSOR,
-			r_msg->pulse.value.sival_int);
-	m->pulse.value.sival_int = STOP_BUTTON;
 
-	if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
-			sizeof(Message))) {
-		perror("Serial: failed to send Puls message to Sensor!");
+void Serial::syncError(){
+	if(getSync){
+		buildMessage(m, chid, coid, reactSerial, SENSOR,
+				r_msg->pulse.value.sival_int);
+		m->pulse.value.sival_int = STOP_BUTTON;
+
+		if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+				sizeof(Message))) {
+			perror("Serial: failed to send Puls message to Sensor!");
+		}
 	}
 	cout << "Serial: ERROR - did not get a SYNC message" << endl;
 	getSync = false;
@@ -239,6 +252,7 @@ void Serial::syncRestart(){
 	}
 }
 
+
 void Serial::syncSend(){
 	send(SYNC, sizeof(SYNC));
 	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
@@ -249,6 +263,7 @@ void Serial::syncReceive(){
 	timer->deleteTimer(syncId);
 	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND);
 }
+
 
 void Serial::checkInit(){
 	if(!hasSettings){

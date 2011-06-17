@@ -34,8 +34,6 @@ protected:
 	virtual void shutdown();
 	void clean();
 private:
-	Serial *s_0;
-	Serial *s_1;
 	int msg_test;
 	bool test_successful;
 };
