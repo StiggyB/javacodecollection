@@ -326,3 +326,13 @@ int Timer::addUnstoppableFunction( CallInterface<CallBackThrower,void>* funcp ){
 	return 0;
 }
 
+
+bool Timer::existTimer(int id){
+	for(unsigned int i = 0; i<funcp_list.size(); i++){
+		if(funcp_list[i].id == id){
+			return true;
+		}
+	}
+	return false;
+
+}
