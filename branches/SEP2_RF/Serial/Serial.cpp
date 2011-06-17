@@ -194,24 +194,23 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		}
 	} else {
 		if (*data == ACK) {
-			//if serial is not synchronized and get an ack send start to restart line
-			if(!getSync){
-				buildMessage(m, chid, coid, reactSerial, SENSOR,
-						r_msg->pulse.value.sival_int);
-				m->pulse.value.sival_int = START_BUTTON;
-
-				if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
-						sizeof(Message))) {
-					perror("Serial: failed to send Puls message to Sensor!");
-				}
-
-				getAck = true;
-			}
-
+			getAck = true;
 		}else{
 			if(*data != SYNC){
 				printf("<<<<<----- Serial: %d received\n", *data);
-			}
+			}else
+				//if serial is not synchronized and get an ack send start to restart line
+				if(!getSync){
+					buildMessage(m, chid, coid, reactSerial, SENSOR,
+							r_msg->pulse.value.sival_int);
+					m->pulse.value.sival_int = START_BUTTON;
+
+					if (-1 == MsgSend(coid, m, sizeof(Message), r_msg,
+							sizeof(Message))) {
+						perror("Serial: failed to send Puls message to Sensor!");
+					}
+
+				}
 			send(ACK, sizeof(ACK));
 		}
 		return 0;
