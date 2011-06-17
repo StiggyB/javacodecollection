@@ -25,6 +25,10 @@ Puck_FSM_2::Puck_FSM_2(std::vector<Puck_FSM*>* puck_listobj) {
 	puck_list = puck_listobj;
 	current = new FSM_2_start_state;
 	current->entry(this);
+	minTimerId = timer->getnextid();
+	maxTimerId = timer->getnextid();
+	checkSlide_TID = timer->getnextid();
+	openSwitch_TID = timer->getnextid();
 #ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
 #endif
@@ -52,8 +56,8 @@ void FSM_2_start_state::exit(Puck_FSM * fsm) {
 	cout << "FSM_2_start_state: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B1);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B1);
+	fsm->setDummyTimer(MIN_TIME_B1);
+	fsm->setErrorStateTimer(MAX_TIME_B1);
 }
 
 //functions for FSM_2_after_ls_b0
@@ -91,8 +95,8 @@ void FSM_2_after_ls_b0::exit(Puck_FSM * fsm) {
 	cout << "FSM_2_after_ls_b0: exit" << endl;
 #endif
 	//Callback in errorState in reference time x
-	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B3);
-	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
+	fsm->setDummyTimer(MIN_TIME_B3);
+	fsm->setErrorStateTimer(MAX_TIME_B3);
 }
 
 //functions for FSM_2_after_ls_b1
@@ -136,8 +140,8 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 		cout << "is Metall and has pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR_FORWARD;
-		fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B7);
-		fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+		fsm->setDummyTimer(MIN_TIME_B7);
+		fsm->setErrorStateTimer(MAX_TIME_B7);
 		fsm->setCurrent(new FSM_2_after_metal_measure_correct_wp());
 
 	} else if ((fsm->hc->isMetal() == 0) && (fsm->hasPocket == 0)) {
@@ -145,8 +149,8 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 		cout << "no Metall, no pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR_FORWARD;
-		fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B7);
-		fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B7);
+		fsm->setDummyTimer(MIN_TIME_B7);
+		fsm->setErrorStateTimer(MAX_TIME_B7);
 		fsm->setCurrent(new FSM_2_after_metal_measure_correct_wp());
 
 	} else {
@@ -157,8 +161,8 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 			cout << "pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR;
-		fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B6);
-		fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B6);
+		fsm->setDummyTimer(MIN_TIME_B6);
+		fsm->setErrorStateTimer(MAX_TIME_B6);
 		fsm->setCurrent(new FSM_2_after_metal_measure_uncorrect_wp());
 	}
 }
@@ -240,8 +244,7 @@ void FSM_2_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->checkSlide_TID = fsm->timer->addTimerFunction(checkSlide,
-			MAX_TIME_IN_SLIDE);
+	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE, fsm->checkSlide_TID);
 }
 void FSM_2_check_slide::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
@@ -264,7 +267,7 @@ void FSM_2_after_metal_measure_correct_wp::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000);
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->openSwitch_TID);
 }
 void FSM_2_after_metal_measure_correct_wp::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG

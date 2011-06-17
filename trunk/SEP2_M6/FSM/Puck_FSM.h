@@ -114,6 +114,7 @@ public:
 	int maxTimerId;
 	int minTimerId;
 	int checkSlide_TID;
+	int openSwitch_TID;
 	bool checked_to_early;
 //	location_attribut expectedLocation;
 	location_attribut location;

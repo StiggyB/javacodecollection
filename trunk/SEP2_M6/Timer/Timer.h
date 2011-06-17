@@ -52,7 +52,7 @@ public:
 	 * \return a bool, true if action was successful, false if not.
 	 */
 	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
-	int addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms);
+	int addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms, int id);
 	/**
 	 * delete a Timer by a specific internal id
 	 * \param id specified the timer, which should be stopped
@@ -77,6 +77,11 @@ public:
 	 *
 	 */
 	int deleteAllTimer();
+	/**
+	 * calculates the next id to avoid gaps in list and also overflow of list size
+	 * \return a integer, this is the next free id (not index) in list
+	 */
+	int getnextid();
 
 protected:
 	virtual void execute(void*);
@@ -90,6 +95,7 @@ protected:
 
 
 private:
+	int id_counter;
 	/**
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
 	 */
@@ -115,11 +121,7 @@ private:
 	 * \return a integer, 0 if action was successful, -1 if not.
 	 */
 	int calculateTime(int ms, int *s, int *ns);
-	/**
-	 * calculates the next id to avoid gaps in list and also overflow of list size
-	 * \return a integer, this is the next free id (not index) in list
-	 */
-	int getnextid();
+
 	/**
 	 * ensures threadsafety
 	 */

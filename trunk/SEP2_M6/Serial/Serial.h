@@ -120,7 +120,9 @@ private:
 	void syncSend();
 	void syncReceive();
 	void syncRestart();
-	int syncId;
+	int sync_TID;
+	int checkAck_TID;
+	int sync_send_TID;
 	bool getSync;
 	bool getAck;
 	unsigned int ack;

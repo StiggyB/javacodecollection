@@ -91,14 +91,14 @@ int Puck_FSM::setDummyTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callDummyFunction = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			this, &Puck_FSM::dummyFunction);
-	return timer->addTimerFunction(callDummyFunction, refTime);
+	return timer->addTimerFunction(callDummyFunction, refTime, minTimerId);
 }
 
 int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callErrorState = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			this, &Puck_FSM::errorState); //not sure which state !
-	return timer->addTimerFunction(callErrorState, refTime);
+	return timer->addTimerFunction(callErrorState, refTime, maxTimerId);
 }
 
 void Puck_FSM::dummyFunction() {
