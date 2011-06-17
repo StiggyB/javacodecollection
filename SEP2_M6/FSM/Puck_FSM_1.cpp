@@ -83,7 +83,8 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
-	fsm->timer->existsTimer(fsm->minTimerId);
+	//he she it das "s" muss mit
+	fsm->timer->existTimer(fsm->minTimerId);
 	fsm->setCurrent(new FSM_1_height_measure());
 }
 void FSM_1_after_ls_b0::errorState(Puck_FSM * fsm) {
@@ -131,7 +132,7 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 	fsm->minTimerId = fsm->setDummyTimer(MIN_TIME_B3);
 	fsm->maxTimerId = fsm->setErrorStateTimer(MAX_TIME_B3);
-	fsm->expected_loc_list.push_back(AFTER_HEIGH_MEASURE);
+//	fsm->expected_loc_list.push_back(AFTER_HEIGH_MEASURE);
 
 }
 
@@ -145,7 +146,8 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-//	fsm->delete_last_expected_location();
+	//he she it das "s" muss mit
+	fsm->timer->existTimer(fsm->minTimerId);
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 
 	fsm->location = AFTER_METAL_SENSOR;
