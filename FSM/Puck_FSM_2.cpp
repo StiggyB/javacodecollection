@@ -117,7 +117,6 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_in_metal_measure: entry" << endl;
 #endif
-	//fsm->cc->engineStop();
 	fsm->engine_should_be_started = 0;
 	if (fsm->hc->isMetal() && (fsm->hasPocket == 1)) {
 #ifdef PUCK_FSM_2_DEBUG

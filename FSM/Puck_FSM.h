@@ -112,7 +112,7 @@ public:
 	int minTimerId;
 	int checkSlide_TID;
 	bool checked_to_early;
-	location_attribut expectedLocation;
+//	location_attribut expectedLocation;
 	location_attribut location;
 	Lampen *lamp;
 	HALCore *hc;
@@ -128,9 +128,9 @@ public:
 	void machine2_free();
 	void isSlideFull();
 	int setErrorStateTimer(ReferenceTime allocTime);
-	int setCheckLocationTimer(ReferenceTime refTime);
+	int setDummyTimer(ReferenceTime refTime);
 	void removeAllLights();
-	void checkLocation();
+//	void checkLocation();
 	bool getErrorNoticed();
 	void setErrorNoticed(bool errorNoticed);
 	void selectErrorType();
@@ -142,10 +142,11 @@ public:
 	void estop_out_signal(bool was_serial);
 	void delete_last_expected_location();
 	bool request;
-	std::vector<location_attribut> expected_loc_list;
+//	std::vector<location_attribut> expected_loc_list;
 protected:
 	std::vector<Puck_FSM*> *puck_list;
 private:
+	void dummyFunction();
 	bool errorNoticed;
 };
 
