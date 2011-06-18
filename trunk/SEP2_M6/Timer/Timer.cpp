@@ -157,8 +157,8 @@ struct IdTOfunction Timer::find_function(int id){
 
 int Timer::getnextid(){
 	if(id_counter>100000){
-		perror( "Timer: more than 100000 id's _> set to 0 !!");
-		id_counter = 0;
+		perror( "Timer: more than 100000 id's _> set to 100 !!");
+		id_counter = 100;
 	}//if
 	return (id_counter++);
 }
