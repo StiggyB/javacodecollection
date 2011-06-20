@@ -662,7 +662,7 @@ bool HALCore::isMetal() {
 }
 
 int HALCore::identifyHeight() {
-	//TODO implement callback.
+	//TODO implement and test callback.
 //	CallInterface<CallBackThrower, void>* checkTime = (CallInterface<
 //			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 //			this, &HALCore::checkTimeIdentifyHeight);

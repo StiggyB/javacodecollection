@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * class for machine 1 - sort out WP with correct/incorrect height
+ * Class for machine 1 - sort out WP with correct/incorrect height
  *
  *
  */
@@ -18,9 +18,6 @@
 //TODO // stop all timer, wenn band 1 auf band2 wartet
 #include "Puck_FSM_1.h"
 
-Puck_FSM_1::~Puck_FSM_1() {
-
-}
 
 Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 	puck_list = puck_listobj;
@@ -34,6 +31,10 @@ Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 #ifdef PUCK_FSM_1_DEBUG
 	printf("FSM Band1 is up\n");
 #endif
+}
+
+Puck_FSM_1::~Puck_FSM_1() {
+
 }
 
 //functions for Start_M1

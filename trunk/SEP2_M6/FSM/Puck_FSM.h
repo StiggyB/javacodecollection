@@ -17,7 +17,7 @@
 /**
  * Actual locations for the work pieces on the system.
  */
-enum location_attribut {
+enum LocationAttribut {
 	ON_FIRST_LB,
 	AFTER_FIRST_LB,
 	AFTER_HEIGH_MEASURE,
@@ -91,7 +91,7 @@ enum ReferenceTime {
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * interface for the finite state machine's
+ * Interface for the finite state machine's
  *
  *
  */
@@ -101,13 +101,124 @@ public:
 	 * Pointer to actual state
 	 */
 	class State *current;
-	Puck_FSM();
-	virtual ~Puck_FSM();
 	/**
 	 * set new state
 	 * \param a State, which will be the new acutal state of fsm
 	 */
 	void setCurrent(State *s);
+	Puck_FSM();
+	virtual ~Puck_FSM();
+	/**
+	 * Getter for attribute errorNoticed.
+	 */
+	bool getErrorNoticed();
+	/**
+	 * Setter for attribute errorNoticed.
+	 */
+	void setErrorNoticed(bool errorNoticed);
+	/**
+	 * This function starts synchronous with FSM_1
+	 * and FSM_2.
+	 * \param true if the signal came from serial
+	 */
+	void start_signal(bool was_serial);
+	/**
+	 * This function checks the actual position.
+	 * \return -1 if the one of the work pieces
+	 * has the location ON_LAST_LB.
+	 */
+	int check_last_lb();
+	/**
+	 * This function stops synchronous FSM_1
+	 * and FSM_2.
+	 * \param true if the signal came from serial
+	 */
+	void stop_signal(bool was_serial);
+	/**
+	 * This function resets synchronous FSM_1
+	 * and FSM_2.
+	 * \param true if the signal came from serial
+	 */
+	void reset_signal(bool was_serial);
+	/**
+	 * This function calls the emergency stop
+	 * synchronous FSM_1 and FSM_2 if the
+	 * emergency stop is pushed.
+	 * \param true if the signal came from serial
+	 */
+	void estop_in_signal(bool was_serial);
+	/**
+	 * This function calls the emergency stop
+	 * synchronous FSM_1 and FSM_2 if the
+	 * emergency stop is pulled.
+	 * \param true if the signal came from serial
+	 */
+	void estop_out_signal(bool was_serial);
+	/**
+	 * This function starts the system.
+	 */
+	void machine2_free();
+	/**
+	 * This function deletes the work piece on FSM_1 if it
+	 * is arrived and sends the properties of the work piece.
+	 */
+	void puck_arrived();
+	/**
+	 * This function sends a request from FSM_1
+	 * to FSM_2 if FSM_2 is free send MACHINE2_FREE.
+	 */
+	void requestfromMachine1();
+	/**
+	 * This function sets the hasPocket flag.
+	 */
+	void PuckhasPocket();
+	/**
+	 * This function deletes the hasPocket flag.
+	 */
+	void PuckhasnoPocket();
+	/**
+	 * This function sends MACHINE2_FREE to FSM_1
+	 * if there was a request.
+	 */
+	void puck_fsm2_outgoing();
+	/**
+	 * This function deletes all work pieces with
+	 * the location SORT_OUT or AFTER_LAST_LB.
+	 */
+	void delete_unnecessary_wp();
+	/**
+	 * This function starts the engine if
+	 * some work pieces needs it.
+	 * \return false if a work piece has a error
+	 */
+	bool starts_engine_if_nessecary();
+	/**
+	 * This function checks the slide if it is
+	 * full call errorState otherwise delete work piece.
+	 */
+	void isSlideFull();
+	/*
+	 * This function wraps the dummyFunction callback.
+	 */
+	int setDummyTimer(ReferenceTime refTime);
+	/*
+	 * This function wraps the errorState callback.
+	 */
+	int setErrorStateTimer(ReferenceTime allocTime);
+	/**
+	 * This function removes all lights as a wrapper.
+	 */
+	void removeAllLights();
+	/**
+	 * This function selects the error type from
+	 * and prints the operation information for
+	 * a specific error.
+	 */
+	void selectErrorType();
+	/**
+	 * function to confirm a error as noticed error
+	 */
+	void noticed_error_confirmed();
 	/**
 	 * first light barrier was passed
 	 */
@@ -133,6 +244,10 @@ public:
 	 */
 	void ls_b7_out();
 	/**
+	 * reset function to reset the errorState
+	 */
+	void reset();
+	/**
 	 * entry function for state, only internal use
 	 */
 	void entry();
@@ -144,49 +259,6 @@ public:
 	 * general error state function
 	 */
 	void errorState();
-	/**
-	 * reset function to reset the errorState
-	 */
-	void reset();
-	/**
-	 * function to confirm a error as noticed error
-	 */
-	void noticed_error_confirmed();
-	/**
-	 * This function starts synchronous with FSM_1
-	 * and FSM_2.
-	 */
-	void start_signal(bool was_serial);
-	/**
-	 * This function stops synchronous FSM_1
-	 * and FSM_2.
-	 */
-	void stop_signal(bool was_serial);
-	/**
-	 * This function resets synchronous FSM_1
-	 * and FSM_2.
-	 */
-	void reset_signal(bool was_serial);
-	/**
-	 * This function calls the emergency stop
-	 * synchronous FSM_1 and FSM_2 if the
-	 * emergency stop is pushed.
-	 */
-	void estop_in_signal(bool was_serial);
-	/**
-	 * This function calls the emergency stop
-	 * synchronous FSM_1 and FSM_2 if the
-	 * emergency stop is pulled.
-	 */
-	void estop_out_signal(bool was_serial);
-	/**
-	 * is true, if wp need transport for finite state input
-	 */
-	bool engine_should_be_started;
-	/**
-	 * is true, if wp has pocket (for second machine)
-	 */
-	bool hasPocket;
 	/**
 	 * Instance for lamp in error state
 	 */
@@ -204,9 +276,21 @@ public:
 	 */
 	Serial *serial;
 	/**
+	 * Actual location on the system
+	 */
+	LocationAttribut location;
+	/**
 	 * Actual ErrorType of the work piece
 	 */
 	ErrorType errType;
+	/**
+	 * is true, if wp need transport for finite state input
+	 */
+	bool engine_should_be_started;
+	/**
+	 * is true, if wp has pocket (for second machine)
+	 */
+	bool hasPocket;
 	/**
 	 * Flag is true if the work piece is to early
 	 */
@@ -216,10 +300,6 @@ public:
 	 * a work piece on system FSM_2
 	 */
 	bool request;
-	/**
-	 * Actual location on the system
-	 */
-	location_attribut location;
 	/**
 	 * Timer Id from the maxTimer callback
 	 */
@@ -236,83 +316,9 @@ public:
 	 * Timer Id from the closeSwitch callback
 	 */
 	int closeSwitch_TID;
-	/**
-	 * This function checks the slide if it is
-	 * full call errorState otherwise delete work piece.
-	 */
-	void isSlideFull();
-	/**
-	 * This function checks the actual position.
-	 * \return -1 if the one of the work pieces
-	 * has the location ON_LAST_LB.
-	 */
-	int check_last_lb();
-	/**
-	 * This function deletes all work pieces with
-	 * the location SORT_OUT or AFTER_LAST_LB.
-	 */
-	void delete_unnecessary_wp();
-	/**
-	 * This function starts the engine if
-	 * some work pieces needs it.
-	 * \return false if a work piece has a error
-	 */
-	bool starts_engine_if_nessecary();
-	/**
-	 * This function sends a request from FSM_1
-	 * to FSM_2 if FSM_2 is free send MACHINE2_FREE.
-	 */
-	void requestfromMachine1();
-	/**
-	 * This function sets the hasPocket flag.
-	 */
-	void PuckhasPocket();
-	/**
-	 * This function deletes the hasPocket flag.
-	 */
-	void PuckhasnoPocket();
-	/**
-	 * This function starts the system.
-	 */
-	void machine2_free();
-	/**
-	 * This function deletes the work piece on FSM_1 if it
-	 * is arrived and sends the properties of the work piece.
-	 */
-	void puck_arrived();
-	/*
-	 * This function wraps the errorState callback.
-	 */
-	int setErrorStateTimer(ReferenceTime allocTime);
-	/*
-	 * This function wraps the dummyFunction callback.
-	 */
-	int setDummyTimer(ReferenceTime refTime);
-	/**
-	 * This function removes all lights as a wrapper.
-	 */
-	void removeAllLights();
-	/**
-	 * Getter for attribute errorNoticed.
-	 */
-	bool getErrorNoticed();
-	/**
-	 * Setter for attribute errorNoticed.
-	 */
-	void setErrorNoticed(bool errorNoticed);
-	/**
-	 * This function selects the error type from
-	 * and prints the operation information for
-	 * a specific error.
-	 */
-	void selectErrorType();
-	/**
-	 * This function sends MACHINE2_FREE to FSM_1
-	 * if there was a request.
-	 */
-	void puck_fsm2_outgoing();
 
 protected:
+
 	/**
 	 * This vector list is a collection over all
 	 * work pieces.
@@ -320,6 +326,7 @@ protected:
 	std::vector<Puck_FSM*> *puck_list;
 
 private:
+
 	/**
 	 * Flag is true if the error is noticed.
 	 */
@@ -333,6 +340,7 @@ private:
 
 class State {
 public:
+
 	State();
 	virtual ~State();
 	/**

@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * interface for the finite state machine's
+ * Interface for the finite state machine's
  *
  */
 #include "Puck_FSM.h"
@@ -27,6 +27,13 @@ Puck_FSM::Puck_FSM() {
 Puck_FSM::~Puck_FSM() {
 }
 
+bool Puck_FSM::getErrorNoticed() {
+	return errorNoticed;
+}
+void Puck_FSM::setErrorNoticed(bool errorNoticed) {
+	this->errorNoticed = errorNoticed;
+}
+
 void Puck_FSM::start_signal(bool was_serial) {
 	if (!was_serial)
 		serial->send(START_BUTTON, sizeof(int));
@@ -36,6 +43,15 @@ void Puck_FSM::start_signal(bool was_serial) {
 	} else if ((puck_list->size() == 0)) {
 		lamp->shine(GREEN);
 	}//if
+}
+
+int Puck_FSM::check_last_lb() {
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->location == ON_LAST_LB) {
+			return -1;
+		}//if
+	}//for
+	return 0;
 }
 
 void Puck_FSM::stop_signal(bool was_serial) {
@@ -63,6 +79,110 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 	hc->resetAll();
 }
 
+void Puck_FSM::machine2_free() {
+	//--
+	timer->startAllTimer();
+	hc->engineRight();
+	hc->engineContinue();
+}
+
+void Puck_FSM::puck_arrived() {
+	hc->engineStop();
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,sizeof(msgType));
+			cout << "MaxTimerId is: " << maxTimerId << endl;
+			timer->deleteTimer((*puck_list)[i]->maxTimerId);
+			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType << endl;
+		}
+	}
+	delete_unnecessary_wp();
+	starts_engine_if_nessecary();
+}
+
+void Puck_FSM::requestfromMachine1() {
+	if (puck_list->size() > 1) {
+		(*puck_list)[0]->request = true;
+		//--
+		timer->stopAll_actual_Timer();
+		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
+				<< endl;
+	} else {
+		serial->send(MACHINE2_FREE, sizeof(msgType));
+		cout << "size of list" << puck_list->size() << endl;
+		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
+		hc->engineContinue();
+		hc->engineRight();
+	}//if
+}
+
+void Puck_FSM::PuckhasPocket() {
+	if (puck_list->size() > 1) {
+		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+	} else {
+		(*puck_list)[0]->hasPocket = true;
+	}//if
+}
+
+void Puck_FSM::PuckhasnoPocket() {
+	if (puck_list->size() > 1) {
+		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
+	} else {
+		(*puck_list)[0]->hasPocket = false;
+	}//if
+}
+
+void Puck_FSM::puck_fsm2_outgoing() {
+	if (request == true) {
+		cout
+				<< "Puck_FSM::puck_fsm2_outgoing: request true, serial message will be send"
+				<< endl;
+		serial->send(MACHINE2_FREE, sizeof(msgType));
+		cout << "size of list" << puck_list->size() << endl;
+		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
+		hc->engineContinue();
+		request = false;
+	}//if
+}
+void Puck_FSM::delete_unnecessary_wp() {
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
+				== AFTER_LAST_LB) {
+			cout << "Puck_FSM::delete_unnecessary_wp: deleted" << endl;
+			puck_list->erase(puck_list->begin() + i);
+			//TODO 0prio -- Puck in slide where should shine the lamp?
+			//			lamp->shine(GREEN);
+		}
+	}
+	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
+}
+
+bool Puck_FSM::starts_engine_if_nessecary() {
+	int active_state = 0;
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		cout << "Puck_FSM::starts_engine_if_nessecary: errorNoticed: "
+				<< errType << endl;
+		if ((*puck_list)[i]->errType != NO_ERROR) {
+			cout << "Puck_FSM::starts_engine_if_nessecary: inErrorState"
+					<< endl;
+			return false;
+		}
+	}
+
+	lamp->shine(GREEN);
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->engine_should_be_started) {
+			cout << "A PUCK NEEDS ENGINE" << endl;
+			active_state = 1;
+		}
+	}
+	if (active_state == 1) {
+		hc->engineContinue();
+		hc->engineRight();
+	}
+	return true;
+}
+
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
 		selectErrorType();
@@ -73,6 +193,12 @@ void Puck_FSM::isSlideFull() {
 		puck_fsm2_outgoing();
 #endif
 	}
+}
+
+void Puck_FSM::dummyFunction() {
+#ifdef PUCK_FSM_STATE_DEBUG
+	printf("Puck_FSM::dummyFunction: called\n");
+#endif
 }
 
 int Puck_FSM::setDummyTimer(ReferenceTime refTime) {
@@ -89,32 +215,10 @@ int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	return timer->addTimerFunction(callErrorState, refTime, maxTimerId);
 }
 
-void Puck_FSM::dummyFunction() {
-#ifdef PUCK_FSM_STATE_DEBUG
-	printf("Puck_FSM::dummyFunction: called\n");
-#endif
-}
-
-int Puck_FSM::check_last_lb() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == ON_LAST_LB) {
-			return -1;
-		}//if
-	}//for
-	return 0;
-}
-
 void Puck_FSM::removeAllLights() {
 	lamp->removeLight(GREEN);
 	lamp->removeLight(YELLOW);
 	lamp->removeLight(RED);
-}
-
-bool Puck_FSM::getErrorNoticed() {
-	return errorNoticed;
-}
-void Puck_FSM::setErrorNoticed(bool errorNoticed) {
-	this->errorNoticed = errorNoticed;
 }
 
 void Puck_FSM::selectErrorType() {
@@ -187,7 +291,6 @@ void Puck_FSM::noticed_error_confirmed() {
 	} else {
 		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
 				<< endl;
-
 		if (errType == SLIDE_FULL_B6) {
 			if (hc->checkSlide()) {
 				return;
@@ -203,109 +306,6 @@ void Puck_FSM::noticed_error_confirmed() {
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
 	}
-}
-
-void Puck_FSM::puck_fsm2_outgoing() {
-	if (request == true) {
-		cout
-				<< "Puck_FSM::puck_fsm2_outgoing: request true, serial message will be send"
-				<< endl;
-		serial->send(MACHINE2_FREE, sizeof(msgType));
-		cout << "size of list" << puck_list->size() << endl;
-		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
-		hc->engineContinue();
-		request = false;
-	}//if
-}
-void Puck_FSM::delete_unnecessary_wp() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
-				== AFTER_LAST_LB) {
-			cout << "Puck_FSM::delete_unnecessary_wp: deleted" << endl;
-			puck_list->erase(puck_list->begin() + i);
-			//TODO 0prio -- Puck in slide where should shine the lamp?
-			//			lamp->shine(GREEN);
-		}
-	}
-	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
-}
-
-bool Puck_FSM::starts_engine_if_nessecary() {
-	int active_state = 0;
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		cout << "Puck_FSM::starts_engine_if_nessecary: errorNoticed: "
-				<< errType << endl;
-		if ((*puck_list)[i]->errType != NO_ERROR) {
-			cout << "Puck_FSM::starts_engine_if_nessecary: inErrorState"
-					<< endl;
-			return false;
-		}
-	}
-
-	lamp->shine(GREEN);
-
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->engine_should_be_started) {
-			cout << "A PUCK NEEDS ENGINE" << endl;
-			active_state = 1;
-		}
-	}
-	if (active_state == 1) {
-		hc->engineContinue();
-		hc->engineRight();
-	}
-
-	return true;
-}
-
-
-void Puck_FSM::requestfromMachine1() {
-	if (puck_list->size() > 1) {
-		//request = true;
-		(*puck_list)[0]->request = true;
-		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
-				<< endl;
-	} else {
-		serial->send(MACHINE2_FREE, sizeof(msgType));
-		cout << "size of list" << puck_list->size() << endl;
-		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
-		hc->engineContinue();
-		hc->engineRight();
-	}//if
-}
-void Puck_FSM::PuckhasPocket() {
-	if (puck_list->size() > 1) {
-		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
-	} else {
-		(*puck_list)[0]->hasPocket = true;
-	}//if
-
-}
-void Puck_FSM::PuckhasnoPocket() {
-	if (puck_list->size() > 1) {
-		perror("Puck_FSM_2: Machine2 has more than 1 work pieces");
-	} else {
-		(*puck_list)[0]->hasPocket = false;
-	}//if
-
-}
-void Puck_FSM::machine2_free() {
-	hc->engineRight();
-	hc->engineContinue();
-}
-void Puck_FSM::puck_arrived() {
-	hc->engineStop();
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,sizeof(msgType));
-			cout << "MaxTimerId is: " << maxTimerId << endl;
-			timer->deleteTimer((*puck_list)[i]->maxTimerId);
-			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType << endl;
-		}
-//		(*puck_list)[i]->ls_b7_out();
-	}
-	delete_unnecessary_wp();
-	starts_engine_if_nessecary();
 }
 
 void Puck_FSM::ls_b0() {
@@ -335,14 +335,14 @@ void Puck_FSM::entry() {
 void Puck_FSM::exit() {
 	current->exit(this);
 }
+void Puck_FSM::errorState() {
+	current->errorState(this);
+}
 void Puck_FSM::setCurrent(State *s) {
 	current->exit(this);
 	delete current;
 	current = s;
 	this->entry();
-}
-void Puck_FSM::errorState() {
-	current->errorState(this);
 }
 
 //Methods for class State
