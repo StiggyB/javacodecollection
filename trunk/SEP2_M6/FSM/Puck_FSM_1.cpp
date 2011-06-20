@@ -28,7 +28,7 @@ Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 	minTimerId = timer->getnextid();
 	maxTimerId = timer->getnextid();
 	checkSlide_TID = timer->getnextid();
-	openSwitch_TID = timer->getnextid();
+	closeSwitch_TID = timer->getnextid();
 #ifdef PUCK_FSM_1_DEBUG
 	printf("FSM Band1 is up\n");
 #endif
@@ -290,7 +290,7 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
 
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->openSwitch_TID);
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
 	fsm->setDummyTimer(MIN_TIME_B7);
 	fsm->setErrorStateTimer(MAX_TIME_B7);
 }
@@ -341,6 +341,7 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 #endif
 	fsm->location = AFTER_LAST_LB;
 	fsm->starts_engine_if_nessecary();
+	fsm->setErrorStateTimer(MAX_TIME_FSM2);
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
