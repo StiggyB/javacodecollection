@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- * class for machine 1 - sort out WP with with/without metal
+ * Class for machine 1 - sort out WP with with/without metal
  *
  *
  */

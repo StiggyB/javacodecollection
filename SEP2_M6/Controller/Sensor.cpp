@@ -85,9 +85,7 @@ void Sensor::handleNormalMessage() {
 		} else if (((val >> WP_E_STOP) & 1)
 				&& !((last_Reg_State_C >> WP_E_STOP) & 1)) {
 			cout << "Sensor: E-Stop Button out" << endl;
-
 			dummy_fsm->estop_out_signal(false);
-
 			cout << "Sensor: nach E-Stop Button out" << endl;
 
 		} else if (!((val >> WP_STOP) & 1)) {
@@ -112,8 +110,6 @@ void Sensor::handleNormalMessage() {
 						wp_list[i]->reset();
 					}
 				}
-				//			l->addLight(GREEN);
-
 			}//if
 		}
 		last_Reg_State_C = val;
@@ -290,6 +286,7 @@ void Sensor::shutdown() {
 
 }
 
+//TODO to remove
 void Sensor::interrupt(int port, int val) {
 	switch (port) {
 	case INTERRUPT_D_PORT_B:

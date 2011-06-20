@@ -68,8 +68,11 @@ enum PortBState {
  * Expected values for the tests from port C.
  */
 enum PortCState {
-	BIT_START_PUSHED = (1 << 4), BIT_STOP_PUSHED = 0, BIT_RESET_PUSHED = (1
-			<< 6), BIT_E_STOP_PUSHED = 0x1, BIT_E_STOP_LOST = (1 << 7)
+	BIT_START_PUSHED = (1 << 4),
+	BIT_STOP_PUSHED = 0x0,
+	BIT_RESET_PUSHED = (1<< 6),
+	BIT_E_STOP_PUSHED = 0x1,
+	BIT_E_STOP_LOST = (1 << 7)
 };
 
 class Test_Sensor: public thread::HAWThread {
