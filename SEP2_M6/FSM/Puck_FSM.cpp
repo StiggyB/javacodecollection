@@ -63,11 +63,9 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
-		cout << "Puck_FSM::isSlideFull: errorState" << endl;
-		errType = SLIDE_FULL_B6;
+		selectErrorType();
 		errorState();
 	} else {
-		cout << "Puck_FSM::isSlideFull: delete_wp" << endl;
 		delete_unnecessary_wp();
 #ifdef PUCK_FSM_2
 		puck_fsm2_outgoing();
@@ -159,6 +157,10 @@ void Puck_FSM::selectErrorType() {
 			errType = WP_DISAPPEARED_B6;
 			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >SLIDE< <<" << endl;
 			break;
+		case SORT_OUT:
+			errType =  SLIDE_FULL_B6;
+			cout << ">> WORK PIECE IS BLOCKING IN >THE SLIDE< <<" << endl;
+			break;
 		case AFTER_METAL_SENSOR_FORWARD:
 			errType = WP_DISAPPEARED_B7;
 			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<" << endl;
@@ -184,6 +186,7 @@ void Puck_FSM::noticed_error_confirmed() {
 		//		cout << "reset_button_pushed: errorNoticed == false"  << endl;
 		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
 				<< endl;
+
 		if (errType == SLIDE_FULL_B6) {
 			if (hc->checkSlide()) {
 				return;
