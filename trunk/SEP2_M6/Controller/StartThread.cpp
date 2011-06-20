@@ -40,8 +40,8 @@ void StartThread::execute(void*) {
 	cout << "timer started" << endl;
 	sensor->start(NULL);
 	cout << "sensor started" << endl;
-//	serial->init(1, true);
-//	serial->start(NULL);
+	serial->init(1, true);
+	serial->start(NULL);
 	cout << "serial started" << endl;
 
 #ifdef TEST_IRQ
