@@ -27,6 +27,8 @@ Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 	current->entry(this);
 	minTimerId = timer->getnextid();
 	maxTimerId = timer->getnextid();
+
+	printf("my minTimerid: %i, maxTimer: %i\n", minTimerId, maxTimerId);
 	checkSlide_TID = timer->getnextid();
 	closeSwitch_TID = timer->getnextid();
 #ifdef PUCK_FSM_1_DEBUG
@@ -289,7 +291,7 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-
+	fsm->timer->addUnstoppableFunction(callCloseSwitch);
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
 	fsm->setDummyTimer(MIN_TIME_B7);
 	fsm->setErrorStateTimer(MAX_TIME_B7);
@@ -303,7 +305,7 @@ void FSM_1_ls_b3_passed_correct_height::entry(Puck_FSM * fsm) {
 }
 void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
-	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 wurde ausgelöst" << endl;
+	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 in" << endl;
 #endif
 	if(fsm->timer->existTimer(fsm->minTimerId)){
 		fsm->checked_to_early = true;
@@ -311,6 +313,7 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 		return;
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
+	cout << "MaxTimerId exists: " << fsm->timer->existTimer(fsm->maxTimerId) << endl;
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;
@@ -342,6 +345,7 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 	fsm->location = AFTER_LAST_LB;
 	fsm->starts_engine_if_nessecary();
 	fsm->setErrorStateTimer(MAX_TIME_FSM2);
+	cout << "MaxTimerId is: " << fsm->maxTimerId << endl;
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -360,7 +364,7 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ErrorState: entry" << endl;
 #endif
-	//fsm->timer->stopAll_actual_Timer();
+//	fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
 	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
