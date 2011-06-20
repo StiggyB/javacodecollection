@@ -35,8 +35,8 @@
  *
  */
 
-#define PUCK_FSM_1
-//#define PUCK_FSM_2
+//#define PUCK_FSM_1
+#define PUCK_FSM_2
 
 class Sensor : public thread::HAWThread, public Communication, public Singleton_T<Sensor>{
 	friend class Singleton_T<Sensor>;
