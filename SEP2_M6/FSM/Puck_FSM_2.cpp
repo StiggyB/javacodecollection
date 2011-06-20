@@ -28,7 +28,7 @@ Puck_FSM_2::Puck_FSM_2(std::vector<Puck_FSM*>* puck_listobj) {
 	minTimerId = timer->getnextid();
 	maxTimerId = timer->getnextid();
 	checkSlide_TID = timer->getnextid();
-	openSwitch_TID = timer->getnextid();
+	closeSwitch_TID = timer->getnextid();
 #ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
 #endif
@@ -48,6 +48,7 @@ void FSM_2_start_state::ls_b0(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_start_state: ls_b0" << endl;
 #endif
+	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->serial->send(PUCK_ARRIVED, sizeof(msgType));
 	fsm->setCurrent(new FSM_2_after_ls_b0());
 }
@@ -267,7 +268,7 @@ void FSM_2_after_metal_measure_correct_wp::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->openSwitch_TID);
+	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
 }
 void FSM_2_after_metal_measure_correct_wp::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
