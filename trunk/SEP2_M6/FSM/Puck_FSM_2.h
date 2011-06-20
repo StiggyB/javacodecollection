@@ -34,6 +34,7 @@ class FSM_2_start_state: public State {
 public:
 	void entry(Puck_FSM * fsm);
 	void ls_b0(Puck_FSM * fsm);
+	void errorState(Puck_FSM * fsm);
 	void exit(Puck_FSM * fsm);
 };
 

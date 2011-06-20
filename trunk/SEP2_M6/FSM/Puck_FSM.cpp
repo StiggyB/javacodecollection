@@ -206,6 +206,8 @@ void Puck_FSM::puck_fsm2_outgoing() {
 				<< "Puck_FSM::puck_fsm2_outgoing: request true, serial message will be send"
 				<< endl;
 		serial->send(MACHINE2_FREE, sizeof(msgType));
+		cout << "size of list" << puck_list->size() << endl;
+		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
 		hc->engineContinue();
 		request = false;
 	}//if
@@ -260,6 +262,8 @@ void Puck_FSM::requestfromMachine1() {
 				<< endl;
 	} else {
 		serial->send(MACHINE2_FREE, sizeof(msgType));
+		cout << "size of list" << puck_list->size() << endl;
+		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
 		hc->engineContinue();
 		hc->engineRight();
 	}//if

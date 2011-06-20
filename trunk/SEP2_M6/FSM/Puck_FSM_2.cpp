@@ -29,6 +29,7 @@ Puck_FSM_2::Puck_FSM_2(std::vector<Puck_FSM*>* puck_listobj) {
 	maxTimerId = timer->getnextid();
 	checkSlide_TID = timer->getnextid();
 	closeSwitch_TID = timer->getnextid();
+	checked_to_early = false;
 #ifdef PUCK_FSM_2_DEBUG
 	printf("FSM Band2 is up\n");
 #endif
@@ -51,6 +52,12 @@ void FSM_2_start_state::ls_b0(Puck_FSM * fsm) {
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->serial->send(PUCK_ARRIVED, sizeof(msgType));
 	fsm->setCurrent(new FSM_2_after_ls_b0());
+}
+void FSM_2_start_state::errorState(Puck_FSM * fsm) {
+#ifdef PUCK_FSM_2_DEBUG
+	cout << "FSM_2_after_ls_b0: errorState" << endl;
+#endif
+	fsm->setCurrent(new FSM_2_ErrorState());
 }
 void FSM_2_start_state::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
@@ -309,8 +316,8 @@ void FSM_2_end_state::ls_b7_out(Puck_FSM * fsm) {
 	cout << "FSM_2_end_state: ls_b7_out" << endl;
 #endif
 	fsm->location = AFTER_LAST_LB;
-	fsm->puck_fsm2_outgoing();
 	fsm->delete_unnecessary_wp();
+	fsm->puck_fsm2_outgoing();
 }
 void FSM_2_end_state::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
