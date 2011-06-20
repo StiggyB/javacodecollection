@@ -32,6 +32,7 @@ void Puck_FSM::start_signal(bool was_serial) {
 		serial->send(START_BUTTON, sizeof(int));
 	if ((check_last_lb() == 0) && (puck_list->size() > 0)) {
 		starts_engine_if_nessecary();
+		timer->startAllTimer();
 	} else if ((puck_list->size() == 0)) {
 		lamp->shine(GREEN);
 	}//if
@@ -42,6 +43,7 @@ void Puck_FSM::stop_signal(bool was_serial) {
 	if (!was_serial)
 		serial->send(STOP_BUTTON, sizeof(int));
 	hc->engineStop();
+	timer->stopAll_actual_Timer();
 }
 
 void Puck_FSM::reset_signal(bool was_serial) {
@@ -168,22 +170,21 @@ void Puck_FSM::selectErrorType() {
 		case AFTER_LAST_LB:
 		case ON_FIRST_LB:
 			errType = WP_DISAPPEARED_FSM2;
+			serial->send(STOP_BUTTON, sizeof(errType));
 			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<" << endl;
 			break;
 		default:
 			cout << ">> WORK PIECE DISAPPEARED >NO ERROR DEFINED< <<" << endl;
 		}
 	}
-	cout << "Puck_FSM::selectErrorType: ErrorType: " << errType << endl;
+	cout << "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON CONFIRM THE ERROR. <-" << endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
 	if (errorNoticed == true) {
-		//		cout << "reset_button_pushed: errorNoticed == true"  << endl;
 		location = SORT_OUT;
 		errorNoticed = false;
 	} else {
-		//		cout << "reset_button_pushed: errorNoticed == false"  << endl;
 		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
 				<< endl;
 
@@ -191,12 +192,13 @@ void Puck_FSM::noticed_error_confirmed() {
 			if (hc->checkSlide()) {
 				return;
 			}
+		} else if(errType == WP_DISAPPEARED_FSM2) {
+			serial->send(START_BUTTON, sizeof(errType));
 		}
 		delete_unnecessary_wp();
 		starts_engine_if_nessecary();
 
-		//timer->deleteAllTimer();
-//		timer->startAllTimer();
+		timer->startAllTimer();
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
@@ -292,7 +294,6 @@ void Puck_FSM::machine2_free() {
 	hc->engineContinue();
 }
 void Puck_FSM::puck_arrived() {
-	//todo erkennt nicht den fehler -> noch einbaun für den weg zur fsm
 	hc->engineStop();
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {

@@ -17,11 +17,9 @@
 
 #include "Puck_FSM_2.h"
 
-//TODO 0prio -- sector 1 implemented test & implement sector 2-4
+//TODO 0prio -- implement and test with various pucks
 
 Puck_FSM_2::Puck_FSM_2(std::vector<Puck_FSM*>* puck_listobj) {
-	//	hc = HALCore::getInstance();
-	//	serial = Serial::getInstance();
 	puck_list = puck_listobj;
 	current = new FSM_2_start_state;
 	current->entry(this);
@@ -148,19 +146,19 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 		cout << "is Metall and has pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR_FORWARD;
+		//Callback in errorState in reference time x
 		fsm->setDummyTimer(MIN_TIME_B7);
 		fsm->setErrorStateTimer(MAX_TIME_B7);
 		fsm->setCurrent(new FSM_2_after_metal_measure_correct_wp());
-
 	} else if ((fsm->hc->isMetal() == 0) && (fsm->hasPocket == 0)) {
 #ifdef PUCK_FSM_2_DEBUG
 		cout << "no Metall, no pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR_FORWARD;
+		//Callback in errorState in reference time x
 		fsm->setDummyTimer(MIN_TIME_B7);
 		fsm->setErrorStateTimer(MAX_TIME_B7);
 		fsm->setCurrent(new FSM_2_after_metal_measure_correct_wp());
-
 	} else {
 #ifdef PUCK_FSM_2_DEBUG
 		if (fsm->hc->isMetal())
@@ -169,6 +167,7 @@ void FSM_2_in_metal_measure::entry(Puck_FSM * fsm) {
 			cout << "pocket" << endl;
 #endif
 		fsm->location = AFTER_METAL_SENSOR;
+		//Callback in errorState in reference time x
 		fsm->setDummyTimer(MIN_TIME_B6);
 		fsm->setErrorStateTimer(MAX_TIME_B6);
 		fsm->setCurrent(new FSM_2_after_metal_measure_uncorrect_wp());
@@ -187,8 +186,6 @@ void FSM_2_in_metal_measure::exit(Puck_FSM * fsm) {
 	fsm->hc->engineContinue();
 	fsm->hc->engineRight();
 	fsm->engine_should_be_started = 1;
-	//Callback in errorState in reference time x
-
 }
 
 //functions for ausschleusen
@@ -252,7 +249,8 @@ void FSM_2_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE, fsm->checkSlide_TID);
+	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE,
+			fsm->checkSlide_TID);
 }
 void FSM_2_check_slide::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
@@ -296,7 +294,6 @@ void FSM_2_after_metal_measure_correct_wp::errorState(Puck_FSM * fsm) {
 #endif
 	fsm->setCurrent(new FSM_2_ErrorState());
 }
-
 void FSM_2_after_metal_measure_correct_wp::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
 	cout << "FSM_2_after_metal_measure: exit" << endl;
@@ -338,7 +335,6 @@ void FSM_2_ErrorState::entry(Puck_FSM * fsm) {
 #endif
 	//	fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
-	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
 	fsm->removeAllLights();
 	fsm->lamp->flash(500, RED);
@@ -350,16 +346,13 @@ void FSM_2_ErrorState::ls_b6(Puck_FSM * fsm) {
 #endif
 	if (fsm->errType == SLIDE_FULL_B6) {
 		if (fsm->hc->checkSlide() == false) {
-			cout << "slide is now free" << endl;
 			fsm->removeAllLights();
 			fsm->lamp->flash(1000, RED);
-
-			if(fsm->getErrorNoticed() == true ){ //error was noticed
+			if (fsm->getErrorNoticed() == true) {
 				fsm->noticed_error_confirmed();
 			} else {
 				fsm->noticed_error_confirmed();
 			}//if
-
 		}//if
 	}//if
 }
@@ -375,4 +368,3 @@ void FSM_2_ErrorState::exit(Puck_FSM * fsm) {
 	cout << "FSM_2_ErrorState: exit" << endl;
 #endif
 }
-
