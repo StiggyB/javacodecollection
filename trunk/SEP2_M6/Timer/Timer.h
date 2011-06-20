@@ -72,7 +72,7 @@ public:
 	 * get the actual system time in ms
 	 * usage for compare between 2 times
 	 */
-	long getSystemTime_ms();
+	struct timeval getSystemTime_struct();
 	/**
 	 *
 	 */
@@ -146,7 +146,7 @@ struct IdTOfunction{
 	int id;
 	//int type;
 	int timer_id;
-	long systemtime_ms;
+	struct timeval struct_time;
 	int duration_ms;
 	Functionpointer funcp;
 };

@@ -47,14 +47,33 @@ void Test_Timer::execute(void* data){
 	int TID_3 = timer->getnextid();
 	int TID_4 = timer->getnextid();
 
+///////////////////
+    struct timeval start, end;
+    long mtime, seconds, useconds;
+
+    gettimeofday(&start, NULL);
+    usleep(2000);
+    gettimeofday(&end, NULL);
+
+    seconds  = end.tv_sec  - start.tv_sec;
+    useconds = end.tv_usec - start.tv_usec;
+
+    mtime = ((seconds) * 1000 + useconds/1000.0) + 0.5;
+    printf("Elapsed time: %ld milliseconds\n", mtime);
+
+
+//////////////
 	timer->addTimerFunction(openswitch, 1000, TID_1);
 	timer->addTimerFunction(closeswitch, 2000, TID_2);
 
-	//timer->deleteTimer(TID_2);
-	sleep(3);
+	sleep(1);
+	timer->stopAll_actual_Timer();
+
+	sleep(10);
+	timer->startAllTimer();
 
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 1000, TID_3);
-	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)openswitch);
+//	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)openswitch);
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)closeswitch, 2500, TID_4);
 	//timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)closeswitch);
 

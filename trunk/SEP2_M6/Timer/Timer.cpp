@@ -66,7 +66,8 @@ int Timer::addTimerFunction(struct IdTOfunction new_element, int ms) {
 
 	new_element.duration_ms = ms;
 
-	new_element.systemtime_ms = getSystemTime_ms();
+	new_element.struct_time = getSystemTime_struct();
+//	printf("system time in stopAll_actual_Timer: %i\n", getSystemTime_struct() );
 
 	if (calculateTime(ms, &sec, &nano_sec) == -1) {
 		perror("Timer: cannot calculate seconds and nano seconds");
@@ -181,13 +182,13 @@ int Timer::calculateTime(int ms, int *s, int *ns){
     return 0;
 }
 
-long Timer::getSystemTime_ms(){
+struct timeval Timer::getSystemTime_struct(){
 	struct timeval act_time;
 	if ( gettimeofday(&act_time, NULL) != 0 ){
 		perror("Timer: getSystemTime_ms failed - gettimeofday!=0");
-		return -1;
+		return act_time;
 	}
-	return ((act_time.tv_sec) * 1000 + act_time.tv_usec/1000.0) + 0.5;
+	return act_time;
 }
 
 int Timer::stopAll_actual_Timer(){
@@ -195,6 +196,9 @@ int Timer::stopAll_actual_Timer(){
 	long diff = 0;
 	bool unstoppablefound = false;
 	bool notfound = true;
+	struct timeval temp = getSystemTime_struct();
+	long diff_sec;
+	long diff_usec;
 
 	for(unsigned int i = 0; i<funcp_list.size(); i++){
 		notfound = true;
@@ -216,10 +220,16 @@ int Timer::stopAll_actual_Timer(){
 				return -1;
 			}//if
 			funcp_list[i].timer_id = -1;
-			diff = getSystemTime_ms()-funcp_list[i].systemtime_ms;
-			//printf("Timer: start_stop_duration=%i\n", diff );
-			funcp_list[i].duration_ms = funcp_list[i].duration_ms - diff;
-			//printf("Timer: rest_duration=%i\n", funcp_list[i].duration_ms);
+
+			temp = getSystemTime_struct();
+
+			diff_sec = temp.tv_sec - funcp_list[i].struct_time.tv_sec;
+			diff_usec = temp.tv_usec - funcp_list[i].struct_time.tv_usec;
+
+			printf("Timer: diffsec:%i diff_usec:%i\n", diff_sec, diff_usec);
+			printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
+
+			funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec)*1000)  +  (long)(diff_usec/1000.0));
 
 		}//for
 

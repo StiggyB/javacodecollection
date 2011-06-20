@@ -27,7 +27,6 @@ Puck_FSM_1::Puck_FSM_1(std::vector<Puck_FSM*>* puck_listobj) {
 	current->entry(this);
 	minTimerId = timer->getnextid();
 	maxTimerId = timer->getnextid();
-
 	printf("my minTimerid: %i, maxTimer: %i\n", minTimerId, maxTimerId);
 	checkSlide_TID = timer->getnextid();
 	closeSwitch_TID = timer->getnextid();
@@ -83,7 +82,7 @@ void FSM_1_after_ls_b0::ls_b1(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_after_ls_b0: LS_B1 wurde ausgelöst" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)){
+	if (fsm->timer->existTimer(fsm->minTimerId)) {
 		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
@@ -112,7 +111,6 @@ void FSM_1_height_measure::entry(Puck_FSM * fsm) {
 	cout << "FSM_1_height_measure: entry" << endl;
 	cout << "height: " << height << endl;
 #endif
-
 	if (height == NORMAL_WP || height == POCKET_WP) {
 		if (height == POCKET_WP) {
 			fsm->hasPocket = 1;
@@ -135,7 +133,6 @@ void FSM_1_height_measure::exit(Puck_FSM * fsm) {
 	//Callback in errorState in reference time x
 	fsm->setDummyTimer(MIN_TIME_B3);
 	fsm->setErrorStateTimer(MAX_TIME_B3);
-
 }
 
 //functions for ausschleusen
@@ -148,13 +145,12 @@ void FSM_1_sort_out::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: LS_B3" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)){
+	if (fsm->timer->existTimer(fsm->minTimerId)) {
 		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
-
 	fsm->location = AFTER_METAL_SENSOR;
 	fsm->engine_should_be_started = 1;
 	fsm->starts_engine_if_nessecary();
@@ -167,7 +163,6 @@ void FSM_1_sort_out::errorState(Puck_FSM * fsm) {
 #endif
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
-
 void FSM_1_sort_out::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_sort_out: exit" << endl;
@@ -187,12 +182,11 @@ void FSM_1_ls_b3_passed_sort_out::ls_b6(Puck_FSM * fsm) {
 	cout << "FSM_1_ls_b3_passed: LS_B6" << endl;
 #endif
 
-	if(fsm->timer->existTimer(fsm->minTimerId)){
+	if (fsm->timer->existTimer(fsm->minTimerId)) {
 		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
-
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
@@ -239,7 +233,8 @@ void FSM_1_check_slide::entry(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* checkSlide = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			fsm, &Puck_FSM::isSlideFull);
-	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE, fsm->checkSlide_TID);
+	fsm->timer->addTimerFunction(checkSlide, MAX_TIME_IN_SLIDE,
+			fsm->checkSlide_TID);
 }
 
 void FSM_1_check_slide::errorState(Puck_FSM * fsm) {
@@ -260,19 +255,17 @@ void FSM_1_correct_height::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: entry" << endl;
 #endif
-
 }
 void FSM_1_correct_height::ls_b3(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: LS_B3 wurde ausgelöst" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)){
+	if (fsm->timer->existTimer(fsm->minTimerId)) {
 		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
-
 	fsm->location = AFTER_METAL_SENSOR_FORWARD;
 	fsm->hc->openSwitch();
 	fsm->setCurrent(new FSM_1_ls_b3_passed_correct_height());
@@ -283,7 +276,6 @@ void FSM_1_correct_height::errorState(Puck_FSM * fsm) {
 #endif
 	fsm->setCurrent(new FSM_1_ErrorState());
 }
-
 void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: exit" << endl;
@@ -307,13 +299,12 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ls_b3_passed_correct_height: LS_B7 in" << endl;
 #endif
-	if(fsm->timer->existTimer(fsm->minTimerId)){
+	if (fsm->timer->existTimer(fsm->minTimerId)) {
 		fsm->checked_to_early = true;
 		fsm->errorState();
 		return;
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
-	cout << "MaxTimerId exists: " << fsm->timer->existTimer(fsm->maxTimerId) << endl;
 	fsm->hc->engineStop();
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;
@@ -344,8 +335,8 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 #endif
 	fsm->location = AFTER_LAST_LB;
 	fsm->starts_engine_if_nessecary();
+	//Callback in errorState in reference time x
 	fsm->setErrorStateTimer(MAX_TIME_FSM2);
-	cout << "MaxTimerId is: " << fsm->maxTimerId << endl;
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
@@ -364,9 +355,8 @@ void FSM_1_ErrorState::entry(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ErrorState: entry" << endl;
 #endif
-//	fsm->timer->stopAll_actual_Timer();
+	fsm->timer->stopAll_actual_Timer();
 	fsm->setErrorNoticed(true);
-	cout << "fsm->errorNoticed = true: " << fsm->getErrorNoticed() << endl;
 	fsm->hc->engineStop();
 	fsm->removeAllLights();
 	fsm->lamp->flash(500, RED);
@@ -376,13 +366,12 @@ void FSM_1_ErrorState::ls_b6(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_ErrorState: LS_B6" << endl;
 #endif
-	if(fsm->errType == SLIDE_FULL_B6){
-		if(fsm->hc->checkSlide() == false) {
+	if (fsm->errType == SLIDE_FULL_B6) {
+		if (fsm->hc->checkSlide() == false) {
 			//should be work without removeLight or need removeAll
 			fsm->removeAllLights();
 			fsm->lamp->flash(1000, RED);
-
-			if(fsm->getErrorNoticed() == true ){ //error was noticed
+			if (fsm->getErrorNoticed() == true) { //error was noticed
 				fsm->noticed_error_confirmed();
 			} else {
 				fsm->noticed_error_confirmed();
