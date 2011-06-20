@@ -85,7 +85,7 @@ int Puck_FSM::setDummyTimer(ReferenceTime refTime) {
 int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callErrorState = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
-			this, &Puck_FSM::errorState); //not sure which state !
+			this, &Puck_FSM::errorState);
 	return timer->addTimerFunction(callErrorState, refTime, maxTimerId);
 }
 
@@ -149,24 +149,24 @@ void Puck_FSM::selectErrorType() {
 		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_DISAPPEARED_B1;
-			cout << ">> WORK PIECE DISSAPPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<" << endl;
 			break;
 		case AFTER_HEIGH_MEASURE:
 			errType = WP_DISAPPEARED_B3;
-			cout << ">> WORK PIECE DISSAPPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<" << endl;
 			break;
 		case AFTER_METAL_SENSOR:
 			errType = WP_DISAPPEARED_B6;
-			cout << ">> WORK PIECE DISSAPPEARED BETWEEN >SWITCH< AND >SLIDE< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >SLIDE< <<" << endl;
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
 			errType = WP_DISAPPEARED_B7;
-			cout << ">> WORK PIECE DISSAPPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<" << endl;
 			break;
 		case AFTER_LAST_LB:
 		case ON_FIRST_LB:
 			errType = WP_DISAPPEARED_FSM2;
-			cout << ">> WORK PIECE DISSAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<" << endl;
 			break;
 		default:
 			cout << ">> WORK PIECE DISAPPEARED >NO ERROR DEFINED< <<" << endl;
@@ -193,7 +193,7 @@ void Puck_FSM::noticed_error_confirmed() {
 		starts_engine_if_nessecary();
 
 		//timer->deleteAllTimer();
-		//timer->startAllTimer();
+//		timer->startAllTimer();
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;
@@ -290,10 +290,11 @@ void Puck_FSM::puck_arrived() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
 			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,sizeof(msgType));
-			timer->deleteTimer(maxTimerId);
-			cout << "timer->deleteTimer(maxTimerId) puck_arrived" << errType << endl;
+			cout << "MaxTimerId is: " << maxTimerId << endl;
+			timer->deleteTimer((*puck_list)[i]->maxTimerId);
+			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType << endl;
 		}
-		(*puck_list)[i]->ls_b7_out();
+//		(*puck_list)[i]->ls_b7_out();
 	}
 	delete_unnecessary_wp();
 	starts_engine_if_nessecary();
