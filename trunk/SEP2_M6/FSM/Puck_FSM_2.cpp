@@ -350,9 +350,16 @@ void FSM_2_ErrorState::ls_b6(Puck_FSM * fsm) {
 #endif
 	if (fsm->errType == SLIDE_FULL_B6) {
 		if (fsm->hc->checkSlide() == false) {
-			//should be work without removeLight or need removeAll
+			cout << "slide is now free" << endl;
 			fsm->removeAllLights();
 			fsm->lamp->flash(1000, RED);
+
+			if(fsm->getErrorNoticed() == true ){ //error was noticed
+				fsm->noticed_error_confirmed();
+			} else {
+				fsm->noticed_error_confirmed();
+			}//if
+
 		}//if
 	}//if
 }
