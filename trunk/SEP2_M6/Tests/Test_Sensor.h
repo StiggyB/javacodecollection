@@ -94,16 +94,24 @@ private:
 	 */
 	PortB last_state_B;
 	/**
-	 * defines a standard register status for register C.
+	 * Defines a standard register status for register C.
 	 */
 	PortCState last_state_C;
 	/**
 	 * Flag for general success in the Test_Sensor.
 	 */
 	bool success;
-
+	/**
+	 * This attribute defines the actual section in the test.
+	 */
 	int section;
+	/**
+	 * This attribute defines the actual height from the work piece.
+	 */
 	int height;
+	/**
+	 * Result variable for temporary testing.
+	 */
 	int res;
 };
 
