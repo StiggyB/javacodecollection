@@ -15,6 +15,7 @@
  *
  */
 
+//TODO // stop all timer, wenn band 1 auf band2 wartet
 #include "Puck_FSM_1.h"
 
 Puck_FSM_1::~Puck_FSM_1() {
