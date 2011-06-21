@@ -42,6 +42,7 @@ void FSM_2_start_state::entry(Puck_FSM * fsm) {
 	cout << "FSM_2_start_state: entry" << endl;
 #endif
 	fsm->location = ON_FIRST_LB;
+	fsm->engine_should_be_started = true;
 }
 void FSM_2_start_state::ls_b0(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
