@@ -200,6 +200,7 @@ int Timer::stopAll_actual_Timer() {
 	long diff_sec;
 	long diff_usec;
 
+	cout << "Timer: all Timer stopped." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
 		notfound = true;
 		unstoppablefound = false;
@@ -230,7 +231,7 @@ int Timer::stopAll_actual_Timer() {
 			diff_usec = temp.tv_usec - funcp_list[i].struct_time.tv_usec;
 
 			//			printf("Timer: diffsec:%i diff_usec:%i\n", diff_sec, diff_usec);
-			//			printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
+						printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
 
 			funcp_list[i].duration_ms = funcp_list[i].duration_ms
 					- (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
@@ -251,6 +252,7 @@ int Timer::startAllTimer() {
 	struct sigevent event;
 	struct itimerspec timer;
 
+	cout << "Timer: all Timer started." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
 		if (funcp_list[i].timer_id == -1) {//a not stopped timer
 
