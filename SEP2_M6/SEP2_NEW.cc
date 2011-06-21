@@ -14,6 +14,7 @@
 #include <iostream>
 #include "Controller/StartThread.h"
 #include "Controller/InterruptController.h"
+#include "FSM/GlobalVariables.h"
 #include "HAL/HALCore.h"
 
 void stopController();
@@ -30,6 +31,16 @@ int main(int argc, char *argv[]) {
 	std::cout << "####################PUCK_FSM_2####################" << std::endl;
 #endif
 
+	GlobalVariables *gv = GlobalVariables::getInstance();
+	gv->setCurrentType(PUCK_FSM_1_);
+
+//	gv->setCurrentType(PUCK_FSM_2_);
+
+	if(PUCK_FSM_1_ == gv->getCurrentType()) {
+		std::cout << "Current Type: PUCK_FSM_1" << std::endl;
+	} else {
+		std::cout << "Current Type: PUCK_FSM_2" << std::endl;
+	}
 	atexit(stopController);
 	/**
 	 *if simulation is wanted, than you'll get it ;)

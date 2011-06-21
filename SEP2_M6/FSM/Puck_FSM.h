@@ -10,6 +10,7 @@
 #include "../Functor/FunctorMaker.h"
 #include "../Functor/CallInterface.h"
 #include "../Functor/CallBackThrower.h"
+#include "FSM/GlobalVariables.h"
 
 #define PUCK_FSM_STATE_DEBUG
 //#define PUCK_FSM_2
@@ -324,6 +325,10 @@ public:
 	 * Timer Id from the closeSwitch callback
 	 */
 	int closeSwitch_TID;
+	/**
+	 *
+	 */
+	GlobalVariables* gv;
 
 protected:
 

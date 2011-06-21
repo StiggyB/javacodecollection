@@ -21,6 +21,7 @@ Puck_FSM::Puck_FSM() {
 	lamp = Lampen::getInstance();
 	serial = Serial::getInstance();
 	timer = Timer::getInstance();
+	gv = GlobalVariables::getInstance();
 	errType = NO_ERROR;
 }
 
@@ -308,16 +309,18 @@ void Puck_FSM::selectErrorType() {
 			cout << ">> WORK PIECE DISAPPEARED >NO ERROR DEFINED< <<" << endl;
 		}
 	}
-	if (errType != WP_DISAPPEARED_FSM2) {
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-				serial->send(ERROR_OCCURED, sizeof(msgType));
-			}
-		}
-	}
-	cout
-			<< "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON TO CONFIRM THE ERROR. <-"
-			<< endl;
+
+	if (gv->getCurrentType() == PUCK_FSM_1_) {
+		if (errType != WP_DISAPPEARED_FSM2) {
+			for (unsigned int i = 0; i < puck_list->size(); i++) {
+				if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+					serial->send(ERROR_OCCURED, sizeof(msgType));
+				}//if
+			}//for
+		}//if
+	}//if
+
+	cout << "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON TO CONFIRM THE ERROR. <-"	<< endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
@@ -335,13 +338,16 @@ void Puck_FSM::noticed_error_confirmed() {
 			serial->send(START_BUTTON, sizeof(errType));
 		}
 
-		if (errType != WP_DISAPPEARED_FSM2) {
-			for (unsigned int i = 0; i < puck_list->size(); i++) {
-				if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-					serial->send(ERROR_SOLVED, sizeof(msgType));
-				}
-			}
-		}
+		if (gv->getCurrentType() == PUCK_FSM_1_) {
+			cout << "will send fsm2 a message -> stop engine and timers" << endl;
+			if (errType != WP_DISAPPEARED_FSM2) {
+				for (unsigned int i = 0; i < puck_list->size(); i++) {
+					if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+						serial->send(ERROR_OCCURED, sizeof(msgType));
+					}//if
+				}//for
+			}//if
+		}//if
 
 		delete_unnecessary_wp();
 		starts_engine_if_nessecary();
