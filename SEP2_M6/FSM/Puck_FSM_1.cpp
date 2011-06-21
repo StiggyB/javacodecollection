@@ -311,6 +311,7 @@ void FSM_1_ls_b3_passed_correct_height::ls_b7_in(Puck_FSM * fsm) {
 	fsm->engine_should_be_started = 0;
 	fsm->location = ON_LAST_LB;
 	fsm->serial->send(REQUEST_FREE, 4);
+	timer->stopAll_actual_Timer();
 	fsm->setCurrent(new FSM_1_end_state());
 }
 void FSM_1_ls_b3_passed_correct_height::errorState(Puck_FSM * fsm) {
