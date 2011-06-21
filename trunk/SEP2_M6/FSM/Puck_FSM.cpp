@@ -80,7 +80,6 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 }
 
 void Puck_FSM::machine2_free() {
-	//--
 	timer->startAllTimer();
 	hc->engineRight();
 	hc->engineContinue();
@@ -103,8 +102,6 @@ void Puck_FSM::puck_arrived() {
 void Puck_FSM::requestfromMachine1() {
 	if (puck_list->size() > 1) {
 		(*puck_list)[0]->request = true;
-		//--
-		timer->stopAll_actual_Timer();
 		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
 				<< endl;
 	} else {
