@@ -146,7 +146,7 @@ void Sensor::handleNormalMessage() {
 		} else if (val == E_STOP_PULLED) {
 			cout << "Sensor: E_STOP_PULLED" << endl;
 			running_mode = true;
-			l->addLight(GREEN);
+			l->shine(GREEN);
 			dummy_fsm->estop_out_signal(true);
 
 		} else if (val == STOP_BUTTON) {
@@ -158,12 +158,12 @@ void Sensor::handleNormalMessage() {
 		} else if (val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
-			l->addLight(GREEN);
+			l->shine(GREEN);
 			dummy_fsm->start_signal(true);
 
 		} else if (val == RESET_BUTTON) {
 			running_mode = true;
-			l->addLight(GREEN);
+			l->shine(GREEN);
 			cout << "Sensor: RESET_BUTTON" << endl;
 			dummy_fsm->reset_signal(true);
 		} else if(val == ERROR_OCCURED) {
