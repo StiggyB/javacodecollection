@@ -38,8 +38,8 @@ void Puck_FSM::setErrorNoticed(bool errorNoticed) {
 void Puck_FSM::start_signal(bool was_serial) {
 	if (!was_serial)
 		serial->send(START_BUTTON, sizeof(int));
-	if ((check_last_lb() == 0) && (puck_list->size() > 0)) {
 
+	if ((check_last_lb() == 0) && (puck_list->size() > 0)) {
 
 		for (unsigned int i = 0; i < puck_list->size(); i++) {
 			if ((*puck_list)[i]->errType != NO_ERROR) {
@@ -47,8 +47,10 @@ void Puck_FSM::start_signal(bool was_serial) {
 			}
 		}
 
+		lamp->shine(GREEN);
 		starts_engine_if_nessecary();
 		timer->startAllTimer();
+
 	} else if ((puck_list->size() == 0)) {
 		lamp->shine(GREEN);
 	}//if
@@ -64,28 +66,30 @@ int Puck_FSM::check_last_lb() {
 }
 
 void Puck_FSM::stop_signal(bool was_serial) {
-	lamp->shine(RED);
-	if (!was_serial)
-
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			if ((*puck_list)[i]->errType != NO_ERROR) {
-				return;
-			}
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if ((*puck_list)[i]->errType != NO_ERROR) {
+			return;
 		}
+	}
 
+	lamp->shine(RED);
+
+	if (!was_serial){
 		serial->send(STOP_BUTTON, sizeof(int));
+	}
+
 		hc->engineStop();
 		timer->stopAll_actual_Timer();
 }
 
 void Puck_FSM::reset_signal(bool was_serial) {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-				if ((*puck_list)[i]->errType != NO_ERROR) {
-					return;
-				}
-			}
+		if ((*puck_list)[i]->errType != NO_ERROR) {
+			return;
+		}
+	}
 
-	l->shine(GREEN);
+	lamp->shine(GREEN);
 }
 
 void Puck_FSM::estop_in_signal(bool was_serial) {
