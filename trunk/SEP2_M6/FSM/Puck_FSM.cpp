@@ -79,8 +79,13 @@ void Puck_FSM::stop_signal(bool was_serial) {
 }
 
 void Puck_FSM::reset_signal(bool was_serial) {
-	if (!was_serial)
-		serial->send(RESET_BUTTON, sizeof(int));
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+				if ((*puck_list)[i]->errType != NO_ERROR) {
+					return;
+				}
+			}
+
+	l->shine(GREEN);
 }
 
 void Puck_FSM::estop_in_signal(bool was_serial) {
