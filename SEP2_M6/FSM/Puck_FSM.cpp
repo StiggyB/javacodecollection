@@ -300,7 +300,7 @@ void Puck_FSM::selectErrorType() {
 		case AFTER_LAST_LB:
 		case ON_FIRST_LB:
 			errType = WP_DISAPPEARED_FSM2;
-			serial->send(STOP_BUTTON, sizeof(errType));
+//			serial->send(STOP_BUTTON, sizeof(errType));
 			cout
 					<< ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<"
 					<< endl;
@@ -313,7 +313,7 @@ void Puck_FSM::selectErrorType() {
 	if (gv->getCurrentType() == PUCK_FSM_1_) {
 		if (errType != WP_DISAPPEARED_FSM2) {
 			for (unsigned int i = 0; i < puck_list->size(); i++) {
-				if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+				if ((*puck_list)[i]->location == AFTER_LAST_LB  || (*puck_list)[i]->location == ON_LAST_LB) {
 					serial->send(ERROR_OCCURED, sizeof(msgType));
 				}//if
 			}//for
