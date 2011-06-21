@@ -79,6 +79,16 @@ void Puck_FSM::estop_out_signal(bool was_serial) {
 	hc->resetAll();
 }
 
+void Puck_FSM::error_arrived_serial() {
+	hc->engineStop();
+	timer->stopAll_actual_Timer();
+}
+
+void Puck_FSM::error_solved_serial() {
+	starts_engine_if_nessecary();
+	timer->startAllTimer();
+}
+
 void Puck_FSM::machine2_free() {
 	timer->startAllTimer();
 	hc->engineRight();
@@ -89,10 +99,12 @@ void Puck_FSM::puck_arrived() {
 	hc->engineStop();
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,sizeof(msgType));
+			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,
+					sizeof(msgType));
 			cout << "MaxTimerId is: " << maxTimerId << endl;
 			timer->deleteTimer((*puck_list)[i]->maxTimerId);
-			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType << endl;
+			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType
+					<< endl;
 		}
 	}
 	delete_unnecessary_wp();
@@ -227,58 +239,85 @@ void Puck_FSM::selectErrorType() {
 		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_UNKOWN_B1;
-			cout << ">> UNKOWN WORK PIECE APPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<" << endl;
+			cout
+					<< ">> UNKOWN WORK PIECE APPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<"
+					<< endl;
 			break;
 		case AFTER_HEIGH_MEASURE:
 			errType = WP_UNKOWN_B3;
-			cout << ">> UNKOWN WORK PIECE APPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<" << endl;
+			cout
+					<< ">> UNKOWN WORK PIECE APPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<"
+					<< endl;
 			break;
 		case AFTER_METAL_SENSOR:
 			errType = WP_UNKOWN_B6;
-			cout << ">> UNKOWN WORK PIECE APPEARED BETWEEN >SWITCH< AND >SLIDE< <<" << endl;
+			cout
+					<< ">> UNKOWN WORK PIECE APPEARED BETWEEN >SWITCH< AND >SLIDE< <<"
+					<< endl;
 			timer->deleteTimer(checkSlide_TID);
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
-			cout << ">> UNKOWN WORK PIECE APPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<" << endl;
+			cout
+					<< ">> UNKOWN WORK PIECE APPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<"
+					<< endl;
 			errType = WP_UNKOWN_B7;
 			break;
 		default:
-			cout << ">> UNKOWN WORK PIECE APPEARED >NO ERROR DEFINED< <<" << endl;
+			cout << ">> UNKOWN WORK PIECE APPEARED >NO ERROR DEFINED< <<"
+					<< endl;
 		}
 		checked_to_early = false;
 	} else {
 		switch (location) {
 		case AFTER_FIRST_LB:
 			errType = WP_DISAPPEARED_B1;
-			cout << ">> WORK PIECE DISAPPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<" << endl;
+			cout
+					<< ">> WORK PIECE DISAPPEARED BETWEEN >FIRST LIGHT BARRIER< AND >HEIGHT MEASURE< <<"
+					<< endl;
 			break;
 		case AFTER_HEIGH_MEASURE:
 			errType = WP_DISAPPEARED_B3;
-			cout << ">> WORK PIECE DISAPPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<" << endl;
+			cout
+					<< ">> WORK PIECE DISAPPEARED BETWEEN >HEIGHT MEASURE< AND >SWITCH< <<"
+					<< endl;
 			break;
 		case AFTER_METAL_SENSOR:
 			errType = WP_DISAPPEARED_B6;
-			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >SLIDE< <<" << endl;
+			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >SLIDE< <<"
+					<< endl;
 			break;
 		case SORT_OUT:
-			errType =  SLIDE_FULL_B6;
+			errType = SLIDE_FULL_B6;
 			cout << ">> WORK PIECE IS BLOCKING IN >THE SLIDE< <<" << endl;
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
 			errType = WP_DISAPPEARED_B7;
-			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<" << endl;
+			cout
+					<< ">> WORK PIECE DISAPPEARED BETWEEN >SWITCH< AND >LAST LIGHT BARRIER< <<"
+					<< endl;
 			break;
 		case AFTER_LAST_LB:
 		case ON_FIRST_LB:
 			errType = WP_DISAPPEARED_FSM2;
 			serial->send(STOP_BUTTON, sizeof(errType));
-			cout << ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<" << endl;
+			cout
+					<< ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<"
+					<< endl;
 			break;
 		default:
 			cout << ">> WORK PIECE DISAPPEARED >NO ERROR DEFINED< <<" << endl;
 		}
 	}
-	cout << "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON CONFIRM THE ERROR. <-" << endl;
+	if (errType != WP_DISAPPEARED_FSM2) {
+		for (unsigned int i = 0; i < puck_list->size(); i++) {
+			if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+				serial->send(ERROR_OCCURED, sizeof(msgType));
+			}
+		}
+	}
+	cout
+			<< "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON CONFIRM THE ERROR. <-"
+			<< endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
@@ -292,13 +331,23 @@ void Puck_FSM::noticed_error_confirmed() {
 			if (hc->checkSlide()) {
 				return;
 			}
-		} else if(errType == WP_DISAPPEARED_FSM2) {
+		} else if (errType == WP_DISAPPEARED_FSM2) {
 			serial->send(START_BUTTON, sizeof(errType));
 		}
+
+		if (errType != WP_DISAPPEARED_FSM2) {
+			for (unsigned int i = 0; i < puck_list->size(); i++) {
+				if ((*puck_list)[i]->location == AFTER_LAST_LB) {
+					serial->send(ERROR_SOLVED, sizeof(msgType));
+				}
+			}
+		}
+
 		delete_unnecessary_wp();
 		starts_engine_if_nessecary();
 
 		timer->startAllTimer();
+
 		removeAllLights();
 		lamp->shine(GREEN);
 		errType = NO_ERROR;

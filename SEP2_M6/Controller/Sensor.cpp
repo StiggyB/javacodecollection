@@ -166,7 +166,13 @@ void Sensor::handleNormalMessage() {
 			l->addLight(GREEN);
 			cout << "Sensor: RESET_BUTTON" << endl;
 			dummy_fsm->reset_signal(true);
-		}//if
+		} else if(val == ERROR_OCCURED) {
+			cout << "Sensor: ERROR_STATE" << endl;
+			dummy_fsm->error_arrived_serial();
+		} else if (val == ERROR_SOLVED) {
+			cout << "Sensor: ERROR_SOLVED" << endl;
+			dummy_fsm->error_solved_serial();
+		}
 		break;
 
 	case INTERRUPT_D_PORT_B:
