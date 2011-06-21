@@ -196,7 +196,7 @@ int Timer::stopAll_actual_Timer() {
 	locker.lock();
 	bool unstoppablefound = false;
 	bool notfound = true;
-	struct timeval temp = getSystemTime_struct();
+	struct timeval temp_systemtime = getSystemTime_struct();
 	long diff_sec;
 	long diff_usec;
 
@@ -225,16 +225,19 @@ int Timer::stopAll_actual_Timer() {
 			}
 			funcp_list[i].timer_id = -1;
 
-			temp = getSystemTime_struct();
+			temp_systemtime = getSystemTime_struct();
 
-			diff_sec = temp.tv_sec - funcp_list[i].struct_time.tv_sec;
-			diff_usec = temp.tv_usec - funcp_list[i].struct_time.tv_usec;
+			diff_sec = temp_systemtime.tv_sec - funcp_list[i].struct_time.tv_sec;
+			diff_usec = temp_systemtime.tv_usec - funcp_list[i].struct_time.tv_usec;
+//			printf("diff_sec = %ld - %ld\n", temp_systemtime.tv_sec, funcp_list[i].struct_time.tv_sec);
+//			printf("diff_usec = %ld - %ld\n", temp_systemtime.tv_usecv_sec, funcp_list[i].struct_time.tv_usec);
 
-			//			printf("Timer: diffsec:%i diff_usec:%i\n", diff_sec, diff_usec);
-						printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
 
-			funcp_list[i].duration_ms = funcp_list[i].duration_ms
-					- (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
+
+			printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
+
+			funcp_list[i].struct_time = temp_systemtime;
+			funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
 
 		}//for
 
