@@ -163,7 +163,6 @@ void Sensor::handleNormalMessage() {
 
 		} else if (val == RESET_BUTTON) {
 			running_mode = true;
-			l->shine(GREEN);
 			cout << "Sensor: RESET_BUTTON" << endl;
 			dummy_fsm->reset_signal(true);
 		} else if(val == ERROR_OCCURED) {
