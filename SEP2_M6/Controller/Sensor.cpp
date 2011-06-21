@@ -158,7 +158,7 @@ void Sensor::handleNormalMessage() {
 		} else if (val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;
-			l->shine(GREEN);
+//			l->shine(GREEN);
 			dummy_fsm->start_signal(true);
 
 		} else if (val == RESET_BUTTON) {
