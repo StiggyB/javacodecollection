@@ -119,11 +119,13 @@ void HALCore::execute(void*) {
 			it = lst.begin();
 			//if((*it) != NULL){
 			((*this).*((*it)->func))((*it)->v);
+			if((*it)->v->value1 == PORT_A && (*it)->v->value2 == BIT_ENGINE_STOP  ) //printf("h...%x\n",in8(PORT_A));
 			//}
 			free(((*it)->v)); // free VAL
 			free((*it)); // free struct of function
 			lst.erase(it);
 			//it++;
+
 		} else {
 			changedMutex.lock();
 			if (!requested) {
@@ -539,7 +541,7 @@ void HALCore::engineNormalSpeed() {
 }
 
 bool HALCore::engineStopped() {
-	return (portA & BIT_ENGINE_STOP);
+	return (in8(PORT_A) & BIT_ENGINE_STOP);
 }
 
 void HALCore::engineSlowSpeed(int dir) {

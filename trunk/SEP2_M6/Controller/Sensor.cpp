@@ -93,7 +93,6 @@ void Sensor::handleNormalMessage() {
 			dummy_fsm->stop_signal(false);
 			running_mode = false;
 			l->removeLight(GREEN);
-
 		} else if ((val >> WP_START) & 1) {
 			cout << "Sensor: Start Button" << endl;
 			dummy_fsm->start_signal(false);
@@ -151,10 +150,9 @@ void Sensor::handleNormalMessage() {
 
 		} else if (val == STOP_BUTTON) {
 			cout << "Sensor: STOP_BUTTON" << endl;
+			dummy_fsm->stop_signal(false); //true
 			running_mode = false;
 			l->removeLight(GREEN);
-			dummy_fsm->stop_signal(true);
-
 		} else if (val == START_BUTTON) {
 			cout << "Sensor: START_BUTTON" << endl;
 			running_mode = true;

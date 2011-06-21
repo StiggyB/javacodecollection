@@ -79,8 +79,8 @@ void Puck_FSM::stop_signal(bool was_serial) {
 		serial->send(STOP_BUTTON, sizeof(int));
 	}
 
-		hc->engineStop();
-		timer->stopAll_actual_Timer();
+	hc->engineStop();
+	//timer->stopAll_actual_Timer();
 }
 
 void Puck_FSM::reset_signal(bool was_serial) {
@@ -196,11 +196,11 @@ void Puck_FSM::delete_unnecessary_wp() {
 				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
 			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 			puck_list->erase(puck_list->begin() + i);
-			//TODO 0prio -- Puck in slide where should shine the lamp?
-			//			lamp->shine(GREEN);
+			i = -1;
 		}
-	}
+	}//for
 	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
+
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
@@ -219,14 +219,15 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 	lamp->shine(GREEN);
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->engine_should_be_started) {
-			cout << "A PUCK NEEDS ENGINE" << endl;
 			active_state = 1;
 		}
 	}
 	if (active_state == 1) {
-		cout << "will start.." << endl;
-		hc->engineRight();
 		hc->engineContinue();
+		//ATTENTION!!! Do not delete this print without a short break between.
+		//HALCore is to slow to switch the isStopped state!!!
+		cout << "A PUCK NEEDS ENGINE" << endl;
+		hc->engineRight();
 	}
 	return true;
 }
