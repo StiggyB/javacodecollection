@@ -117,8 +117,14 @@ void Puck_FSM::error_solved_serial() {
 
 void Puck_FSM::machine2_free() {
 	timer->startAllTimer();
-	hc->engineRight();
-	hc->engineContinue();
+
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if((*puck_list)[i]->location==ON_LAST_LB){
+			(*puck_list)[i]->engine_should_be_started = true;
+		}
+	}
+
+	starts_engine_if_nessecary();
 }
 
 void Puck_FSM::puck_arrived() {
@@ -187,7 +193,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {//todo alle pucks mit fehler löschen!
 		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
 				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
-			cout << "Puck_FSM::delete_unnecessary_wp: deleted errType " << (*puck_list)[i]->errType << endl;
+			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 			puck_list->erase(puck_list->begin() + i);
 			//TODO 0prio -- Puck in slide where should shine the lamp?
 			//			lamp->shine(GREEN);
@@ -198,15 +204,13 @@ void Puck_FSM::delete_unnecessary_wp() {
 
 bool Puck_FSM::starts_engine_if_nessecary() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 	}
 
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		cout << "Puck_FSM::starts_engine_if_nessecary: errType: " << errType << endl;
+		printf("starts_engine_if_nessecary() next- i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 		if ((*puck_list)[i]->errType != NO_ERROR) {
-			cout << "Puck_FSM::starts_engine_if_nessecary: inErrorState"
-					<< endl;
 			return false;
 		}
 	}
@@ -364,6 +368,7 @@ void Puck_FSM::noticed_error_confirmed() {
 	if (errorNoticed == true) {
 		location = SORT_OUT;
 		errorNoticed = false;
+
 	} else {
 		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
 				<< endl;
@@ -379,8 +384,8 @@ void Puck_FSM::noticed_error_confirmed() {
 			cout << "will send fsm2 a message -> stop engine and timers" << endl;
 			if (errType != WP_DISAPPEARED_FSM2) {
 				for (unsigned int i = 0; i < puck_list->size(); i++) {
-					if ((*puck_list)[i]->location == AFTER_LAST_LB) {
-						serial->send(ERROR_OCCURED, sizeof(msgType));
+					if ((*puck_list)[i]->location == AFTER_LAST_LB || (*puck_list)[i]->location == ON_LAST_LB) {
+						serial->send(ERROR_SOLVED, sizeof(msgType));
 					}//if
 				}//for
 			}//if
