@@ -76,7 +76,7 @@ void FSM_1_after_ls_b0::entry(Puck_FSM * fsm) {
 	cout << "FSM_1_after_ls_b0: entry" << endl;
 #endif
 	fsm->location = AFTER_FIRST_LB;
-	fsm->engine_should_be_started = 1;
+	cout << "need engine: " << fsm->engine_should_be_started << endl;
 	fsm->starts_engine_if_nessecary();
 
 }

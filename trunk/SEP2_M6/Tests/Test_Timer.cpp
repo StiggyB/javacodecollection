@@ -63,14 +63,30 @@ void Test_Timer::execute(void* data){
 
 
 //////////////
-	timer->addTimerFunction(openswitch, 1000, TID_1);
-	timer->addTimerFunction(closeswitch, 2000, TID_2);
+	timer->addTimerFunction(openswitch, 1200, TID_1);
+	//timer->addTimerFunction(closeswitch, 9000, TID_2);
 
-	sleep(1);
+	usleep(150000);
 	timer->stopAll_actual_Timer();
-
-	sleep(10);
+	usleep(150000);
 	timer->startAllTimer();
+
+	usleep(150000);
+	timer->stopAll_actual_Timer();
+	usleep(150000);
+	timer->startAllTimer();
+
+	usleep(150000);
+	timer->stopAll_actual_Timer();
+	usleep(150000);
+	timer->startAllTimer();
+
+	usleep(100000);
+	timer->stopAll_actual_Timer();
+	usleep(100000);
+	timer->startAllTimer();
+
+	sleep(100);
 
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)openswitch, 1000, TID_3);
 //	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)openswitch);

@@ -152,8 +152,8 @@ void Puck_FSM::requestfromMachine1() {
 		serial->send(MACHINE2_FREE, sizeof(msgType));
 		cout << "size of list" << puck_list->size() << endl;
 		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
-		hc->engineContinue();
 		hc->engineRight();
+		hc->engineContinue();
 	}//if
 }
 
@@ -181,16 +181,17 @@ void Puck_FSM::puck_fsm2_outgoing() {
 		serial->send(MACHINE2_FREE, sizeof(msgType));
 		cout << "size of list" << puck_list->size() << endl;
 		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
+		hc->engineRight();
 		hc->engineContinue();
 		request = false;
 	}//if
 }
 void Puck_FSM::delete_unnecessary_wp() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-	}
+//	for (unsigned int i = 0; i < puck_list->size(); i++) {
+//		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//	}
 
-	for (unsigned int i = 0; i < puck_list->size(); i++) {//todo alle pucks mit fehler löschen!
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
 				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
 			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
@@ -203,13 +204,13 @@ void Puck_FSM::delete_unnecessary_wp() {
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-	}
+//	for (unsigned int i = 0; i < puck_list->size(); i++) {
+//		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//	}
 
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("starts_engine_if_nessecary() next- i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//		printf("starts_engine_if_nessecary() next- i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 		if ((*puck_list)[i]->errType != NO_ERROR) {
 			return false;
 		}
@@ -218,7 +219,7 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 	lamp->shine(GREEN);
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->engine_should_be_started) {
-			cout << "A PUCK NEEDS ENGINE" << endl;
+//			cout << "A PUCK NEEDS ENGINE" << endl;
 			active_state = 1;
 		}
 	}
