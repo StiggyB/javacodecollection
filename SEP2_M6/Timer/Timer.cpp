@@ -230,18 +230,15 @@ int Timer::stopAll_actual_Timer() {
 				temp_systemtime = getSystemTime_struct();
 
 				//			printf("Timer: last duration = %ld\n", funcp_list[i].duration_ms);
-				diff_sec = temp_systemtime.tv_sec
-						- funcp_list[i].struct_time.tv_sec;
-				diff_usec = temp_systemtime.tv_usec
-						- funcp_list[i].struct_time.tv_usec;
+				diff_sec = temp_systemtime.tv_sec - funcp_list[i].struct_time.tv_sec;
+				diff_usec = temp_systemtime.tv_usec	- funcp_list[i].struct_time.tv_usec;
 				//			printf("diff_sec = %ld - %ld\n", temp_systemtime.tv_sec, funcp_list[i].struct_time.tv_sec);
 				//			printf("diff_usec = %ld - %ld\n", temp_systemtime.tv_usec, funcp_list[i].struct_time.tv_usec);
 
 				//			printf("Timer: new duration %ld\n",  (((diff_sec)*1000) + (long)(diff_usec/1000.0)) );
 
 				funcp_list[i].struct_time = temp_systemtime;
-				funcp_list[i].duration_ms = funcp_list[i].duration_ms
-						- (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
+				funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
 
 				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
 				//			printf("-----\n" );
@@ -270,7 +267,7 @@ int Timer::startAllTimer() {
 		sec = 0;
 		nano = 0;
 
-		if (funcp_list[i].timer_id == -1) {//a not stopped timer
+		if (funcp_list[i].timer_id == -1) {//a stopped timer
 
 			calculateTime(funcp_list[i].duration_ms, &sec, &nano);
 
