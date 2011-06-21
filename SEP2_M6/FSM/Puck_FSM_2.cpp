@@ -54,7 +54,7 @@ void FSM_2_start_state::ls_b0(Puck_FSM * fsm) {
 }
 void FSM_2_start_state::errorState(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG
-	cout << "FSM_2_after_ls_b0: errorState" << endl;
+	cout << "FSM_2_start_state: errorState" << endl;
 #endif
 	fsm->setCurrent(new FSM_2_ErrorState());
 }
@@ -207,6 +207,8 @@ void FSM_2_after_metal_measure_uncorrect_wp::ls_b6(Puck_FSM * fsm) {
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->location = SORT_OUT;
+	//TODO 0prio -- implement delete and start waiting puck!
+	fsm->delete_unnecessary_wp();
 	fsm->setCurrent(new FSM_2_wp_in_slide());
 }
 void FSM_2_after_metal_measure_uncorrect_wp::errorState(Puck_FSM * fsm) {
