@@ -24,12 +24,12 @@
 enum msgType {
 	ACK,
 	INIT_SERIAL,
-	/* Machine Info */
+					/* Machine Info */
 	REQUEST_FREE,
 	REQUEST_FREE_ACK,
 	MACHINE2_FREE,
 	MACHINE2_FREE_ACK,
-	/* Puck Info */
+					/* Puck Info */
 	PUCK_ARRIVED,
 	POCKET,
 	ACK_POCKET,
@@ -41,12 +41,12 @@ enum msgType {
 	STOP_BUTTON,
 	START_BUTTON,
 	RESET_BUTTON,
-	/* Serial communication */
+					/* Serial communication */
 	SYNC,
 	SYNC_SIGNAL,
 	ACK_SYNC_SIGNAL,
 	ACK_INIT_SERIAL,
-	/* Error state for both machines */
+					/* Error state for both machines */
 	ERROR_OCCURED,
 	ERROR_SOLVED
 };

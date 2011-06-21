@@ -44,10 +44,13 @@ void Puck_FSM::start_signal(bool was_serial) {
 
 		for (unsigned int i = 0; i < puck_list->size(); i++) {
 			if ((*puck_list)[i]->errType != NO_ERROR) {
+				//TODO 0prio -- look here!
+//				cout << ">>>>>>>>>>>>>ERRORTYPE: " << (*puck_list)[i]->errTyp << endl;
 				return;
 			}
 		}
 
+		cout << "START ENGINE!" << endl;
 		lamp->shine(GREEN);
 		starts_engine_if_nessecary();
 		timer->startAllTimer();
@@ -80,7 +83,7 @@ void Puck_FSM::stop_signal(bool was_serial) {
 	}
 
 	hc->engineStop();
-	//timer->stopAll_actual_Timer();
+	timer->stopAll_actual_Timer();
 }
 
 void Puck_FSM::reset_signal(bool was_serial) {
@@ -146,6 +149,10 @@ void Puck_FSM::puck_arrived() {
 void Puck_FSM::requestfromMachine1() {
 	if (puck_list->size() > 1) {
 		(*puck_list)[0]->request = true;
+		cout << "size of list" << puck_list->size() << endl;
+		for (unsigned int i = 0; i < puck_list->size(); i++) {
+			printf("requestfromMachine1() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+		}
 		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
 				<< endl;
 	} else {
@@ -187,9 +194,9 @@ void Puck_FSM::puck_fsm2_outgoing() {
 	}//if
 }
 void Puck_FSM::delete_unnecessary_wp() {
-//	for (unsigned int i = 0; i < puck_list->size(); i++) {
-//		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-//	}
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+	}
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
@@ -200,13 +207,12 @@ void Puck_FSM::delete_unnecessary_wp() {
 		}
 	}//for
 	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
-
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
-//	for (unsigned int i = 0; i < puck_list->size(); i++) {
-//		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-//	}
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+	}
 
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
@@ -377,12 +383,17 @@ void Puck_FSM::noticed_error_confirmed() {
 				<< endl;
 		if (errType == SLIDE_FULL_B6) {
 			if (hc->checkSlide()) {
+				cout << "Puck_FSM::noticed_error_confirmed(): checkslide true " << endl;
 				return;
 			}
-		} else if (errType == WP_DISAPPEARED_FSM2) {
-			serial->send(START_BUTTON, sizeof(errType));
 		}
+		if (errType == WP_DISAPPEARED_FSM2 || errType == SLIDE_FULL_B6) {
+			cout << "Puck_FSM::noticed_error_confirmed(): send start " << endl;
+			serial->send(START_BUTTON, sizeof(errType));
+//			serial->send(ERROR_SOLVED, sizeof(errType));
 
+		}
+		cout << "PRINT" << endl;
 		if (gv->getCurrentType() == PUCK_FSM_1_) {
 			cout << "will send fsm2 a message -> stop engine and timers" << endl;
 			if (errType != WP_DISAPPEARED_FSM2) {
