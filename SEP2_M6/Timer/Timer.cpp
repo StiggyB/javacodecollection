@@ -224,24 +224,30 @@ int Timer::stopAll_actual_Timer() {
 					locker.unlock();
 					return -1;
 				}//if
-			}
-			funcp_list[i].timer_id = -1;
 
-			temp_systemtime = getSystemTime_struct();
+				funcp_list[i].timer_id = -1;
 
-			printf("Timer: last duration = %ld\n", funcp_list[i].duration_ms);
-			diff_sec = temp_systemtime.tv_sec - funcp_list[i].struct_time.tv_sec;
-			diff_usec = temp_systemtime.tv_usec - funcp_list[i].struct_time.tv_usec;
-			printf("diff_sec = %ld - %ld\n", temp_systemtime.tv_sec, funcp_list[i].struct_time.tv_sec);
-			printf("diff_usec = %ld - %ld\n", temp_systemtime.tv_usec, funcp_list[i].struct_time.tv_usec);
+				temp_systemtime = getSystemTime_struct();
 
-			printf("Timer: new duration %ld\n",  (((diff_sec)*1000) + (long)(diff_usec/1000.0)) );
+				//			printf("Timer: last duration = %ld\n", funcp_list[i].duration_ms);
+				diff_sec = temp_systemtime.tv_sec
+						- funcp_list[i].struct_time.tv_sec;
+				diff_usec = temp_systemtime.tv_usec
+						- funcp_list[i].struct_time.tv_usec;
+				//			printf("diff_sec = %ld - %ld\n", temp_systemtime.tv_sec, funcp_list[i].struct_time.tv_sec);
+				//			printf("diff_usec = %ld - %ld\n", temp_systemtime.tv_usec, funcp_list[i].struct_time.tv_usec);
 
-			funcp_list[i].struct_time = temp_systemtime;
-			funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
+				//			printf("Timer: new duration %ld\n",  (((diff_sec)*1000) + (long)(diff_usec/1000.0)) );
 
-			printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms  );
-			printf("-----\n" );
+				funcp_list[i].struct_time = temp_systemtime;
+				funcp_list[i].duration_ms = funcp_list[i].duration_ms
+						- (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
+
+				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
+				//			printf("-----\n" );
+
+
+			}//if
 
 		}//if
 
@@ -257,10 +263,13 @@ int Timer::startAllTimer() {
 	int nano = 0;
 	timer_t timerid;
 	struct sigevent event;
-	struct itimerspec timer;
 
 	cout << "Timer: all Timer started." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
+		struct itimerspec timer;
+		sec = 0;
+		nano = 0;
+
 		if (funcp_list[i].timer_id == -1) {//a not stopped timer
 
 			calculateTime(funcp_list[i].duration_ms, &sec, &nano);
@@ -269,6 +278,8 @@ int Timer::startAllTimer() {
 			timer.it_value.tv_nsec = nano;
 			timer.it_interval.tv_nsec = 0;
 			timer.it_interval.tv_sec = 0;
+
+			printf("startAllTimer() - i= %i new duration = %i\n", i, funcp_list[i].duration_ms);
 
 			SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, funcp_list[i].id );
 

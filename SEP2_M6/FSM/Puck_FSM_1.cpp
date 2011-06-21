@@ -285,7 +285,7 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-	fsm->timer->addUnstoppableFunction(callCloseSwitch);
+	//fsm->timer->addUnstoppableFunction(callCloseSwitch);
 	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
 	fsm->setDummyTimer(MIN_TIME_B7);
 	fsm->setErrorStateTimer(MAX_TIME_B7);
