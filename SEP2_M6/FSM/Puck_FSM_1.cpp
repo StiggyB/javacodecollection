@@ -339,6 +339,7 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 	fsm->location = AFTER_LAST_LB;
 	fsm->starts_engine_if_nessecary();
 	//Callback in errorState in reference time x
+	fsm->setGlobalUnstoppable = true;
 	fsm->setErrorStateTimer(MAX_TIME_FSM2);
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {

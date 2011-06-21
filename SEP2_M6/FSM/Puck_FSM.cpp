@@ -180,9 +180,13 @@ void Puck_FSM::puck_fsm2_outgoing() {
 }
 void Puck_FSM::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
-				== AFTER_LAST_LB) {
-			cout << "Puck_FSM::delete_unnecessary_wp: deleted" << endl;
+		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+	}
+
+	for (unsigned int i = 0; i < puck_list->size(); i++) {//todo alle pucks mit fehler löschen!
+		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
+				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
+			cout << "Puck_FSM::delete_unnecessary_wp: deleted errType " << (*puck_list)[i]->errType << endl;
 			puck_list->erase(puck_list->begin() + i);
 			//TODO 0prio -- Puck in slide where should shine the lamp?
 			//			lamp->shine(GREEN);
@@ -192,10 +196,13 @@ void Puck_FSM::delete_unnecessary_wp() {
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+	}
+
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		cout << "Puck_FSM::starts_engine_if_nessecary: errorNoticed: "
-				<< errType << endl;
+		cout << "Puck_FSM::starts_engine_if_nessecary: errType: " << errType << endl;
 		if ((*puck_list)[i]->errType != NO_ERROR) {
 			cout << "Puck_FSM::starts_engine_if_nessecary: inErrorState"
 					<< endl;
@@ -246,6 +253,11 @@ int Puck_FSM::setErrorStateTimer(ReferenceTime refTime) {
 	CallInterface<CallBackThrower, void>* callErrorState = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<Puck_FSM, void>::makeFunctor(
 			this, &Puck_FSM::errorState);
+
+	if(setGlobalUnstoppable == true){
+		timer->addUnstoppableFunction(callErrorState);
+	}//if
+
 	return timer->addTimerFunction(callErrorState, refTime, maxTimerId);
 }
 

@@ -329,6 +329,10 @@ public:
 	 *
 	 */
 	GlobalVariables* gv;
+	/**
+	 *
+	 */
+	bool setGlobalUnstoppable;
 
 protected:
 
