@@ -45,7 +45,10 @@ enum msgType {
 	SYNC,
 	SYNC_SIGNAL,
 	ACK_SYNC_SIGNAL,
-	ACK_INIT_SERIAL
+	ACK_INIT_SERIAL,
+	/* Error state for both machines */
+	ERROR_OCCURED,
+	ERROR_SOLVED
 };
 
 

@@ -155,6 +155,14 @@ public:
 	 */
 	void estop_out_signal(bool was_serial);
 	/**
+	 *
+	 */
+	void error_arrived_serial();
+	/**
+	 *
+	 */
+	void error_solved_serial();
+	/**
 	 * This function starts the system.
 	 */
 	void machine2_free();

@@ -226,8 +226,8 @@ int Timer::stopAll_actual_Timer(){
 			diff_sec = temp.tv_sec - funcp_list[i].struct_time.tv_sec;
 			diff_usec = temp.tv_usec - funcp_list[i].struct_time.tv_usec;
 
-			printf("Timer: diffsec:%i diff_usec:%i\n", diff_sec, diff_usec);
-			printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
+//			printf("Timer: diffsec:%i diff_usec:%i\n", diff_sec, diff_usec);
+//			printf("Timer: diff ms %ld\n",  (((diff_sec)*1000)  +  (long)(diff_usec/1000.0)) );
 
 			funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec)*1000)  +  (long)(diff_usec/1000.0));
 
