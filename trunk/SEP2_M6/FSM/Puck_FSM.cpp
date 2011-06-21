@@ -219,13 +219,14 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 	lamp->shine(GREEN);
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ((*puck_list)[i]->engine_should_be_started) {
-//			cout << "A PUCK NEEDS ENGINE" << endl;
+			cout << "A PUCK NEEDS ENGINE" << endl;
 			active_state = 1;
 		}
 	}
 	if (active_state == 1) {
-		hc->engineContinue();
+		cout << "will start.." << endl;
 		hc->engineRight();
+		hc->engineContinue();
 	}
 	return true;
 }
