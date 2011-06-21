@@ -207,8 +207,6 @@ void FSM_2_after_metal_measure_uncorrect_wp::ls_b6(Puck_FSM * fsm) {
 	}
 	fsm->timer->deleteTimer(fsm->maxTimerId);
 	fsm->location = SORT_OUT;
-	//TODO 0prio -- implement delete and start waiting puck!
-	fsm->delete_unnecessary_wp();
 	fsm->setCurrent(new FSM_2_wp_in_slide());
 }
 void FSM_2_after_metal_measure_uncorrect_wp::errorState(Puck_FSM * fsm) {
@@ -229,6 +227,7 @@ void FSM_2_wp_in_slide::entry(Puck_FSM * fsm) {
 	cout << "FSM_2_in_slide: entry" << endl;
 #endif
 	fsm->hc->engineStop();
+	fsm->lamp->shine(GREEN);
 	fsm->engine_should_be_started = 0;
 	fsm->setCurrent(new FSM_2_check_slide());
 }

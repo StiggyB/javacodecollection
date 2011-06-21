@@ -13,7 +13,7 @@
 #include "FSM/GlobalVariables.h"
 
 #define PUCK_FSM_STATE_DEBUG
-//#define PUCK_FSM_2
+#define PUCK_FSM_2
 
 /**
  * Actual locations for the work pieces on the system.
