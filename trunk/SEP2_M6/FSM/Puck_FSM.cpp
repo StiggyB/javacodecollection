@@ -318,7 +318,7 @@ void Puck_FSM::selectErrorType() {
 				}//if
 			}//for
 		}//if
-	}//if
+	}// if
 
 	cout << "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON TO CONFIRM THE ERROR. <-"	<< endl;
 }
