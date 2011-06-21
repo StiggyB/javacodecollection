@@ -23,6 +23,7 @@ Puck_FSM::Puck_FSM() {
 	timer = Timer::getInstance();
 	gv = GlobalVariables::getInstance();
 	errType = NO_ERROR;
+	setGlobalUnstoppable = false;
 }
 
 Puck_FSM::~Puck_FSM() {
