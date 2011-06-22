@@ -24,29 +24,29 @@
 enum msgType {
 	ACK,
 	INIT_SERIAL,
-					/* Machine Info */
+	/* #3# Machine Info */
 	REQUEST_FREE,
 	REQUEST_FREE_ACK,
 	MACHINE2_FREE,
 	MACHINE2_FREE_ACK,
-					/* Puck Info */
+	/* #6# Puck Info */
 	PUCK_ARRIVED,
 	POCKET,
 	ACK_POCKET,
 	NO_POCKET,
 	ACK_NO_POCKET,
-	/* Port C */
+	/* #11# Port C */
 	E_STOP_PUSHED,
 	E_STOP_PULLED,
 	STOP_BUTTON,
 	START_BUTTON,
 	RESET_BUTTON,
-					/* Serial communication */
+	/* #16# Serial communication */
 	SYNC,
 	SYNC_SIGNAL,
 	ACK_SYNC_SIGNAL,
 	ACK_INIT_SERIAL,
-					/* Error state for both machines */
+	/* #21# Error state for both machines */
 	ERROR_OCCURED,
 	ERROR_SOLVED
 };

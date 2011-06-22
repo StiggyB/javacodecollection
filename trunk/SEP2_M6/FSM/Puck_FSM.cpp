@@ -45,7 +45,7 @@ void Puck_FSM::start_signal(bool was_serial) {
 		for (unsigned int i = 0; i < puck_list->size(); i++) {
 			if ((*puck_list)[i]->errType != NO_ERROR) {
 				//TODO 0prio -- look here!
-//				cout << ">>>>>>>>>>>>>ERRORTYPE: " << (*puck_list)[i]->errTyp << endl;
+				cout << ">>>>>>>>>>>>>ERRORTYPE: " << (*puck_list)[i]->errType << endl;
 				return;
 			}
 		}
