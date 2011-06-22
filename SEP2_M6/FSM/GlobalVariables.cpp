@@ -8,12 +8,11 @@
 #include "GlobalVariables.h"
 
 GlobalVariables::GlobalVariables() {
-	// TODO Auto-generated constructor stub
 
 }
 
 GlobalVariables::~GlobalVariables() {
-	// TODO Auto-generated destructor stub
+
 }
 
 machineType GlobalVariables::getCurrentType() {

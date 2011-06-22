@@ -240,7 +240,7 @@ int Timer::stopAll_actual_Timer() {
 				funcp_list[i].struct_time = temp_systemtime;
 				funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
 
-//				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
+				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
 				//			printf("-----\n" );
 
 
@@ -276,7 +276,7 @@ int Timer::startAllTimer() {
 			timer.it_interval.tv_nsec = 0;
 			timer.it_interval.tv_sec = 0;
 
-//			printf("startAllTimer() - i= %i new duration = %i\n", i, funcp_list[i].duration_ms);
+			printf("startAllTimer() - i= %i new duration = %i\n", i, funcp_list[i].duration_ms);
 
 			SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, funcp_list[i].id );
 
