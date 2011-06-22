@@ -385,11 +385,11 @@ void Puck_FSM::noticed_error_confirmed() {
 				return;
 			}
 		}
-		if (errType == WP_DISAPPEARED_FSM2 || errType == SLIDE_FULL_B6) {
-			cout << "Puck_FSM::noticed_error_confirmed(): send start " << endl;
-			puck_fsm2_outgoing();
-
-		}
+//		if (errType == WP_DISAPPEARED_FSM2 || errType == SLIDE_FULL_B6) {
+//			cout << "Puck_FSM::noticed_error_confirmed(): send start " << endl;
+//			puck_fsm2_outgoing();
+//
+//		}
 		if (gv->getCurrentType() == PUCK_FSM_1_) {
 			cout << "will send fsm2 a message -> stop engine and timers" << endl;
 			if (errType != WP_DISAPPEARED_FSM2) {
@@ -402,8 +402,9 @@ void Puck_FSM::noticed_error_confirmed() {
 		}//if
 
 		delete_unnecessary_wp();
-		//--
-		puck_fsm2_outgoing();
+		if(gv->getCurrentType() == PUCK_FSM_2_) {
+			puck_fsm2_outgoing();
+		}
 		starts_engine_if_nessecary();
 
 		timer->startAllTimer();
