@@ -205,6 +205,10 @@ public:
 	 * full call errorState otherwise delete work piece.
 	 */
 	void isSlideFull();
+	/**
+	 *
+	 */
+	void deletePucksInLocation(LocationAttribut location);
 	/*
 	 * This function wraps the dummyFunction callback.
 	 */
@@ -267,6 +271,10 @@ public:
 	 * general error state function
 	 */
 	void errorState();
+	/**
+	 *
+	 */
+	LocationAttribut location_backup;
 	/**
 	 * Instance for lamp in error state
 	 */
