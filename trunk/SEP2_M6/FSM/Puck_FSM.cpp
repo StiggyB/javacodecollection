@@ -195,7 +195,7 @@ void Puck_FSM::puck_fsm2_outgoing() {
 }
 void Puck_FSM::delete_unnecessary_wp() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("delete_unnecessary_wp() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+		printf("delete_unnecessary_wp() - location = %i errType = %i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 	}
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
@@ -389,11 +389,9 @@ void Puck_FSM::noticed_error_confirmed() {
 		}
 		if (errType == WP_DISAPPEARED_FSM2 || errType == SLIDE_FULL_B6) {
 			cout << "Puck_FSM::noticed_error_confirmed(): send start " << endl;
-			serial->send(START_BUTTON, sizeof(errType));
-//			serial->send(ERROR_SOLVED, sizeof(errType));
+			puck_fsm2_outgoing();
 
 		}
-		cout << "PRINT" << endl;
 		if (gv->getCurrentType() == PUCK_FSM_1_) {
 			cout << "will send fsm2 a message -> stop engine and timers" << endl;
 			if (errType != WP_DISAPPEARED_FSM2) {
@@ -406,6 +404,7 @@ void Puck_FSM::noticed_error_confirmed() {
 		}//if
 
 		delete_unnecessary_wp();
+		puck_fsm2_outgoing();
 		starts_engine_if_nessecary();
 
 		timer->startAllTimer();
