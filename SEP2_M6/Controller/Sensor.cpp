@@ -190,9 +190,9 @@ void Sensor::handleNormalMessage() {
 				cout << "PLEAS REMOVE WORK PIECE FROM FIRST LIGHT BARRIER AND PRESS THE START BUTTON" << endl;
 				dummy_fsm->stop_signal(false);
 			} else {
-				wp_list.push_back(new Puck_FSM_1(&wp_list));
 				timer->addTimerFunction(callDummyFunction, 800, input_TID);
-				if( !(h->isEngineRunning())){
+				wp_list.push_back(new Puck_FSM_1(&wp_list));
+				if( !(h->isEngineRunning()) && wp_list.size() > 1){
 					timer->stopAll_actual_Timer();
 				}
 			}
