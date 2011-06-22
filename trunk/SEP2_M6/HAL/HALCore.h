@@ -33,17 +33,15 @@
  * BASE ADDRESS for Analog IO
  */
 #define A_IOBASE 0x320
-/*
+/**
  * tolerance range plane and normal work piece
  */
 #define TOLERANCE_NORMAL 75
-
-/*
+/**
  * tolerance range work piece with a pocket
  */
 #define TOLERANCE_POCKET 100
-
-/*
+/**
  * 12Bit-Mask for the height measure
  */
 #define HEIGHT_MASK 0xFFF
@@ -104,6 +102,9 @@ enum PortC {
 	BIT_LEDS_ON = (0x0F)
 };
 
+/**
+ *
+ */
 enum PortC_Bit{
 	WP_LED_START=0, WP_LED_RESET=1, WP_LED_Q1=2, WP_LED_Q2=3,
 	WP_START=4, WP_STOP=5, WP_RESET=6, WP_E_STOP=7
@@ -146,7 +147,6 @@ enum WPHeight{
 	PLANE_WP = 0xa9b , NORMAL_WP = 0x9a8, POCKET_WP = 0xdba
 };
 
-
 /**
  * Enumeration for Colors
  */
@@ -179,6 +179,9 @@ enum Interrupts_D {
 	IIR_MASK_D = 0xF
 };
 
+/**
+ *
+ */
 enum Function{
 	WRITE=0,RESET=1
 };
@@ -219,7 +222,7 @@ extern volatile int portIRQ;
  */
 extern volatile int controlBits;
 
-/*
+/**
  * Emergency Stop pushed!
  */
 extern volatile bool emstopped;

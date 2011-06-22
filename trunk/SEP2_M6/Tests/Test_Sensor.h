@@ -43,7 +43,7 @@
  */
 #define DURATION 1
 
-/*
+/**
  * Expected values for the tests from port B.
  */
 enum PortBState {
@@ -64,7 +64,7 @@ enum PortBState {
 	OUTLET_STATE_HIGH = (1 << 7)
 };
 
-/*
+/**
  * Expected values for the tests from port C.
  */
 enum PortCState {
@@ -81,12 +81,41 @@ public:
 	virtual ~Test_Sensor();
 	virtual void execute(void*);
 	virtual void shutdown();
+	/**
+	 * This function tests the sensors with interrupts.
+	 * \param actual port from the system
+	 * \param value for identify the sensor
+	 */
 	void test_sen_interrupt(int port, int value);
+	/**
+	 * This function tests the sensors with polling.
+	 * \param actual port from the system
+	 * \param value for identify the sensor
+	 */
 	void test_sen_polling(int port, int value);
 
 private:
+
+	/**
+	 * This function lets the light shine and print
+	 * a test successful text.
+	 */
 	void test_isSuccessful(bool success);
+	/**
+	 * This function evaluates the results of a test with
+	 * expected values from an enum.
+	 * \param serial number as string
+	 * \param actual test result as int
+	 * \param expected state as int
+	 * \result true if actual is equals state, otherwise false
+	 */
 	bool assert_equals(string sen_no, int actual, int state);
+	/**
+	 * This function prints a specific test reuslt.
+	 * \param serial number as string
+	 * \param actual test result as int
+	 * \param expected state as int
+	 */
 	void test_print(string sen_no, int actual, int state);
 	/**
 	 * Instance for HW control.
