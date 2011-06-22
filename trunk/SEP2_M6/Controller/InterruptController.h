@@ -61,7 +61,13 @@ private:
 	 * Direct connection to HALCore.
 	 */
 	HALCore *h;
+	/**
+	 * Pointer on a message.
+	 */
 	Message *msg;
+	/**
+	 * Connection Id´s for the message passing.
+	 */
 	int coid, id;
 };
 

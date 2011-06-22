@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *For global variables, machine type, global timer id's..
+ * For global variables, machine type, global timer id's..
  *
  *
  */
@@ -22,7 +22,7 @@
 #include "../Thread/Singleton_T.h"
 
 /*
- * this enum descibe the Type of Machine
+ * This enum describe the type of machine
  */
 enum machineType {
 	PUCK_FSM_1_,
@@ -40,10 +40,11 @@ public:
     machineType getCurrentType();
 	/**
 	 * sets the current Type - PUCK_FSM_1_ or PUCK_FSM_2_
+	 * \param currentType is the new machineType to set.
 	 */
     void setCurrentType(machineType currentType);
     /**
-     * return the global Timer ID for the switch - to avoid "kicking pucks"
+     * \return the global Timer ID for the switch - to avoid "kicking pucks"
      */
     int getSwitch_TID();
     /**
@@ -52,12 +53,13 @@ public:
     void setSwitch_TID(int switch_TID);
     /**
      * needs a Timer object to get a ID for the switch
+     * \param switch_TID is the actual timer ID
      */
     Timer *timer;
 
 private:
     /**
-     * contains the Machine type (1 or 2)
+     * contains the machine type (1 or 2)
      */
 	machineType currentType;
 	/**

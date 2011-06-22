@@ -38,6 +38,7 @@ Test_Sensor::Test_Sensor()
 :last_state_B(BIT_WP_OUT), last_state_C(BIT_START_PUSHED),
  success(true), section(0), height(0), res(0)
 {
+
 }
 
 Test_Sensor::~Test_Sensor() {
