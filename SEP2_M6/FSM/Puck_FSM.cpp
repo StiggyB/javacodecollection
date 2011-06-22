@@ -197,8 +197,9 @@ void Puck_FSM::delete_unnecessary_wp() {
 //	}
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
-				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
+		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location	== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
+			timer->deleteTimer( (*puck_list)[i]->minTimerId );
+			timer->deleteTimer( (*puck_list)[i]->maxTimerId );
 //			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 			puck_list->erase(puck_list->begin() + i);
 			i = -1;
@@ -237,10 +238,18 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 }
 
 void Puck_FSM::deletePucksInLocation(LocationAttribut location){
+	printf("deletePucksInLocation() parameter-location: %i\n", location);
+
+		for (unsigned int i = 0; i < puck_list->size(); i++) {
+			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+		}
+
 	int counter = 0;
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if( (*puck_list)[i]->location_backup == location ||(*puck_list)[i]->errType != NO_ERROR){
+		if( (*puck_list)[i]->location == location ||(*puck_list)[i]->errType != NO_ERROR){
+			timer->deleteTimer( (*puck_list)[i]->minTimerId );
+			timer->deleteTimer( (*puck_list)[i]->maxTimerId );
 			puck_list->erase( puck_list->begin()+i );
 			i = -1;
 			counter++;
@@ -248,6 +257,10 @@ void Puck_FSM::deletePucksInLocation(LocationAttribut location){
 	}//for
 
 	 cout << "deletePucksInLocation() has deleted " << counter  << " pucks" << endl;
+	 cout << "deletePucksInLocation() sizeofList " << puck_list->size()  << endl;
+		for (unsigned int i = 0; i < puck_list->size(); i++) {
+			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+		}
 }
 
 void Puck_FSM::isSlideFull() {
