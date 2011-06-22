@@ -402,6 +402,7 @@ void Puck_FSM::noticed_error_confirmed() {
 		}//if
 
 		delete_unnecessary_wp();
+		//--
 		puck_fsm2_outgoing();
 		starts_engine_if_nessecary();
 
