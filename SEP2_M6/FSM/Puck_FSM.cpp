@@ -242,9 +242,9 @@ void Puck_FSM::isSlideFull() {
 		errorState();
 	} else {
 		delete_unnecessary_wp();
-#ifdef PUCK_FSM_2
+	}
+	if (gv->getCurrentType() == PUCK_FSM_2_) {
 		puck_fsm2_outgoing();
-#endif
 	}
 }
 
