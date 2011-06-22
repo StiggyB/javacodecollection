@@ -307,15 +307,18 @@ int Timer::startAllTimer() {
 }
 
 int Timer::deleteTimer(int id) {
-	for (unsigned int i = 0; i < funcp_list.size(); i++) {
-		if (funcp_list[i].id == id && funcp_list[i].timer_id != -1) { //
 
-			if (timer_delete(funcp_list[i].timer_id) == -1) {
-				perror("Timer: cannot delete OS-Timer in stopTimerbyId()");
-				return -1;
+	for (unsigned int i = 0; i < funcp_list.size(); i++) {
+		if (funcp_list[i].id == id ) { //
+
+			if(funcp_list[i].timer_id != -1){
+				if (timer_delete(funcp_list[i].timer_id) == -1) {
+					perror("Timer: cannot delete OS-Timer in stopTimerbyId()");
+					return -1;
+				}//if
 			}//if
 
-			//			std::cout << "Timer: stopTimerbyId has delete a Timer - ID: " << funcp_list[i].timer_id << std::endl;
+//			if(funcp_list[i].id > 2) std::cout << "Timer: stopTimerbyId has delete a Timer - ID: " << funcp_list[i].timer_id << std::endl;
 			funcp_list.erase(funcp_list.begin() + i);
 		}//if
 
