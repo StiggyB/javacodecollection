@@ -236,6 +236,20 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 	return true;
 }
 
+void Puck_FSM::deletePucksInLocation(LocationAttribut location){
+	int counter = 0;
+
+	for (unsigned int i = 0; i < puck_list->size(); i++) {
+		if( (*puck_list)[i]->location_backup == location ||(*puck_list)[i]->errType != NO_ERROR){
+			puck_list->erase( puck_list->begin()+i );
+			i = -1;
+			counter++;
+		}//if
+	}//for
+
+	 cout << "deletePucksInLocation() has deleted " << counter  << " pucks" << endl;
+}
+
 void Puck_FSM::isSlideFull() {
 	if (hc->checkSlide()) {
 		selectErrorType();
@@ -348,7 +362,6 @@ void Puck_FSM::selectErrorType() {
 		case AFTER_LAST_LB:
 		case ON_FIRST_LB:
 			errType = WP_DISAPPEARED_FSM2;
-//			serial->send(STOP_BUTTON, sizeof(errType));
 			cout
 					<< ">> WORK PIECE DISAPPEARED BETWEEN >SYSTEM1< AND >SYSTEM2< <<"
 					<< endl;
@@ -368,11 +381,12 @@ void Puck_FSM::selectErrorType() {
 		}//if
 	}// if
 
-	cout << "-> PLEASE REMOVE THE WORK PIECE IN THE ERROR SECTOR AND PUSH THE RESET BUTTON TO CONFIRM THE ERROR. <-"	<< endl;
+	cout << "-> PLEASE REMOVE THE WORK PIECES IN THE ERROR SECTOR AND PUSH THE RESET BUTTON TO CONFIRM THE ERROR. <-"	<< endl;
 }
 
 void Puck_FSM::noticed_error_confirmed() {
 	if (errorNoticed == true) {
+		location_backup = location;
 		location = SORT_OUT;
 		errorNoticed = false;
 
@@ -401,7 +415,10 @@ void Puck_FSM::noticed_error_confirmed() {
 			}//if
 		}//if
 
-		delete_unnecessary_wp();
+
+//		delete_unnecessary_wp();
+		deletePucksInLocation(location_backup);
+
 		if(gv->getCurrentType() == PUCK_FSM_2_) {
 			puck_fsm2_outgoing();
 		}
