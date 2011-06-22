@@ -44,8 +44,6 @@ void Puck_FSM::start_signal(bool was_serial) {
 
 		for (unsigned int i = 0; i < puck_list->size(); i++) {
 			if ((*puck_list)[i]->errType != NO_ERROR) {
-				//TODO 0prio -- look here!
-				cout << ">>>>>>>>>>>>>ERRORTYPE: " << (*puck_list)[i]->errType << endl;
 				return;
 			}
 		}
@@ -136,10 +134,10 @@ void Puck_FSM::puck_arrived() {
 		if ((*puck_list)[i]->location == AFTER_LAST_LB) {
 			serial->send((*puck_list)[i]->hasPocket ? POCKET : NO_POCKET,
 					sizeof(msgType));
-			cout << "MaxTimerId is: " << maxTimerId << endl;
+//			cout << "MaxTimerId is: " << maxTimerId << endl;
 			timer->deleteTimer((*puck_list)[i]->maxTimerId);
-			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType
-					<< endl;
+//			cout << "timer->deleteTimer(maxTimerId) puck_arrived:  " << errType
+//					<< endl;
 		}
 	}
 	delete_unnecessary_wp();
@@ -150,9 +148,9 @@ void Puck_FSM::requestfromMachine1() {
 	if (puck_list->size() > 1) {
 		(*puck_list)[0]->request = true;
 		cout << "size of list" << puck_list->size() << endl;
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			printf("requestfromMachine1() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-		}
+//		for (unsigned int i = 0; i < puck_list->size(); i++) {
+//			printf("requestfromMachine1() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//		}
 		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
 				<< endl;
 	} else {
@@ -194,14 +192,14 @@ void Puck_FSM::puck_fsm2_outgoing() {
 	}//if
 }
 void Puck_FSM::delete_unnecessary_wp() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("delete_unnecessary_wp() - location = %i errType = %i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-	}
+//	for (unsigned int i = 0; i < puck_list->size(); i++) {
+//		printf("delete_unnecessary_wp() - location = %i errType = %i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//	}
 
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
 		if ( (*puck_list)[i]->location == SORT_OUT || (*puck_list)[i]->location
 				== AFTER_LAST_LB  ||(*puck_list)[i]->errType != NO_ERROR) {
-			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//			printf("delete_unnecessary_wp() next - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 			puck_list->erase(puck_list->begin() + i);
 			i = -1;
 		}
@@ -210,9 +208,9 @@ void Puck_FSM::delete_unnecessary_wp() {
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
-	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-	}
+//	for (unsigned int i = 0; i < puck_list->size(); i++) {
+//		printf("starts_engine_if_nessecary() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//	}
 
 	int active_state = 0;
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
