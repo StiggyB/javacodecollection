@@ -39,11 +39,21 @@ class Timer : public thread::HAWThread, public Communication, public Singleton_T
 public:
 	Timer();
 	virtual ~Timer();
+	/**
+	 * checks, if a given ID contains a active timer,
+	 * \return a bool, 0 if no Timer is active, 1 if a Timer is active
+	 */
 	bool existTimer(int id);
 	/**
-	 *
+	 * add a functionpointer to an internal list. if a stopAll_actualTimer is
+	 * performed and this functionpointer
+	 * was found, the Timer of this function will not stop
+	 * \return an int, 0 on success, -1 on failure
 	 */
 	int addUnstoppableFunction(CallInterface<CallBackThrower,void>* funcp);
+	/**
+	 * unstoppable_funcp_list is a list of function pointer a avoid stopping this timer
+	 */
 	std::vector< CallInterface<CallBackThrower,void>* > unstoppable_funcp_list;
 	/**
 	 * adds a functor to internal list and activate Timer
@@ -78,8 +88,8 @@ public:
 	 */
 	int deleteAllTimer();
 	/**
-	 * calculates the next id to avoid gaps in list and also overflow of list size
-	 * \return a integer, this is the next free id (not index) in list
+	 * calculates the next id
+	 * \return a integer, this is the next free id (not index)
 	 */
 	int getnextid();
 
@@ -95,6 +105,9 @@ protected:
 
 
 private:
+	/**
+	 * variable to provide a unique id for a getnextId request
+	 */
 	int id_counter;
 	/**
 	 * vector list, which contains the id (comes from pulse message) to find the right functor
@@ -133,8 +146,6 @@ private:
  * struct to avoid double code and optional to expand functionality
  */
 union Functionpointer{
-	//CallInterface<Puck_FSM_1, void>* funcp_fsm;
-	//CallInterface<HALCore, void>* funcp_hal;
 	CallInterface<CallBackThrower,void> * funcp_cbt_void;
 };
 
