@@ -272,10 +272,14 @@ void FSM_2_after_metal_measure_correct_wp::entry(Puck_FSM * fsm) {
 	cout << "FSM_2_after_metal_measure: entry" << endl;
 #endif
 	fsm->hc->openSwitch();
+	if(fsm->timer->existTimer(fsm->gv->getSwitch_TID())) {
+		fsm->timer->deleteTimer(fsm->gv->getSwitch_TID());
+	}
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
+	//fsm->timer->addUnstoppableFunction(callCloseSwitch);
+	fsm->timer->addTimerFunction(callCloseSwitch, 700, fsm->gv->getSwitch_TID());
 }
 void FSM_2_after_metal_measure_correct_wp::ls_b7_in(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_2_DEBUG

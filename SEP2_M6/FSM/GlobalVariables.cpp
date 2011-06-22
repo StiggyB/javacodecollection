@@ -8,7 +8,8 @@
 #include "GlobalVariables.h"
 
 GlobalVariables::GlobalVariables() {
-
+	timer = Timer::getInstance();
+	switch_TID = timer->getnextid();
 }
 
 GlobalVariables::~GlobalVariables() {
@@ -21,4 +22,12 @@ machineType GlobalVariables::getCurrentType() {
 
 void GlobalVariables::setCurrentType(machineType currentType) {
 	this->currentType = currentType;
+}
+
+int GlobalVariables::getSwitch_TID() {
+	return switch_TID;
+}
+
+void GlobalVariables::setSwitch_TID(int switch_TID) {
+	this->switch_TID = switch_TID;
 }

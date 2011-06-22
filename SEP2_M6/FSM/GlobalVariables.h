@@ -8,6 +8,7 @@
 #ifndef GLOBALVARIABLES_H_
 #define GLOBALVARIABLES_H_
 
+#include "../Timer/Timer.h"
 #include "../Thread/Singleton_T.h"
 
 enum machineType {
@@ -22,9 +23,13 @@ public:
 	virtual ~GlobalVariables();
     machineType getCurrentType();
     void setCurrentType(machineType currentType);
+    int getSwitch_TID();
+    void setSwitch_TID(int switch_TID);
+    Timer *timer;
 
 private:
 	machineType currentType;
+	int switch_TID;
 
 };
 

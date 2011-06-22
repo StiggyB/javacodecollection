@@ -60,7 +60,7 @@ void Puck_FSM::start_signal(bool was_serial) {
 
 int Puck_FSM::check_last_lb() {
 	for (unsigned int i = 0; i < puck_list->size(); i++) {
-		if ((*puck_list)[i]->location == ON_LAST_LB) {
+		if ((*puck_list)[i]->location == ON_LAST_LB && (*puck_list)[i]->engine_should_be_started == false) {
 			return -1;
 		}//if
 	}//for
@@ -242,9 +242,9 @@ void Puck_FSM::isSlideFull() {
 		errorState();
 	} else {
 		delete_unnecessary_wp();
-	}
-	if (gv->getCurrentType() == PUCK_FSM_2_) {
-		puck_fsm2_outgoing();
+		if (gv->getCurrentType() == PUCK_FSM_2_) {
+			puck_fsm2_outgoing();
+		}
 	}
 }
 

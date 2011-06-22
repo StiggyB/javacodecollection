@@ -201,6 +201,7 @@ int Timer::stopAll_actual_Timer() {
 	long diff_sec;
 	long diff_usec;
 
+
 	cout << "Timer: all Timer stopped." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
 		notfound = true;
@@ -238,7 +239,7 @@ int Timer::stopAll_actual_Timer() {
 				//			printf("Timer: new duration %ld\n",  (((diff_sec)*1000) + (long)(diff_usec/1000.0)) );
 
 				funcp_list[i].struct_time = temp_systemtime;
-				funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0));
+				funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0)) + 200;
 
 				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
 				//			printf("-----\n" );
@@ -249,6 +250,8 @@ int Timer::stopAll_actual_Timer() {
 		}//if
 
 	}//for
+
+
 	locker.unlock();
 
 	return 0;
@@ -269,7 +272,7 @@ int Timer::startAllTimer() {
 
 		if (funcp_list[i].timer_id == -1) {//a stopped timer
 
-			calculateTime(funcp_list[i].duration_ms, &sec, &nano);
+			calculateTime(funcp_list[i].duration_ms, &sec, &nano); //+10 ms to avoid start-stop latency
 
 			timer.it_value.tv_sec = sec;
 			timer.it_value.tv_nsec = nano;
@@ -298,7 +301,6 @@ int Timer::startAllTimer() {
 
 		}//if
 	}//for
-
 
 	locker.unlock();
 	return 0;
