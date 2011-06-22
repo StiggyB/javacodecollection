@@ -155,7 +155,7 @@ private:
 	/**
 	 * true if serial synchronized else false
 	 */
-	bool getSync;
+	bool isSync;
 
 	/**
 	 * true if ack received else false

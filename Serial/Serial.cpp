@@ -34,7 +34,7 @@ void Serial::init(int numComPort, bool debug) {
 	comPort = numComPort;
 
 	getAck = false;
-	getSync = true;
+	isSync = true;
 	check_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkAck);
 	check_init_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkInit);
 	sync_error = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncError);
@@ -124,15 +124,21 @@ void Serial::execute(void* data) {
 		if (settingUpCommunicatorDevice(receiver)) {
 			cout << "SETTING UP SERIAL ERFOLGREICH------------------------"
 					<< endl;
-			syncRestart();
+			//#ifndef TEST_SER
+				syncRestart();
+			//#endif
 			while (!isStopped()) {
 
 				while (receive(&msg, sizeof(msg)) == -2);
 
 				if(msg == SYNC){
 					syncReceive();
+			#ifdef TEST_SER
+				}else{
+			#else
 				}else if(msg != ACK){
-					buildMessage(m, chid, coid, reactSerial, SENSOR,
+			#endif
+					buildMessage(m, chid, coid, reactSerial, receiver,
 							r_msg->pulse.value.sival_int);
 					m->pulse.value.sival_int = msg;
 
@@ -140,6 +146,10 @@ void Serial::execute(void* data) {
 							sizeof(Message))) {
 						perror("Serial: failed to send Puls message to Sensor!");
 					}
+					/*
+					if(!sendPulses(receiver, msg, msg)){
+						perror("Serial: failed to send Puls message to Sensor!");
+					}*/
 				}
 
 				msg = -1;
@@ -166,16 +176,15 @@ int Serial::send(int data, int lenBytes) {
 		printf("----->>>>>send: port %i DATA: %d \n", comPort, *p);
 	}
 
+	locker.unlock();
 	if (n < 0) {
 		printf("Write failed for com-port %i\n", comPort);
-		locker.unlock();
 		return -1;
 	}else{
-		/*if(hasSettings){
-			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 30);
-		}*/
+		if(hasSettings){
+			//timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 250);
+		}
 	}
-	locker.unlock();
 	return 0;
 }
 
@@ -201,8 +210,8 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 			}else
 				if(hasSettings){
 					//if serial is not synchronized and get an ack send start to restart line
-					if(!getSync){
-						buildMessage(m, chid, coid, reactSerial, SENSOR,
+					if(!isSync){
+						buildMessage(m, chid, coid, reactSerial, receiver,
 								r_msg->pulse.value.sival_int);
 						m->pulse.value.sival_int = START_BUTTON;
 
@@ -231,8 +240,9 @@ void Serial::checkAck(){
 
 
 void Serial::syncError(){
-	if(getSync){
-		buildMessage(m, chid, coid, reactSerial, SENSOR,
+	if(isSync){
+		cout << "Serial: ERROR - did not get a SYNC message" << endl;
+		buildMessage(m, chid, coid, reactSerial, receiver,
 				r_msg->pulse.value.sival_int);
 		m->pulse.value.sival_int = STOP_BUTTON;
 
@@ -241,13 +251,12 @@ void Serial::syncError(){
 			perror("Serial: failed to send Puls message to Sensor!");
 		}
 	}
-	cout << "Serial: ERROR - did not get a SYNC message" << endl;
-	getSync = false;
+	isSync = false;
 	syncRestart();
 }
 
 void Serial::syncRestart(){
-	if(!getSync){
+	if(!isSync){
 		send(SYNC, sizeof(SYNC));
 		syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
 	}
@@ -260,7 +269,10 @@ void Serial::syncSend(){
 }
 
 void Serial::syncReceive(){
-	getSync = true;
+	if(!isSync){
+		cout << "Serial: get a SYNC message" << endl;
+	}
+	isSync = true;
 	timer->deleteTimer(syncId);
 	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND);
 }
