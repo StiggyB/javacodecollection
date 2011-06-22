@@ -50,6 +50,7 @@ void FSM_1_start_state::ls_b0(Puck_FSM * fsm) {
 	cout << "FSM_1_start_state: LS_B0 wurde ausgelöst" << endl;
 #endif
 	if (fsm->check_last_lb() == 0) {
+		cout << "PUCK IS NOT BLOCKING LAST LB_0!!!" << endl;
 		fsm->setCurrent(new FSM_1_after_ls_b0());
 	}//if
 }
@@ -58,6 +59,7 @@ void FSM_1_start_state::ls_b7_out(Puck_FSM * fsm) {
 	cout << "FSM_1_start_state: ls_b7_out" << endl;
 #endif
 	if (fsm->check_last_lb() == 0) {
+		cout << "PUCK IS NOT BLOCKING LAST LB_7!!!" << endl;
 		fsm->setCurrent(new FSM_1_after_ls_b0());
 	}//if
 }
@@ -282,11 +284,14 @@ void FSM_1_correct_height::exit(Puck_FSM * fsm) {
 #ifdef PUCK_FSM_1_DEBUG
 	cout << "FSM_1_correct_height: exit" << endl;
 #endif
+	if(fsm->timer->existTimer(fsm->gv->getSwitch_TID())) {
+		fsm->timer->deleteTimer(fsm->gv->getSwitch_TID());
+	}
 	CallInterface<CallBackThrower, void>* callCloseSwitch = (CallInterface<
 			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
 			fsm->hc, &HALCore::closeSwitch);
 	//fsm->timer->addUnstoppableFunction(callCloseSwitch);
-	fsm->timer->addTimerFunction(callCloseSwitch, 1000, fsm->closeSwitch_TID);
+	fsm->timer->addTimerFunction(callCloseSwitch, 700, fsm->gv->getSwitch_TID());
 	fsm->setDummyTimer(MIN_TIME_B7);
 	fsm->setErrorStateTimer(MAX_TIME_B7);
 }
@@ -339,7 +344,8 @@ void FSM_1_end_state::ls_b7_out(Puck_FSM * fsm) {
 	fsm->location = AFTER_LAST_LB;
 //	fsm->starts_engine_if_nessecary();
 	//Callback in errorState in reference time x
-	fsm->setGlobalUnstoppable = true;
+	//TODO WTH do this statement?!
+//	fsm->setGlobalUnstoppable = true;
 	fsm->setErrorStateTimer(MAX_TIME_FSM2);
 }
 void FSM_1_end_state::errorState(Puck_FSM * fsm) {

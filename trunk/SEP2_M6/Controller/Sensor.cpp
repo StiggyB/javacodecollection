@@ -34,6 +34,10 @@ Sensor::Sensor() :
 	running_mode = false;
 	request = false;
 	mine = SENSOR;
+	input_TID = timer->getnextid();
+	callDummyFunction = (CallInterface<
+			CallBackThrower, void>*) FunctorMaker<Sensor, void>::makeFunctor(
+			this, &Sensor::dummyFunction);
 }
 
 Sensor::~Sensor() {
@@ -42,6 +46,7 @@ Sensor::~Sensor() {
 
 void Sensor::execute(void*) {
 	dummy_fsm = new Puck_FSM_1(&wp_list);
+	dummy_fsm->setGlobalUnstoppable = true;
 
 	if (settingUpCommunicatorDevice(INTERRUPTCONTROLLER)) {
 		while (!isStopped()) {
@@ -118,6 +123,7 @@ void Sensor::handleNormalMessage() {
 		if (val == MACHINE2_FREE) {
 			cout << "Sensor: MACHINE2_FREE" << endl;
 			dummy_fsm->machine2_free();
+			timer->startAllTimer();
 
 		} else if (val == PUCK_ARRIVED) {
 			cout << "Sensor: PUCK_ARRIVED" << endl;
@@ -179,7 +185,18 @@ void Sensor::handleNormalMessage() {
 		if (!((val >> WP_RUN_IN) & 1) && ((last_Reg_State_B >> WP_RUN_IN) & 1)) {
 			cout << "Sensor: first LB in" << endl;
 #ifdef PUCK_FSM_1
-			wp_list.push_back(new Puck_FSM_1(&wp_list));
+			if( timer->existTimer(input_TID) ){
+				cout << "!! WORK PIECE TO EARLY INCOMMING!!" << endl;
+				cout << "PLEAS REMOVE WORK PIECE FROM FIRST LIGHT BARRIER AND PRESS THE START BUTTON" << endl;
+				dummy_fsm->stop_signal(false);
+			} else {
+				wp_list.push_back(new Puck_FSM_1(&wp_list));
+				timer->addTimerFunction(callDummyFunction, 800, input_TID);
+				if( !(h->isEngineRunning())){
+					timer->stopAll_actual_Timer();
+				}
+			}
+
 #endif
 
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
@@ -190,17 +207,17 @@ void Sensor::handleNormalMessage() {
 			}//for
 		}
 
-#ifdef PUCK_FSM_1
-		if (((val >> WP_RUN_IN) & 1) && !((last_Reg_State_B >> WP_RUN_IN) & 1)) {
-			cout << "Sensor: first LB out" << endl;
-			if( !(h->isEngineRunning())){
-				if(wp_list.size() > 0) {
-					wp_list.erase( wp_list.begin() + wp_list.size() -1 );
-					timer->deleteAllTimer();
-				}
-			}//if
-		}//if
-#endif
+//#ifdef PUCK_FSM_1
+//		if (((val >> WP_RUN_IN) & 1) && !((last_Reg_State_B >> WP_RUN_IN) & 1)) {
+//			cout << "Sensor: first LB out" << endl;
+//			if( !(h->isEngineRunning())){
+//				if(wp_list.size() > 0) {
+//					wp_list.erase( wp_list.begin() + wp_list.size() -1 );
+//					timer->deleteAllTimer();
+//				}
+//			}//if
+//		}//if
+//#endif
 		if (!((val >> WP_IN_HEIGHT) & 1) && ((last_Reg_State_B >> WP_IN_HEIGHT)
 				& 1)) {
 			cout << "Sensor: in height measure " << endl;
@@ -259,7 +276,13 @@ void Sensor::handleNormalMessage() {
 		if (((val >> WP_OUTLET) & 1) && !((last_Reg_State_B >> WP_OUTLET) & 1)) {
 			cout << "Sensor: end of band out" << endl;
 			for (unsigned int i = 0; i < wp_list.size(); i++) {
-				if (wp_list[i]->location == ON_LAST_LB) {
+				if (wp_list[i]->location == ON_LAST_LB ) {
+					wp_list[i]->ls_b7_out();
+					break;
+				}//if
+			}//for
+			for (unsigned int i = 0; i < wp_list.size(); i++) {
+				if (wp_list[i]->location == ON_FIRST_LB ) {
 					wp_list[i]->ls_b7_out();
 					break;
 				}//if
@@ -287,6 +310,10 @@ void Sensor::handlePulsMessage() {
 
 void Sensor::shutdown() {
 
+}
+
+void Sensor::dummyFunction() {
+	cout << "dummyFunction called!" << endl;
 }
 
 //TODO to remove
@@ -358,3 +385,5 @@ void Sensor::interrupt(int port, int val) {
 		break;
 	}
 }
+
+

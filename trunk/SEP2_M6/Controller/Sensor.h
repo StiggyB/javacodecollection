@@ -18,6 +18,7 @@
 #include "../Tests/Test_Sensor.h"
 #include "../Tests/Test_FSM.h"
 #include "../Thread/Singleton_T.h"
+#include "../Functor/CallBackThrower.h"
 
 /**
  * Sensor
@@ -38,7 +39,7 @@
 #define PUCK_FSM_1
 //#define PUCK_FSM_2
 
-class Sensor : public thread::HAWThread, public Communication, public Singleton_T<Sensor> {
+class Sensor : public thread::HAWThread, public Communication, public Singleton_T<Sensor>, public CallBackThrower {
 	friend class Singleton_T<Sensor>;
 public:
     void interrupt(int port, int val);
@@ -60,14 +61,17 @@ protected:
     virtual void handleNormalMessage();
     void clean();
 private:
+    int input_TID;
     HALCore *h;
     Lampen *l;
     Timer* timer;
     std::vector<Puck_FSM*> wp_list;
+    CallInterface<CallBackThrower, void>* callDummyFunction;
     Puck_FSM* dummy_fsm;
 	bool request;
     bool settingUpSensor();
     void cleanUpSensor();
+    void dummyFunction();
     int cnt;
     int last_Reg_State_B;
     int last_Reg_State_C;
