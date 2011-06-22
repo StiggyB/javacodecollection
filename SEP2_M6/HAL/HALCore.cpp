@@ -664,26 +664,11 @@ bool HALCore::isMetal() {
 }
 
 int HALCore::identifyHeight() {
-	//TODO implement and test callback.
-//	CallInterface<CallBackThrower, void>* checkTime = (CallInterface<
-//			CallBackThrower, void>*) FunctorMaker<HALCore, void>::makeFunctor(
-//			this, &HALCore::checkTimeIdentifyHeight);
-//	timer->addTimerFunction(checkTime, 50);
-//	long startTime = timer->getSystemTime_ms();
-//	timeout = true;
 	out8(HEIGHT_REGISTER_PART1, HEIGHT_START_CODE);
 	//busy waiting until bit7 is high
 	while (((in8(HEIGHT_MEASURE_STATUS) & (1 << 7)) == 0)) {
 		/*DAC busy waiting*/
-//	cout << timeout << endl;
-//		if(timeout == false) {
-//			timeout = true;
-//			//after 50ms leave busy waiting.
-//			return -1;
-//		}
 	}
-
-//	cout << "TimeDiff height measure: " << timer->getSystemTime_ms() - startTime << endl;
 	int height = in16((HEIGHT_REGISTER_PART1));
 	height &= HEIGHT_MASK;
 	if ((height <= PLANE_WP + TOLERANCE_NORMAL) && (height >= PLANE_WP

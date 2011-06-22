@@ -18,8 +18,7 @@
 
 //TODO CLEANUP EVERYTHING!!!
 
-Sensor::Sensor() :
-	cnt(0) {
+Sensor::Sensor() {
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
 		std::cout << "error for IO Control" << std::endl;
 	}
@@ -32,7 +31,6 @@ Sensor::Sensor() :
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x90;
 	running_mode = false;
-	request = false;
 	mine = SENSOR;
 	input_TID = timer->getnextid();
 	callDummyFunction = (CallInterface<
@@ -290,7 +288,6 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_B = val;
 	}//switch
-	//cout << "Sensor: running_mode: " << running_mode << endl;
 
 #ifdef TEST_FSM
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
@@ -315,75 +312,4 @@ void Sensor::shutdown() {
 void Sensor::dummyFunction() {
 	cout << "dummyFunction called!" << endl;
 }
-
-//TODO to remove
-void Sensor::interrupt(int port, int val) {
-	switch (port) {
-	case INTERRUPT_D_PORT_B:
-		if (!(val & BIT_WP_IN_HEIGHT)) {
-			cout << "Sensor: WP_IN_H " << endl;
-		}
-		if (!(val & BIT_WP_RUN_IN)) {
-			h->engineRight();
-			cout << "Sensor: BIT_WP_RUN_IN" << endl;
-		}
-		if (val & BIT_WP_IN_SWITCH) {
-			if (val & BIT_SWITCH_STATUS) {
-				h->closeSwitch();
-				cout << "Sensor: closes switch " << endl;
-			}
-		} else {
-			if (val & BIT_WP_METAL) {
-				if (!(val & BIT_SWITCH_STATUS)) {
-					h->openSwitch();
-					cout << "Sensor: opens switch " << endl;
-				}
-				cout << "Sensor: ist Metall :D" << endl;
-			}
-		}
-		if (!(val & BIT_WP_IN_SLIDE)) {
-			cnt++;
-			if (cnt == 4) {
-				cnt = 0;
-				l->shine(RED);
-				h->stopMachine();
-			}
-
-		}
-		if (!(val & BIT_WP_OUTLET)) {
-			h->engineReset();
-			cout << "Sensor: somethings coming out ;)" << endl;
-		}
-		break;
-	case INTERRUPT_D_PORT_C_HIGH:
-		if (!(val & BIT_E_STOP)) {
-			l->shine(RED);
-			h->emergencyStop();
-		} else {
-			if (!(val & BIT_STOP)) {
-				l->shine(RED);
-				h->stopMachine();
-			} else {
-				if (val & BIT_START) {
-					cnt = 0;
-					h->shineLED(START_LED);
-					l->shine(GREEN);
-					h->restart();
-				} else {
-					h->removeLED(START_LED);
-
-					if (val & BIT_RESET) {
-						cnt = 0;
-						h->shineLED(RESET_LED);
-						h->resetAll();
-					} else {
-						h->removeLED(RESET_LED);
-					}
-				}
-			}
-		}
-		break;
-	}
-}
-
 

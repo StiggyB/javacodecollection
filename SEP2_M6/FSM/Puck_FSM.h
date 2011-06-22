@@ -47,23 +47,6 @@ enum ErrorType {
 
 /**
  * Allocated time for the sectors in ms.
- * (note: this are inexact values)
- *
- */
-//enum ReferenceTime {
-//	MIN_TIME_B1 = 2000,
-//	MAX_TIME_B1 = 3500,
-//	MIN_TIME_B3 = 800,
-//	MAX_TIME_B3 = 2000,
-//	MIN_TIME_B6 = 800,
-//	MAX_TIME_B6 = 3000,
-//	MIN_TIME_B7 = 2000,
-//	MAX_TIME_B7 = 3000,
-//	MAX_TIME_IN_SLIDE = 2000
-//};
-
-/**
- * Allocated time for the sectors in ms.
  *
  */
 enum ReferenceTime {
@@ -109,11 +92,13 @@ public:
 	Puck_FSM();
 	virtual ~Puck_FSM();
 	/**
-	 * Getter for attribute errorNoticed.
+	 * Getter for the attribute errorNoticed.
+	 * \return the attribute errorNoticed.
 	 */
 	bool getErrorNoticed();
 	/**
-	 * Setter for attribute errorNoticed.
+	 * Setter for the attribute errorNoticed.
+	 * \param errorNoticed is the new value to set.
 	 */
 	void setErrorNoticed(bool errorNoticed);
 	/**
@@ -155,15 +140,18 @@ public:
 	 */
 	void estop_out_signal(bool was_serial);
 	/**
-	 *
+	 * This function synchronizes the error states
+	 * between system 1 and 2 over the serial interface.
 	 */
 	void error_arrived_serial();
 	/**
-	 *
+	 * This function synchronizes the solved errors
+	 * between system 1 and 2 over the serial interface.
 	 */
 	void error_solved_serial();
 	/**
-	 * This function starts the system.
+	 * This function starts the system if the second
+	 * system is free.
 	 */
 	void machine2_free();
 	/**
@@ -206,15 +194,21 @@ public:
 	 */
 	void isSlideFull();
 	/**
-	 *
+	 * This function deletes all work pieces with a
+	 * specific location on the system.
+	 * \param location is the actual location for delete.
 	 */
 	void deletePucksInLocation(LocationAttribut location);
 	/*
 	 * This function wraps the dummyFunction callback.
+	 * \param reTime is the time for the callback.
+	 * \return the actual timer ID.
 	 */
 	int setDummyTimer(ReferenceTime refTime);
 	/*
 	 * This function wraps the errorState callback.
+	 * \param reTime is the time for the callback.
+	 * \return the actual timer ID.
 	 */
 	int setErrorStateTimer(ReferenceTime allocTime);
 	/**
@@ -292,6 +286,10 @@ public:
 	 */
 	Serial *serial;
 	/**
+	 * Instance for the summary GlobalVaribles
+	 */
+	GlobalVariables* gv;
+	/**
 	 * Actual location on the system
 	 */
 	LocationAttribut location;
@@ -317,6 +315,10 @@ public:
 	 */
 	bool request;
 	/**
+	 * Flag for the timer which sets it unstoppable
+	 */
+	bool setGlobalUnstoppable;
+	/**
 	 * Timer Id from the maxTimer callback
 	 */
 	int maxTimerId;
@@ -332,14 +334,6 @@ public:
 	 * Timer Id from the closeSwitch callback
 	 */
 	int closeSwitch_TID;
-	/**
-	 *
-	 */
-	GlobalVariables* gv;
-	/**
-	 *
-	 */
-	bool setGlobalUnstoppable;
 
 protected:
 

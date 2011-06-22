@@ -249,6 +249,9 @@ extern volatile bool emstopped;
 class HALCore: public thread::HAWThread, public CallBackThrower, public Singleton_T<HALCore>{
 	friend class Singleton_T<HALCore>;
 public:
+	/**
+	 *
+	 */
 	bool isEngineRunning();
 	/**
 	 * Reads from a port.
@@ -453,6 +456,9 @@ public:
 	 * \return a bool, true if action was successful, false if not.
 	 */
 	void shineLED(int led);
+	/**
+	 *
+	 */
 	void stopProcess();
 	/**
 	 * Performes an emergency stop.

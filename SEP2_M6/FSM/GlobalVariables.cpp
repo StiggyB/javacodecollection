@@ -10,7 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *For global variables, machine type, global timer id's..
+ * For global variables, machine type, global timer id's..
  *
  *
  */

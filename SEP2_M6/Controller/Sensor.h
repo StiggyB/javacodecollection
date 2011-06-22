@@ -42,42 +42,81 @@
 class Sensor : public thread::HAWThread, public Communication, public Singleton_T<Sensor>, public CallBackThrower {
 	friend class Singleton_T<Sensor>;
 public:
-    void interrupt(int port, int val);
     Sensor();
     virtual ~Sensor();
+    /**
+     * This flag is true if the system is running
+     * otherwise false to manage the buttons actuating.
+     */
     bool running_mode;
 
     #ifdef TEST_SEN
+    /**
+     * Instance from the Test_Sensor
+     */
 	Test_Sensor *ts;
 	#endif
 	#ifdef TEST_FSM
+	/**
+	 * Instance from the Test_FSM
+	 */
 	Test_FSM *tests_fsm;
 	#endif
 
 protected:
     virtual void execute(void*);
     virtual void shutdown();
+	/**
+	 * handles all pulse messages received
+	 */
     virtual void handlePulsMessage();
+	/**
+	 * handles all normal messages received
+	 */
     virtual void handleNormalMessage();
-    void clean();
+
 private:
-    int input_TID;
-    HALCore *h;
-    Lampen *l;
-    Timer* timer;
-    std::vector<Puck_FSM*> wp_list;
-    CallInterface<CallBackThrower, void>* callDummyFunction;
-    Puck_FSM* dummy_fsm;
-	bool request;
-    bool settingUpSensor();
-    void cleanUpSensor();
+	/**
+	 * This function provides a dummy callback
+	 * for the minTimer exceptions.
+	 */
     void dummyFunction();
-    int cnt;
+    /**
+     * Instance from the HALCore
+     */
+    HALCore *h;
+    /**
+     * Instance from the Light.
+     */
+    Lampen *l;
+    /**
+     * Instance from the Timer.
+     */
+    Timer* timer;
+    /**
+     * List of work pieces on the system.
+     */
+    std::vector<Puck_FSM*> wp_list;
+    /**
+     * Pointer on the dummy callback.
+     */
+    CallInterface<CallBackThrower, void>* callDummyFunction;
+    /**
+     * Dummy work piece for button actuating.
+     */
+    Puck_FSM* dummy_fsm;
+	/**
+	 * Defines a standard register status for register B.
+	 */
     int last_Reg_State_B;
+	/**
+	 * Defines a standard register status for register C.
+	 */
     int last_Reg_State_C;
-    void puck_fsm2_outgoing();
-    void delete_unnecessary_wp();
-    void starts_engine_if_nessecary();
+    /**
+     * This is the actual timer ID for work piece income.
+     */
+    int input_TID;
 };
 
 #endif /* SENSOR_H_ */

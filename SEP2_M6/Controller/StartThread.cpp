@@ -1,8 +1,16 @@
-/*
- * StartThread.cpp
+/**
+ * Functor Pattern.
  *
- *  Created on: 13.04.2011
- *      Author: Administrator
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * This class starts all threads for the normal running.
+ * Various defines include and start different tests.
+ *
  */
 
 #include "StartThread.h"
