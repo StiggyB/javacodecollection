@@ -1,8 +1,18 @@
-/*
- * Test_FSM.h
+/**
+ * Puck_FSM
  *
- *  Created on: 14.05.2011
- *      Author: user
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *For testing FSM, includes machine 1 and 2
+ *
+ *
  */
 
 #ifndef TEST_FSM_H_

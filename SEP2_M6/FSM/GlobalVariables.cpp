@@ -1,8 +1,18 @@
-/*
- * GlobalVariables.cpp
+/**
+ * Puck_FSM
  *
- *  Created on: 21.06.2011
- *      Author: aax691
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Milestone 4: Automatenimplementierung
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ *For global variables, machine type, global timer id's..
+ *
+ *
  */
 
 #include "GlobalVariables.h"
