@@ -28,6 +28,7 @@ public:
 
 	void handlePulsMessage();
 	void handleNormalMessage();
+	Serial *serial;
 
 protected:
 	virtual void execute(void*);
@@ -35,7 +36,9 @@ protected:
 	void clean();
 private:
 	int msg_test;
-	bool test_successful;
+	bool testSuccessful;
+	int testCnt;
+	bool isStopped;
 };
 
 #endif /* TEST_IRQ_H_ */
