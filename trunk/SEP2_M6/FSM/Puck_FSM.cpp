@@ -337,7 +337,7 @@ void Puck_FSM::selectErrorType() {
 			break;
 		case SORT_OUT:
 			errType = SLIDE_FULL_B6;
-			cout << ">> WORK PIECE IS BLOCKING IN >THE SLIDE< <<" << endl;
+			cout << ">> WORK PIECE IS BLOCKING >THE SLIDE< <<" << endl;
 			break;
 		case AFTER_METAL_SENSOR_FORWARD:
 			errType = WP_DISAPPEARED_B7;

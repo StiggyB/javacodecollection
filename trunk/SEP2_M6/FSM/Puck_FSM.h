@@ -67,7 +67,7 @@ enum ErrorType {
  *
  */
 enum ReferenceTime {
-	MIN_TIME_B1 = 2000,
+	MIN_TIME_B1 = 2500,
 	MAX_TIME_B1 = 3200,
 	MIN_TIME_B3 = 500,
 	MAX_TIME_B3 = 1700,
