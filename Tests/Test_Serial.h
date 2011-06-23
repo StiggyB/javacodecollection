@@ -21,6 +21,7 @@
  *
  * Inherits: thread::HAWThread
  */
+
 class Test_Serial : public thread::HAWThread, public Communication{
 public:
 	Test_Serial();
