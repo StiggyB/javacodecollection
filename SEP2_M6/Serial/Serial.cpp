@@ -281,7 +281,7 @@ void Serial::syncReceive(){
 		cout << "Serial: get a SYNC message" << endl;
 	}
 	isSync = true;
-	timer->deleteTimer(syncId);
+	timer->deleteTimer(sync_send_TID);
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND, sync_send_TID);
 }
 

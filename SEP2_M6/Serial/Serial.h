@@ -153,10 +153,6 @@ private:
 	 * if the serial not synchronized, send a SYNC and start the sync_error timer
 	 */
 	void syncRestart();
-	/**
-	 * act. sync timer id
-	 */
-	int syncId;
 
 	/**
 	 * true if serial synchronized else false
