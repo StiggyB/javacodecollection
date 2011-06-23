@@ -3,10 +3,11 @@
 #define COMMUNICATION_SERVER_H_
 
 #include <stdlib.h>
+#include "Communication.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "../Thread/Singleton_T.h"
-#include "Communication.h"
+
 
 /**
  * Core Controller

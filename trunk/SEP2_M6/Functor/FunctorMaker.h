@@ -1,3 +1,8 @@
+
+#ifndef FUNCTORMAKER_H_
+#define FUNCTORMAKER_H_
+#include "CallInterface.h"
+
 /**
  * Helper class FunctorMaker.
  *
@@ -12,11 +17,6 @@
  * generic CallInterface function pointer.
  *
  */
-
-#ifndef FUNCTORMAKER_H_
-#define FUNCTORMAKER_H_
-#include "CallInterface.h"
-
 template<typename T, typename R>
 class FunctorMaker {
 

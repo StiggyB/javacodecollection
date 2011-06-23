@@ -72,6 +72,7 @@ void Sensor::handleNormalMessage() {
 		port = INTERRUPT_D_SERIAL;
 	}
 
+
 	//cout << "Sensor: some input m.ca: " << r_msg->m.ca << " val: " << (*r_msg).pulse.value.sival_int << endl;
 #ifdef TEST_FSM
 	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);

@@ -1,3 +1,7 @@
+
+#ifndef CALLBACKTHROWER_H_
+#define CALLBACKTHROWER_H_
+
 /**
  * Functor Pattern.
  *
@@ -12,10 +16,6 @@
  * one callback type.
  *
  */
-
-#ifndef CALLBACKTHROWER_H_
-#define CALLBACKTHROWER_H_
-
 class CallBackThrower {
 public:
 	CallBackThrower();

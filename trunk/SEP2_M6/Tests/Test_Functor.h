@@ -1,3 +1,21 @@
+
+#ifndef TEST_FUNCTOR_H_
+#define TEST_FUNCTOR_H_
+
+#include <string>
+#include <stdio.h>
+#include <iostream>
+#include "HAWThread.h"
+#include "Test_Functions.h"
+#include "../Functor/Functor.h"
+#include "../Functor/FunctorMaker.h"
+#include "../Functor/CallInterface.h"
+
+
+enum ExpectedValues {
+	FUNCTOR1, FUNCTOR2, FUNCTOR3, FUNCTOR4
+};
+
 /**
  * Test class for the Functor Pattern.
  *
@@ -14,24 +32,6 @@
  * value, generic parameter and without parameter (void*).
  *
  */
-
-#ifndef TEST_FUNCTOR_H_
-#define TEST_FUNCTOR_H_
-
-#include <iostream>
-#include <stdio.h>
-#include <string>
-
-#include "../Functor/Functor.h"
-#include "../Functor/FunctorMaker.h"
-#include "../Functor/CallInterface.h"
-#include "HAWThread.h"
-#include "Test_Functions.h"
-
-enum ExpectedValues {
-	FUNCTOR1, FUNCTOR2, FUNCTOR3, FUNCTOR4
-};
-
 class Test_Functor: public thread::HAWThread {
 public:
 	Test_Functor();

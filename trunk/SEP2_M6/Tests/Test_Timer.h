@@ -1,3 +1,16 @@
+
+#ifndef TEST_TIMER_H_
+#define TEST_TIMER_H_
+
+#include <vector>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include "../Timer/Timer.h"
+#include "../HAL/HALCore.h"
+#include "../Thread/HAWThread.h"
+#include "../Functor/CallBackThrower.h"
+
 /**
  * Test_Timer
  *
@@ -14,22 +27,6 @@
  *
  *
  */
-
-#ifndef TEST_TIMER_H_
-#define TEST_TIMER_H_
-
-
-#include "../Thread/HAWThread.h"
-#include "../Timer/Timer.h"
-#include "../HAL/HALCore.h"
-#include <sys/time.h>
-#include <vector>
-#include <stdio.h>
-#include <unistd.h>
-#include "../Functor/CallBackThrower.h"
-
-
-
 class Test_Timer  : public thread::HAWThread{
 public:
 	Test_Timer();

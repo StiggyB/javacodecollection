@@ -9,7 +9,7 @@
  * 			Jan Quenzel
  *
  * Other parts can get their necessary ChannelID's
- * and register/unregister themself.
+ * and register/unregister themselves.
  *
  */
 

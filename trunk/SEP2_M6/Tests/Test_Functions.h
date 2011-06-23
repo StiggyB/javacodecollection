@@ -1,3 +1,8 @@
+
+#ifndef TEST_H_
+#define TEST_H_
+#include <iostream>
+
 /**
  * Test Functions.
  *
@@ -12,11 +17,6 @@
  * functions for the Functor Pattern.
  *
  */
-
-#ifndef TEST_H_
-#define TEST_H_
-#include <iostream>
-
 class Test_Functions {
 public:
 	/**

@@ -2,15 +2,15 @@
 #define IPUCK_FSM_H_
 
 #include <vector>
-#include "../HAL/HALCore.h"
+#include "GlobalVariables.h"
 #include "../HAL/Lampen.h"
-#include "../Serial/Serial.h"
+#include "../HAL/HALCore.h"
 #include "../Timer/Timer.h"
+#include "../Serial/Serial.h"
 #include "../Functor/Functor.h"
 #include "../Functor/FunctorMaker.h"
 #include "../Functor/CallInterface.h"
 #include "../Functor/CallBackThrower.h"
-#include "FSM/GlobalVariables.h"
 
 //#define PUCK_FSM_STATE_DEBUG
 

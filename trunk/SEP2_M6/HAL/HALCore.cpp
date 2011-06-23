@@ -117,15 +117,10 @@ void HALCore::execute(void*) {
 #ifdef CONDOR
 		if (!lst.empty()) {
 			it = lst.begin();
-			//if((*it) != NULL){
 			((*this).*((*it)->func))((*it)->v);
-			if((*it)->v->value1 == PORT_A && (*it)->v->value2 == BIT_ENGINE_STOP  ) //printf("h...%x\n",in8(PORT_A));
-			//}
 			free(((*it)->v)); // free VAL
 			free((*it)); // free struct of function
 			lst.erase(it);
-			//it++;
-
 		} else {
 			changedMutex.lock();
 			if (!requested) {

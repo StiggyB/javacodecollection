@@ -1,3 +1,18 @@
+
+#ifndef GLOBALVARIABLES_H_
+#define GLOBALVARIABLES_H_
+
+#include "../Timer/Timer.h"
+#include "../Thread/Singleton_T.h"
+
+/*
+ * This enum describe the type of machine
+ */
+enum machineType {
+	PUCK_FSM_1_,
+	PUCK_FSM_2_
+};
+
 /**
  * Puck_FSM
  *
@@ -14,21 +29,6 @@
  *
  *
  */
-
-#ifndef GLOBALVARIABLES_H_
-#define GLOBALVARIABLES_H_
-
-#include "../Timer/Timer.h"
-#include "../Thread/Singleton_T.h"
-
-/*
- * This enum describe the type of machine
- */
-enum machineType {
-	PUCK_FSM_1_,
-	PUCK_FSM_2_
-};
-
 class GlobalVariables : public Singleton_T<GlobalVariables>{
 	friend class Singleton_T<GlobalVariables>;
 public:

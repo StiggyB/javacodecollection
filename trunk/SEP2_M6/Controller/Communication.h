@@ -45,6 +45,9 @@ typedef struct msg{
 	CommunicatorType comtype;
 } Msg;
 
+/**
+ * union for possible messages. It could be a sigevent, a pulse or a msg.
+ */
 typedef union message{
 	struct sigevent event;
 	struct _pulse pulse;
@@ -77,6 +80,12 @@ protected:
 	 * \return ChannelID
 	 */
 	int getChannelIdForObject(CommunicatorType c);
+	/**
+	 * Get the ChannelID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the number of entries which should be ignored
+	 * \return ChannelID
+	 */
 	int getChannelIdForObject(CommunicatorType c, int number);
 	/**
 	 * Get the ConnectID of the specified Communicator from the local list.
@@ -84,20 +93,48 @@ protected:
 	 * \return ChannelID
 	 */
 	int getConnectIdForObject(CommunicatorType c);
-	int getConnectIdForObject(CommunicatorType c, int number);
-
-	int getUniqueIdForObject(CommunicatorType c);
-	int getUniqueIdForObject(CommunicatorType c, int number);
-
-	int getIdForObject(CommunicatorType c, int number,int mode);
-
 	/**
-	 * Gets the ChannelID of the specified Communicator from the CommunicatorServer (CoreController)
+	 * Get the ConnectID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the number of entries which should be ignored
+	 * \return ConnectID
+	 */
+	int getConnectIdForObject(CommunicatorType c, int number);
+	/**
+	 * Get the UniqueID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \return UniqueID
+	 */
+	int getUniqueIdForObject(CommunicatorType c);
+	/**
+	 * Get the UniqueID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the number of entries which should be ignored
+	 * \return UniqueID
+	 */
+	int getUniqueIdForObject(CommunicatorType c, int number);
+	/**
+	 * Get the specified ID of the specified Communicator from the local list.
+	 * \param c the specified Communicator.
+	 * \param number the number of entries which should be ignored
+	 * \param mode the number specifying the ID type -> Connect, Unique or Channel
+	 * \return specified ID
+	 */
+	int getIdForObject(CommunicatorType c, int number,int mode);
+	/**
+	 * Gets the ChannelID of the specified Communicator from the CommunicatorServer
 	 * over a separate connection to the CommunicatorServer and adds it to the local list.
 	 * \param c the specified Communicator.
-	 * \return if
+	 * \return true if request was successful, else it will be false
 	 */
 	bool requestChannelIDForObject(CommunicatorType c);
+	/**
+	 * Gets the ChannelID of the specified Communicator from the CommunicatorServer
+	 * over a separate connection to the CommunicatorServer and adds it to the local list.
+	 * \param c the specified Communicator.
+	 * \param number the number of entries which should be ignored
+	 * \return a bool, true if request was successful, else it will be false
+	 */
 	bool requestChannelIDForObject(CommunicatorType c,int number);
 
 	/**
@@ -122,9 +159,10 @@ protected:
 	 */
 	bool setUpChannel();
 	/**
-	 * Registers a Channel at the Communicator Server (CoreController) for Message Passing
+	 * Registers a Channel at the Communicator Server for Message Passing
 	 * so it will be available for other parts
 	 * \param c the Communicator which wants to be registered
+	 * \param unique the UniqueID of the Communicator
 	 * \return bool, true if successful
 	 */
 	bool registerChannel(CommunicatorType c, int unique);
@@ -216,6 +254,13 @@ protected:
 	 * \return bool, true if successful
 	 */
 	bool connectWithCommunicator(CommunicatorType c, CommunicatorType my);
+	/**
+	 * Equivalent to attachConnection () and sending startConnection()
+	 * \param c the Communicator which you want to attach communication with
+	 * \param my the CommunicatorType of your own
+	 * \param number the number of entries which should be ignored
+	 * \return bool, true if successful
+	 */
 	bool connectWithCommunicator(CommunicatorType c, int number, CommunicatorType my);
 	/**
 	 * Sends an Puls Message to the specified target with given code and value.
@@ -226,7 +271,28 @@ protected:
 	 * \return bool, true if successful
 	 */
 	bool sendPulses(CommunicatorType target, int code, int value);
+	/**
+	 * Sends an Puls Message to the specified target with given code and value.
+	 * The Target's ChannelID etc. must be known!
+	 * \param target whom should get the Pulse
+	 * \param number the number of entries which should be ignored
+	 * \param code which should be delivered
+	 * \param value which should be delivered
+	 * \return bool, true if successful
+	 */
 	bool sendPulses(CommunicatorType target, int number, int code, int value);
+	/**
+	 * Sends a Message.
+	 * \param msg Message which should be send.
+	 * \param rec Message where the answer should be received.
+	 * \returns bool, true if send successful
+	 */
+	bool sendMessage(Message *msg, Message * rec);
+	/**
+	 * Sends a Message with the in Message * m specified content and receives an answer.
+	 * \returns bool, true if send successful
+	 */
+	bool sendMessage();
 	/**
 	 * Sets up a communicator device (allocate memory, register and acquire a needed communication path);
 	 * \return bool, true if successful
@@ -283,7 +349,8 @@ private:
 		/**
 		 * Constructor with information about ChannelID, ConnectionID and Communicator Type
 		 * \param id an integer, specifying the ChannelID
-		 * \param cod an integer, specifying the Connection ID
+		 * \param cod an integer, specifying the ConnectionID
+		 * \param uni an integer, specifying the UniqueID
 		 * \param c type of the Communicator
 		 */
 		Communicator(int id, int cod, int uni, CommunicatorType c) {
@@ -355,6 +422,9 @@ private:
 		 */
 		int uniqueID;
 	};
+	/**
+	 * Different types of IDs
+	 */
 	enum GET_MODES{
 	 CHANNEL=1, CONNECT=2, UNIQUE=3
 	};
@@ -389,7 +459,7 @@ protected:
 	Message * r_msg;
 	/**
 	 * handles all Messages received
-	 * if Puls -> handlePulsMessage will be called
+	 * if Pulse -> handlePulsMessage will be called
 	 * if Normal -> handleNormalMessage will be called
 	 */
 	void handleMessage();
@@ -406,9 +476,31 @@ protected:
 	 * \returns a boolean true, if did something.
 	 */
 	bool handleConnectionMessage();
+	/**
+	 * attaches received connection and does the necessary reply, adds the received communicator to local list
+	 */
 	void getConnectionAttached();
+	/**
+	 * Registers a Channel at the Communicator Server for Message Passing
+	 * so it will be available for other parts
+	 * \param c the Communicator which you want to attach communication with
+	 * \param unique the UniqueID specifying the
+	 * \param m the type of message which should be send
+	 * \return bool, true if successful
+	 */
 	bool regEditChannel(CommunicatorType c, int unique, MsgType m);
-	bool doInternalExchange(Message ** ptrM,Message ** ptrR,CommunicatorType c, int coid, int chid, int unique, MsgType m);
+	/**
+	 * Just for internal use and for the communication between 2 CommunicatorDevices.
+	 * Allocates space for the Messages, builds them and sends the Message. Detaches the Connection afterwards.
+	 * \param ptrM pointer to the address of the Message
+	 * \param ptrR pointer to the address of the Message
+	 * \param c the Communicator which you want to send a message
+	 * \param coid the ConnectionID which will be used for the message
+	 * \param chid the ChannelID which will be used for the message
+	 * \param unique the UniqueID specifying the
+	 * \param m the type of message which should be send
+	 */
+	 bool doInternalExchange(Message ** ptrM,Message ** ptrR,CommunicatorType c, int coid, int chid, int unique, MsgType m);
 public:
 	/**
 	 * CommunicationServer ChannelID
@@ -421,7 +513,12 @@ public:
 	 * \return iterator representing a pointer to a Communicator object or NULL
 	 */
 	std::list<Communicator>::iterator getCommunicatorForObject(int ci,int co);
-	std::list<Communicator>::iterator getCommunicatorForObject(int uni);
+	/**
+	 * Retrieves the Communicator with the given UniqueID.
+	 * \param uni UniqueID of the searched Communicator
+	 * \return iterator representing a pointer to a Communicator object or NULL
+	 */
+	 std::list<Communicator>::iterator getCommunicatorForObject(int uni);
 };
 
 #endif /* COMMUNICATION_H_ */

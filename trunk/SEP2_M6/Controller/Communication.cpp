@@ -466,3 +466,11 @@ bool Communication::doInternalExchange(Message ** ptrM,Message ** ptrR,
 	}
 	return true;
 }
+
+bool Communication::sendMessage(Message *msg, Message * rec){
+	return (-1 != MsgSend(msg->m.coid, msg, sizeof(Message), rec, sizeof(Message)));
+}
+
+bool Communication::sendMessage(){
+	return (-1 != MsgSend(m->m.coid, m, sizeof(Message), r_msg, sizeof(Message)));
+}
