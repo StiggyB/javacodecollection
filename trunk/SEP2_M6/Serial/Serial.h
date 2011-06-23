@@ -23,32 +23,32 @@
 
 enum msgType {
 	ACK,
-	INIT_SERIAL,
-	/* #3# Machine Info */
-	REQUEST_FREE,
-	REQUEST_FREE_ACK,
-	MACHINE2_FREE,
-	MACHINE2_FREE_ACK,
-	/* #6# Puck Info */
-	PUCK_ARRIVED,
-	POCKET,
-	ACK_POCKET,
-	NO_POCKET,
-	ACK_NO_POCKET,
-	/* #11# Port C */
-	E_STOP_PUSHED,
-	E_STOP_PULLED,
-	STOP_BUTTON,
-	START_BUTTON,
-	RESET_BUTTON,
-	/* #16# Serial communication */
-	SYNC,
-	SYNC_SIGNAL,
-	ACK_SYNC_SIGNAL,
-	ACK_INIT_SERIAL,
-	/* #21# Error state for both machines */
-	ERROR_OCCURED,
-	ERROR_SOLVED
+		INIT_SERIAL,
+		/* #3# Machine Info */
+		REQUEST_FREE,
+		REQUEST_FREE_ACK,
+		MACHINE2_FREE,
+		MACHINE2_FREE_ACK,
+		/* #6# Puck Info */
+		PUCK_ARRIVED,
+		POCKET,
+		ACK_POCKET,
+		NO_POCKET,
+		ACK_NO_POCKET,
+		/* #11# Port C */
+		E_STOP_PUSHED,
+		E_STOP_PULLED,
+		STOP_BUTTON,
+		START_BUTTON,
+		RESET_BUTTON,
+		/* #16# Serial communication */
+		SYNC,
+		SYNC_SIGNAL,
+		ACK_SYNC_SIGNAL,
+		ACK_INIT_SERIAL,
+		/* #21# Error state for both machines */
+		ERROR_OCCURED,
+		ERROR_SOLVED
 };
 
 
@@ -112,29 +112,82 @@ protected:
 	virtual void shutdown();
 	void clean();
 private:
+
 	CallInterface<Serial, void>* check_ack;
 	CallInterface<Serial, void>* check_init_ack;
 	CallInterface<Serial, void>* sync_send;
 	CallInterface<Serial, void>* sync_error;
 	Timer* timer;
+
+	/**
+	 * checks if an ack received or not
+	 */
 	void checkAck();
+
+	/**
+	 * check if the serial connection is initialized.
+	 * If not, send INIT_SERIAL again and set the timer check_init_ack again.
+	 */
 	void checkInit();
+
+	/**
+	 * send a puls with STOP_BUTTON and call syncstart(),
+	 * to restart the synchronized communication
+	 */
 	void syncError();
+
+	/**
+	 * send a SYNC signal and start a new sync_error timer
+	 */
 	void syncSend();
+
+	/**
+	 * set getSync = true, delete the act. timer with the syncId and start a new sync_send timer
+	 */
 	void syncReceive();
+
+	/**
+	 * if the serial not synchronized, send a SYNC and start the sync_error timer
+	 */
 	void syncRestart();
-	int sync_TID;
-	int checkAck_TID;
-	int sync_send_TID;
-	bool getSync;
+	/**
+	 * act. sync timer id
+	 */
+	int syncId;
+
+	/**
+	 * true if serial synchronized else false
+	 */
+	bool isSync;
+
+	/**
+	 * true if ack received else false
+	 */
 	bool getAck;
-	unsigned int ack;
+
+	/**
+	 * act received message
+	 */
 	unsigned int msg;
+
+	/**
+	 * serial
+	 */
 	int ser;
+
+	/**
+	 * act port number
+	 */
 	int comPort;
-	int sender_receiver;
-	int cnt;
+
+	/**
+	 * true if serial has settings else false
+	 */
 	bool hasSettings;
+
+	/**
+	 * receiver of the puls messages
+	 */
 	CommunicatorType receiver;
 	Mutex locker;
 };
