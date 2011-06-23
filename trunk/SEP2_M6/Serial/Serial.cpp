@@ -34,7 +34,7 @@ void Serial::init(int numComPort, bool debug) {
 	comPort = numComPort;
 
 	getAck = false;
-	isSync = true;
+	isSync = false;
 
 
 
@@ -264,15 +264,19 @@ void Serial::syncError(){
 }
 
 void Serial::syncRestart(){
+	cout << "enter syncRestart" << endl;
 	if(!isSync){
-		send(SYNC, sizeof(SYNC));
-		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
+
+		cout << "is Sync == false syncRestart" << endl;
+		syncSend();//send(SYNC, sizeof(SYNC));
+		//timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
 	}
 }
 
 
 void Serial::syncSend(){
 	send(SYNC, sizeof(SYNC));
+	timer->deleteTimer(sync_TID);
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
 }
 
@@ -281,6 +285,7 @@ void Serial::syncReceive(){
 		cout << "Serial: get a SYNC message" << endl;
 	}
 	isSync = true;
+	timer->deleteTimer(sync_TID);
 	timer->deleteTimer(sync_send_TID);
 	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND, sync_send_TID);
 }
