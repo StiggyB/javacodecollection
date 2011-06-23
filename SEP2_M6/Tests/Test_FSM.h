@@ -1,3 +1,14 @@
+
+#ifndef TEST_FSM_H_
+#define TEST_FSM_H_
+
+#include <vector>
+#include "Communication.h"
+#include "../HAL/HALCore.h"
+#include "../FSM/Puck_FSM.h"
+#include "../FSM/Puck_FSM_1.h"
+#include "../FSM/Puck_FSM_2.h"
+#include "../Thread/HAWThread.h"
 /**
  * Puck_FSM
  *
@@ -14,18 +25,6 @@
  *
  *
  */
-
-#ifndef TEST_FSM_H_
-#define TEST_FSM_H_
-
-#include <vector>
-#include "Communication.h"
-#include "../Thread/HAWThread.h"
-#include "../HAL/HALCore.h"
-#include "../FSM/Puck_FSM.h"
-#include "../FSM/Puck_FSM_1.h"
-#include "../FSM/Puck_FSM_2.h"
-
 class Test_FSM : public thread::HAWThread{
 public:
 	Test_FSM();

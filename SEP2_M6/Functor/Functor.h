@@ -1,3 +1,9 @@
+
+#ifndef FUNCTORSIMPLE_H_
+#define FUNCTORSIMPLE_H_
+
+#include "CallInterface.h"
+
 /**
  * Functor Pattern.
  *
@@ -12,12 +18,6 @@
  * dynamic object type, return type and parameter type.
  *
  */
-
-#ifndef FUNCTORSIMPLE_H_
-#define FUNCTORSIMPLE_H_
-
-#include "CallInterface.h"
-
 template<typename T, typename R>
 class Functor: public CallInterface<T, R> {
 

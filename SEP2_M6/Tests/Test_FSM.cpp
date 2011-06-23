@@ -10,8 +10,7 @@
  * 			Torsten Krane,
  * 			Jan Quenzel
  *
- *For testing FSM, includes machine 1 and 2
- *
+ * For testing FSM, includes machine 1 and 2
  *
  */
 

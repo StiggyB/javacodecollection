@@ -3,8 +3,8 @@
 #define TEST_SERIAL_H_
 #define DEBUG_SERIAL
 
-#include "../Thread/HAWThread.h"
 #include "../Serial/Serial.h"
+#include "../Thread/HAWThread.h"
 #include "../Controller/Communication.h"
 
 /**

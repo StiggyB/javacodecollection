@@ -103,7 +103,7 @@ enum PortC {
 };
 
 /**
- *
+ * Bits for PORT C
  */
 enum PortC_Bit{
 	WP_LED_START=0, WP_LED_RESET=1, WP_LED_Q1=2, WP_LED_Q2=3,
@@ -180,7 +180,7 @@ enum Interrupts_D {
 };
 
 /**
- *
+ * Index to pointer to functions WRITE and RESET
  */
 enum Function{
 	WRITE=0,RESET=1
@@ -250,7 +250,8 @@ class HALCore: public thread::HAWThread, public CallBackThrower, public Singleto
 	friend class Singleton_T<HALCore>;
 public:
 	/**
-	 *
+	 * Retrieve the running status of the engine.
+	 * \returns an bool, true if engine is running.
 	 */
 	bool isEngineRunning();
 	/**
@@ -457,7 +458,9 @@ public:
 	 */
 	void shineLED(int led);
 	/**
-	 *
+	 * Stops all processes
+	 * *reserved for future*
+	 * do not use!
 	 */
 	void stopProcess();
 	/**

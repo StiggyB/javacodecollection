@@ -16,6 +16,7 @@
 #include "StartThread.h"
 
 StartThread::StartThread(){
+	/** get all necessary instances of components. **/
 	halCore = HALCore::getInstance();
 	interruptController = InterruptController::getInstance();
 	communicationServer = CommunicationServer::getInstance();
@@ -104,8 +105,8 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_FUN
 	cout << "starting Functor-Test"	 << endl;
-	cout << "waiting for Functor-Test" << endl;
 	tf.start(NULL);
+	cout << "waiting for Functor-Test" << endl;
 	tf.join();
 #endif
 #ifdef TEST_TIMER
@@ -126,6 +127,7 @@ void StartThread::stopProcess() {
 }
 
 void StartThread::shutdown(){
+	//delete all instances of components
 	serial->deleteInstance();
 	sensor->deleteInstance();
 	lampen->deleteInstance();

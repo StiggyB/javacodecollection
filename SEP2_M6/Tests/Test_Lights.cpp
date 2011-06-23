@@ -1,8 +1,16 @@
-/*
- * Test_Lights.cpp
+/**
+ * Testing Class for Lights
  *
- *  Created on: 17.05.2011
- *      Author: aax691
+ * SE2 (+ SY and PL) Project SoSe 2011
+ *
+ * Authors: Rico Flaegel,
+ * 			Tell Mueller-Pettenpohl,
+ * 			Torsten Krane,
+ * 			Jan Quenzel
+ *
+ * Prepares some Testing stuff for the Lights.
+ *
+ * Inherits: thread::HAWThread
  */
 
 #include "Test_Lights.h"

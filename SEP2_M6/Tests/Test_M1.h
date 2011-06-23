@@ -1,8 +1,8 @@
 #ifndef TEST_M1_H_
 #define TEST_M1_H_
 
-#include "../Thread/HAWThread.h"
 #include "../HAL/HALCore.h"
+#include "../Thread/HAWThread.h"
 /**
  * Testing Class for Milestone #1
  *

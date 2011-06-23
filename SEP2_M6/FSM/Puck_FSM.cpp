@@ -238,11 +238,11 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 }
 
 void Puck_FSM::deletePucksInLocation(LocationAttribut location){
-	printf("deletePucksInLocation() parameter-location: %i\n", location);
+//	printf("deletePucksInLocation() parameter-location: %i\n", location);
 
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-		}
+//		for (unsigned int i = 0; i < puck_list->size(); i++) {
+//			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//		}
 
 	int counter = 0;
 
@@ -258,9 +258,9 @@ void Puck_FSM::deletePucksInLocation(LocationAttribut location){
 
 //	 cout << "deletePucksInLocation() has deleted " << counter  << " pucks" << endl;
 //	 cout << "deletePucksInLocation() sizeofList " << puck_list->size()  << endl;
-		for (unsigned int i = 0; i < puck_list->size(); i++) {
-			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
-		}
+//		for (unsigned int i = 0; i < puck_list->size(); i++) {
+//			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
+//		}
 }
 
 void Puck_FSM::isSlideFull() {

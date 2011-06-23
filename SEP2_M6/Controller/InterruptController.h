@@ -2,12 +2,13 @@
 #ifndef INTERRUPTCONTROLLER_H_
 #define INTERRUPTCONTROLLER_H_
 
+#include "Communication.h"
 #include "../HAL/Lampen.h"
 #include "../HAL/HALCore.h"
 #include "../Thread/Mutex.h"
 #include "../Thread/HAWThread.h"
 #include "../Thread/Singleton_T.h"
-#include "Communication.h"
+
 
 /**
  * Interrupt Controller
@@ -62,7 +63,7 @@ private:
 	 */
 	HALCore *h;
 	/**
-	 * Pointer on a message.
+	 * pointer to the ISR message
 	 */
 	Message *msg;
 	/**
