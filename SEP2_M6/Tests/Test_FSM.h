@@ -30,6 +30,7 @@ class Test_FSM : public thread::HAWThread{
 public:
 	Test_FSM();
 	virtual ~Test_FSM();
+	std::vector<Puck_FSM*> working_list;
 	/**
 	 * prepare an internal list for the 6 test cases
 	 */

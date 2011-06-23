@@ -73,6 +73,14 @@ void Sensor::handleNormalMessage() {
 	}
 
 	//cout << "Sensor: some input m.ca: " << r_msg->m.ca << " val: " << (*r_msg).pulse.value.sival_int << endl;
+#ifdef TEST_FSM
+	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
+#endif
+#ifdef TEST_SEN
+	ts->test_sen_interrupt(port, r_msg->pulse.value.sival_int);
+#endif
+#ifndef TEST_SEN
+#ifndef TEST_FSM
 
 	int val = (*r_msg).pulse.value.sival_int;
 
@@ -288,12 +296,7 @@ void Sensor::handleNormalMessage() {
 		}
 		last_Reg_State_B = val;
 	}//switch
-
-#ifdef TEST_FSM
-	tests_fsm->handleSignal(r_msg->pulse.value.sival_int, port);
 #endif
-#ifdef TEST_SEN
-	ts->test_sen_interrupt(port, r_msg->pulse.value.sival_int);
 #endif
 #ifdef TEST_IRQ
 	interrupt(port, r_msg->pulse.value.sival_int);
