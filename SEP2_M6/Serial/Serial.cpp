@@ -35,6 +35,9 @@ void Serial::init(int numComPort, bool debug) {
 
 	getAck = false;
 	isSync = true;
+
+
+
 	check_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkAck);
 	check_init_ack = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::checkInit);
 	sync_error = FunctorMaker<Serial, void>::makeFunctor(this, &Serial::syncError);
@@ -45,6 +48,9 @@ void Serial::init(int numComPort, bool debug) {
 	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)sync_error);
 	timer->addUnstoppableFunction((CallInterface<CallBackThrower, void>*)sync_send);
 
+	sync_TID = timer->getnextid();
+	checkAck_TID = timer->getnextid();
+	sync_send_TID = timer->getnextid();
 
 
 	switch (numComPort) {
@@ -104,7 +110,9 @@ void Serial::init(int numComPort, bool debug) {
 
 
 	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-	int id = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+
+	int id = timer->getnextid();
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, id);
 	while (receive(&msg, sizeof(msg)) == -2);
 	timer->deleteTimer(id);
 	cout << "Serial: INIT successful!" << endl;
@@ -258,14 +266,14 @@ void Serial::syncError(){
 void Serial::syncRestart(){
 	if(!isSync){
 		send(SYNC, sizeof(SYNC));
-		syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
+		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
 	}
 }
 
 
 void Serial::syncSend(){
 	send(SYNC, sizeof(SYNC));
-	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
 }
 
 void Serial::syncReceive(){
@@ -274,7 +282,7 @@ void Serial::syncReceive(){
 	}
 	isSync = true;
 	timer->deleteTimer(syncId);
-	syncId = timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND);
+	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_send, T_SYNC_SEND, sync_send_TID);
 }
 
 
@@ -286,7 +294,7 @@ void Serial::checkInit(){
 		}else{
 			cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
 			send(INIT_SERIAL, sizeof(INIT_SERIAL));
-			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000);
+			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, sync_send_TID);
 		}
 	}
 }
