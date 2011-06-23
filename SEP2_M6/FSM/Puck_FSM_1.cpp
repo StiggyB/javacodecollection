@@ -50,7 +50,7 @@ void FSM_1_start_state::ls_b0(Puck_FSM * fsm) {
 	cout << "FSM_1_start_state: LS_B0 wurde ausgelöst" << endl;
 #endif
 	if (fsm->check_last_lb() == 0) {
-		cout << "PUCK IS NOT BLOCKING LAST LB_0!!!" << endl;
+//		cout << "PUCK IS NOT BLOCKING LAST LB_0!!!" << endl;
 		fsm->setCurrent(new FSM_1_after_ls_b0());
 	}//if
 }
@@ -59,7 +59,7 @@ void FSM_1_start_state::ls_b7_out(Puck_FSM * fsm) {
 	cout << "FSM_1_start_state: ls_b7_out" << endl;
 #endif
 	if (fsm->check_last_lb() == 0) {
-		cout << "PUCK IS NOT BLOCKING LAST LB_7!!!" << endl;
+//		cout << "PUCK IS NOT BLOCKING LAST LB_7!!!" << endl;
 		fsm->setCurrent(new FSM_1_after_ls_b0());
 	}//if
 }
@@ -78,7 +78,7 @@ void FSM_1_after_ls_b0::entry(Puck_FSM * fsm) {
 	cout << "FSM_1_after_ls_b0: entry" << endl;
 #endif
 	fsm->location = AFTER_FIRST_LB;
-	cout << "need engine: " << fsm->engine_should_be_started << endl;
+//	cout << "need engine: " << fsm->engine_should_be_started << endl;
 	fsm->starts_engine_if_nessecary();
 
 }

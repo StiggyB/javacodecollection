@@ -313,6 +313,6 @@ void Sensor::shutdown() {
 }
 
 void Sensor::dummyFunction() {
-	cout << "dummyFunction called!" << endl;
+//	cout << "dummyFunction called!" << endl;
 }
 

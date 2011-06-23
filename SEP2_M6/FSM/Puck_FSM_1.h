@@ -5,7 +5,7 @@
 #include <iostream.h>
 #include "Puck_FSM.h"
 
-#define PUCK_FSM_1_DEBUG
+//#define PUCK_FSM_1_DEBUG
 /**
  * Puck_FSM
  *
