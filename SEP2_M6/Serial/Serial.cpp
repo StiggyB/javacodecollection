@@ -35,6 +35,7 @@ void Serial::init(int numComPort, bool debug) {
 
 	getAck = false;
 	isSync = false;
+	isInit = false;
 
 
 
@@ -108,15 +109,6 @@ void Serial::init(int numComPort, bool debug) {
 	fflush(stdout);
 #endif
 
-
-	send(INIT_SERIAL, sizeof(INIT_SERIAL));
-
-	int id = timer->getnextid();
-	timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, id);
-	while (receive(&msg, sizeof(msg)) == -2);
-	timer->deleteTimer(id);
-	cout << "Serial: INIT successful!" << endl;
-
 	hasSettings = true;
 
 }
@@ -127,6 +119,17 @@ Serial::~Serial() {
 
 void Serial::execute(void* data) {
 	msg = -1;
+
+	//Init Serial
+	send(INIT_SERIAL, sizeof(INIT_SERIAL));
+
+
+		int id = timer->getnextid();
+		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, id);
+		while (receive(&msg, sizeof(msg)) == -2);
+		timer->deleteTimer(id);
+		cout << "Serial: INIT successful!" << endl;
+		isInit = true;
 
 	if (hasSettings) {
 		if (settingUpCommunicatorDevice(receiver)) {
@@ -190,7 +193,8 @@ int Serial::send(int data, int lenBytes) {
 		return -1;
 	}else{
 		if(hasSettings){
-			//timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 250);
+			timer->deleteTimer(checkAck_TID);
+			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_ack, 50,checkAck_TID);
 		}
 	}
 	return 0;
@@ -211,6 +215,7 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 		}
 	} else {
 		if (*data == ACK) {
+			timer->deleteTimer(checkAck_TID);
 			getAck = true;
 		}else{
 			if(*data != SYNC){
@@ -239,7 +244,6 @@ int Serial::receive(unsigned int* data, int lenBytes) {
 
 void Serial::checkAck(){
 	if(getAck){
-		cout << "checkAck == false" << endl;
 		getAck = false;
 	}else{
 		cout << "Serial: TIMEOUT. no ACK received" << endl;
@@ -264,10 +268,7 @@ void Serial::syncError(){
 }
 
 void Serial::syncRestart(){
-	cout << "enter syncRestart" << endl;
 	if(!isSync){
-
-		cout << "is Sync == false syncRestart" << endl;
 		syncSend();//send(SYNC, sizeof(SYNC));
 		//timer->addTimerFunction((CallInterface<CallBackThrower, void>*)sync_error, T_SYNC_ERROR, sync_TID);
 	}
@@ -292,9 +293,8 @@ void Serial::syncReceive(){
 
 
 void Serial::checkInit(){
-	if(!hasSettings){
+	if(!isInit){
 		if(getAck){
-			cout << "checkInit == false" << endl;
 			getAck = false;
 		}else{
 			cout << "Serial: INIT TIMEOUT. no ACK received." << endl;

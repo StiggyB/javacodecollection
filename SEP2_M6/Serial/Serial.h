@@ -160,6 +160,11 @@ private:
 	bool isSync;
 
 	/**
+	 * true if serial is Initialized and have a connection
+	 */
+	bool isInit;
+
+	/**
 	 * true if ack received else false
 	 */
 	bool getAck;
