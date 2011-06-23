@@ -118,6 +118,9 @@ private:
 	CallInterface<Serial, void>* sync_send;
 	CallInterface<Serial, void>* sync_error;
 	Timer* timer;
+	int sync_TID;
+	int checkAck_TID;
+	int sync_send_TID;
 
 	/**
 	 * checks if an ack received or not
