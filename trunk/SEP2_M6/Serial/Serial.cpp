@@ -128,7 +128,7 @@ void Serial::execute(void* data) {
 		timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, id);
 		while (receive(&msg, sizeof(msg)) == -2);
 		timer->deleteTimer(id);
-		cout << "Serial: INIT successful!" << endl;
+//		cout << "Serial: INIT successful!" << endl;
 		isInit = true;
 
 	if (hasSettings) {
@@ -246,7 +246,7 @@ void Serial::checkAck(){
 	if(getAck){
 		getAck = false;
 	}else{
-		cout << "Serial: TIMEOUT. no ACK received" << endl;
+		cout << "Serial: TIMEOUT. PLEASE CHECK SERIAL CONNECTION." << endl;
 	}
 }
 
@@ -283,7 +283,7 @@ void Serial::syncSend(){
 
 void Serial::syncReceive(){
 	if(!isSync){
-		cout << "Serial: get a SYNC message" << endl;
+//		cout << "Serial: get a SYNC message" << endl;
 	}
 	isSync = true;
 	timer->deleteTimer(sync_TID);
@@ -297,7 +297,7 @@ void Serial::checkInit(){
 		if(getAck){
 			getAck = false;
 		}else{
-			cout << "Serial: INIT TIMEOUT. no ACK received." << endl;
+			cout << "Serial: INIT TIMEOUT. PLEASE CHECK SERIAL CONNECTION." << endl;
 			send(INIT_SERIAL, sizeof(INIT_SERIAL));
 			timer->addTimerFunction((CallInterface<CallBackThrower, void>*)check_init_ack, 1000, sync_send_TID);
 		}

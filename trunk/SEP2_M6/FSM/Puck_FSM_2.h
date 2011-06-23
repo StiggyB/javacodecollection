@@ -6,7 +6,7 @@
 #include "Puck_FSM.h"
 #include "../HAL/HALCore.h"
 
-#define PUCK_FSM_2_DEBUG
+//#define PUCK_FSM_2_DEBUG
 
 /**
  * Puck_FSM_2

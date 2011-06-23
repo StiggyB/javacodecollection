@@ -32,7 +32,7 @@ Timer::~Timer() {
 }
 
 void Timer::execute(void*) {
-	std::cout << "Timer: Start" << std::endl;
+//	std::cout << "Timer: Start" << std::endl;
 
 	if (settingUpCommunicatorDevice(receiver)) {
 
@@ -202,7 +202,7 @@ int Timer::stopAll_actual_Timer() {
 	long diff_usec;
 
 
-	cout << "Timer: all Timer stopped." << endl;
+//	cout << "Timer: all Timer stopped." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
 		notfound = true;
 		unstoppablefound = false;
@@ -241,7 +241,7 @@ int Timer::stopAll_actual_Timer() {
 				funcp_list[i].struct_time = temp_systemtime;
 				funcp_list[i].duration_ms = funcp_list[i].duration_ms - (((diff_sec) * 1000) + (long) (diff_usec / 1000.0)) + 200;
 
-				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
+//				printf("Timer: rest ms %ld\n", funcp_list[i].duration_ms);
 				//			printf("-----\n" );
 
 
@@ -264,7 +264,7 @@ int Timer::startAllTimer() {
 	timer_t timerid;
 	struct sigevent event;
 
-	cout << "Timer: all Timer started." << endl;
+//	cout << "Timer: all Timer started." << endl;
 	for (unsigned int i = 0; i < funcp_list.size(); i++) {
 		struct itimerspec timer;
 		sec = 0;
@@ -279,7 +279,7 @@ int Timer::startAllTimer() {
 			timer.it_interval.tv_nsec = 0;
 			timer.it_interval.tv_sec = 0;
 
-			printf("startAllTimer() - i= %i new duration = %i\n", i, funcp_list[i].duration_ms);
+//			printf("startAllTimer() - i= %i new duration = %i\n", i, funcp_list[i].duration_ms);
 
 			SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, NULL, funcp_list[i].id );
 

@@ -12,7 +12,7 @@
 #include "../Functor/CallBackThrower.h"
 #include "FSM/GlobalVariables.h"
 
-#define PUCK_FSM_STATE_DEBUG
+//#define PUCK_FSM_STATE_DEBUG
 
 /**
  * Actual locations for the work pieces on the system.

@@ -48,7 +48,7 @@ void Puck_FSM::start_signal(bool was_serial) {
 			}
 		}
 
-		cout << "START ENGINE!" << endl;
+//		cout << "START ENGINE!" << endl;
 		lamp->shine(GREEN);
 		starts_engine_if_nessecary();
 		timer->startAllTimer();
@@ -147,15 +147,15 @@ void Puck_FSM::puck_arrived() {
 void Puck_FSM::requestfromMachine1() {
 	if (puck_list->size() > 1) {
 		(*puck_list)[0]->request = true;
-		cout << "size of list" << puck_list->size() << endl;
+//		cout << "size of list" << puck_list->size() << endl;
 //		for (unsigned int i = 0; i < puck_list->size(); i++) {
 //			printf("requestfromMachine1() - i=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 //		}
-		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
-				<< endl;
+//		cout << "Puck_FSM::requestfromMachine1: request, but wp is on machine"
+//				<< endl;
 	} else {
 		serial->send(MACHINE2_FREE, sizeof(msgType));
-		cout << "size of list" << puck_list->size() << endl;
+//		cout << "size of list" << puck_list->size() << endl;
 		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
 		hc->engineRight();
 		hc->engineContinue();
@@ -180,11 +180,11 @@ void Puck_FSM::PuckhasnoPocket() {
 
 void Puck_FSM::puck_fsm2_outgoing() {
 	if (request == true) {
-		cout
-				<< "Puck_FSM::puck_fsm2_outgoing: request true, serial message will be send"
-				<< endl;
+//		cout
+//				<< "Puck_FSM::puck_fsm2_outgoing: request true, serial message will be send"
+//				<< endl;
 		serial->send(MACHINE2_FREE, sizeof(msgType));
-		cout << "size of list" << puck_list->size() << endl;
+//		cout << "size of list" << puck_list->size() << endl;
 		(*puck_list)[0]->setErrorStateTimer(MAX_TIME_FSM2);
 		hc->engineRight();
 		hc->engineContinue();
@@ -205,7 +205,7 @@ void Puck_FSM::delete_unnecessary_wp() {
 			i = -1;
 		}
 	}//for
-	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
+//	cout << "********** COUNT OF WP´S: " << puck_list->size() << endl;
 }
 
 bool Puck_FSM::starts_engine_if_nessecary() {
@@ -231,7 +231,7 @@ bool Puck_FSM::starts_engine_if_nessecary() {
 		hc->engineContinue();
 		//ATTENTION!!! Do not delete this print without a short break between.
 		//HALCore is to slow to switch the isStopped state!!!
-		cout << "A PUCK NEEDS ENGINE" << endl;
+//		cout << "A PUCK NEEDS ENGINE" << endl;
 		hc->engineRight();
 	}
 	return true;
@@ -256,8 +256,8 @@ void Puck_FSM::deletePucksInLocation(LocationAttribut location){
 		}//if
 	}//for
 
-	 cout << "deletePucksInLocation() has deleted " << counter  << " pucks" << endl;
-	 cout << "deletePucksInLocation() sizeofList " << puck_list->size()  << endl;
+//	 cout << "deletePucksInLocation() has deleted " << counter  << " pucks" << endl;
+//	 cout << "deletePucksInLocation() sizeofList " << puck_list->size()  << endl;
 		for (unsigned int i = 0; i < puck_list->size(); i++) {
 			printf("deletePucksInLocation() - location=%i errType=%i\n", (*puck_list)[i]->location, (*puck_list)[i]->errType);
 		}
@@ -404,11 +404,11 @@ void Puck_FSM::noticed_error_confirmed() {
 		errorNoticed = false;
 
 	} else {
-		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
-				<< endl;
+//		cout << "Puck_FSM::noticed_error_confirmed(): ERRORTYPE -> " << errType
+//				<< endl;
 		if (errType == SLIDE_FULL_B6) {
 			if (hc->checkSlide()) {
-				cout << "Puck_FSM::noticed_error_confirmed(): checkslide true " << endl;
+//				cout << "Puck_FSM::noticed_error_confirmed(): checkslide true " << endl;
 				return;
 			}
 		}
@@ -418,7 +418,7 @@ void Puck_FSM::noticed_error_confirmed() {
 //
 //		}
 		if (gv->getCurrentType() == PUCK_FSM_1_) {
-			cout << "will send fsm2 a message -> stop engine and timers" << endl;
+//			cout << "will send fsm2 a message -> stop engine and timers" << endl;
 			if (errType != WP_DISAPPEARED_FSM2) {
 				for (unsigned int i = 0; i < puck_list->size(); i++) {
 					if ((*puck_list)[i]->location == AFTER_LAST_LB || (*puck_list)[i]->location == ON_LAST_LB) {
