@@ -22,6 +22,7 @@ Test_Serial::Test_Serial() {
 	testCnt = 0;
 }
 
+
 Test_Serial::~Test_Serial() {
 }
 
