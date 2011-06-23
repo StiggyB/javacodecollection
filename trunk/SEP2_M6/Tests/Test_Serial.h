@@ -21,6 +21,7 @@
  *
  * Inherits: thread::HAWThread
  */
+
 class Test_Serial : public thread::HAWThread, public Communication{
 public:
 	Test_Serial();
@@ -28,16 +29,17 @@ public:
 
 	void handlePulsMessage();
 	void handleNormalMessage();
+	Serial *serial;
 
 protected:
 	virtual void execute(void*);
 	virtual void shutdown();
 	void clean();
 private:
-	Serial *s_0;
-	Serial *s_1;
 	int msg_test;
-	bool test_successful;
+	bool testSuccessful;
+	int testCnt;
+	bool isStopped;
 };
 
 #endif /* TEST_IRQ_H_ */

@@ -41,13 +41,18 @@ void StartThread::execute(void*) {
 	cout << "communicationServer started" << endl;
 	interruptController->start(NULL);
 	cout << "interruptController started" <<endl;
-
+#ifndef TEST_M1
 	lampen->start(NULL);
 	cout << "lampen started" << endl;
+#endif
 	timer->start(NULL);
 	cout << "timer started" << endl;
 	sensor->start(NULL);
 	cout << "sensor started" << endl;
+#ifdef TEST_SER
+	cout << "starting SERIAL-Tests" << endl;
+	ser.start(NULL);
+#endif
 	serial->init(1, true);
 	serial->start(NULL);
 	cout << "serial started" << endl;
@@ -57,8 +62,6 @@ void StartThread::execute(void*) {
 #endif
 
 #ifdef TEST_SER
-	cout << "starting SERIAL-Tests" << endl;
-	ser.start(NULL);
 	cout << "waiting for SERIAL-Tests" << endl;
 	ser.join();
 	cout << "SERIAL-Tests ended" << endl;
@@ -93,7 +96,7 @@ void StartThread::execute(void*) {
 #endif
 #ifdef TEST_FSM
 	cout << "starting FSM-Tests" << endl;
-	tests_fsm.init_tests();
+//	tests_fsm.init_tests();
 	sensor->tests_fsm = &tests_fsm;
 	tests_fsm.start(NULL);
 	cout << "waiting for FSM-Tests" << endl;

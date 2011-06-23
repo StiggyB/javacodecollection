@@ -22,12 +22,16 @@ Test_FSM::Test_FSM() {
 	last_Reg_State_B = 0xD3;
 	last_Reg_State_C = 0x50;
 	aWPendOfMachine = false;
-	for(int i=0; i<3; i++) wp_test_list.push_back( new Puck_FSM_1(&dummy_puck_list) );
-	for(int i=0; i<3; i++) wp_test_list.push_back( new Puck_FSM_2(&dummy_puck_list) );
+	for(int i=0; i<3; i++) wp_test_list.push_back( new Puck_FSM_1(&working_list) );
+	for(int i=0; i<3; i++) wp_test_list.push_back( new Puck_FSM_2(&working_list) );
 	wp_test_list[3]->hasPocket = 1;
 	wp_test_list[4]->hasPocket = 1;
 
 	wp_list_index = 0;
+
+	working_list.clear();
+	working_list.push_back(wp_test_list[wp_list_index]);
+
 	cout << "-------------------------------------------------------------" << endl;
 	cout << "-----Modus 1: Machine One(sort out WP with small height)-----" << endl;
 	cout << "-------------------------------------------------------------" << endl;
@@ -104,6 +108,8 @@ void Test_FSM::handleSignal(int val, int port){
 			if(wp_list_index==0 && wp_test_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test 1 passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "Test2: please take workpiece from machine and put on a workpiece without pocket and normal height on LS_B0" << endl;
 
 			} else if(wp_list_index==0 && wp_test_list[wp_list_index]->location == SORT_OUT){
@@ -112,6 +118,8 @@ void Test_FSM::handleSignal(int val, int port){
 			} else if(wp_list_index==1 && wp_test_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test2: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "Test3: please take workpiece from machine and put on a workpiece with plane height on LS_B0" << endl;
 
 			} else if(wp_list_index==1 && wp_test_list[wp_list_index]->location == SORT_OUT){
@@ -120,6 +128,8 @@ void Test_FSM::handleSignal(int val, int port){
 			} else if(wp_list_index==2 && wp_test_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test3: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "--------------------------------------------------------------------------------" << endl;
 				cout << "-----Modus 2: Machine TWO(sort out workpiece with Pocket and without Metal)-----" << endl;
 				cout << "--------------------------------------------------------------------------------" << endl;
@@ -131,6 +141,8 @@ void Test_FSM::handleSignal(int val, int port){
 			} else if(wp_list_index==3 && wp_test_list[wp_list_index]->location == SORT_OUT){
 				cout << "Test4: passed, workpiece should lie in slide" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "Test5: please take workpiece from machine and put on a workpiece with Pocket and metal on LS_B0" << endl;
 
 			} else if(wp_list_index==3 && wp_test_list[wp_list_index]->location == ON_LAST_LB){
@@ -139,6 +151,8 @@ void Test_FSM::handleSignal(int val, int port){
 			} else if(wp_list_index==4 && wp_test_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test5: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "Test6: please take workpiece from machine and workpiece on a WP without Pocket and normal Height on LS_B0" << endl;
 
 			} else if(wp_list_index==4 && wp_test_list[wp_list_index]->location == SORT_OUT){
@@ -147,6 +161,8 @@ void Test_FSM::handleSignal(int val, int port){
 			} else if(wp_list_index==5 && wp_test_list[wp_list_index]->location == ON_LAST_LB){
 				cout << "Test6: passed, workpiece should lie at end of machine" << endl;
 				wp_list_index++;
+				working_list.clear();
+				working_list.push_back(wp_test_list[wp_list_index]);
 				cout << "------------All Tests passed successful----------" << endl;
 				running = false;
 

@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
 #endif
 
 	GlobalVariables *gv = GlobalVariables::getInstance();
-//	gv->setCurrentType(PUCK_FSM_1_);
-	gv->setCurrentType(PUCK_FSM_2_);
+	gv->setCurrentType(PUCK_FSM_1_);
+//	gv->setCurrentType(PUCK_FSM_2_);
 
 	if(PUCK_FSM_1_ == gv->getCurrentType()) {
 		std::cout << "Current Type: PUCK_FSM_1" << std::endl;
