@@ -76,14 +76,13 @@ enum msgType {
 class Serial : public thread::HAWThread, public Communication,public Singleton_T<Serial>{
 	friend class Singleton_T<Serial>;
 public:
+	Serial();
+	~Serial();
 	/**
 	 * Constructor with integrated initialization.
 	 * \param numComPort an integer, specifying the Com Port.
 	 * \param debug a bool, indicates debugging mode.
 	 */
-	//Serial(int numComPort, bool debug);
-	Serial();
-	~Serial();
 	void init(int numComPort, bool debug);
 	/**
 	 * Writes on Com Port.

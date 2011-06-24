@@ -58,10 +58,10 @@ public:
 	/**
 	 * adds a functor to internal list and activate Timer
 	 * \param funcp functor, the function of HALCore, which will be execute after timer timeout
-	 * \param timer time im milliseconds, after this time the given function will be executed
-	 * \return a bool, true if action was successful, false if not.
+	 * \param ms time im milliseconds, after this time the given function will be executed
+	 * \param id - the id of the timer.
+	 * \returns an int, the id on success, or zero on failure.
 	 */
-	//bool addTimerFunction( CallInterface<HALCore, void>* funcp, int timer );
 	int addTimerFunction( CallInterface<CallBackThrower, void>* funcp, int ms, int id);
 	/**
 	 * delete a Timer by a specific internal id
@@ -122,8 +122,8 @@ private:
 	/**
 	 * internal function to add functor to list
 	 * \param new_element this struct already contains already the given type and functor
-	 * \param timer time im milliseconds, after this time the given function will be executed
-	 * \return a bool, true if action was successful, false if not.
+	 * \param ms time im milliseconds, after this time the given function will be executed
+	 * \returns an integer, the id on success, or zero if it failed.
 	 */
 	int addTimerFunction(struct IdTOfunction new_element, int ms);
 	/**

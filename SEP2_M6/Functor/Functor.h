@@ -51,7 +51,6 @@ public:
 
 	/**
 	 * Provides a dynamic choose of function pointers.
-	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
 	R operator()() {
@@ -60,7 +59,6 @@ public:
 
 	/**
 	 * Provides a dynamic choose of function pointers.
-	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
 	R call() {
