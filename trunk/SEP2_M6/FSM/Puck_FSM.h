@@ -86,7 +86,7 @@ public:
 	class State *current;
 	/**
 	 * set new state
-	 * \param a State, which will be the new acutal state of fsm
+	 * \param s a State, which will be the new acutal state of fsm
 	 */
 	void setCurrent(State *s);
 	Puck_FSM();
@@ -104,7 +104,7 @@ public:
 	/**
 	 * This function starts synchronous with FSM_1
 	 * and FSM_2.
-	 * \param true if the signal came from serial
+	 * \param was_serial true if the signal came from serial
 	 */
 	void start_signal(bool was_serial);
 	/**
@@ -116,27 +116,27 @@ public:
 	/**
 	 * This function stops synchronous FSM_1
 	 * and FSM_2.
-	 * \param true if the signal came from serial
+	 * \param was_serial true if the signal came from serial
 	 */
 	void stop_signal(bool was_serial);
 	/**
 	 * This function resets synchronous FSM_1
 	 * and FSM_2.
-	 * \param true if the signal came from serial
+	 * \param was_serial true if the signal came from serial
 	 */
 	void reset_signal(bool was_serial);
 	/**
 	 * This function calls the emergency stop
 	 * synchronous FSM_1 and FSM_2 if the
 	 * emergency stop is pushed.
-	 * \param true if the signal came from serial
+	 * \param was_serial true if the signal came from serial
 	 */
 	void estop_in_signal(bool was_serial);
 	/**
 	 * This function calls the emergency stop
 	 * synchronous FSM_1 and FSM_2 if the
 	 * emergency stop is pulled.
-	 * \param true if the signal came from serial
+	 * \param was_serial true if the signal came from serial
 	 */
 	void estop_out_signal(bool was_serial);
 	/**

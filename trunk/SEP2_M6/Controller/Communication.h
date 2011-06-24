@@ -175,7 +175,8 @@ protected:
 	/**
 	 * Unregisters a Channel and removes it from the Communicators Server list
 	 * \param c the Communicator which wants to be unregistered
-	 * \return bool, true if successful
+	 * \param unique the unique ID of the Communicator
+	 * \return int, true if successful
 	 */
 	bool unregisterChannel(CommunicatorType c, int unique);
 	/**
@@ -189,6 +190,7 @@ protected:
 	 * Detaches a connection to a Channel and informs the Target-Communicator.
 	 * \param coid an integer specifying the ConnectID
 	 * \param c the Communicator which wants to be detached
+	 * \param unique the unique ID of the Communicator
 	 * \return bool, true if successful
 	 */
 	bool detachConnection(int coid, CommunicatorType c,int unique);

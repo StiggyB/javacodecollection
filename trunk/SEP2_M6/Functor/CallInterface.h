@@ -1,3 +1,7 @@
+
+#ifndef IFUNCTOR_H_
+#define IFUNCTOR_H_
+
 /**
  * Interface for the Functor Pattern.
  *
@@ -13,10 +17,6 @@
  * dynamic object type, return type and parameter type.
  *
  */
-
-#ifndef IFUNCTOR_H_
-#define IFUNCTOR_H_
-
 template <typename T, typename R>
 class CallInterface {
 
@@ -24,14 +24,12 @@ public:
 
 	/**
 	 * Provides a dynamic choose of function pointers.
-	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
 	virtual R operator()() = 0;
 
 	/**
 	 * Provides a dynamic choose of function pointers.
-	 * \param a generic P, represents the parameter.
 	 * \return a generic R, represents the return value.
 	 */
 	virtual R call() = 0;

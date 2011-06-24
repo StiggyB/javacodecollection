@@ -83,14 +83,14 @@ public:
 	virtual void shutdown();
 	/**
 	 * This function tests the sensors with interrupts.
-	 * \param actual port from the system
-	 * \param value for identify the sensor
+	 * \param port actual port from the system
+	 * \param value to identify the sensor
 	 */
 	void test_sen_interrupt(int port, int value);
 	/**
 	 * This function tests the sensors with polling.
-	 * \param actual port from the system
-	 * \param value for identify the sensor
+	 * \param port port from the system
+	 * \param value to identify the sensor
 	 */
 	void test_sen_polling(int port, int value);
 
@@ -104,17 +104,17 @@ private:
 	/**
 	 * This function evaluates the results of a test with
 	 * expected values from an enum.
-	 * \param serial number as string
-	 * \param actual test result as int
-	 * \param expected state as int
+	 * \param sen_no - the serial number as string
+	 * \param actual - test result as int
+	 * \param state - expected state as int
 	 * \result true if actual is equals state, otherwise false
 	 */
 	bool assert_equals(string sen_no, int actual, int state);
 	/**
 	 * This function prints a specific test reuslt.
-	 * \param serial number as string
-	 * \param actual test result as int
-	 * \param expected state as int
+	 * \param sen_no - serial number as string
+	 * \param actual - test result as int
+	 * \param state - expected state as int
 	 */
 	void test_print(string sen_no, int actual, int state);
 	/**
