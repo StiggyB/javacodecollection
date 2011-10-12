@@ -20,8 +20,8 @@ public class ChatServerImpl extends UnicastRemoteObject implements MessageServer
 	 * @uml.property  name="msgs"
 	 * @uml.associationEnd  multiplicity="(0 -1)" elementType="java.lang.String"
 	 */
-	Queue<String> msgs = new LinkedList<String>();
-	
+	Queue<String> msgs = new LinkedList<String>(); 	//--ArrayDeque or ArrayList is more usable
+
 	public ChatServerImpl() throws RemoteException {
 		try {
 			LocateRegistry.createRegistry(PORT);

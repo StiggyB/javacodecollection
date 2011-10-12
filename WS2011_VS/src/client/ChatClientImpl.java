@@ -2,6 +2,7 @@ package client;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import server.MessageServerIF;
@@ -28,7 +29,10 @@ public class ChatClientImpl {
 	public ChatClientImpl() {
         try {
         	setServer_port(Registry.REGISTRY_PORT);
-        	setServer_ip("localhost");
+        	setServer_ip("localhost");				//"localhost" should be ip & port from the server!
+        	
+        	/* Registry reg = LocateRegistry.getRegistry("ip&port_server"); */ //then reg.lookup("server_name");
+        	
             String url = "//" + server_ip + ":" + server_port + "/" + SERVER_NAME;
             server = (MessageServerIF) Naming.lookup(url);
             System.out.println("Found server: " + url);

@@ -6,4 +6,5 @@ package server;
  */
 public class Message {
 
+	/*Interface MessageServerIF expects "string" Message? */
 }
