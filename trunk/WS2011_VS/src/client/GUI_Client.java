@@ -1,64 +1,109 @@
 package client;
+import java.awt.BorderLayout;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
+import javax.swing.JList;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
-public class GUI_Client extends JFrame{
 
-	private static final long serialVersionUID = 5257248828637263369L;
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
+public class GUI_Client extends javax.swing.JFrame {
 
-	/**
-	 * @uml.property  name="sendLabel"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
-	private JLabel sendLabel;
-    /**
-	 * @uml.property  name="sendField"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
-    private JTextField sendField;
-    
-	/**
-	 * @uml.property  name="rcvLabel"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
-	private JLabel rcvLabel;
-    /**
-	 * @uml.property  name="rcvField"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
-    private JTextPane rcvField;
-    
-	public GUI_Client() {
-//		setLayout(new GridLayout());
-		
-		//send
-		sendLabel = new JLabel("Send");
-		add(sendLabel);
-		sendField = new JTextField(20);
-		add(sendField);
-		
-		//rcv
-		rcvLabel= new JLabel("Received");
-		add(rcvLabel);
-		rcvField = new JTextPane();
-		add(rcvField);
-		
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(400, 400);
-        setVisible(true);
-        setTitle("Chat");
+	{
+		//Set Look & Feel
+		try {
+			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private JSplitPane jSplitPane1;
+	private JSplitPane jSplitPane2;
+	private JList jList1;
+	private JButton sendButton;
+	private JTextArea jTextArea1;
+	private JEditorPane jEditor;
+
+	/**
+	* Auto-generated main method to display this JFrame
+	*/
 	public static void main(String[] args) {
-		GUI_Client gui = new GUI_Client();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				GUI_Client inst = new GUI_Client();
+				inst.setLocationRelativeTo(null);
+				inst.setVisible(true);
+			}
+		});
+	}
+	
+	public GUI_Client() {
+		super();
+		initGUI();
+	}
+	
+	private void initGUI() {
+		try {
+			BorderLayout thisLayout = new BorderLayout();
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			getContentPane().setLayout(thisLayout);
+			{
+				jSplitPane1 = new JSplitPane();
+				getContentPane().add(jSplitPane1, BorderLayout.CENTER);
+				jSplitPane2 = new JSplitPane();
+				getContentPane().add(jSplitPane2, BorderLayout.SOUTH);
+				{
+					ListModel jList1Model = 
+						new DefaultComboBoxModel(
+								new String[] { "Item One", "Item Two" });
+					jList1 = new JList();
+					jSplitPane1.add(jList1, JSplitPane.RIGHT);
+					jList1.setModel(jList1Model);
+				}
+				{
+					jTextArea1 = new JTextArea();
+					jSplitPane1.add(jTextArea1, JSplitPane.LEFT);
+					jTextArea1.setText("jTextArea1");
+				}
+				{
+					jEditor = new JEditorPane();
+					jSplitPane2.add(jEditor, JSplitPane.RIGHT);
+				}
+				{
+					sendButton = new JButton();
+					jSplitPane2.add(sendButton, JSplitPane.LEFT);
+					sendButton.setText("Send");
+				}
+			}
+			pack();
+			setSize(400, 300);
+		} catch (Exception e) {
+		    //add your error handling code here
+			e.printStackTrace();
+		}
 	}
 
 }
