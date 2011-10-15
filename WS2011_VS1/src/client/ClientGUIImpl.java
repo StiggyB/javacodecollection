@@ -9,7 +9,8 @@ public class ClientGUIImpl {
 
 	private ChatClientImpl client;
 	private ClientGUI gui;
-	private Thread rcvThread;
+//	private Thread rcvThread;
+	private Receiver rec;
 	
     public ClientGUIImpl(ChatClientImpl client, ClientGUI gui) {
         this.client = client;
@@ -63,34 +64,42 @@ public class ClientGUIImpl {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (gui.getjToggleButton().getModel().isSelected()) {
+				System.out.println("reading!");
 				long ms = System.currentTimeMillis();
-				rcvThread = new Thread(new Receiver(client, gui), "ClientController");
+				rec = new Receiver(client, gui);
+				Thread rcvThread = new Thread(rec, "ClientController");
 				rcvThread.start();
-				ThreadController.printAllThreads(ThreadController.getAllThreads());
-				for (int i = 0; i < 100; i++) { //While the for is running - gui is freeze
-					System.out.println("for");
-					if (rcvThread.isInterrupted()) {
-						System.out.println("start");
-						rcvThread.start();
-					} else if(isTimeout(ms)) {
-						ms = System.currentTimeMillis();
-						try {
-							rcvThread.join();	//does not work!
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						} 
-						continue;
-					}
-					if(!(gui.getjToggleButton().getModel().isSelected())) {
-						try {
-							rcvThread.join();
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-						break;
-					}
-				}
+			}else{
+				rec.setStopped();
 			}
+				
+//				rcvThread = new Thread(new Receiver(client, gui), "ClientController");
+//				rcvThread.start();
+//				ThreadController.printAllThreads(ThreadController.getAllThreads());
+//				for (int i = 0; i < 100; i++) { //While the for is running - gui is freeze
+//					System.out.println("for");
+//					if (rcvThread.isInterrupted()) {
+//						System.out.println("start");
+//						rcvThread.start();
+//					} else if(isTimeout(ms)) {
+//						ms = System.currentTimeMillis();
+//						try {
+//							rcvThread.join();	//does not work!
+//						} catch (InterruptedException e1) {
+//							e1.printStackTrace();
+//						} 
+//						continue;
+//					}
+//					if(!(gui.getjToggleButton().getModel().isSelected())) {
+//						try {
+//							rcvThread.join();
+//						} catch (InterruptedException e1) {
+//							e1.printStackTrace();
+//						}
+//						break;
+//					}
+//				}
+//			}
 		}
 	}
    

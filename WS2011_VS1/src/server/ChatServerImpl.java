@@ -12,6 +12,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import client.ClientData;
@@ -60,7 +61,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public String getMessage(String clientID) throws RemoteException {
+	public synchronized String getMessage(String clientID) throws RemoteException {
 		ClientData tmpClData;
 		checkClientTime();
 		if (!(existsClient(clientID))) {
@@ -92,7 +93,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements
      * @see http://download.oracle.com/javase/1.4.2/docs/api/index.html 
      */
 	@Override
-	public void dropMessage(String clientID, String msg) throws RemoteException {
+	public synchronized void dropMessage(String clientID, String msg) throws RemoteException {
 		ClientData tmpClData;
 		if (!(existsClient(clientID))) {
 			System.out.println("cID:" + clientID);
@@ -106,14 +107,15 @@ public class ChatServerImpl extends UnicastRemoteObject implements
 		msgs.add(new Message(idCnt.getAndIncrement(), clientID, msg));
 	}
 
-	private boolean existsClient(String clientID) {
+	private synchronized boolean existsClient(String clientID) {
 		return clientDataMap.isEmpty() ? false : clientDataMap
 				.containsKey(clientID);
 	}
 	
-	private void checkClientTime() {
+	private synchronized void checkClientTime() {
 		if (!(clientDataMap.isEmpty())) {
-			for (String client : clientDataMap.keySet()) {
+			Set<String> s = clientDataMap.keySet();
+			for (String client : s) {
 				if (Math.abs((clientDataMap.get(client).getRememTime() - System
 						.currentTimeMillis())) > MAX_REMEM_TIME) {
 					clientDataMap.remove(client);

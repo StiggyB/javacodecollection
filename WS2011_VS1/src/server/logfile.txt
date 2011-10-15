@@ -1,25 +1,17 @@
-15.10.2011 18:03:31 sun.rmi.server.UnicastServerRef logCall
+15.10.2011 19:06:36 sun.rmi.server.UnicastServerRef logCall
 FEINER: RMI TCP Connection(3)-127.0.0.1: [127.0.0.1: sun.rmi.registry.RegistryImpl[0:0:0, 0]: java.rmi.Remote lookup(java.lang.String)]
-15.10.2011 18:03:31 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: sun.rmi.transport.DGCImpl[0:0:0, 2]: java.rmi.dgc.Lease dirty(java.rmi.server.ObjID[], long, java.rmi.dgc.Lease)]
-15.10.2011 18:03:35 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:36 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:37 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:38 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:38 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:38 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:38 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:38 sun.rmi.server.UnicastServerRef logCallException
-FEIN: RMI TCP Connection(4)-10.0.2.15: [10.0.2.15] exception: 
+15.10.2011 19:06:36 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(4)-141.22.196.48: [141.22.196.48: sun.rmi.transport.DGCImpl[0:0:0, 2]: java.rmi.dgc.Lease dirty(java.rmi.server.ObjID[], long, java.rmi.dgc.Lease)]
+15.10.2011 19:06:43 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(4)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:46 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(4)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:46 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(4)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:46 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(4)-141.22.196.48: [141.22.196.48] exception: 
 java.rmi.RemoteException: no more messages
-	at server.ChatServerImpl.getMessage(ChatServerImpl.java:83)
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -34,12 +26,16 @@ java.rmi.RemoteException: no more messages
 	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
 	at java.lang.Thread.run(Unknown Source)
-15.10.2011 18:03:41 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(5)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:41 sun.rmi.server.UnicastServerRef logCallException
-FEIN: RMI TCP Connection(5)-10.0.2.15: [10.0.2.15] exception: 
+15.10.2011 19:06:47 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(5)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:47 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(5)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:47 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(5)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:47 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(5)-141.22.196.48: [141.22.196.48] exception: 
 java.rmi.RemoteException: no more messages
-	at server.ChatServerImpl.getMessage(ChatServerImpl.java:83)
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -54,32 +50,442 @@ java.rmi.RemoteException: no more messages
 	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
 	at java.lang.Thread.run(Unknown Source)
-15.10.2011 18:03:45 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:47 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:47 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:48 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCall
-FEINER: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15: server.ChatServerImpl[c132ee1:1330852db45:-7fff, -3191614411314116708]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
-15.10.2011 18:03:54 sun.rmi.server.UnicastServerRef logCallException
-FEIN: RMI TCP Connection(6)-10.0.2.15: [10.0.2.15] exception: 
+15.10.2011 19:06:48 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(6)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:48 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(6)-141.22.196.48: [141.22.196.48] exception: 
 java.rmi.RemoteException: no more messages
-	at server.ChatServerImpl.getMessage(ChatServerImpl.java:83)
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:49 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(7)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:49 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(7)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:50 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(8)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:50 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(8)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:51 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(9)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:51 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(9)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:51 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(9)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:51 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(9)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:52 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(10)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:52 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(10)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:53 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(11)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:53 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(11)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:54 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(12)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:54 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(12)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:54 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(12)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:54 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(12)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:55 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(13)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:55 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(13)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:57 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(14)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:57 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(14)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:06:59 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(15)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:06:59 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(15)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:00 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(16)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:00 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(16)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:01 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(17)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:01 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(17)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:02 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(18)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:02 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(18)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:02 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(18)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:02 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(18)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:03 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(19)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:03 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(19)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:04 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(20)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:04 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(20)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:08 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(21)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:13 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(21)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:13 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(21)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:13 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(21)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:14 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(22)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:14 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(22)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:14 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(23)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract void server.MessageServerIF.dropMessage(java.lang.String,java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:15 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(23)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:15 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(23)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:15 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(23)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:16 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(24)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:16 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(24)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:17 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(25)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:17 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(25)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:18 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(26)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:18 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(26)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+15.10.2011 19:07:19 sun.rmi.server.UnicastServerRef logCall
+FEINER: RMI TCP Connection(27)-141.22.196.48: [141.22.196.48: server.ChatServerImpl[206a6da9:133088c9dfd:-7fff, 5248810183136278491]: public abstract java.lang.String server.MessageServerIF.getMessage(java.lang.String) throws java.rmi.RemoteException]
+15.10.2011 19:07:19 sun.rmi.server.UnicastServerRef logCallException
+FEIN: RMI TCP Connection(27)-141.22.196.48: [141.22.196.48] exception: 
+java.rmi.RemoteException: no more messages
+	at server.ChatServerImpl.getMessage(ChatServerImpl.java:84)
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
 	at java.lang.reflect.Method.invoke(Unknown Source)
 	at sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
