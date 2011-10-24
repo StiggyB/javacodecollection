@@ -1,0 +1,32 @@
+Erklärung des Codes
+
+Die Klasse java.net.ServerSocket dient in erster Linie zur Anmeldung von Clients. Sie hört nicht - wie man vielleicht erwarten könnte - auf die Nachrichten von Clients. Im Konstruktor wird der Port (im Beispiel 11111) übergeben (die IP-Adresse des Servers ist natürlich die IP-Adresse des Computers, auf dem der Server läuft). Die Methode accept() wartet so lange, bis sich ein Client verbunden hat. Dann gibt sie einen java.net.Socket zurück.
+
+Die Klasse java.net.Socket hat zwei Funktionen:
+
+    * im Server dient sie dazu, sich den angemeldeten Client zu merken, auf seine Nachrichten zu hören und ihm zu antworten. Erzeugt wird eine Instanz durch die Methode accept(), wenn sich ein Client angemeldet hat.
+    * im Client erzeugt sie die Verbindung zum Server; dem Konstruktor wird die IP-Adresse des Servers und dessen Port übergeben. Mit dem Aufruf des Konstruktors im Client wird die Verbindung hergestellt - beim Server gibt accept() den verbundenen Client zurück.
+
+Die Kommunikation läuft dann auf beiden Seiten gleich:
+Mit java.net.Socket#getInputSteam() bzw. java.net.Socket#getOutputSteam() können die Nachrichten der anderen Seite gelesen werden bzw. dorthin gesendet werden. Die lesenden Methoden blockieren dabei so lange, bis eine Nachricht empfangen wurde.
+
+##########################################################
+
+Wie sähe ein intelligenter Server aus
+
+Probleme bereiten die blockierenden Methoden; sowohl die Methode java.net.ServerSocket#accept() als auch die Methode read() (oder seine Verwandten) warten solange, bis sich ein Client angemeldet hat bzw. bis die Gegenseite eine Nachricht gesendet hat.
+
+Auf der Seite des Servers wird es deshalb in der Regel einen eigenen Thread geben, der auf Anmeldungen von Clients wartet. Für jeden Client, der sich angemeldet hat, wird dann wiederum ein neuer Thread gestartet, der auf Nachrichten des Clients wartet. Daneben wird man in aller Regel den Client in einer Liste speichern, damit es möglich ist, allen angemeldeten Clients eine Nachricht zu senden.
+
+Auch im Client gibt es einen eigenen Thread, der auf Nachrichten des Servers wartet. Während man es sonst bei Methodenaufrufen gewohnt ist, dass man auf den Rückgabewert (und sei es void) der Funktion wartet (synchron), verläuft die Kommunikation hier asynchron.
+
+Eine weitere Schwierigkeit ist das Lesen von Nachrichten der Gegenseite. Im Beispiel werden Nachrichten der Länge 200 gelesen (das reicht für "Hello, world!"). Es hilft an dieser Stelle nicht wirklich, den Buffer deutlich größer zu machen (aus Performance-Gründen wird man ihn natürlich etwa auf 1024 Bytes vergrößern), Beim Lesen treten nämlich zwei Probleme auf:
+
+    * Es kommt vor, dass die Nachricht länger ist als der Buffer.
+    * Es kommt vor, dass mehrere Nachrichten (teilweise) im Buffer stehen.
+
+Deshalb müssen Server und Client ein eigenes Protokoll vereinbaren. Denkbar (und üblich) sind dabei mehrere Varianten:
+
+    * Alle Nachrichten haben eine feste Länge
+    * Zu Beginn jeder Nachricht (z.B. in den ersten 8 Zeichen) wird die Länge der Nachricht angegeben; es werden dann zunächst diese 8 Zeichen eingelesen und ausgewertet und dann entsprechend viele Zeichen gelesen
+    * Jede Nachricht endet mit einem festen String, der sonst innerhalb der Nachrichten nicht vorkommt (z.B. "$END$"). Der InputStream wird solange gelesen, bis dieser String gefunden wurde.
