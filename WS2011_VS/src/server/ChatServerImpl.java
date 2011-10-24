@@ -6,7 +6,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 public class ChatServerImpl extends UnicastRemoteObject implements MessageServerIF {
@@ -20,8 +22,11 @@ public class ChatServerImpl extends UnicastRemoteObject implements MessageServer
 	 * @uml.property  name="msgs"
 	 * @uml.associationEnd  multiplicity="(0 -1)" elementType="java.lang.String"
 	 */
-	Queue<String> msgs = new LinkedList<String>(); 	//--ArrayDeque or ArrayList is more usable
+	Map<String, Queue<Message>> clientMap = new HashMap<String, Queue<Message>>();
+    Queue<Message> msgs = new ArrayDeque<Message>(); 
 
+	
+	
 	public ChatServerImpl() throws RemoteException {
 		try {
 			LocateRegistry.createRegistry(PORT);
@@ -35,7 +40,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements MessageServer
 	}
 
 	@Override
-	public String getMessage(String clientID) throws RemoteException {
+	public Message getMessage(String clientID) throws RemoteException {
 		if (msgs.isEmpty()) throw new RemoteException("no more messages");
 		
 		return msgs.poll();

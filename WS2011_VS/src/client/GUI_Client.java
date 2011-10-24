@@ -1,10 +1,13 @@
 package client;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.ListModel;
@@ -96,6 +99,30 @@ public class GUI_Client extends javax.swing.JFrame {
 					sendButton = new JButton();
 					jSplitPane2.add(sendButton, JSplitPane.LEFT);
 					sendButton.setText("Send");
+					sendButton.addActionListener(
+					/**
+					 * Anonyme Klasse, die beim JButton calculate angemeldet ist mit lokaler
+					 * Exceptionbehandlung - letzte Moeglichkeit.
+					 * 
+					 * @author Administrator
+					 * 
+					 */
+					new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							try {
+								/* dropMessage() to server */
+							} catch (NumberFormatException ex) {
+								ex.printStackTrace();
+								JOptionPane
+										.showMessageDialog(
+												null,
+												"Error: Minimum one entry is false or not complete.",
+												"Entry Error", JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					});
 				}
 			}
 			pack();
